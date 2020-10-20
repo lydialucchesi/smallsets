@@ -20,15 +20,14 @@ related to extraction context, etc.), and on top of the processing toy
 plots, possibly what I call “justification plots,” so another simple
 plot that helps clarify your decision to do what you did - i.e., maybe a
 Meng bias plot or a plot to show correlation between two variables.
-Below is a very simple example that I hard-coded in R, and it is roughly
-based on this paper looking at preprocessing of the NASA software defect
-data sets that have been used extensively in research and preprocessed
+[Here](https://github.com/lydialucchesi/smallset/tree/master/test.pdf)
+is a very simple example that I hard-coded in R, and it is roughly based
+on this paper looking at preprocessing of the NASA software defect data
+sets that have been used extensively in research and preprocessed
 different ways throughout the body of literature. The real timeline
 visual for the NASA example would look different. I haven’t fully
 fleshed out the statements below the plots, nor have I added any
 “justification plots.” I am not aware of anything like this in R.
-
-<img src='test.pdf' align="center" />
 
 That visual is an example of the “shareable” view respecting data
 privacy. Each gray dot is a data point, and this is a small subset of

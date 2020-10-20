@@ -454,10 +454,12 @@ p5 <- ggplot() +
   coord_equal()
 p5
 
-ggsave(
-  "test.pdf",
-  ggarrange(g, p1, p2, p3, p4, p5, nrow = 1),
-  width = 30,
-  height = 8
-)
+plot(ggarrange(g, p1, p2, p3, p4, p5, nrow = 1))
+
+# ggsave(
+#   "test.pdf",
+#   ggarrange(g, p1, p2, p3, p4, p5, nrow = 1),
+#   width = 30,
+#   height = 8
+# )
 
