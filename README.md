@@ -89,11 +89,11 @@ df
     ## 11  2000    NA   19    0.9    0
     ## 12 -1999     3    6    1.2    0
 
-Then I wrote a sample of what some preprocessing code might look like.
-This script is called `prep_data.R`. See the contents of it below. The
-commenting is how you tell the R package where the preprocessing code
-starts and ends and where you want to capture the current state of the
-data for inclusion in the preprocessing timeline.
+Then I created a script with some preprocessing steps. This script is
+called `prep_data.R`. See the contents of it below. The commenting is
+how you tell the R package where the preprocessing code starts and ends
+and where you want to capture the current state of the data for
+inclusion in the preprocessing timeline.
 
 You specify the start with `# start smallset` and end with `# end
 smallset`. You tell it to take a snapshot with `# snap [name of data
@@ -118,9 +118,10 @@ prepped <- subset(df, year > 0)
 # end smallset
 ```
 
-The internal script `write_smallset_code.R` (see below) imports the text
-of the preprocessing code; figures out where the preprocessing starts
-and ends; adds in lines to tell R when to save a “shapshot” to a list of
+Next I wrote a script called `write_smallset_code.R` (see below). It
+would be an internal script in the package. It imports the text of the
+preprocessing code; figures out where the preprocessing starts and ends;
+adds in lines to tell R when to save a “snapshot” to a list of
 snapshots; turns the entire thing into a function; and then outputs an R
 script called `smallset_code.R` so that it can be sourced and applied to
 the smaller subset later.
