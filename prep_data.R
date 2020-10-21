@@ -13,6 +13,12 @@ df$time <- NULL
 df[is.na(df)] <- 0
 prepped <- subset(df, year > 0)
 # snap prepped
+prepped$one <- 1
+newRow <- prepped[1, ]
+prepped <- rbind(prepped, newRow)
+# snap prepped
 # end smallset
 
 
+# newRow <- prepped[1, ]
+# prepped <- rbind(prepped, newRow)

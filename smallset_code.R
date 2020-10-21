@@ -13,6 +13,11 @@ df[is.na(df)] <- 0
 snapshots[[3]] <- df
 prepped <- subset(df, year > 0)
 # snap prepped
+prepped$one <- 1
 snapshots[[4]] <- prepped
+newRow <- prepped[1, ]
+prepped <- rbind(prepped, newRow)
+# snap prepped
+snapshots[[5]] <- prepped
 return(snapshots)
 }

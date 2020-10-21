@@ -1,8 +1,10 @@
-source("gen_data.R")
+source("select_smallset.R")
 
-prep_smallset <- function(data, prepCode) {
+# is it okay to use same argument names in prep_smallset as in select_smallset?
+
+prep_smallset <- function(data, prepCode, size = 6, rowNums = NULL, startCol = "black", changeCol = "cornflowerblue") {
   
-  smallset <- head(data)
+  smallset <- select_smallset(data = data, size = size, rowNums = rowNums)
   
   source("write_smallset_code.R")
   writeSmallsetCode(scriptName = prepCode)
@@ -14,6 +16,7 @@ prep_smallset <- function(data, prepCode) {
   
 }
 
-prep_smallset(data = df, prepCode = "prep_data.R")
+
+
 
 
