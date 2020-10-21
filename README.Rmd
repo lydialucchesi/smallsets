@@ -2,7 +2,7 @@
 title: "Explanation of code so far"
 author: "Lydia Lucchesi"
 date: "20/10/2020"
-output: html_document
+output: github_document
 ---
 
 ## Overview of package idea
@@ -194,7 +194,7 @@ Below is the `highlight_changes.R` function.
 library(flextable)
 
 # highlight what you will lose (rows and columns) (prior to it happening because once it is gone you can't see it)
-# default colour is tan
+# default colour is gray
 # highlight what is now changed (cells in data frame)
 # default is cornflower blue
 # highlight what has been added (rows or columns)
@@ -292,7 +292,7 @@ highlight_changes <- function(list) {
 
 The user needs to add comments to their preprocessing script, run the `prep_smallset.R` code, and then run the `highlight_changes.R` command to get data frames with colour-coded changes.
 
-So here is an example of what the preprocessing script might look like.
+Here is an example of what the preprocessing script might look like.
 
 ```{r, echo = TRUE, eval = FALSE}
 source("gen_data.R")
@@ -328,7 +328,7 @@ mylist <-
     data = df,
     prepCode = "prep_data.R",
     size = 6,
-    rowNums = c(1, 2, 5)
+    rowNums = c(1, 2, 5, 8)
   )
 
 fts <- highlight_changes(list = mylist)
@@ -336,28 +336,15 @@ fts <- highlight_changes(list = mylist)
 
 Below is the output from `hightlight_changes.R`.
 
-The colour tan signals that a row or column is about to be dropped. Blue means that the cell has a new data value in it compared to the last snapshot. And green means a row or column has been added. It's all meant to be really easy for the user, and the idea is that they don't have to do that much more work than they already are for the data prep stages... so far, all they really have to do is add comments to their preprocessing script and they can get the output below.
+The colour gray signals that a row or column is about to be dropped. Blue means that the cell has a new data value in it compared to the last snapshot. And green means a row or column has been added. It's all meant to be really easy for the user, and the idea is that they don't have to do that much more work than they already are for the data prep stages... so far, all they really have to do is add comments to their preprocessing script and they can get the output below (this is what is in the fts object created above).
 
-```{r, echo = TRUE, eval = TRUE, warning = FALSE, message = FALSE}
-library(knitr)
-library(flextable)
-knit_print(fts[[1]])
-```
+<img src='fts/1.png' align="center" />
+<img src='fts/2.png' align="center" />
+<img src='fts/3.png' align="center" />
+<img src='fts/4.png' align="center" />
+<img src='fts/5.png' align="center" />
 
-```{r, echo = TRUE, eval = TRUE, warning = FALSE, message = FALSE}
-knit_print(fts[[2]])
-```
 
-```{r, echo = TRUE, eval = TRUE, warning = FALSE, message = FALSE}
-knit_print(fts[[3]])
-```
 
-```{r, echo = TRUE, eval = TRUE, warning = FALSE, message = FALSE}
-knit_print(fts[[4]])
-```
-
-```{r, echo = TRUE, eval = TRUE, warning = FALSE, message = FALSE}
-knit_print(fts[[5]])
-```
 
 Next steps are to add in a few customization options, make it so that one can include additional visual cues, and figure out how to abstract the data to symbols. Also, plotting this out in a timeline and adding impact statements below and justification plots above.

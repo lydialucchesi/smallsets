@@ -1,7 +1,7 @@
 library(flextable)
 
 # highlight what you will lose (rows and columns) (prior to it happening because once it is gone you can't see it)
-# default colour is tan
+# default colour is gray (switch it to tan)
 # highlight what is now changed (cells in data frame)
 # default is cornflower blue
 # highlight what has been added (rows or columns)

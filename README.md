@@ -22,12 +22,13 @@ plot that helps clarify your decision to do what you did - i.e., maybe a
 Meng bias plot or a plot to show correlation between two variables.
 [Here](https://github.com/lydialucchesi/smallset/tree/master/test.pdf)
 is a very simple example that I hard-coded in R, and it is roughly based
-on this paper looking at preprocessing of the NASA software defect data
-sets that have been used extensively in research and preprocessed
-different ways throughout the body of literature. The real timeline
-visual for the NASA example would look different. I haven’t fully
-fleshed out the statements below the plots, nor have I added any
-“justification plots.” I am not aware of anything like this in R.
+on this [paper](https://ieeexplore.ieee.org/document/6353339) looking at
+preprocessing of the NASA software defect data sets that have been used
+extensively in research and preprocessed different ways throughout the
+body of literature. The real timeline visual for the NASA example would
+look different. I haven’t fully fleshed out the statements below the
+plots, nor have I added any “justification plots.” I am not aware of
+anything like this in R.
 
 That visual is an example of the “shareable” view respecting data
 privacy. Each gray dot is a data point, and this is a small subset of
@@ -320,7 +321,7 @@ Below is the `highlight_changes.R` function.
 library(flextable)
 
 # highlight what you will lose (rows and columns) (prior to it happening because once it is gone you can't see it)
-# default colour is tan
+# default colour is gray
 # highlight what is now changed (cells in data frame)
 # default is cornflower blue
 # highlight what has been added (rows or columns)
@@ -415,11 +416,11 @@ highlight_changes <- function(list) {
 }
 ```
 
-The only needs to add comments to their preprocessing script, run the
+The user needs to add comments to their preprocessing script, run the
 `prep_smallset.R` code, and then run the `highlight_changes.R` command
 to get data frames with colour-coded changes.
 
-So here is an example of what the preprocessing script might look like.
+Here is an example of what the preprocessing script might look like.
 
 ``` r
 source("gen_data.R")
@@ -451,127 +452,37 @@ like included in the smallset.
 ``` r
 source("gen_data.R")
 source("apply_smallset_code.R")
-```
-
-    ## Warning: package 'dplyr' was built under R version 3.6.2
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
 source("highlight_changes.R")
-```
 
-    ## Warning: package 'flextable' was built under R version 3.6.2
-
-    ## Warning in readLines(scriptName): incomplete final line found on 'prep_data.R'
-    
-    ## Warning in readLines(scriptName): incomplete final line found on 'prep_data.R'
-
-``` r
 mylist <-
   prep_smallset(
     data = df,
     prepCode = "prep_data.R",
     size = 6,
-    rowNums = c(1, 2, 5)
+    rowNums = c(1, 2, 5, 8)
   )
-```
 
-    ## Warning in readLines(scriptName): incomplete final line found on 'prep_data.R'
-    
-    ## Warning in readLines(scriptName): incomplete final line found on 'prep_data.R'
-
-``` r
 fts <- highlight_changes(list = mylist)
 ```
 
 Below is the output from `hightlight_changes.R`.
 
-Tan signals that a row or column is about to be dropped. Blue means that
-the cell has a new data value in it compared to the last snapshot. And
-green means a row or column has been added.
+The colour gray signals that a row or column is about to be dropped.
+Blue means that the cell has a new data value in it compared to the last
+snapshot. And green means a row or column has been added. It’s all meant
+to be really easy for the user, and the idea is that they don’t have to
+do that much more work than they already are for the data prep stages…
+so far, all they really have to do is add comments to their
+preprocessing script and they can get the output below (this is what is
+in the fts object created above).
 
-``` r
-library(knitr)
-```
+<img src='fts/1.png' align="center" />
+<img src='fts/2.png' align="center" />
+<img src='fts/3.png' align="center" />
+<img src='fts/4.png' align="center" />
+<img src='fts/5.png' align="center" />
 
-    ## Warning: package 'knitr' was built under R version 3.6.2
-
-``` r
-library(flextable)
-knit_print(fts)
-```
-
-    ## [[1]]
-    ## a flextable object.
-    ## col_keys: `year`, `count`, `time`, `defect`, `true` 
-    ## header has 1 row(s) 
-    ## body has 6 row(s) 
-    ## original dataset sample: 
-    ##    year count time defect true
-    ## 1  2000    10   20      0   NA
-    ## 2 -1999     5   11      0    0
-    ## 3  1996    NA    4      0    0
-    ## 4  2002    10   20      0    0
-    ## 5  2000     5    9      1    1
-    ## 
-    ## [[2]]
-    ## a flextable object.
-    ## col_keys: `year`, `count`, `time`, `defect`, `true` 
-    ## header has 1 row(s) 
-    ## body has 6 row(s) 
-    ## original dataset sample: 
-    ##    year count time defect true
-    ## 1  2000    10   20      0   NA
-    ## 2 -1999     5   11      0    0
-    ## 3  1996     2    4      0    0
-    ## 4  2002    10   20      0    0
-    ## 5  2000     5    9      1    1
-    ## 
-    ## [[3]]
-    ## a flextable object.
-    ## col_keys: `year`, `count`, `defect`, `true` 
-    ## header has 1 row(s) 
-    ## body has 6 row(s) 
-    ## original dataset sample: 
-    ##    year count defect true
-    ## 1  2000    10      0    0
-    ## 2 -1999     5      0    0
-    ## 3  1996     2      0    0
-    ## 4  2002    10      0    0
-    ## 5  2000     5      1    1
-    ## 
-    ## [[4]]
-    ## a flextable object.
-    ## col_keys: `year`, `count`, `defect`, `true`, `one` 
-    ## header has 1 row(s) 
-    ## body has 5 row(s) 
-    ## original dataset sample: 
-    ##   year count defect true one
-    ## 1 2000    10      0    0   1
-    ## 3 1996     2      0    0   1
-    ## 4 2002    10      0    0   1
-    ## 5 2000     5      1    1   1
-    ## 6 2001     6      1    0   1
-    ## 
-    ## [[5]]
-    ## a flextable object.
-    ## col_keys: `year`, `count`, `defect`, `true`, `one` 
-    ## header has 1 row(s) 
-    ## body has 6 row(s) 
-    ## original dataset sample: 
-    ##   year count defect true one
-    ## 1 2000    10      0    0   1
-    ## 3 1996     2      0    0   1
-    ## 4 2002    10      0    0   1
-    ## 5 2000     5      1    1   1
-    ## 6 2001     6      1    0   1
+Next steps are to add in a few customization options, make it so that
+one can include additional visual cues, and figure out how to abstract
+the data to symbols. Also, plotting this out in a timeline and adding
+impact statements below and justification plots above.
