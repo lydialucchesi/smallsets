@@ -485,4 +485,6 @@ in the fts object created above).
 Next steps are to add in a few customization options, make it so that
 one can include additional visual cues, and figure out how to abstract
 the data to symbols. Also, plotting this out in a timeline and adding
-impact statements below and justification plots above.
+impact statements below and justification plots above. Need to run some
+additional testing and investigate the warning I am getting from the
+readLines function.
