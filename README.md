@@ -221,7 +221,13 @@ prep_smallset <- function(data, prepCode) {
 }
 
 prepList <- prep_smallset(data = df, prepCode = "prep_data.R")
+```
 
+    ## Warning in readLines(scriptName): incomplete final line found on 'prep_data.R'
+    
+    ## Warning in readLines(scriptName): incomplete final line found on 'prep_data.R'
+
+``` r
 prepList
 ```
 
@@ -253,14 +259,319 @@ prepList
     ## 6  2001     8      1    0
     ## 
     ## [[4]]
-    ##   year count defect true
-    ## 1 2000    10      0    0
-    ## 3 2000     5      1    1
-    ## 4 1995     9      0    1
-    ## 5 1996     2      0    0
-    ## 6 2001     8      1    0
+    ##   year count defect true one
+    ## 1 2000    10      0    0   1
+    ## 3 2000     5      1    1   1
+    ## 4 1995     9      0    1   1
+    ## 5 1996     2      0    0   1
+    ## 6 2001     8      1    0   1
+    ## 
+    ## [[5]]
+    ##    year count defect true one
+    ## 1  2000    10      0    0   1
+    ## 3  2000     5      1    1   1
+    ## 4  1995     9      0    1   1
+    ## 5  1996     2      0    0   1
+    ## 6  2001     8      1    0   1
+    ## 11 2000    10      0    0   1
 
 The next steps: (1) figure out how to get a good subset of the data that
 includes representations of all preprocessing steps (currently just
 taking the first six rows of the data set) and (2) figure out how to
 attach the proper visualisations to these different steps.
+
+## Update 21/10/2020
+
+Today I added a function to generate a smallset and wrote a function
+that highlights changes (with colour) in a data frame throughout the
+preprocessing.
+
+Below is the `select_smallset.R` function.
+
+``` r
+library(dplyr)
+
+# should there be a minimum size of a smallset?
+# add error: size cannot be less than rowNums
+# add error: size cannot be greater than size of data
+# add error: rowNums has to be a numeric vector
+# should there be a maximum size of a smallset?
+
+select_smallset <- function(data,
+                            size = 6,
+                            rowNums = NULL) {
+  if (is.null(rowNums)) {
+    smallset <- sample_n(data, size = size)
+  }
+  
+  if (!is.null(rowNums)) {
+    smallset <- rbind(data[rowNums, ],
+                      sample_n(data[-rowNums, ], size = (size - length(rowNums))))
+  }
+  
+  rownames(smallset) <- seq(1, nrow(smallset), 1)
+  return(smallset)
+}
+```
+
+Below is the `highlight_changes.R` function.
+
+``` r
+library(flextable)
+
+# highlight what you will lose (rows and columns) (prior to it happening because once it is gone you can't see it)
+# default colour is tan
+# highlight what is now changed (cells in data frame)
+# default is cornflower blue
+# highlight what has been added (rows or columns)
+# default colour is olive green
+
+highlight_changes <- function(list) {
+  tables <- list()
+  for (p in 1:(length(list) - 1)) {
+    c <- p + 1
+    
+    lprior <- list[[p]]
+    lcurrent <- list[[c]]
+    
+    if (p > 1) {
+      tprior <- tables[[p]]
+    } else {
+      tprior <- flextable(lprior)
+    }
+    
+    tcurrent <- flextable(lcurrent)
+    
+    rowsDrop <- setdiff(rownames(lprior), rownames(lcurrent))
+    if (length(rowsDrop) > 0) {
+      tprior <- color(tprior, color = "seashell4", i = rowsDrop)
+    }
+    
+    rowsAdd <- setdiff(rownames(lcurrent), rownames(lprior))
+    if (length(rowsAdd) > 0) {
+      tcurrent <-
+        color(tcurrent, color = "olivedrab4", i = rowsAdd)
+    }
+    
+    colsDrop <- setdiff(colnames(lprior), colnames(lcurrent))
+    if (length(colsDrop) > 0) {
+      tprior <-
+        color(tprior,
+              color = "seashell4",
+              j = colsDrop,
+              part = "all")
+    }
+    
+    colsAdd <- setdiff(colnames(lcurrent), colnames(lprior))
+    if (length(colsAdd) > 0) {
+      tcurrent <-
+        color(tcurrent,
+              color = "olivedrab4",
+              j = colsAdd,
+              part = "all")
+    }
+    
+    if (length(rowsDrop) > 0) {
+      lpriorAdj <- subset(lprior,!(row.names(lprior) %in% rowsDrop))
+    } else {
+      lpriorAdj <- lprior
+    }
+    
+    if (length(colsAdd) > 0) {
+      lcurrentAdj <- subset(lcurrent, select = colnames(lprior))
+    } else {
+      lcurrentAdj <- lcurrent
+    }
+    
+    original <-
+      setdiff(subset(lpriorAdj, select = colnames(lcurrentAdj)), lcurrentAdj)
+    update <-
+      setdiff(lcurrentAdj, subset(lpriorAdj, select = colnames(lcurrentAdj)))
+    
+    adjData <- data.frame(r = numeric(), c = numeric())
+    for (i in 1:nrow(original)) {
+      for (j in 1:ncol(original)) {
+        if (identical(original[i, j], update[i, j]) == FALSE) {
+          adjDatum <- data.frame(r = c(row.names(update)[i]), c = c(j))
+          adjData <- rbind(adjData, adjDatum)
+        }
+      }
+    }
+    
+    adjData$r <- as.integer(as.character(adjData$r))
+    tcurrent <-
+      color(tcurrent,
+            color = "cornflowerblue",
+            i = adjData$r,
+            j = adjData$c)
+    
+    tables[[p]] <- tprior
+    tables[[c]] <- tcurrent
+    
+  }
+  
+  
+  return(tables)
+}
+```
+
+The only needs to add comments to their preprocessing script, run the
+`prep_smallset.R` code, and then run the `highlight_changes.R` command
+to get data frames with colour-coded changes.
+
+So here is an example of what the preprocessing script might look like.
+
+``` r
+source("gen_data.R")
+plot(df$count, df$time)
+
+# start smallset
+# snap df
+df$defect <- ifelse(df$defect > 1, 1, 0)
+model <- lm(count ~ time, data = df)
+# snap df
+df$count <- round(ifelse(is.na(df$count), predict(model, df), df$count))
+df$time <- NULL
+# snap df
+df[is.na(df)] <- 0
+prepped <- subset(df, year > 0)
+# snap prepped
+prepped$one <- 1
+newRow <- prepped[1, ]
+prepped <- rbind(prepped, newRow)
+# snap prepped
+# end smallset
+```
+
+And the commands they need to run are as follows. The size argument
+corresponds to the size of the smallset, and the rowNums argument allows
+one to specify certain rows from the original data frame that they would
+like included in the smallset.
+
+``` r
+source("gen_data.R")
+source("apply_smallset_code.R")
+```
+
+    ## Warning: package 'dplyr' was built under R version 3.6.2
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
+source("highlight_changes.R")
+```
+
+    ## Warning: package 'flextable' was built under R version 3.6.2
+
+    ## Warning in readLines(scriptName): incomplete final line found on 'prep_data.R'
+    
+    ## Warning in readLines(scriptName): incomplete final line found on 'prep_data.R'
+
+``` r
+mylist <-
+  prep_smallset(
+    data = df,
+    prepCode = "prep_data.R",
+    size = 6,
+    rowNums = c(1, 2, 5)
+  )
+```
+
+    ## Warning in readLines(scriptName): incomplete final line found on 'prep_data.R'
+    
+    ## Warning in readLines(scriptName): incomplete final line found on 'prep_data.R'
+
+``` r
+fts <- highlight_changes(list = mylist)
+```
+
+Below is the output from `hightlight_changes.R`.
+
+Tan signals that a row or column is about to be dropped. Blue means that
+the cell has a new data value in it compared to the last snapshot. And
+green means a row or column has been added.
+
+``` r
+library(knitr)
+```
+
+    ## Warning: package 'knitr' was built under R version 3.6.2
+
+``` r
+library(flextable)
+knit_print(fts)
+```
+
+    ## [[1]]
+    ## a flextable object.
+    ## col_keys: `year`, `count`, `time`, `defect`, `true` 
+    ## header has 1 row(s) 
+    ## body has 6 row(s) 
+    ## original dataset sample: 
+    ##    year count time defect true
+    ## 1  2000    10   20      0   NA
+    ## 2 -1999     5   11      0    0
+    ## 3  1996    NA    4      0    0
+    ## 4  2002    10   20      0    0
+    ## 5  2000     5    9      1    1
+    ## 
+    ## [[2]]
+    ## a flextable object.
+    ## col_keys: `year`, `count`, `time`, `defect`, `true` 
+    ## header has 1 row(s) 
+    ## body has 6 row(s) 
+    ## original dataset sample: 
+    ##    year count time defect true
+    ## 1  2000    10   20      0   NA
+    ## 2 -1999     5   11      0    0
+    ## 3  1996     2    4      0    0
+    ## 4  2002    10   20      0    0
+    ## 5  2000     5    9      1    1
+    ## 
+    ## [[3]]
+    ## a flextable object.
+    ## col_keys: `year`, `count`, `defect`, `true` 
+    ## header has 1 row(s) 
+    ## body has 6 row(s) 
+    ## original dataset sample: 
+    ##    year count defect true
+    ## 1  2000    10      0    0
+    ## 2 -1999     5      0    0
+    ## 3  1996     2      0    0
+    ## 4  2002    10      0    0
+    ## 5  2000     5      1    1
+    ## 
+    ## [[4]]
+    ## a flextable object.
+    ## col_keys: `year`, `count`, `defect`, `true`, `one` 
+    ## header has 1 row(s) 
+    ## body has 5 row(s) 
+    ## original dataset sample: 
+    ##   year count defect true one
+    ## 1 2000    10      0    0   1
+    ## 3 1996     2      0    0   1
+    ## 4 2002    10      0    0   1
+    ## 5 2000     5      1    1   1
+    ## 6 2001     6      1    0   1
+    ## 
+    ## [[5]]
+    ## a flextable object.
+    ## col_keys: `year`, `count`, `defect`, `true`, `one` 
+    ## header has 1 row(s) 
+    ## body has 6 row(s) 
+    ## original dataset sample: 
+    ##   year count defect true one
+    ## 1 2000    10      0    0   1
+    ## 3 1996     2      0    0   1
+    ## 4 2002    10      0    0   1
+    ## 5 2000     5      1    1   1
+    ## 6 2001     6      1    0   1

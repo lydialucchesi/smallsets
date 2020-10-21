@@ -1,17 +1,13 @@
 library(flextable)
 
 # highlight what you will lose (rows and columns) (prior to it happening because once it is gone you can't see it)
-  # default colour is tan
+# default colour is tan
 # highlight what is now changed (cells in data frame)
-  # default is cornflower blue
+# default is cornflower blue
 # highlight what has been added (rows or columns)
-  # default colour is olive green
-
-# check if the row and col add works
-# would using subset(lprior, select=colnames(lcurrent)) mess up code later on
+# default colour is olive green
 
 highlight_changes <- function(list) {
-
   tables <- list()
   for (p in 1:(length(list) - 1)) {
     c <- p + 1
@@ -24,7 +20,7 @@ highlight_changes <- function(list) {
     } else {
       tprior <- flextable(lprior)
     }
-
+    
     tcurrent <- flextable(lcurrent)
     
     rowsDrop <- setdiff(rownames(lprior), rownames(lcurrent))
@@ -41,39 +37,37 @@ highlight_changes <- function(list) {
     colsDrop <- setdiff(colnames(lprior), colnames(lcurrent))
     if (length(colsDrop) > 0) {
       tprior <-
-        color(
-          tprior,
-          color = "seashell4",
-          j = colsDrop,
-          part = "all"
-        )
+        color(tprior,
+              color = "seashell4",
+              j = colsDrop,
+              part = "all")
     }
     
     colsAdd <- setdiff(colnames(lcurrent), colnames(lprior))
     if (length(colsAdd) > 0) {
       tcurrent <-
-        color(
-          tcurrent,
-          color = "olivedrab4",
-          j = colsAdd,
-          part = "all"
-        )
+        color(tcurrent,
+              color = "olivedrab4",
+              j = colsAdd,
+              part = "all")
     }
     
     if (length(rowsDrop) > 0) {
-      lpriorAdj <- lprior[-as.integer(rowsDrop), ]
+      lpriorAdj <- subset(lprior,!(row.names(lprior) %in% rowsDrop))
     } else {
       lpriorAdj <- lprior
     }
     
     if (length(colsAdd) > 0) {
-      lcurrentAdj <- subset(lcurrent, select=colnames(lprior))
+      lcurrentAdj <- subset(lcurrent, select = colnames(lprior))
     } else {
       lcurrentAdj <- lcurrent
     }
     
-    original <- setdiff(subset(lpriorAdj, select=colnames(lcurrentAdj)), lcurrentAdj)
-    update <- setdiff(lcurrentAdj, subset(lpriorAdj, select=colnames(lcurrentAdj)))
+    original <-
+      setdiff(subset(lpriorAdj, select = colnames(lcurrentAdj)), lcurrentAdj)
+    update <-
+      setdiff(lcurrentAdj, subset(lpriorAdj, select = colnames(lcurrentAdj)))
     
     adjData <- data.frame(r = numeric(), c = numeric())
     for (i in 1:nrow(original)) {
@@ -87,12 +81,10 @@ highlight_changes <- function(list) {
     
     adjData$r <- as.integer(as.character(adjData$r))
     tcurrent <-
-      color(
-        tcurrent,
-        color = "cornflowerblue",
-        i = adjData$r,
-        j = adjData$c
-      )
+      color(tcurrent,
+            color = "cornflowerblue",
+            i = adjData$r,
+            j = adjData$c)
     
     tables[[p]] <- tprior
     tables[[c]] <- tcurrent
@@ -104,6 +96,11 @@ highlight_changes <- function(list) {
 }
 
 source("gen_data.R")
-mylist <- prep_smallset(data = df, prepCode = "prep_data.R", size = 6, rowNums = c(1, 2, 5, 8, 9))
+mylist <-
+  prep_smallset(
+    data = df,
+    prepCode = "prep_data.R",
+    size = 6,
+    rowNums = c(1, 2, 5)
+  )
 fts <- highlight_changes(list = mylist)
-
