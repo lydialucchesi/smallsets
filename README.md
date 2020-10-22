@@ -498,3 +498,7 @@ the data to symbols. Also, plotting this out in a timeline and adding
 impact statements below and justification plots above. Need to run some
 additional testing and investigate the warning I am getting from the
 readLines function.
+
+Need to figure out how to subset/select columns for the smallset.
+Currently, the smallset includes all of the columns in the original data
+frame.
