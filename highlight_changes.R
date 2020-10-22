@@ -105,4 +105,5 @@ mylist <-
     rowCount = 6,
     rowNums = c(1, 2, 5)
   )
+
 fts <- highlight_changes(list = mylist)
