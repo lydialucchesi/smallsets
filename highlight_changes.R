@@ -96,11 +96,13 @@ highlight_changes <- function(list) {
 }
 
 source("gen_data.R")
+source("apply_smallset_code.R")
+
 mylist <-
   prep_smallset(
     data = df,
     prepCode = "prep_data.R",
-    size = 6,
+    rowCount = 6,
     rowNums = c(1, 2, 5)
   )
 fts <- highlight_changes(list = mylist)

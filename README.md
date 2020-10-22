@@ -234,6 +234,15 @@ prepList
 
     ## [[1]]
     ##    year count time defect true
+    ## 1  2000    10   20    0.6   NA
+    ## 2 -1999     5   11    0.5    0
+    ## 3  2000     5    9    1.1    1
+    ## 4  1995     9   18    0.8    1
+    ## 5  1996    NA    4    0.7    0
+    ## 6  2001     8   15    1.3    0
+    ## 
+    ## [[2]]
+    ##    year count time defect true
     ## 1  2000    10   20      0   NA
     ## 2 -1999     5   11      0    0
     ## 3  2000     5    9      1    1
@@ -241,7 +250,7 @@ prepList
     ## 5  1996    NA    4      0    0
     ## 6  2001     8   15      1    0
     ## 
-    ## [[2]]
+    ## [[3]]
     ##    year count time defect true
     ## 1  2000    10   20      0   NA
     ## 2 -1999     5   11      0    0
@@ -250,7 +259,7 @@ prepList
     ## 5  1996     2    4      0    0
     ## 6  2001     8   15      1    0
     ## 
-    ## [[3]]
+    ## [[4]]
     ##    year count defect true
     ## 1  2000    10      0    0
     ## 2 -1999     5      0    0
@@ -259,7 +268,7 @@ prepList
     ## 5  1996     2      0    0
     ## 6  2001     8      1    0
     ## 
-    ## [[4]]
+    ## [[5]]
     ##   year count defect true one
     ## 1 2000    10      0    0   1
     ## 3 2000     5      1    1   1
@@ -267,7 +276,7 @@ prepList
     ## 5 1996     2      0    0   1
     ## 6 2001     8      1    0   1
     ## 
-    ## [[5]]
+    ## [[6]]
     ##    year count defect true one
     ## 1  2000    10      0    0   1
     ## 3  2000     5      1    1   1
@@ -458,8 +467,8 @@ mylist <-
   prep_smallset(
     data = df,
     prepCode = "prep_data.R",
-    size = 6,
-    rowNums = c(1, 2, 5, 8)
+    rowCount = 6,
+    rowNums = c(1, 2, 5)
   )
 
 fts <- highlight_changes(list = mylist)
@@ -476,6 +485,7 @@ so far, all they really have to do is add comments to their
 preprocessing script and they can get the output below (this is what is
 in the fts object created above).
 
+<img src='fts/0.png' align="center" />
 <img src='fts/1.png' align="center" />
 <img src='fts/2.png' align="center" />
 <img src='fts/3.png' align="center" />

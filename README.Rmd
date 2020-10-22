@@ -327,8 +327,8 @@ mylist <-
   prep_smallset(
     data = df,
     prepCode = "prep_data.R",
-    size = 6,
-    rowNums = c(1, 2, 5, 8)
+    rowCount = 6,
+    rowNums = c(1, 2, 5)
   )
 
 fts <- highlight_changes(list = mylist)
@@ -338,13 +338,12 @@ Below is the output from `hightlight_changes.R`.
 
 The colour gray signals that a row or column is about to be dropped. Blue means that the cell has a new data value in it compared to the last snapshot. And green means a row or column has been added. It's all meant to be really easy for the user, and the idea is that they don't have to do that much more work than they already are for the data prep stages... so far, all they really have to do is add comments to their preprocessing script and they can get the output below (this is what is in the fts object created above).
 
+<img src='fts/0.png' align="center" />
 <img src='fts/1.png' align="center" />
 <img src='fts/2.png' align="center" />
 <img src='fts/3.png' align="center" />
 <img src='fts/4.png' align="center" />
 <img src='fts/5.png' align="center" />
 
-
-
-
 Next steps are to add in a few customization options, make it so that one can include additional visual cues, and figure out how to abstract the data to symbols. Also, plotting this out in a timeline and adding impact statements below and justification plots above. Need to run some additional testing and investigate the warning I am getting from the readLines function.
+

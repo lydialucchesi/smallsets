@@ -19,7 +19,7 @@ writeSmallsetCode <- function(scriptName) {
   
   iterLim <-
     nrow(smallsetCode) + nrow(subset(smallsetCode, grepl("# snap ", smallsetCode$command))) - 1
-  s = 0
+  s = 1
   for (i in 1:iterLim) {
     signal <- "# snap "
     if (grepl(signal, smallsetCode$command[i])) {
@@ -54,8 +54,9 @@ writeSmallsetCode <- function(scriptName) {
   functionStart <-
     paste0("applyCode <- function(", initialName, ") {")
   smallsetCode <-
-    c("snapshots <- list()",
+    c("snapshots <- list()", 
       functionStart,
+      paste0("snapshots[[1]] <- ", initialName),
       smallsetCode$command,
       "}")
   smallsetCode <- data.frame(command = smallsetCode)

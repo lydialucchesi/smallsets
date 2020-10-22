@@ -7,15 +7,15 @@ library(dplyr)
 # should there be a maximum size of a smallset?
 
 select_smallset <- function(data,
-                            size = 6,
+                            rowCount = 6,
                             rowNums = NULL) {
   if (is.null(rowNums)) {
-    smallset <- sample_n(data, size = size)
+    smallset <- sample_n(data, size = rowCount)
   }
   
   if (!is.null(rowNums)) {
     smallset <- rbind(data[rowNums, ],
-                      sample_n(data[-rowNums, ], size = (size - length(rowNums))))
+                      sample_n(data[-rowNums, ], size = (rowCount - length(rowNums))))
   }
   
   rownames(smallset) <- seq(1, nrow(smallset), 1)
