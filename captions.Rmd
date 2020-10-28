@@ -1,0 +1,40 @@
+---
+title: "Captions for the smallset timeline"
+author: Lydia
+date: 2020-10-28
+output: html_document
+---
+
+### Starting smallset
+
+Caption: Raw NASA data set.
+
+### `df$defect <- ifelse(df$defect > 1, 1, 0)`
+
+Symbol: |
+
+Caption: Bin the defect variable. The value becomes a one if the defect value is greater than one, and zero if it is less than one.
+
+### `df$count <- round(ifelse(is.na(df$count), predict(model, df), df$count))`
+
+Symbol: ~
+
+Caption: Impute missing count values with the following Poisson model: write out model.
+
+### `df[is.na(df)] <- 0`
+
+Symbol: 0
+
+Caption: Replace missing values with zero.
+
+### `prepped$one <- 1`
+
+Symbol: +
+
+Caption: 
+
+### `prepped <- rbind(prepped, newRow)`
+
+Symbol: +
+
+Caption: 

@@ -7,7 +7,7 @@ library(flextable)
 # highlight what has been added (rows or columns)
 # default colour is olive green
 
-highlight_changes <- function(list) {
+highlight_changes <- function(list, constant = "#927C5C", changed = "cornflowerblue", added = "#689F38", deleted = "#b2a38c") {
   tables <- list()
   for (p in 1:(length(list) - 1)) {
     c <- p + 1
@@ -19,26 +19,28 @@ highlight_changes <- function(list) {
       tprior <- tables[[p]]
     } else {
       tprior <- flextable(lprior)
+      tprior <- color(tprior, color = constant)
     }
     
     tcurrent <- flextable(lcurrent)
+    tcurrent <- color(tcurrent, color = constant)
     
     rowsDrop <- setdiff(rownames(lprior), rownames(lcurrent))
     if (length(rowsDrop) > 0) {
-      tprior <- color(tprior, color = "seashell4", i = rowsDrop)
+      tprior <- color(tprior, color = deleted, i = rowsDrop)
     }
     
     rowsAdd <- setdiff(rownames(lcurrent), rownames(lprior))
     if (length(rowsAdd) > 0) {
       tcurrent <-
-        color(tcurrent, color = "olivedrab4", i = rowsAdd)
+        color(tcurrent, color = added, i = rowsAdd)
     }
     
     colsDrop <- setdiff(colnames(lprior), colnames(lcurrent))
     if (length(colsDrop) > 0) {
       tprior <-
         color(tprior,
-              color = "seashell4",
+              color = deleted,
               j = colsDrop,
               part = "all")
     }
@@ -47,7 +49,7 @@ highlight_changes <- function(list) {
     if (length(colsAdd) > 0) {
       tcurrent <-
         color(tcurrent,
-              color = "olivedrab4",
+              color = added,
               j = colsAdd,
               part = "all")
     }
@@ -82,7 +84,7 @@ highlight_changes <- function(list) {
     adjData$r <- as.integer(as.character(adjData$r))
     tcurrent <-
       color(tcurrent,
-            color = "cornflowerblue",
+            color = changed,
             i = adjData$r,
             j = adjData$c)
     
@@ -91,19 +93,7 @@ highlight_changes <- function(list) {
     
   }
   
-  
-  return(tables)
+  return(list(tables, constant, changed, added, deleted))
 }
 
-source("gen_data.R")
-source("apply_smallset_code.R")
 
-mylist <-
-  prep_smallset(
-    data = df,
-    prepCode = "prep_data.R",
-    rowCount = 6,
-    rowNums = c(1, 2, 5)
-  )
-
-fts <- highlight_changes(list = mylist)
