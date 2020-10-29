@@ -1,13 +1,10 @@
 library(flextable)
+source("write_caption_template.R")
 
-# highlight what you will lose (rows and columns) (prior to it happening because once it is gone you can't see it)
-# default colour is gray (switch it to tan)
-# highlight what is now changed (cells in data frame)
-# default is cornflower blue
-# highlight what has been added (rows or columns)
-# default colour is olive green
-
-highlight_changes <- function(list, constant = "#927C5C", changed = "cornflowerblue", added = "#689F38", deleted = "#b2a38c") {
+highlight_changes <- function(list, constant = "#927C5C", changed = "cornflowerblue", added = "#689F38", deleted = "#b2a38c", author = NULL, captionScript = "captions") {
+  
+  write_caption_template(authorName = author, col1 = changed, col2 = added, col3 = deleted, script = captionScript)
+  
   tables <- list()
   for (p in 1:(length(list) - 1)) {
     c <- p + 1
@@ -93,7 +90,7 @@ highlight_changes <- function(list, constant = "#927C5C", changed = "cornflowerb
     
   }
   
-  return(list(tables, constant, changed, added, deleted))
+  return(list(tables, constant, changed, added, deleted, captionScript))
 }
 
 

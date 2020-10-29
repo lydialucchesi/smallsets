@@ -502,3 +502,75 @@ readLines function.
 Need to figure out how to subset/select columns for the smallset.
 Currently, the smallset includes all of the columns in the original data
 frame.
+
+## UPDATE: 29 OCTOBER 2020
+
+I have designed a visual abstraction of the smallset and how one will
+add timeline captions and additional visual cues.
+
+``` r
+library(ggpubr)
+
+source("gen_data.R")
+source("apply_smallset_code.R")
+source("highlight_changes.R")
+source("abstract_it.R")
+
+
+mylist <-
+  prep_smallset(
+    data = df,
+    prepCode = "prep_data.R",
+    rowCount = 6,
+    rowNums = c(1, 2, 5)
+  )
+
+fts <- highlight_changes(list = mylist, captionScript = "mycaptions")
+check <- abstract_it(ftsList = fts)
+ggarrange(check[[1]], check[[2]], check[[3]], check[[4]], check[[5]], check[[6]],
+          nrow = 1)
+```
+
+<img src='fts/timeline.png' align="center" />
+
+Now when you run `highlight_changes` a caption and symbol template is
+generated. It corresponds with the snap points defined in the
+preprocessing script. It looks like
+[this](https://github.com/lydialucchesi/smallset/tree/master/captions.Rmd).
+The user populates this and then runs the `abstract_it()` function to
+get a preprocessing smallset timeline. If you don’t add an additional
+symbol in the template, then there is no circle in the final visual -
+just colour that signals some type of adjustment to the data set. Here
+is an example of a filled-out caption form:
+[mycaptions.Rmd](https://github.com/lydialucchesi/smallset/tree/master/mycaptions.Rmd).
+
+You can also change the colours.
+
+``` r
+library(ggpubr)
+
+source("gen_data.R")
+source("apply_smallset_code.R")
+source("highlight_changes.R")
+source("abstract_it.R")
+
+mylist <-
+  prep_smallset(
+    data = df,
+    prepCode = "prep_data.R",
+    rowCount = 6,
+    rowNums = c(1, 2, 5)
+  )
+
+fts <- highlight_changes(list = mylist, captionScript = "mycaptions2", constant = "lemonchiffon", changed = "darkorchid1", added = "darkorange", deleted = "goldenrod1")
+```
+
+    ## [1] "mycaptions2.Rmd file created"
+
+``` r
+check <- abstract_it(ftsList = fts)
+ggarrange(check[[1]], check[[2]], check[[3]], check[[4]], check[[5]], check[[6]],
+          nrow = 1)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->

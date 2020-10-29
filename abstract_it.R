@@ -21,8 +21,16 @@ flex_2_colourPlot <- function(ftsItemNum, ftsList) {
   circles$xCir <- circles$x + .25
   circles$yCir <- circles$y - .25
   
-  plotInfo <- read_captions_rmd()
-  circleSymbol <- plotInfo[ftsItemNum, "symbol"]
+  plotInfo <- read_captions_rmd(ftsList[[6]])
+  circleSymbols <- plotInfo[ftsItemNum, -c(8)]
+  circleSymbols <- data.frame(action = c(circleSymbols$changed, circleSymbols$added, circleSymbols$deleted), 
+                              value = c(circleSymbols$col1, circleSymbols$col2, circleSymbols$col3))
+  circles <- merge(circles, circleSymbols)
+  circles$action <- as.character(circles$action)
+  circles$test <- circles$action == ""
+  circles <- subset(circles, circles$test == FALSE)
+  circles$test <- NULL
+  
   smallsetCaption <- plotInfo[ftsItemNum, "caption"]
   
   if (nrow(circles) == 0) {
@@ -69,7 +77,7 @@ flex_2_colourPlot <- function(ftsItemNum, ftsList) {
         size = .1
       ) +
       geom_text(data = circles,
-                aes(x = xCir, y = yCir, label = circleSymbol),
+                aes(x = xCir, y = yCir, label = action),
                 size = 2.5)
   }
   

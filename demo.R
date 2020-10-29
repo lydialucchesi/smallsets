@@ -14,7 +14,7 @@ mylist <-
     rowNums = c(1, 2, 5)
   )
 
-fts <- highlight_changes(list = mylist)
+fts <- highlight_changes(list = mylist, captionScript = "mycaptions")
 check <- abstract_it(ftsList = fts)
 ggarrange(check[[1]], check[[2]], check[[3]], check[[4]], check[[5]], check[[6]],
           nrow = 1)
