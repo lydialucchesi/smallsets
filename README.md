@@ -20,7 +20,7 @@ related to extraction context, etc.), and on top of the processing toy
 plots, possibly what I call “justification plots,” so another simple
 plot that helps clarify your decision to do what you did - i.e., maybe a
 Meng bias plot or a plot to show correlation between two variables.
-[Here](https://github.com/lydialucchesi/smallset/tree/master/test.pdf)
+[Here](https://github.com/lydialucchesi/smallset/other_code/scratch/tree/master/test.pdf)
 is a very simple example that I hard-coded in R, and it is roughly based
 on this [paper](https://ieeexplore.ieee.org/document/6353339) looking at
 preprocessing of the NASA software defect data sets that have been used
@@ -75,20 +75,6 @@ source("gen_data.R")
 
 df
 ```
-
-    ##     year count time defect true
-    ## 1   2000    10   20    0.6   NA
-    ## 2  -1999     5   11    0.5    0
-    ## 3   2000     5    9    1.1    1
-    ## 4   1995     9   18    0.8    1
-    ## 5   1996    NA    4    0.7    0
-    ## 6   2001     8   15    1.3    0
-    ## 7   2002    10   20    0.9    0
-    ## 8   2003    10   21    1.1    1
-    ## 9   2001     6   12    1.4    0
-    ## 10  1994     7   13    0.8    1
-    ## 11  2000    NA   19    0.9    0
-    ## 12 -1999     3    6    1.2    0
 
 Then I created a script with some preprocessing steps. This script is
 called `prep_data.R`. See the contents of it below. The commenting is
@@ -222,68 +208,9 @@ prep_smallset <- function(data, prepCode) {
 }
 
 prepList <- prep_smallset(data = df, prepCode = "prep_data.R")
-```
 
-    ## Warning in readLines(scriptName): incomplete final line found on 'prep_data.R'
-    
-    ## Warning in readLines(scriptName): incomplete final line found on 'prep_data.R'
-
-``` r
 prepList
 ```
-
-    ## [[1]]
-    ##    year count time defect true
-    ## 1  2000    10   20    0.6   NA
-    ## 2 -1999     5   11    0.5    0
-    ## 3  2000     5    9    1.1    1
-    ## 4  1995     9   18    0.8    1
-    ## 5  1996    NA    4    0.7    0
-    ## 6  2001     8   15    1.3    0
-    ## 
-    ## [[2]]
-    ##    year count time defect true
-    ## 1  2000    10   20      0   NA
-    ## 2 -1999     5   11      0    0
-    ## 3  2000     5    9      1    1
-    ## 4  1995     9   18      0    1
-    ## 5  1996    NA    4      0    0
-    ## 6  2001     8   15      1    0
-    ## 
-    ## [[3]]
-    ##    year count time defect true
-    ## 1  2000    10   20      0   NA
-    ## 2 -1999     5   11      0    0
-    ## 3  2000     5    9      1    1
-    ## 4  1995     9   18      0    1
-    ## 5  1996     2    4      0    0
-    ## 6  2001     8   15      1    0
-    ## 
-    ## [[4]]
-    ##    year count defect true
-    ## 1  2000    10      0    0
-    ## 2 -1999     5      0    0
-    ## 3  2000     5      1    1
-    ## 4  1995     9      0    1
-    ## 5  1996     2      0    0
-    ## 6  2001     8      1    0
-    ## 
-    ## [[5]]
-    ##   year count defect true one
-    ## 1 2000    10      0    0   1
-    ## 3 2000     5      1    1   1
-    ## 4 1995     9      0    1   1
-    ## 5 1996     2      0    0   1
-    ## 6 2001     8      1    0   1
-    ## 
-    ## [[6]]
-    ##    year count defect true one
-    ## 1  2000    10      0    0   1
-    ## 3  2000     5      1    1   1
-    ## 4  1995     9      0    1   1
-    ## 5  1996     2      0    0   1
-    ## 6  2001     8      1    0   1
-    ## 11 2000    10      0    0   1
 
 The next steps: (1) figure out how to get a good subset of the data that
 includes representations of all preprocessing steps (currently just
@@ -485,12 +412,12 @@ so far, all they really have to do is add comments to their
 preprocessing script and they can get the output below (this is what is
 in the fts object created above).
 
-<img src='fts/0.png' align="center" />
-<img src='fts/1.png' align="center" />
-<img src='fts/2.png' align="center" />
-<img src='fts/3.png' align="center" />
-<img src='fts/4.png' align="center" />
-<img src='fts/5.png' align="center" />
+<img src='other_code/fts/0.png' align="center" />
+<img src='other_code/fts/1.png' align="center" />
+<img src='other_code/fts/2.png' align="center" />
+<img src='other_code/fts/3.png' align="center" />
+<img src='other_code/fts/4.png' align="center" />
+<img src='other_code/fts/5.png' align="center" />
 
 Next steps are to add in a few customization options, make it so that
 one can include additional visual cues, and figure out how to abstract
@@ -531,18 +458,17 @@ ggarrange(check[[1]], check[[2]], check[[3]], check[[4]], check[[5]], check[[6]]
           nrow = 1)
 ```
 
-<img src='fts/timeline.png' align="center" />
+<img src='other_code/fts/timeline.png' align="center" />
 
 Now when you run `highlight_changes` a caption and symbol template is
 generated. It corresponds with the snap points defined in the
 preprocessing script. It looks like
-[this](https://github.com/lydialucchesi/smallset/tree/master/captions.Rmd).
+[this](https://github.com/lydialucchesi/smallset/tree/master/mycaptions.Rmd).
 The user populates this and then runs the `abstract_it()` function to
 get a preprocessing smallset timeline. If you don’t add an additional
 symbol in the template, then there is no circle in the final visual -
 just colour that signals some type of adjustment to the data set. Here
-is an example of a filled-out caption form:
-[mycaptions.Rmd](https://github.com/lydialucchesi/smallset/tree/master/mycaptions.Rmd).
+is an example of a filled-out caption form: (link now broken).
 
 You can also change the colours.
 
@@ -563,14 +489,71 @@ mylist <-
   )
 
 fts <- highlight_changes(list = mylist, captionScript = "mycaptions2", constant = "lemonchiffon", changed = "darkorchid1", added = "darkorange", deleted = "goldenrod1")
-```
-
-    ## [1] "mycaptions2.Rmd file created"
-
-``` r
 check <- abstract_it(ftsList = fts)
 ggarrange(check[[1]], check[[2]], check[[3]], check[[4]], check[[5]], check[[6]],
           nrow = 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+<img src='other_code/fts/timeline2.png' align="center" />
+
+## Notes - 2 November 2020
+
+smallset is now organized as an R package.
+
+``` r
+library(smallset)
+
+mylist <- prep_smallset(data = df, 
+                        prepCode = "other_code/prep_data.R", 
+                        rowCount = 6, 
+                        rowNums = c(1, 2, 5))
+
+fts <- highlight_changes(list = mylist, 
+                         captionScript = "mycaptions", 
+                         constant = "seashell4", 
+                         changed = "darkorchid1", 
+                         added = "darkorange", 
+                         deleted = "goldenrod1")
+
+check <- abstract_timeline(ftsList = fts, sizing =
+                             list(
+                               "columns" = 2,
+                               "tiles" = 1,
+                               "captions" = 10
+                             ))
+
+library(cowplot)
+plot_grid(plotlist = check, nrow = 1)
+```
+
+### To-do list:
+
+  - Add option to “hide” sections in the prep code
+  - Work on methodology for sampling of a smallset
+  - Design decision/action stamps that can be added to tiles to further
+    specify what is happening to the data at that point
+      - Add up over time? Or only visible at one point on timeline.
+      - Add option to choose location of these inside a tile
+      - Design a series of pre-made ones to choose from
+          - Imputing
+          - Binning
+          - Culling
+          - Standardising
+          - Aggregating
+          - Transforming
+          - Merging
+          - Removing implausible values
+      - Offer build your own option - should this be what I already have
+        with the circles and symbols? Probably a better method - will
+        see if stamps turn out first
+  - Get tiles to be equal size across entire timeline
+      - Then write a viewing/plotting function for the timeline
+  - Create option to rename caption template file so it is not written
+    over when you rerun highlight\_changes()
+  - Explore colour overlays for tile colours
+  - Add option to abstract column names
+  - Comment code and write tests
+  - Create a colour key for timeline
+  - Debug issue with prep\_data2 script
+  - Create mtcars data extraction example with captions that draw from
+    the mechanisms and conditions affordance framework

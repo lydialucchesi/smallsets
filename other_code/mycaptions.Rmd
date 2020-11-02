@@ -1,7 +1,7 @@
 ---
 title: "Captions for the smallset timeline"
 author: 
-date: 2020-10-29
+date: 2020-11-02
 output: html_document
 ---
 
@@ -13,11 +13,11 @@ Caption:
 
 Symbols
 
-1. Changed (cornflowerblue):
+1. Changed (darkorchid1):
 
-2. Added (#689F38):
+2. Added (darkorange):
 
-3. Deleted (#b2a38c):
+3. Deleted (goldenrod1):
 
 Caption: 
 
@@ -25,11 +25,11 @@ Caption:
 
 Symbols
 
-1. Changed (cornflowerblue):
+1. Changed (darkorchid1):
 
-2. Added (#689F38):
+2. Added (darkorange):
 
-3. Deleted (#b2a38c):
+3. Deleted (goldenrod1):
 
 Caption: 
 
@@ -37,11 +37,11 @@ Caption:
 
 Symbols
 
-1. Changed (cornflowerblue):
+1. Changed (darkorchid1):
 
-2. Added (#689F38):
+2. Added (darkorange):
 
-3. Deleted (#b2a38c):
+3. Deleted (goldenrod1):
 
 Caption: 
 
@@ -49,11 +49,11 @@ Caption:
 
 Symbols
 
-1. Changed (cornflowerblue):
+1. Changed (darkorchid1):
 
-2. Added (#689F38):
+2. Added (darkorange):
 
-3. Deleted (#b2a38c):
+3. Deleted (goldenrod1):
 
 Caption: 
 
@@ -61,10 +61,10 @@ Caption:
 
 Symbols
 
-1. Changed (cornflowerblue):
+1. Changed (darkorchid1):
 
-2. Added (#689F38):
+2. Added (darkorange):
 
-3. Deleted (#b2a38c):
+3. Deleted (goldenrod1):
 
 Caption: 

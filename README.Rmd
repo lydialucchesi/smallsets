@@ -7,7 +7,7 @@ output: github_document
 
 ## Overview of package idea
 
-As someone types out their preprocessing code, this R package can be used to create a (visual) toy example of what is happening, step-by-step, in the preprocessing stages of the pipeline. The R package would be designed in such a way that additional coding on top of the original preprocessing code would be minimal. The package output can be used later as a reference for researchers to better understand what is happening in the code. But the package also creates a “publishable/shareable” version of this as well, that can offer data privacy if needed, and offers a simple but visual and ordered view of the preprocessing, with a text component below (this is where I imagine affordance/impact statements, references to theory, important quotes related to extraction context, etc.), and on top of the processing toy plots, possibly what I call “justification plots,” so another simple plot that helps clarify your decision to do what you did - i.e., maybe a Meng bias plot or a plot to show correlation between two variables. [Here](https://github.com/lydialucchesi/smallset/tree/master/test.pdf) is a very simple example that I hard-coded in R, and it is roughly based on this [paper](https://ieeexplore.ieee.org/document/6353339) looking at preprocessing of the NASA software defect data sets that have been used extensively in research and preprocessed different ways throughout the body of literature. The real timeline visual for the NASA example would look different. I haven’t fully fleshed out the statements below the plots, nor have I added any “justification plots.” I am not aware of anything like this in R.
+As someone types out their preprocessing code, this R package can be used to create a (visual) toy example of what is happening, step-by-step, in the preprocessing stages of the pipeline. The R package would be designed in such a way that additional coding on top of the original preprocessing code would be minimal. The package output can be used later as a reference for researchers to better understand what is happening in the code. But the package also creates a “publishable/shareable” version of this as well, that can offer data privacy if needed, and offers a simple but visual and ordered view of the preprocessing, with a text component below (this is where I imagine affordance/impact statements, references to theory, important quotes related to extraction context, etc.), and on top of the processing toy plots, possibly what I call “justification plots,” so another simple plot that helps clarify your decision to do what you did - i.e., maybe a Meng bias plot or a plot to show correlation between two variables. [Here](https://github.com/lydialucchesi/smallset/other_code/scratch/tree/master/test.pdf) is a very simple example that I hard-coded in R, and it is roughly based on this [paper](https://ieeexplore.ieee.org/document/6353339) looking at preprocessing of the NASA software defect data sets that have been used extensively in research and preprocessed different ways throughout the body of literature. The real timeline visual for the NASA example would look different. I haven’t fully fleshed out the statements below the plots, nor have I added any “justification plots.” I am not aware of anything like this in R.
 
 That visual is an example of the “shareable” view respecting data privacy. Each gray dot is a data point, and this is a small subset of the rows and columns (important columns included). In the “researcher” view, you’d actually see example data points from the data set, and there would be visual cues to signal what change to the structure/data is occurring.
 
@@ -21,7 +21,7 @@ To start, I wanted to see if I could apply preprocessing steps to a subset based
 
 First, I generated a simple little data set.
 
-```{r, echo = TRUE, eval = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 source("gen_data.R")
 
 df
@@ -130,7 +130,7 @@ writeSmallsetCode("prep_data.R")
 
 All the user needs to do is pass a data frame and the name of the preprocessing script (with proper comments) to the function called `prep_smallset()` located in the `apply_smallset_code.R` script.
 
-```{r, echo = TRUE, eval = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 
 source("gen_data.R")
 
@@ -338,12 +338,12 @@ Below is the output from `hightlight_changes.R`.
 
 The colour gray signals that a row or column is about to be dropped. Blue means that the cell has a new data value in it compared to the last snapshot. And green means a row or column has been added. It's all meant to be really easy for the user, and the idea is that they don't have to do that much more work than they already are for the data prep stages... so far, all they really have to do is add comments to their preprocessing script and they can get the output below (this is what is in the fts object created above).
 
-<img src='fts/0.png' align="center" />
-<img src='fts/1.png' align="center" />
-<img src='fts/2.png' align="center" />
-<img src='fts/3.png' align="center" />
-<img src='fts/4.png' align="center" />
-<img src='fts/5.png' align="center" />
+<img src='other_code/fts/0.png' align="center" />
+<img src='other_code/fts/1.png' align="center" />
+<img src='other_code/fts/2.png' align="center" />
+<img src='other_code/fts/3.png' align="center" />
+<img src='other_code/fts/4.png' align="center" />
+<img src='other_code/fts/5.png' align="center" />
 
 Next steps are to add in a few customization options, make it so that one can include additional visual cues, and figure out how to abstract the data to symbols. Also, plotting this out in a timeline and adding impact statements below and justification plots above. Need to run some additional testing and investigate the warning I am getting from the readLines function.
 
@@ -376,13 +376,13 @@ ggarrange(check[[1]], check[[2]], check[[3]], check[[4]], check[[5]], check[[6]]
           nrow = 1)
 ```
 
-<img src='fts/timeline.png' align="center" />
+<img src='other_code/fts/timeline.png' align="center" />
 
-Now when you run `highlight_changes` a caption and symbol template is generated. It corresponds with the snap points defined in the preprocessing script. It looks like [this](https://github.com/lydialucchesi/smallset/tree/master/captions.Rmd). The user populates this and then runs the `abstract_it()` function to get a preprocessing smallset timeline. If you don't add an additional symbol in the template, then there is no circle in the final visual - just colour that signals some type of adjustment to the data set. Here is an example of a filled-out caption form: [mycaptions.Rmd](https://github.com/lydialucchesi/smallset/tree/master/mycaptions.Rmd).
+Now when you run `highlight_changes` a caption and symbol template is generated. It corresponds with the snap points defined in the preprocessing script. It looks like [this](https://github.com/lydialucchesi/smallset/tree/master/mycaptions.Rmd). The user populates this and then runs the `abstract_it()` function to get a preprocessing smallset timeline. If you don't add an additional symbol in the template, then there is no circle in the final visual - just colour that signals some type of adjustment to the data set. Here is an example of a filled-out caption form: (link now broken).
 
 You can also change the colours.
 
-```{r, echo = TRUE, eval = TRUE, warning = FALSE, message = FALSE}
+```{r, echo = TRUE, eval = FALSE, warning = FALSE, message = FALSE}
 library(ggpubr)
 
 source("gen_data.R")
@@ -403,6 +403,65 @@ check <- abstract_it(ftsList = fts)
 ggarrange(check[[1]], check[[2]], check[[3]], check[[4]], check[[5]], check[[6]],
           nrow = 1)
 ```
+
+<img src='other_code/fts/timeline2.png' align="center" />
+
+## Notes - 2 November 2020
+
+smallset is now organized as an R package.
+
+```{r, eval = FALSE, echo = TRUE}
+library(smallset)
+
+mylist <- prep_smallset(data = df, 
+                        prepCode = "other_code/prep_data.R", 
+                        rowCount = 6, 
+                        rowNums = c(1, 2, 5))
+
+fts <- highlight_changes(list = mylist, 
+                         captionScript = "mycaptions", 
+                         constant = "seashell4", 
+                         changed = "darkorchid1", 
+                         added = "darkorange", 
+                         deleted = "goldenrod1")
+
+check <- abstract_timeline(ftsList = fts, sizing =
+                             list(
+                               "columns" = 2,
+                               "tiles" = 1,
+                               "captions" = 10
+                             ))
+
+library(cowplot)
+plot_grid(plotlist = check, nrow = 1)
+```
+
+### To-do list:
+
+* Add option to "hide" sections in the prep code
+* Work on methodology for sampling of a smallset
+* Design decision/action stamps that can be added to tiles to further specify what is happening to the data at that point
+  * Add up over time? Or only visible at one point on timeline.
+  * Add option to choose location of these inside a tile
+  * Design a series of pre-made ones to choose from
+    * Imputing
+    * Binning
+    * Culling
+    * Standardising
+    * Aggregating
+    * Transforming
+    * Merging
+    * Removing implausible values
+  * Offer build your own option - should this be what I already have with the circles and symbols? Probably a better method - will see if stamps turn out first
+* Get tiles to be equal size across entire timeline
+  * Then write a viewing/plotting function for the timeline
+* Create option to rename caption template file so it is not written over when you rerun highlight_changes()
+* Explore colour overlays for tile colours
+* Add option to abstract column names
+* Comment code and write tests
+* Create a colour key for timeline
+* Debug issue with prep_data2 script
+* Create mtcars data extraction example with captions that draw from the mechanisms and conditions affordance framework
 
 
 

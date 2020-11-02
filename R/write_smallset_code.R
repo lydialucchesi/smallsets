@@ -1,8 +1,11 @@
-library(stringr)
+#' Write smallset code
+#' @description A function to prepare the smallset preprocessing code
+#' @keywords internal
+#' @export
 
-writeSmallsetCode <- function(scriptName) {
+write_smallset_code <- function(scriptName, dir) {
   
-  processTXT <- as.data.frame(readLines(scriptName))
+  processTXT <- as.data.frame(readLines(scriptName, warn = FALSE))
   colnames(processTXT) <- c("command")
   processTXT$command <- as.character(processTXT$command)
   
@@ -29,7 +32,7 @@ writeSmallsetCode <- function(scriptName) {
         "snapshots[[",
         as.character(s),
         "]] <- ",
-        as.character(str_remove(smallsetCode$command[i], signal))
+        as.character(stringr::str_remove(smallsetCode$command[i], signal))
       ))
       
       if (i != iterLim) {
@@ -46,13 +49,13 @@ writeSmallsetCode <- function(scriptName) {
       smallsetCode$command <- as.character(smallsetCode$command)
     }
   }
-  
+
   initialName <-
-    as.character(str_remove(subset(
+    as.character(stringr::str_remove(subset(
       smallsetCode, grepl("# snap ", smallsetCode$command)
     )[1,], "# snap "))
   functionStart <-
-    paste0("applyCode <- function(", initialName, ") {")
+    paste0("apply_code <- function(", initialName, ") {")
   smallsetCode <-
     c("snapshots <- list()", 
       functionStart,
@@ -62,10 +65,10 @@ writeSmallsetCode <- function(scriptName) {
   smallsetCode <- data.frame(command = smallsetCode)
   smallsetCode$command <- as.character(smallsetCode$command)
   
-  fileConn <- file("smallset_code.R")
+  fileConn <- file(paste0(dir, "smallset_code.R"))
   writeLines(smallsetCode$command, fileConn)
   close(fileConn)
   
 }
 
-writeSmallsetCode("prep_data.R")
+

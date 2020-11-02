@@ -1,9 +1,19 @@
-library(flextable)
-source("write_caption_template.R")
+#' Highlight changes
+#' 
+#' @param list A list from \code{prep_smallset}
+#' @param constant A colour to represent data cells that have not changed since previous smallset
+#' @param changed A colour to represent data cells that have changed since previous smallset
+#' @param added A colour to represent data cells that have been added since previous smallset
+#' @param deleted A colour to represent cells that will be deleted from next smallset
+#' @param author The author's name for the caption .Rmd file
+#' @param captionScript A file name for the caption .Rmd template
+#' @param captionDir A file path for the caption .Rmd template
+#' @export
+#' @import "flextable"
 
-highlight_changes <- function(list, constant = "#927C5C", changed = "cornflowerblue", added = "#689F38", deleted = "#b2a38c", author = NULL, captionScript = "captions") {
+highlight_changes <- function(list, constant = "#927C5C", changed = "cornflowerblue", added = "#689F38", deleted = "#b2a38c", author = NULL, captionScript = "captions", captionDir = getwd()) {
   
-  write_caption_template(authorName = author, col1 = changed, col2 = added, col3 = deleted, script = captionScript)
+  write_caption_template(authorName = author, col1 = changed, col2 = added, col3 = deleted, script = captionScript, pathway = captionDir)
   
   tables <- list()
   for (p in 1:(length(list) - 1)) {
@@ -15,28 +25,28 @@ highlight_changes <- function(list, constant = "#927C5C", changed = "cornflowerb
     if (p > 1) {
       tprior <- tables[[p]]
     } else {
-      tprior <- flextable(lprior)
-      tprior <- color(tprior, color = constant)
+      tprior <- flextable::flextable(lprior)
+      tprior <- flextable::color(tprior, color = constant)
     }
     
-    tcurrent <- flextable(lcurrent)
-    tcurrent <- color(tcurrent, color = constant)
+    tcurrent <- flextable::flextable(lcurrent)
+    tcurrent <- flextable::color(tcurrent, color = constant)
     
     rowsDrop <- setdiff(rownames(lprior), rownames(lcurrent))
     if (length(rowsDrop) > 0) {
-      tprior <- color(tprior, color = deleted, i = rowsDrop)
+      tprior <- flextable::color(tprior, color = deleted, i = rowsDrop)
     }
     
     rowsAdd <- setdiff(rownames(lcurrent), rownames(lprior))
     if (length(rowsAdd) > 0) {
       tcurrent <-
-        color(tcurrent, color = added, i = rowsAdd)
+        flextable::color(tcurrent, color = added, i = rowsAdd)
     }
     
     colsDrop <- setdiff(colnames(lprior), colnames(lcurrent))
     if (length(colsDrop) > 0) {
       tprior <-
-        color(tprior,
+        flextable::color(tprior,
               color = deleted,
               j = colsDrop,
               part = "all")
@@ -45,7 +55,7 @@ highlight_changes <- function(list, constant = "#927C5C", changed = "cornflowerb
     colsAdd <- setdiff(colnames(lcurrent), colnames(lprior))
     if (length(colsAdd) > 0) {
       tcurrent <-
-        color(tcurrent,
+        flextable::color(tcurrent,
               color = added,
               j = colsAdd,
               part = "all")
@@ -80,7 +90,7 @@ highlight_changes <- function(list, constant = "#927C5C", changed = "cornflowerb
     
     adjData$r <- as.integer(as.character(adjData$r))
     tcurrent <-
-      color(tcurrent,
+      flextable::color(tcurrent,
             color = changed,
             i = adjData$r,
             j = adjData$c)
@@ -90,7 +100,7 @@ highlight_changes <- function(list, constant = "#927C5C", changed = "cornflowerb
     
   }
   
-  return(list(tables, constant, changed, added, deleted, captionScript))
+  return(list(tables, constant, changed, added, deleted, captionScript, captionDir))
 }
 
 

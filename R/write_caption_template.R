@@ -1,19 +1,10 @@
-addCaptionBlock <- function(i, col1, col2, col3, code) {
-  snapshot <- c(
-    "",
-    paste0("### `", code$lines[i], "`"),
-    "",
-    "Symbols",
-    paste0("\n1. Changed (", col1, "):"),
-    paste0("\n2. Added (", col2, "):"),
-    paste0("\n3. Deleted (", col3, "):"),
-    "",
-    "Caption: "
-  )
-}
+#' Write caption template
+#' @description A function to prepare the caption template
+#' @keywords internal
+#' @export
 
 write_caption_template <-
-  function(authorName = author, col1, col2, col3, script) {
+  function(authorName = author, col1, col2, col3, script, pathway) {
     if (is.null(authorName)) {
       authorName <- ""
     }
@@ -44,7 +35,7 @@ write_caption_template <-
     
     
     captionBlocks <-
-      lapply(refRows, col1, col2, col3, code, FUN = addCaptionBlock)
+      lapply(refRows, col1, col2, col3, code, FUN = add_caption_block)
     captionBlocks <- unlist(captionBlocks)
     
     rmdTotal <- c(heading, firstPlot, captionBlocks)

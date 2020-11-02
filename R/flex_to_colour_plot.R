@@ -1,17 +1,21 @@
-library(reshape2)
-library(ggplot2)
-library(ggforce)
-library(ggfittext)
+#' Flex to colour plot
+#' @description A function to transform the flextable into a colour plot
+#' @keywords internal
+#' @export
+#' @import "reshape2" "ggplot2" "ggforce" "ggfittext"
 
-source("read_captions_rmd.R")
-
-flex_2_colourPlot <- function(ftsItemNum, ftsList) {
+flex_to_colour_plot <- function(ftsItemNum, ftsList, sizing) {
   tab <-
     as.data.frame(ftsList[[1]][[ftsItemNum]]$body$styles$text$color$data)
+  
   xs <-
     data.frame(variable = colnames(tab), x = seq(1, length(colnames(tab)), 1))
-  tab$y <- seq(nrow(tab), 1, -1)
-  tabLong <- melt(tab, id = c("y"))
+  
+  for (i in 1:ncol(tab)) {
+    tab[, i] <- as.character(tab[, i])
+  }
+  tab$y <- seq(nrow(tab), 1,-1)
+  tabLong <- reshape2::melt(tab, id = c("y"))
   tabLong <- merge(tabLong, xs)
   
   xs$y <- rep(max(tabLong$y) + 1, nrow(xs))
@@ -21,10 +25,17 @@ flex_2_colourPlot <- function(ftsItemNum, ftsList) {
   circles$xCir <- circles$x + .25
   circles$yCir <- circles$y - .25
   
-  plotInfo <- read_captions_rmd(ftsList[[6]])
-  circleSymbols <- plotInfo[ftsItemNum, -c(8)]
-  circleSymbols <- data.frame(action = c(circleSymbols$changed, circleSymbols$added, circleSymbols$deleted), 
-                              value = c(circleSymbols$col1, circleSymbols$col2, circleSymbols$col3))
+  plotInfo <- read_captions_rmd(ftsList[[6]], ftsList[[7]])
+  circleSymbols <- plotInfo[ftsItemNum,-c(8)]
+  circleSymbols <-
+    data.frame(
+      action = c(
+        circleSymbols$changed,
+        circleSymbols$added,
+        circleSymbols$deleted
+      ),
+      value = c(circleSymbols$col1, circleSymbols$col2, circleSymbols$col3)
+    )
   circles <- merge(circles, circleSymbols)
   circles$action <- as.character(circles$action)
   circles$test <- circles$action == ""
@@ -40,12 +51,12 @@ flex_2_colourPlot <- function(ftsItemNum, ftsList) {
         aes(x = x, y = y, fill = value),
         alpha = .4,
         colour = "white",
-        size = 1
+        size = sizing[["tiles"]]
       ) +
       scale_fill_identity() +
       geom_text(data = xs,
                 aes(x = x, y = y, label = variable),
-                size = 2) +
+                size = sizing[["columns"]]) +
       coord_equal() +
       theme_void() +
       xlim(c(min(tabLong$x) - .5, max(tabLong$x) + .5))
@@ -56,12 +67,12 @@ flex_2_colourPlot <- function(ftsItemNum, ftsList) {
         aes(x = x, y = y, fill = value),
         alpha = .4,
         colour = "white",
-        size = 1
+        size = sizing[["tiles"]]
       ) +
       scale_fill_identity() +
       geom_text(data = xs,
                 aes(x = x, y = y, label = variable),
-                size = 2) +
+                size = sizing[["columns"]]) +
       coord_equal() +
       theme_void() +
       xlim(c(min(tabLong$x) - .5, max(tabLong$x) + .5)) +
@@ -70,7 +81,7 @@ flex_2_colourPlot <- function(ftsItemNum, ftsList) {
         aes(
           x0 = xCir,
           y0 = yCir,
-          r = .15,
+          r = sizing[["circles"]],
           fill = NA
         ),
         colour = "black",
@@ -78,7 +89,7 @@ flex_2_colourPlot <- function(ftsItemNum, ftsList) {
       ) +
       geom_text(data = circles,
                 aes(x = xCir, y = yCir, label = action),
-                size = 2.5)
+                size = sizing[["symbols"]])
   }
   
   captionInfo <-
@@ -101,7 +112,7 @@ flex_2_colourPlot <- function(ftsItemNum, ftsList) {
       geom_fit_text(
         data = captionInfo,
         aes(x = x, y = y, label = smallsetCaption),
-        size = 8,
+        size = sizing[["captions"]],
         place = 'centre',
         reflow = TRUE,
         width = ((max(tabLong$x) + .5) - (min(tabLong$x) - .5))
@@ -109,14 +120,8 @@ flex_2_colourPlot <- function(ftsItemNum, ftsList) {
   } else {
     smallsetWithCaption <- abstractSmallset
   }
-
+  
   
   return(smallsetWithCaption)
-  
-}
-
-abstract_it <- function(ftsList) {
-  items <- seq(1, length(ftsList[[1]]), 1)
-  l <- lapply(items, ftsList, FUN = flex_2_colourPlot)
   
 }
