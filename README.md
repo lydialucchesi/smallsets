@@ -20,7 +20,7 @@ related to extraction context, etc.), and on top of the processing toy
 plots, possibly what I call “justification plots,” so another simple
 plot that helps clarify your decision to do what you did - i.e., maybe a
 Meng bias plot or a plot to show correlation between two variables.
-[Here](https://github.com/lydialucchesi/smallset/other_code/scratch/tree/master/test.pdf)
+[Here](https://github.com/lydialucchesi/smallset/blob/main/other_code/scratch/test.pdf)
 is a very simple example that I hard-coded in R, and it is roughly based
 on this [paper](https://ieeexplore.ieee.org/document/6353339) looking at
 preprocessing of the NASA software defect data sets that have been used
@@ -530,6 +530,8 @@ plot_grid(plotlist = check, nrow = 1)
 
   - Add option to “hide” sections in the prep code
   - Work on methodology for sampling of a smallset
+      - Figure out how to select columns for smallset - this will be
+        tricky because of smallset\_code script
   - Design decision/action stamps that can be added to tiles to further
     specify what is happening to the data at that point
       - Add up over time? Or only visible at one point on timeline.

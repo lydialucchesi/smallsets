@@ -7,7 +7,7 @@ output: github_document
 
 ## Overview of package idea
 
-As someone types out their preprocessing code, this R package can be used to create a (visual) toy example of what is happening, step-by-step, in the preprocessing stages of the pipeline. The R package would be designed in such a way that additional coding on top of the original preprocessing code would be minimal. The package output can be used later as a reference for researchers to better understand what is happening in the code. But the package also creates a “publishable/shareable” version of this as well, that can offer data privacy if needed, and offers a simple but visual and ordered view of the preprocessing, with a text component below (this is where I imagine affordance/impact statements, references to theory, important quotes related to extraction context, etc.), and on top of the processing toy plots, possibly what I call “justification plots,” so another simple plot that helps clarify your decision to do what you did - i.e., maybe a Meng bias plot or a plot to show correlation between two variables. [Here](https://github.com/lydialucchesi/smallset/other_code/scratch/tree/master/test.pdf) is a very simple example that I hard-coded in R, and it is roughly based on this [paper](https://ieeexplore.ieee.org/document/6353339) looking at preprocessing of the NASA software defect data sets that have been used extensively in research and preprocessed different ways throughout the body of literature. The real timeline visual for the NASA example would look different. I haven’t fully fleshed out the statements below the plots, nor have I added any “justification plots.” I am not aware of anything like this in R.
+As someone types out their preprocessing code, this R package can be used to create a (visual) toy example of what is happening, step-by-step, in the preprocessing stages of the pipeline. The R package would be designed in such a way that additional coding on top of the original preprocessing code would be minimal. The package output can be used later as a reference for researchers to better understand what is happening in the code. But the package also creates a “publishable/shareable” version of this as well, that can offer data privacy if needed, and offers a simple but visual and ordered view of the preprocessing, with a text component below (this is where I imagine affordance/impact statements, references to theory, important quotes related to extraction context, etc.), and on top of the processing toy plots, possibly what I call “justification plots,” so another simple plot that helps clarify your decision to do what you did - i.e., maybe a Meng bias plot or a plot to show correlation between two variables. [Here](https://github.com/lydialucchesi/smallset/blob/main/other_code/scratch/test.pdf) is a very simple example that I hard-coded in R, and it is roughly based on this [paper](https://ieeexplore.ieee.org/document/6353339) looking at preprocessing of the NASA software defect data sets that have been used extensively in research and preprocessed different ways throughout the body of literature. The real timeline visual for the NASA example would look different. I haven’t fully fleshed out the statements below the plots, nor have I added any “justification plots.” I am not aware of anything like this in R.
 
 That visual is an example of the “shareable” view respecting data privacy. Each gray dot is a data point, and this is a small subset of the rows and columns (important columns included). In the “researcher” view, you’d actually see example data points from the data set, and there would be visual cues to signal what change to the structure/data is occurring.
 
@@ -440,6 +440,7 @@ plot_grid(plotlist = check, nrow = 1)
 
 * Add option to "hide" sections in the prep code
 * Work on methodology for sampling of a smallset
+  * Figure out how to select columns for smallset - this will be tricky because of smallset_code script
 * Design decision/action stamps that can be added to tiles to further specify what is happening to the data at that point
   * Add up over time? Or only visible at one point on timeline.
   * Add option to choose location of these inside a tile
@@ -462,6 +463,7 @@ plot_grid(plotlist = check, nrow = 1)
 * Create a colour key for timeline
 * Debug issue with prep_data2 script
 * Create mtcars data extraction example with captions that draw from the mechanisms and conditions affordance framework
+
 
 
 
