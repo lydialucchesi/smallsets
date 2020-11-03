@@ -2,6 +2,8 @@ library(ggpubr)
 library(cowplot)
 library(smallset)
 
+source("other_code/gen_data.R")
+
 mylist <- prep_smallset(data = df, 
                         prepCode = "other_code/prep_data.R", 
                         rowCount = 6, 
@@ -21,7 +23,7 @@ check <- abstract_timeline(ftsList = fts, sizing =
                                "captions" = 10
                              ))
 
-plot_grid(plotlist = check, nrow = 1)
+plot_grid(plotlist = check)
 
 
 

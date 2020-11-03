@@ -529,22 +529,31 @@ plot_grid(plotlist = check, nrow = 1)
 ### To-do list:
 
   - Add option to “hide” sections in the prep code
+      - Is there a better word than hide?
   - Work on methodology for sampling of a smallset
+      - Need it to be representative/unbiased but also comprehensive in
+        terms of issues/adjustments addressed in the preprocessing step
+          - How do you balance this in a smallset
       - Figure out how to select columns for smallset - this will be
         tricky because of smallset\_code script
   - Design decision/action stamps that can be added to tiles to further
     specify what is happening to the data at that point
-      - Add up over time? Or only visible at one point on timeline.
+      - Add up over time? Or only visible at one point on timeline. I
+        think this should be an optional feature
       - Add option to choose location of these inside a tile
-      - Design a series of pre-made ones to choose from
+      - Design a series of pre-made ones to choose from - square shaped?
           - Imputing
           - Binning
-          - Culling
+          - Outlier-ing
           - Standardising
-          - Aggregating
+          - Converting units
+          - Subsetting/filtering
+          - Aggregating/disaggrating
           - Transforming
           - Merging
-          - Removing implausible values
+          - Removing implausible/erroneous values
+          - Rearranging
+          - Dropping
       - Offer build your own option - should this be what I already have
         with the circles and symbols? Probably a better method - will
         see if stamps turn out first
@@ -557,5 +566,10 @@ plot_grid(plotlist = check, nrow = 1)
   - Comment code and write tests
   - Create a colour key for timeline
   - Debug issue with prep\_data2 script
-  - Create mtcars data extraction example with captions that draw from
-    the mechanisms and conditions affordance framework
+      - Do I need to attach an id to each data cell?
+  - Create mtcars data extraction example with captions - include quotes
+    from Motor Trends magazine articles
+  - Think about adding *timeline analysis* tools to the package
+  - Think about case studies and examples
+      - Different approaches to caption narration: first person
+        vs. third person and past tense vs. present tense
