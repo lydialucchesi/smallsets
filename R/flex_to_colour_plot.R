@@ -76,18 +76,17 @@ flex_to_colour_plot <- function(ftsItemNum, ftsList, sizing) {
       coord_equal() +
       theme_void() +
       xlim(c(min(tabLong$x) - .5, max(tabLong$x) + .5)) +
-      # geom_circle(
-      #   data = circles,
-      #   aes(
-      #     x0 = xCir,
-      #     y0 = yCir,
-      #     r = sizing[["circles"]],
-      #     fill = NA
-      #   ),
-      #   colour = "black",
-      #   size = .1
-      # ) +
-      geom_point(data = circles, aes(x = xCir, y = yCir), size = .3, fill = NA, shape = 15) +
+      geom_circle(
+        data = circles,
+        aes(
+          x0 = xCir,
+          y0 = yCir,
+          r = sizing[["circles"]],
+          fill = NA
+        ),
+        colour = "black",
+        size = .1
+      ) +
       geom_text(data = circles,
                 aes(x = xCir, y = yCir, label = action),
                 size = sizing[["symbols"]])

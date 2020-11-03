@@ -1,7 +1,7 @@
 ---
 title: "Captions for the smallset timeline"
 author: 
-date: 2020-11-03
+date: 2020-11-04
 output: html_document
 ---
 
@@ -13,13 +13,13 @@ Caption:
 
 Symbols
 
-1. Changed (darkorchid1): B 
+1. Changed (darkorchid1):
 
 2. Added (darkorange):
 
 3. Deleted (goldenrod1):
 
-Caption: B 
+Caption: 
 
 ### `df$count <- round(ifelse(is.na(df$count), predict(model, df), df$count))`
 
