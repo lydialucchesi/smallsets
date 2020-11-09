@@ -65,7 +65,7 @@ write_smallset_code <- function(scriptName, dir) {
   smallsetCode <- data.frame(command = smallsetCode)
   smallsetCode$command <- as.character(smallsetCode$command)
   
-  fileConn <- file(paste0(dir, "smallset_code.R"))
+  fileConn <- file(paste0(dir, "/smallset_code.R"))
   writeLines(smallsetCode$command, fileConn)
   close(fileConn)
   

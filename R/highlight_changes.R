@@ -89,11 +89,20 @@ highlight_changes <- function(list, constant = "#927C5C", changed = "cornflowerb
     }
     
     adjData$r <- as.integer(as.character(adjData$r))
-    tcurrent <-
-      flextable::color(tcurrent,
-            color = changed,
-            i = adjData$r,
-            j = adjData$c)
+    # tcurrent <-
+    #   flextable::color(tcurrent,
+    #         color = changed,
+    #         i = adjData$r,
+    #         j = adjData$c)
+    
+    if (nrow(adjData) > 0) {
+      tcurrent <-
+        flextable::color(tcurrent,
+                         color = changed,
+                         i = (adjData$r == row.names(tcurrent$body$dataset)),
+                         j = adjData$c)
+    }
+
     
     tables[[p]] <- tprior
     tables[[c]] <- tcurrent

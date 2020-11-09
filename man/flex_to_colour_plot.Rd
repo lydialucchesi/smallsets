@@ -4,7 +4,15 @@
 \alias{flex_to_colour_plot}
 \title{Flex to colour plot}
 \usage{
-flex_to_colour_plot(ftsItemNum, ftsList, sizing)
+flex_to_colour_plot(
+  ftsItemNum,
+  ftsList,
+  sizing,
+  stampCols,
+  stampColsDif,
+  stampLoc,
+  maxDims
+)
 }
 \description{
 A function to transform the flextable into a colour plot

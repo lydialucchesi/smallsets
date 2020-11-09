@@ -20,4 +20,7 @@ Imports:
     reshape2,
     ggplot2,
     ggforce,
-    ggfittext
+    ggfittext,
+    gplots,
+    colorspace,
+    patchwork

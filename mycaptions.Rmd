@@ -1,7 +1,7 @@
 ---
 title: "Captions for the smallset timeline"
 author: 
-date: 2020-11-04
+date: 2020-11-09
 output: html_document
 ---
 
@@ -13,58 +13,46 @@ Caption:
 
 Symbols
 
-1. Changed (darkorchid1):
+1. Changed (#3d3a3e):
 
-2. Added (darkorange):
+2. Added (#ff00f4):
 
-3. Deleted (goldenrod1):
-
-Caption: 
-
-### `df$count <- round(ifelse(is.na(df$count), predict(model, df), df$count))`
-
-Symbols
-
-1. Changed (darkorchid1):
-
-2. Added (darkorange):
-
-3. Deleted (goldenrod1):
+3. Deleted (#0a6bb4):
 
 Caption: 
 
-### `df[is.na(df)] <- 0`
+### `df$total <- df$count + df$time`
 
 Symbols
 
-1. Changed (darkorchid1):
+1. Changed (#3d3a3e):
 
-2. Added (darkorange):
+2. Added (#ff00f4):
 
-3. Deleted (goldenrod1):
+3. Deleted (#0a6bb4):
 
 Caption: 
 
-### `prepped$one <- 1`
+### `df$time <- df$time * 60`
 
 Symbols
 
-1. Changed (darkorchid1):
+1. Changed (#3d3a3e):
 
-2. Added (darkorange):
+2. Added (#ff00f4):
 
-3. Deleted (goldenrod1):
+3. Deleted (#0a6bb4):
 
 Caption: 
 
-### `prepped <- rbind(prepped, newRow)`
+### `df$char <- "testing char"`
 
 Symbols
 
-1. Changed (darkorchid1):
+1. Changed (#3d3a3e):
 
-2. Added (darkorange):
+2. Added (#ff00f4):
 
-3. Deleted (goldenrod1):
+3. Deleted (#0a6bb4):
 
 Caption: 

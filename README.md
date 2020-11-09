@@ -526,7 +526,7 @@ library(cowplot)
 plot_grid(plotlist = check, nrow = 1)
 ```
 
-### To-do list:
+## To-do list:
 
   - Add option to “hide” sections in the prep code
       - Is there a better word than hide?
@@ -540,7 +540,8 @@ plot_grid(plotlist = check, nrow = 1)
     specify what is happening to the data at that point
       - Add up over time? Or only visible at one point on timeline. I
         think this should be an optional feature
-      - Add option to choose location of these inside a tile
+          - Tracking bar visualisation idea
+      - ~~Add option to choose location of these inside a tile~~
       - Design a series of pre-made ones to choose from - square shaped?
           - Imputing
           - Binning
@@ -557,19 +558,45 @@ plot_grid(plotlist = check, nrow = 1)
       - Offer build your own option - should this be what I already have
         with the circles and symbols? Probably a better method - will
         see if stamps turn out first
-  - Get tiles to be equal size across entire timeline
-      - Then write a viewing/plotting function for the timeline
+  - ~~Get tiles to be equal size across entire timeline~~
+      - ~~Then write a viewing/plotting function for the timeline~~
   - Create option to rename caption template file so it is not written
     over when you rerun highlight\_changes()
   - Explore colour overlays for tile colours
   - Add option to abstract column names
-  - Comment code and write tests
+      - Put columns inside of gg fit boxes
+  - Add timeline and subtitle options
   - Create a colour key for timeline
-  - Debug issue with prep\_data2 script
-      - Do I need to attach an id to each data cell?
+      - At the top, horizontal under the timeline title and subtitle?
+  - Comment code and write tests
+  - ~~Debug issue with prep\_data2 script~~
   - Create mtcars data extraction example with captions - include quotes
     from Motor Trends magazine articles
   - Think about adding *timeline analysis* tools to the package
+      - Visualise all unique colour pathways in the timeline
+      - Something to do with occurrence rate
   - Think about case studies and examples
       - Different approaches to caption narration: first person
         vs. third person and past tense vs. present tense
+  - Look at adding an occurrence rate tag (“this type of issue occurs 1
+    in every 100 rows of data”) - maybe this would be part of the
+    timeline analysis tools or a way to help with the sampling bias
+    issue mentioned above
+      - Could also adjust tile size or tile border width or tile
+        transparency depending on occurrence rate
+  - Work on un-abstracted timeline
+      - Overall create\_timeline function - abstract argument and if
+        `TRUE` then run abstract\_timeline?
+  - Read in captions as R expression objects so that you can format text
+    (bold, italicize, etc.)
+      - Bold letter/word corresponding to stamp
+  - Figure out what to do if I merge two data sets - will need to sample
+    and create two separate smallsets?
+      - Need to adjust prep\_smallset to accept a list of data sets then
+        (not just one)
+  - Need to address some errors
+      - You get an error if you pass “data” to data argument in
+        prep\_smallset - fix?
+      - Weather conditions error… this one is going to be difficult.
+  - Figure out what to do with the tile colour fill when a data point
+    has been changed twice in a between two timeline points
