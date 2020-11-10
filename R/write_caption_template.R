@@ -21,6 +21,13 @@ write_caption_template <-
     code <- as.data.frame(readLines("smallset_code.R"))
     colnames(code) <- c("lines")
     
+    titleBlock <- c("",
+                    "Timeline title: ",
+                    "",
+                    "Timeline subtitle: ",
+                    "",
+                    "Timeline footnote: ")
+    
     firstPlot <- c("",
                    "### Starting smallset",
                    "",
@@ -38,7 +45,7 @@ write_caption_template <-
       lapply(refRows, col1, col2, col3, code, FUN = add_caption_block)
     captionBlocks <- unlist(captionBlocks)
     
-    rmdTotal <- c(heading, firstPlot, captionBlocks)
+    rmdTotal <- c(heading, titleBlock, firstPlot, captionBlocks)
     
     
     fileConn <- file(paste0(script, ".Rmd"))

@@ -492,7 +492,52 @@ plot_grid(plotlist = check, nrow = 1)
   * Weather conditions error... this one is going to be difficult.
 * Figure out what to do with the tile colour fill when a data point has been changed twice in a between two timeline points
 
+## 11 November 2020
 
+The researcher view rough draft. Because it is the "researcher" view, the data in the smallset do not need to be hidden/abstracted). Need to find a good way to add a colour key. Captions should be more extensive - just threw down some random text that I made up. All of these data are made up just for testing purposes.
+
+<img src='other_code/fts/researcherViewRoughDraft.png' align="center" />
+
+Now squares are all the same size across plots. Users can specify a font, add titles and subtitles, choose one of five stamp locations, and either abstract the data or not.
+
+The code for the timeline above would look someting like this (and you'd fill out the caption template).
+
+```{r, eval = FALSE}
+library(smallset)
+
+source("other_code/gen_data.R")
+
+mylist <- prep_smallset(data = df,
+                        prepCode = "other_code/prep_data.R",
+                        rowCount = 6,
+                        rowNums = c(2, 5, 8))
+
+fts <- highlight_changes(list = mylist,
+                         captionScript = "mycaptions",
+                         constant = "cornsilk4",
+                         changed = "cornflowerblue",
+                         added = "blueviolet",
+                         deleted = "darkgoldenrod1",
+                         author = "Lydia")
+
+check <- create_timeline(ftsList = fts, 
+                         abstract = FALSE,
+                         sizing =
+                             list(
+                               "columns" = 2.5,
+                               "tiles" = .8,
+                               "captions" = 8,
+                               "symbols" = 1.5,
+                               "circles" = .1,
+                               "data" = 2.5
+                             ),
+                           accentCols = "darker",
+                           accentColsDif = .7,
+                           stampLoc = 1,
+                           timelineRows = 1,
+                           timelineFont = "Palatino")
+check
+```
 
 
 

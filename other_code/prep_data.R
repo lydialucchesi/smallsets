@@ -6,8 +6,6 @@ df <- data.frame(
   defect = c(.6, .5, 1.1, .8, .7, 1.3, .9, 1.1, 1.4, .8, .9, 1.2)
 )
 
-plot(df$count, df$time)
-
 # start smallset
 df$latitude <- "35.2809"
 # bin the defect variable

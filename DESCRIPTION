@@ -23,4 +23,5 @@ Imports:
     ggfittext,
     gplots,
     colorspace,
-    patchwork
+    patchwork,
+    ggtext

@@ -2,7 +2,7 @@
 #' @description A function to transform the flextable into a colour plot
 #' @keywords internal
 #' @export
-#' @import "reshape2" "ggplot2" "ggforce" "ggfittext" "gplots" "colorspace" "stringr"
+#' @import "reshape2" "ggplot2" "ggforce" "ggfittext" "gplots" "colorspace" "stringr" "ggtext"
 
 flex_to_colour_plot <-
   function(ftsItemNum,
@@ -11,7 +11,8 @@ flex_to_colour_plot <-
            stampCols,
            stampColsDif,
            stampLoc,
-           maxDims) {
+           maxDims,
+           timelineFont) {
     tab <-
       as.data.frame(ftsList[[1]][[ftsItemNum]]$body$styles$text$color$data)
     
@@ -21,7 +22,7 @@ flex_to_colour_plot <-
     for (i in 1:ncol(tab)) {
       tab[, i] <- as.character(tab[, i])
     }
-    tab$y <- seq(nrow(tab), 1, -1)
+    tab$y <- seq(nrow(tab), 1,-1)
     tabLong <- reshape2::melt(tab, id = c("y"))
     tabLong <- merge(tabLong, xs)
     
@@ -48,7 +49,7 @@ flex_to_colour_plot <-
     }
     
     plotInfo <- read_captions_rmd(ftsList[[6]], ftsList[[7]])
-    circleSymbols <- plotInfo[ftsItemNum, -c(8)]
+    circleSymbols <- plotInfo[ftsItemNum,-c(8)]
     circleSymbols <-
       data.frame(
         action = c(
@@ -70,8 +71,8 @@ flex_to_colour_plot <-
     
     circleSymbols$value2 <- ifelse(
       circleSymbols$colDir == "darker",
-      darken(circleSymbols$hex, circleSymbols$colDirDif),
-      lighten(circleSymbols$hex, circleSymbols$colDirDif)
+      colorspace::darken(circleSymbols$hex, circleSymbols$colDirDif),
+      colorspace::lighten(circleSymbols$hex, circleSymbols$colDirDif)
     )
     
     circleSymbols[, c("hex", "colDir", "colDirDif")] <- NULL
@@ -120,6 +121,7 @@ flex_to_colour_plot <-
         scale_fill_identity() +
         geom_text(data = xs,
                   aes(x = x, y = y, label = variable),
+                  family = timelineFont,
                   size = sizing[["columns"]]) +
         coord_equal() +
         theme_void() +
@@ -136,6 +138,7 @@ flex_to_colour_plot <-
         scale_fill_identity() +
         geom_text(data = xs,
                   aes(x = x, y = y, label = variable),
+                  family = timelineFont,
                   size = sizing[["columns"]]) +
         coord_equal() +
         theme_void() +
@@ -159,6 +162,7 @@ flex_to_colour_plot <-
             label = action,
             colour = value2
           ),
+          family = timelineFont,
           size = sizing[["symbols"]]
         ) +
         scale_colour_identity()
@@ -166,11 +170,14 @@ flex_to_colour_plot <-
     
     if (nrow(empty) > 0) {
       abstractSmallset <- abstractSmallset +
-        geom_tile(data = empty,
-                  aes(x = x, y = y),
-                  fill = NA,
-                  colour = NA)
-      } else {
+        geom_tile(
+          data = empty,
+          aes(x = x, y = y),
+          fill = NA,
+          colour = NA,
+          size = sizing[["tiles"]]
+        )
+    } else {
       abstractSmallset <- abstractSmallset
     }
     
@@ -181,20 +188,22 @@ flex_to_colour_plot <-
         smallsetCaption = c(smallsetCaption)
       )
     
-    if (nrow(captionInfo) > 0) {
-      abstractWithCaption <- abstractSmallset +
+    abstractWithCaption <- abstractSmallset +
         geom_fit_text(
           data = captionInfo,
-          aes(xmin = .5, xmax = maxDims[1] + .5, ymin = -1, ymax = 0, label = smallsetCaption),
+          aes(
+            xmin = .5,
+            xmax = maxDims[1] + .5,
+            ymin = -1,
+            ymax = 0,
+            label = smallsetCaption
+          ),
+          family = timelineFont,
           size = sizing[["captions"]],
           place = 'centre',
           reflow = TRUE
         )
-    } else {
-      abstractWithCaption <- abstractSmallset
-    }
     
     return(abstractWithCaption)
     
   }
-
