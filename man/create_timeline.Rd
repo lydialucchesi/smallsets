@@ -8,12 +8,13 @@ create_timeline(
   ftsList,
   abstract = TRUE,
   sizing = list(columns = 2, tiles = 1, captions = 8, circles = 0.15, symbols = 2.5,
-    data = 2.5),
+    data = 2.5, legend = 7),
   accentCols = "darker",
   accentColsDif = 0.5,
   stampLoc = 1,
   timelineRows = NULL,
-  timelineFont = "sans"
+  timelineFont = "sans",
+  captionSpace = 1
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ create_timeline(
 \item{timelineRows}{Number of rows to divide the smallset timeline into.}
 
 \item{timelineFont}{Font family.}
+
+\item{captionSpace}{Increase room for captions. Any value greater than or equal to .5. Default is one.}
 }
 \description{
 Create the timeline

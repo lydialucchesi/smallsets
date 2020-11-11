@@ -4,7 +4,7 @@
 #' @export
 #' @import "reshape2" "ggplot2" "ggforce" "ggfittext" "gplots" "colorspace" "stringr" "ggtext"
 
-make_timeline_plot <-
+make_timeline_plot_w_legend <-
   function(ftsItemNum,
            ftsList,
            abstract,

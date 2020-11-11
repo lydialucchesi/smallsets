@@ -14,7 +14,9 @@ make_timeline_plot(
   stampLoc,
   maxDims,
   timelineFont,
-  accents
+  captionSpace,
+  accents,
+  legendDF
 )
 }
 \description{

@@ -609,8 +609,6 @@ find a good way to add a colour key. Captions should be more extensive -
 just threw down some random text that I made up. All of these data are
 made up just for testing purposes.
 
-<img src='other_code/fts/researcherViewRoughDraft.png' align="center" />
-
 Now squares are all the same size across plots. Users can specify a
 font, add titles and subtitles, choose one of five stamp locations, and
 either abstract the data or not.
@@ -652,5 +650,67 @@ check <- create_timeline(ftsList = fts,
                            stampLoc = 1,
                            timelineRows = 1,
                            timelineFont = "Palatino")
+check
+```
+
+## 12 November 2020
+
+Added in a colour key and markdown formatting for captions.
+
+### Researcher view
+
+<img src='other_code/fts/researcherView.png' align="center" />
+
+### Abstracted shareable view
+
+<img src='other_code/fts/forSharing.png' align="center" />
+
+The only arguments I changed between the two views are the following in
+the create\_timeline function: abstract, stampLoc, and the sizing for
+the circles and symbols.
+
+``` r
+library(smallset)
+
+source("other_code/gen_data.R")
+
+mylist <- prep_smallset(
+  data = df,
+  prepCode = "other_code/prep_data.R",
+  rowCount = 6,
+  rowNums = c(2, 5, 8)
+)
+
+fts <- highlight_changes(
+  list = mylist,
+  captionScript = "mycaptions",
+  constant = "cornsilk4",
+  changed = "cornflowerblue",
+  added = "blueviolet",
+  deleted = "darkgoldenrod1",
+  author = "Lydia"
+)
+
+check <- create_timeline(
+  ftsList = fts,
+  abstract = TRUE,
+  sizing =
+    list(
+      "columns" = 2,
+      "tiles" = .8,
+      "captions" = 2,
+      "symbols" = 2,
+      "circles" = .2,
+      "data" = 2,
+      "legend" = 6
+    ),
+  accentCols = "darker",
+  accentColsDif = .7,
+  stampLoc = 5,
+  timelineRows = 1,
+  timelineFont = "mono",
+  captionSpace = .8
+)
+
 check
 ```

@@ -1,7 +1,7 @@
 ---
 title: "Captions for the smallset timeline"
-author: Lydia
-date: 2020-11-11
+author: 
+date: 2020-11-12
 output: html_document
 ---
 
@@ -19,23 +19,23 @@ Caption:
 
 Symbols
 
-1. Changed (cornflowerblue):
+1. Changed (#3d3a3e):
 
-2. Added (blueviolet):
+2. Added (#ff00f4):
 
-3. Deleted (darkgoldenrod1):
+3. Deleted (#0a6bb4):
 
 Caption: 
 
-### `df[is.na(df)] <- 0`
+### `df$total <- df$count + df$time`
 
 Symbols
 
-1. Changed (cornflowerblue):
+1. Changed (#3d3a3e):
 
-2. Added (blueviolet):
+2. Added (#ff00f4):
 
-3. Deleted (darkgoldenrod1):
+3. Deleted (#0a6bb4):
 
 Caption: 
 
@@ -43,10 +43,22 @@ Caption:
 
 Symbols
 
-1. Changed (cornflowerblue):
+1. Changed (#3d3a3e):
 
-2. Added (blueviolet):
+2. Added (#ff00f4):
 
-3. Deleted (darkgoldenrod1):
+3. Deleted (#0a6bb4):
+
+Caption: 
+
+### `df$char <- "testing char"`
+
+Symbols
+
+1. Changed (#3d3a3e):
+
+2. Added (#ff00f4):
+
+3. Deleted (#0a6bb4):
 
 Caption: 

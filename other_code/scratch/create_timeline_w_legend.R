@@ -8,11 +8,11 @@
 #' @param stampLoc Location of stamp. 1 = top left. 2 = top right. 3 = bottom left. 4 = bottom right. 5 = center.
 #' @param timelineRows Number of rows to divide the smallset timeline into.
 #' @param timelineFont Font family.
-#' @param captionSpace Increase room for captions. Any value greater than or equal to .5. Default is one.
+#' @param captionSpace Increase room for captions. Any integer greater than or equal to one. Default is one.
 #' @export
 #' @import "patchwork" "gplots" "colorspace"
 
-create_timeline <-
+create_timeline_w_legend <-
   function(ftsList,
            abstract = TRUE,
            sizing = list(
@@ -150,7 +150,7 @@ create_timeline <-
       uniqueCols <- unique(uniqueCols)
       colsPresent <- c(colsPresent, uniqueCols)
     }
-    
+
     colsPresent <- unique(colsPresent)
     descriptions <-  c("Data have not changed since previous snapshot.",
                        "Data have changed since previous snapshot.",
@@ -179,7 +179,7 @@ create_timeline <-
         captionSpace,
         accents,
         legendDF,
-        FUN = make_timeline_plot
+        FUN = make_timeline_plot_w_legend
       )
     
     patchedPlots <- ""
@@ -232,7 +232,7 @@ create_timeline <-
       quote,
       ")"
     )
-    
+
     fontChoice <-
       paste0(" & theme(text = element_text('", timelineFont, 
              "'), legend.position = 'bottom', legend.title=element_blank(), legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))")

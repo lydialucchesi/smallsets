@@ -31,6 +31,22 @@ scale_fill_identity(
   guide = "legend",
   family = timelineFont
 )
+
+# abstractWithCaption <- abstractSmallset +
+#   geom_fit_text(
+#     data = captionInfo,
+#     aes(
+#       xmin = .5,
+#       xmax = maxDims[1] + .5,
+#       ymin = -1,
+#       ymax = 0,
+#       label = smallsetCaption
+#     ),
+#     family = timelineFont,
+#     size = sizing[["captions"]],
+#     place = 'centre',
+#     reflow = TRUE
+#   )
     
     
 ftsList = fts
@@ -39,4 +55,4 @@ stampCols = "darker"
 stampColsDif = .5
 stampLoc = 1
 timelineRows = NULL
-maxDims = c(6, 5)
+maxDims = c(5, 6)
