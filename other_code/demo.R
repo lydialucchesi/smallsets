@@ -1,10 +1,11 @@
 library(smallset)
 
+## ONE DATASET
 source("other_code/gen_data.R")
 
-mylist <- prep_smallset(
+mylist <- prepare_smallset(
   data = df,
-  prepCode = "other_code/prep_data.R",
+  code = "other_code/process_data.R",
   rowCount = 6,
   rowNums = c(2, 5, 8)
 )
@@ -21,7 +22,7 @@ fts <- highlight_changes(
 
 check <- create_timeline(
   ftsList = fts,
-  abstract = TRUE,
+  abstract = FALSE,
   sizing =
     list(
       "columns" = 2,
@@ -42,22 +43,90 @@ check <- create_timeline(
 
 check
 
-# some issues with the legend that need to be debugged
-mylist <-
-  prep_smallset(
-    data = df,
-    prepCode = "other_code/prep_data2.R",
-    rowCount = 10
-  )
 
-fts <- highlight_changes(list = mylist,
-                         captionScript = "mycaptions",
-                         constant = "#aab40a",
-                         changed = "#3d3a3e",
-                         added = "#ff00f4",
-                         deleted = "#0a6bb4")
+## TWO DATASETS
+source("other_code/process_data5.R")
 
-check <- create_timeline(ftsList = fts)
+mylist <- prepare_smallset(
+  data = list(df1 = df1, df2 = df2),
+  code = "other_code/process_data5.R",
+  rowCount = list(6, 2),
+)
+
+fts <- highlight_changes(
+  list = mylist,
+  captionScript = "mycaptions",
+  constant = "cornsilk4",
+  changed = "cornflowerblue",
+  added = "blueviolet",
+  deleted = "darkgoldenrod1",
+  author = "Lydia"
+)
+
+check <- create_timeline(
+  ftsList = fts,
+  abstract = FALSE,
+  sizing =
+    list(
+      "columns" = 2,
+      "tiles" = .8,
+      "captions" = 2,
+      "symbols" = 2,
+      "circles" = .2,
+      "data" = 2,
+      "legend" = 6
+    ),
+  accentCols = "darker",
+  accentColsDif = .7,
+  stampLoc = 5,
+  timelineRows = 1,
+  timelineFont = "mono",
+  captionSpace = .8
+)
+
+check
+
+
+## THREE DATASETS
+source("other_code/process_data6.R")
+
+mylist <- prepare_smallset(
+  data = list(df1 = df1, df2 = df2, df3 = df3),
+  code = "other_code/process_data6.R",
+  rowCount = list(6, 2, 2),
+)
+
+fts <- highlight_changes(
+  list = mylist,
+  captionScript = "mycaptions",
+  constant = "cornsilk4",
+  changed = "cornflowerblue",
+  added = "blueviolet",
+  deleted = "darkgoldenrod1",
+  author = "Lydia"
+)
+
+check <- create_timeline(
+  ftsList = fts,
+  abstract = FALSE,
+  sizing =
+    list(
+      "columns" = 2,
+      "tiles" = .8,
+      "captions" = 2,
+      "symbols" = 2,
+      "circles" = .2,
+      "data" = 2,
+      "legend" = 6
+    ),
+  accentCols = "darker",
+  accentColsDif = .7,
+  stampLoc = 5,
+  timelineRows = 1,
+  timelineFont = "mono",
+  captionSpace = .8
+)
+
 check
 
 

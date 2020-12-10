@@ -1,19 +1,24 @@
 snapshots <- list()
-apply_code <- function(df) {
-snapshots[[1]] <- df
-# snap df
-df$defect <- ifelse(df$defect > 1, 1, 0)
-snapshots[[2]] <- df
-# snap df
-df$total <- df$count + df$time
-snapshots[[3]] <- df
-# if I drop incomplete cases here I get an error
-df <- df[complete.cases(df),]
-# snap df
-df$time <- df$time * 60
-snapshots[[4]] <- df
-df$char <- "testing char"
-# snap df
-snapshots[[5]] <- df
+apply_code <- function(df1, df2) {
+snapshots[['1']] <- df1
+df1$latitude <- "35.2809"
+snapshots[['1.1']] <- df1
+# bin the defect variable
+# snap df1
+df1$defect <- ifelse(df1$defect > 1, 1, 0)
+snapshots[['2']] <- df1
+df1[is.na(df1)] <- 0
+snapshots[['2.1']] <- df1
+# convert units from minutes to seconds
+df1 <- subset(df1, year > 0)
+snapshots[['2.2']] <- df1
+# snap df3
+df3 <- left_join(df1, df2)
+snapshots[['3']] <- df3
+df3$newCar <- "car"
+snapshots[['3.1']] <- df3
+df3$time <- NULL
+# snap df3
+snapshots[['4']] <- df3
 return(snapshots)
 }

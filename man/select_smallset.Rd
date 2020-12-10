@@ -4,7 +4,7 @@
 \alias{select_smallset}
 \title{Select smallset}
 \usage{
-select_smallset(data, rowCount = 6, rowNums = NULL)
+select_smallset(dataNum, data, rowCount = 6, rowNums = NULL)
 }
 \description{
 A function to prepare a smallset

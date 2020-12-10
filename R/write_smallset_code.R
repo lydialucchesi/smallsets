@@ -3,8 +3,7 @@
 #' @keywords internal
 #' @export
 
-write_smallset_code <- function(scriptName, dir) {
-  
+write_smallset_code <- function(scriptName, dir, dataNames) {
   processTXT <- as.data.frame(readLines(scriptName, warn = FALSE))
   colnames(processTXT) <- c("command")
   processTXT$command <- as.character(processTXT$command)
@@ -15,7 +14,7 @@ write_smallset_code <- function(scriptName, dir) {
     row.names(processTXT)[processTXT$command == "# end smallset"]
   
   smallsetCode <-
-    processTXT[(as.numeric(rStart) + 1):(as.numeric(rEnd) - 1),]
+    processTXT[(as.numeric(rStart) + 1):(as.numeric(rEnd) - 1), ]
   
   smallsetCode <- data.frame(command = smallsetCode)
   smallsetCode$command <- as.character(smallsetCode$command)
@@ -29,18 +28,18 @@ write_smallset_code <- function(scriptName, dir) {
       s <- s + 1
       
       insertSnap <- c(paste0(
-        "snapshots[[",
+        "snapshots[['",
         as.character(s),
-        "]] <- ",
+        "']] <- ",
         as.character(stringr::str_remove(smallsetCode$command[i], signal))
       ))
       
       if (i != iterLim) {
-        smallsetCode <- c(smallsetCode[1:(i + 1),],
+        smallsetCode <- c(smallsetCode[1:(i + 1), ],
                           insertSnap,
-                          smallsetCode[(i + 2):nrow(smallsetCode),])
+                          smallsetCode[(i + 2):nrow(smallsetCode), ])
       } else {
-        smallsetCode <- c(smallsetCode[1:i,],
+        smallsetCode <- c(smallsetCode[1:i, ],
                           insertSnap,
                           "return(snapshots)")
       }
@@ -49,26 +48,151 @@ write_smallset_code <- function(scriptName, dir) {
       smallsetCode$command <- as.character(smallsetCode$command)
     }
   }
-
+  
   initialName <-
     as.character(stringr::str_remove(subset(
       smallsetCode, grepl("# snap ", smallsetCode$command)
     )[1,], "# snap "))
-  functionStart <-
-    paste0("apply_code <- function(", initialName, ") {")
+  
+  if (is.null(dataNames)) {
+    functionStart <-
+      paste0("apply_code <- function(", initialName, ") {")
+  } else {
+    nameArgs <- paste(dataNames, collapse = ", ")
+    
+    functionStart <-
+      paste0("apply_code <- function(", nameArgs, ") {")
+  }
+  
   smallsetCode <-
-    c("snapshots <- list()", 
+    c(
+      "snapshots <- list()",
       functionStart,
-      paste0("snapshots[[1]] <- ", initialName),
+      paste0("snapshots[['1']] <- ", initialName),
       smallsetCode$command,
-      "}")
+      "}"
+    )
   smallsetCode <- data.frame(command = smallsetCode)
   smallsetCode$command <- as.character(smallsetCode$command)
+  
+  smallsetCode$startingString <- word(smallsetCode$command, 1)
+  smallsetCode$startingString <-
+    ifelse(
+      smallsetCode$startingString %in% c("#", "for", " "),
+      "not code to snap",
+      ifelse(
+        startsWith(smallsetCode$startingString, "snapshots[["),
+        "external snap",
+        smallsetCode$startingString
+      )
+    )
+  smallsetCode[c(
+    1,
+    2,
+    nrow(smallsetCode) - 3,
+    nrow(smallsetCode) - 2,
+    nrow(smallsetCode) - 1,
+    nrow(smallsetCode)
+  ), "startingString"] <-
+    c(
+      "not code to snap",
+      "not code to snap",
+      "last snap",
+      "external snap",
+      "not code to snap",
+      "not code to snap"
+    )
+  
+  hiddenCode <- c()
+  for (i in 1:nrow(smallsetCode)) {
+    if ((smallsetCode$startingString[i] %in% c("not code to snap", "external snap") == FALSE) &
+        (smallsetCode$startingString[i + 1] %in% c("external snap", "last snap") == FALSE) == TRUE) {
+      hiddenCode <- c(hiddenCode, i)
+    }
+  }
+  
+  esnaps <-
+    data.frame(r = rownames(subset(
+      smallsetCode, startingString == "external snap"
+    )), d =
+      word(
+        subset(smallsetCode, startingString == "external snap")$command,
+        -1
+      ))
+  esnaps$r <- as.numeric(as.character(esnaps$r))
+  esnaps$n <- seq(1, nrow(esnaps), 1)
+  esnaps$type <- "external"
+  
+  if (length(rownames(subset(
+    smallsetCode, grepl("# catch ", smallsetCode$command)))) > 0) {
+    dataCatches <-
+      data.frame(r = rownames(subset(
+        smallsetCode, grepl("# catch ", smallsetCode$command)
+      )),
+      d = word(subset(
+        smallsetCode, grepl("# catch ", smallsetCode$command)
+      )$command, -1))
+    dataCatches$r <- as.numeric(as.character(dataCatches$r)) + 1
+    dataCatches$n <- NA
+    dataCatches$type <- "catch"
+  } else {
+    dataCatches <- data.frame(r = numeric(), d = factor(), n = numeric(), type = character())
+  }
+
+  esnaps <- rbind(esnaps, dataCatches)
+  esnaps <- esnaps[order(esnaps$r), ]
+  rownames(esnaps) <- NULL
+  esnaps$n <-
+    ifelse(is.na(esnaps$n), as.numeric(row.names(esnaps)) - 1, esnaps$n)
+  
+  esnaps$max <- NA
+  for (r in 1:nrow(esnaps)) {
+    esnaps$max[r] <- esnaps$r[r + 1] - 1
+  }
+
+  
+  eID <- esnaps$n[1]
+  v <- 0
+  for (i in 1:length(hiddenCode)) {
+    h <- hiddenCode[i]
+    
+    for (z in 1:nrow(esnaps)) {
+      if (between(h, esnaps$r[z], esnaps$max[z])) {
+        break
+      }
+    }
+    
+    o <- esnaps[z, "n"]
+    if (o != eID) {
+      eID <- o
+      v <- 0
+    }
+    
+    v <- v + .1
+    eV <- eID + v
+    
+    insertSnap <- c(paste0("snapshots[['",
+                           as.character(eV),
+                           "']] <- ",
+                           esnaps[z, "d"]))
+    
+    smallsetCode <- rbind(smallsetCode[1:h, ],
+                          data.frame(
+                            command = c(insertSnap),
+                            startingString = c("internal snap")
+                          ),
+                          smallsetCode[(h + 1):nrow(smallsetCode), ])
+    hiddenCode <- hiddenCode + 1
+    esnaps$r <- esnaps$r + 1
+    esnaps$max <- esnaps$max + 1
+    row.names(smallsetCode) <- NULL
+  }
+  
+  smallsetCode$startingString <- NULL
+  
   
   fileConn <- file(paste0(dir, "/smallset_code.R"))
   writeLines(smallsetCode$command, fileConn)
   close(fileConn)
   
 }
-
-

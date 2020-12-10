@@ -111,7 +111,10 @@ make_timeline_plot <-
       empty <- rbind(empty, empty2)
     }
     
-    missingCol <- lighten(col2hex(ftsList[[2]]), .4)
+    missingCols <- c(lighten(col2hex(ftsList[[2]]), .4), 
+                     lighten(col2hex(ftsList[[3]]), .4), 
+                     lighten(col2hex(ftsList[[4]]), .4), 
+                     lighten(col2hex(ftsList[[5]]), .4))
     tabs$colValue <-
       ifelse(is.na(tabs$datValue), lighten(col2hex(tabs$colValue), .4), tabs$colValue)
     
@@ -122,8 +125,8 @@ make_timeline_plot <-
       )
     
     legendDF$legend <- TRUE
-    addNewRow <- data.frame(colValue = c(missingCol), description = c(""), legend = c(FALSE))
-    legendDF <- rbind(legendDF, addNewRow)
+    addNewRows <- data.frame(colValue = missingCols, description = c(""), legend = c(FALSE))
+    legendDF <- rbind(legendDF, addNewRows)
     legendDF$fillVar <-
       factor(legendDF$colValue, levels = legendDF$colValue)
     tabs <- merge(tabs, legendDF[,c("colValue", "fillVar")])

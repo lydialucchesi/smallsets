@@ -4,9 +4,15 @@
 #' @export
 #' @import "dplyr"
 
-select_smallset <- function(data,
+select_smallset <- function(dataNum,
+                            data,
                             rowCount = 6,
                             rowNums = NULL) {
+  
+  data <- data[[dataNum]]
+  rowCount <- rowCount[[dataNum]]
+  rowNums <- rowNums[[dataNum]]
+  
   if (is.null(rowNums)) {
     smallset <- dplyr::sample_n(data, size = rowCount)
   }

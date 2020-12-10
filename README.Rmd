@@ -438,8 +438,6 @@ plot_grid(plotlist = check, nrow = 1)
 
 ## To-do list:
 
-* Add option to "hide" sections in the prep code
-  * Is there a better word than hide?
 * Work on methodology for sampling of a smallset
   * Need it to be representative/unbiased but also comprehensive in terms of issues/adjustments addressed in the preprocessing step
     * How do you balance this in a smallset
@@ -461,16 +459,16 @@ plot_grid(plotlist = check, nrow = 1)
     * Removing implausible/erroneous values
     * Rearranging
     * Dropping
-  * Offer build your own option - should this be what I already have with the circles and symbols? Probably a better method - will see if stamps turn out first
+  * ~~Offer build your own option - should this be what I already have with the circles and symbols? Probably a better method - will see if stamps turn out first~~
 * ~~Get tiles to be equal size across entire timeline~~
   * ~~Then write a viewing/plotting function for the timeline~~
 * Create option to rename caption template file so it is not written over when you rerun highlight_changes()
 * Explore colour overlays for tile colours
 * Add option to abstract column names
   * Put columns inside of gg fit boxes
-* Add timeline and subtitle options
-* Create a colour key for timeline
-  * At the top, horizontal under the timeline title and subtitle?
+* ~~Add timeline and subtitle options~~
+* ~~Create a colour key for timeline~~
+  * ~~At the top, horizontal under the timeline title and subtitle?~~
 * Comment code and write tests
 * ~~Debug issue with prep_data2 script~~
 * Create mtcars data extraction example with captions - include quotes from Motor Trends magazine articles
@@ -483,8 +481,8 @@ plot_grid(plotlist = check, nrow = 1)
   * Could also adjust tile size or tile border width or tile transparency depending on occurrence rate
 * Work on un-abstracted timeline
   * Overall create_timeline function - abstract argument and if `TRUE` then run abstract_timeline?
-* Read in captions as R expression objects so that you can format text (bold, italicize, etc.)
-  * Bold letter/word corresponding to stamp
+* ~~Read in captions as R markdown expressions so that you can format text (bold, italicize, etc.)~~
+  * ~~Bold letter/word corresponding to stamp~~
 * Figure out what to do if I merge two data sets - will need to sample and create two separate smallsets?
   * Need to adjust prep_smallset to accept a list of data sets then (not just one)
 * Need to address some errors
@@ -596,4 +594,5 @@ check <- create_timeline(
 
 check
 ```
+
 

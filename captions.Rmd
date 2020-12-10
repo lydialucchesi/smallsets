@@ -1,7 +1,7 @@
 ---
 title: "Captions for the smallset timeline"
-author: Lydia
-date: 2020-12-11
+author: 
+date: 2020-12-10
 output: html_document
 ---
 
@@ -21,9 +21,9 @@ Symbols
 
 1. Changed (cornflowerblue):
 
-2. Added (blueviolet):
+2. Added (#689F38):
 
-3. Deleted (darkgoldenrod1):
+3. Deleted (#b2a38c):
 
 Caption: 
 
@@ -33,20 +33,32 @@ Symbols
 
 1. Changed (cornflowerblue):
 
-2. Added (blueviolet):
+2. Added (#689F38):
 
-3. Deleted (darkgoldenrod1):
+3. Deleted (#b2a38c):
 
 Caption: 
 
-### `df3$time <- NULL`
+### `df4 <- left_join(df3, newdata)`
 
 Symbols
 
 1. Changed (cornflowerblue):
 
-2. Added (blueviolet):
+2. Added (#689F38):
 
-3. Deleted (darkgoldenrod1):
+3. Deleted (#b2a38c):
+
+Caption: 
+
+### `snapshots[['4']] <- df3`
+
+Symbols
+
+1. Changed (cornflowerblue):
+
+2. Added (#689F38):
+
+3. Deleted (#b2a38c):
 
 Caption: 

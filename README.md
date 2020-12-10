@@ -555,9 +555,9 @@ plot_grid(plotlist = check, nrow = 1)
           - Removing implausible/erroneous values
           - Rearranging
           - Dropping
-      - Offer build your own option - should this be what I already have
-        with the circles and symbols? Probably a better method - will
-        see if stamps turn out first
+      - ~~Offer build your own option - should this be what I already
+        have with the circles and symbols? Probably a better method -
+        will see if stamps turn out first~~
   - ~~Get tiles to be equal size across entire timeline~~
       - ~~Then write a viewing/plotting function for the timeline~~
   - Create option to rename caption template file so it is not written
@@ -565,9 +565,10 @@ plot_grid(plotlist = check, nrow = 1)
   - Explore colour overlays for tile colours
   - Add option to abstract column names
       - Put columns inside of gg fit boxes
-  - Add timeline and subtitle options
-  - Create a colour key for timeline
-      - At the top, horizontal under the timeline title and subtitle?
+  - ~~Add timeline and subtitle options~~
+  - ~~Create a colour key for timeline~~
+      - ~~At the top, horizontal under the timeline title and
+        subtitle?~~
   - Comment code and write tests
   - ~~Debug issue with prep\_data2 script~~
   - Create mtcars data extraction example with captions - include quotes
@@ -587,9 +588,9 @@ plot_grid(plotlist = check, nrow = 1)
   - Work on un-abstracted timeline
       - Overall create\_timeline function - abstract argument and if
         `TRUE` then run abstract\_timeline?
-  - Read in captions as R expression objects so that you can format text
-    (bold, italicize, etc.)
-      - Bold letter/word corresponding to stamp
+  - ~~Read in captions as R markdown expressions so that you can format
+    text (bold, italicize, etc.)~~
+      - ~~Bold letter/word corresponding to stamp~~
   - Figure out what to do if I merge two data sets - will need to sample
     and create two separate smallsets?
       - Need to adjust prep\_smallset to accept a list of data sets then
