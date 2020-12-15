@@ -1,5 +1,4 @@
 
-
 highlight_changes <- function(list,
                               constant = "#927C5C",
                               changed = "cornflowerblue",
@@ -36,7 +35,7 @@ highlight_changes <- function(list,
   colInfo <- data.frame()
   flag <- FALSE
   for (p in 1:(length(list) - 1)) {
-
+    print(p)
     c <- p + 1
     
     lprior <- list[[p]]
@@ -159,12 +158,19 @@ highlight_changes <- function(list,
         data.frame(name = colnames(lprior), place = seq(1, length(colnames(lprior))))
       
       if (nrow(colInfo) > 0) {
-        colInfo <-
-          rbind(colInfo, subset(new2, name %in% colnames(colDropped)))
+        if (length(colsDrop) > 0) {
+          newColInfo <- subset(new2, name %in% colnames(colDropped))
+          for (s in 1:nrow(newColInfo)) {
+            if (newColInfo$place[s] %in% colInfo$place) {
+              newColInfo$place[s] <- newColInfo$place[s] + 1
+            }
+          }
+          colInfo <-
+            rbind(colInfo, newColInfo)
+        }
       } else {
         colInfo <- subset(new2, name %in% colnames(colDropped))
       }
-      
     }
     
     ## COLUMN ADDITIONS
@@ -185,15 +191,17 @@ highlight_changes <- function(list,
     }
     
     if (length(colsAdd) > 0) {
-      lcurrentAdj <- subset(lcurrent, select = colnames(lprior))
+      selectionCols <- colnames(lprior)[colnames(lprior) %in% colnames(lcurrent)]
+      lcurrentAdj <- subset(lcurrent, select = selectionCols)
     } else {
       lcurrentAdj <- lcurrent
     }
     
-    original <-
-      setdiff(subset(lpriorAdj, select = colnames(lcurrentAdj)), lcurrentAdj)
-    update <-
-      setdiff(lcurrentAdj, subset(lpriorAdj, select = colnames(lcurrentAdj)))
+    # original <- setdiff(subset(lpriorAdj, select = colnames(lcurrentAdj)), lcurrentAdj)
+    # update <- setdiff(lcurrentAdj, subset(lpriorAdj, select = colnames(lcurrentAdj)))
+    
+    original <- subset(lpriorAdj, select = colnames(lcurrentAdj))
+    update <- subset(lcurrentAdj, select = colnames(lcurrentAdj))
     
     adjData <- data.frame(r = numeric(), c = numeric())
     for (i in 1:nrow(original)) {
@@ -225,10 +233,16 @@ highlight_changes <- function(list,
       
       lcurrentD <- lprior
       for (d in 1:nrow(oldRowDropped)) {
-        lcurrentD <-
-          bind_rows(lcurrentD[1:as.numeric(row.names(oldRowDropped))[d] - 1,],
-                    oldRowDropped[d,],
-                    lcurrentD[as.numeric(row.names(oldRowDropped))[d]:nrow(lcurrentD),])
+        if (row.names(oldRowDropped)[d] > nrow(lcurrentD)) {
+            lcurrentD <-
+              bind_rows(lcurrentD[1:as.numeric(row.names(oldRowDropped))[d] - 1,],
+                        oldRowDropped[d,])
+          } else {
+            lcurrentD <-
+              bind_rows(lcurrentD[1:as.numeric(row.names(oldRowDropped))[d] - 1,],
+                        oldRowDropped[d,],
+                        lcurrentD[as.numeric(row.names(oldRowDropped))[d]:nrow(lcurrentD),])
+          }
       }
       
       rows1 <- c()
@@ -296,10 +310,18 @@ highlight_changes <- function(list,
       }
       
       for (col in 1:nrow(oldColInfo)) {
-        lcurrentD <-
-          cbind(lcurrent[, 1:oldColInfo$place[col] - 1],
-                select(oldColDropped, oldColInfo$name[col]),
-                lcurrent[, (oldColInfo$place[col]):ncol(lcurrent)])
+        if (col == 1) {
+          lcurrentD <-
+            cbind(lcurrent[, 1:oldColInfo$place[col] - 1],
+                  select(oldColDropped, oldColInfo$name[col]),
+                  lcurrent[, (oldColInfo$place[col]):ncol(lcurrent)])
+        } else {
+          lcurrentD <-
+            cbind(lcurrentD[, 1:oldColInfo$place[col] - 1],
+                  select(oldColDropped, oldColInfo$name[col]),
+                  lcurrentD[, (oldColInfo$place[col]):ncol(lcurrentD)])
+        }
+
       }
       
       tcurrentD <- flextable::flextable(lcurrentD)
@@ -329,9 +351,9 @@ highlight_changes <- function(list,
     
     ## SAVING
     if ((((isTRUE(listInfo$ext[p]) & nrow(oldRowDropped) != 0)) | 
-        (((isTRUE(listInfo$ext[p]) & 
-           (ncol(oldColDropped) != 0)) | 
-          ((p == (length(list) - 1)) & (ncol(oldColDropped) != 0))))) & (p == (length(list) - 1))) {
+         (((isTRUE(listInfo$ext[p]) & 
+            (ncol(oldColDropped) != 0)) | 
+           ((p == (length(list) - 1)) & (ncol(oldColDropped) != 0))))) & (p == (length(list) - 1))) {
       tables[[c]] <- tcurrentD
     } else {
       tables[[c]] <- tcurrent

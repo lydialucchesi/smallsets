@@ -39,7 +39,7 @@ Symbols
 
 Caption: 
 
-### `df4 <- left_join(df3, newdata)`
+### `df4$count <- ifelse(df4$count == 10, 100, df4$count)`
 
 Symbols
 
