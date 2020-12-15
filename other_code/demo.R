@@ -202,16 +202,16 @@ fts <- highlight_changes(
 
 check <- create_timeline(
   ftsList = fts,
-  abstract = FALSE,
+  abstract = TRUE,
   sizing =
     list(
-      "columns" = 2,
+      "columns" = 1.5,
       "tiles" = .8,
       "captions" = 2,
       "symbols" = 2,
       "circles" = .2,
       "data" = 2,
-      "legend" = 6
+      "legend" = 5
     ),
   accentCols = "darker",
   accentColsDif = .7,

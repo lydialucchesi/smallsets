@@ -49,7 +49,6 @@ highlight_changes <- function(list,
   colInfo <- data.frame()
   flag <- FALSE
   for (p in 1:(length(list) - 1)) {
-    print(p)
     c <- p + 1
     
     lprior <- list[[p]]
