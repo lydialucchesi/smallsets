@@ -1,5 +1,5 @@
 snapshots <- list()
-apply_code <- function(df1, df2) {
+apply_code <- function(df1, df2, df3) {
 snapshots[['1']] <- df1
 df1$latitude <- "35.2809"
 snapshots[['1.1']] <- df1
@@ -18,7 +18,9 @@ snapshots[['3']] <- df3
 df3$newCar <- "car"
 snapshots[['3.1']] <- df3
 df3$time <- NULL
-# snap df3
-snapshots[['4']] <- df3
+snapshots[['3.2']] <- df3
+df4 <- left_join(df3, newdata)
+# snap df4
+snapshots[['4']] <- df4
 return(snapshots)
 }

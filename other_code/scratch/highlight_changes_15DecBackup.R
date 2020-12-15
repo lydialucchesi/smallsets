@@ -1,25 +1,11 @@
-#' Highlight changes
-#'
-#' @param list A list from \code{prep_smallset}
-#' @param constant A colour to represent data cells that have not changed since previous smallset
-#' @param changed A colour to represent data cells that have changed since previous smallset
-#' @param added A colour to represent data cells that have been added since previous smallset
-#' @param deleted A colour to represent cells that will be deleted from next smallset
-#' @param author The author's name for the caption .Rmd file
-#' @param captionScript A file name for the caption .Rmd template
-#' @param captionDir A file path for the caption .Rmd template
-#' @export
-#' @import "flextable"
-#' @importFrom gdata cbindX
-
 highlight_changes <- function(list,
-                              constant = "#927C5C",
-                              changed = "cornflowerblue",
-                              added = "#689F38",
-                              deleted = "#b2a38c",
-                              author = NULL,
-                              captionScript = "captions",
-                              captionDir = getwd()) {
+         constant = "#927C5C",
+         changed = "cornflowerblue",
+         added = "#689F38",
+         deleted = "#b2a38c",
+         author = NULL,
+         captionScript = "captions",
+         captionDir = getwd()) {
   write_caption_template(
     authorName = author,
     col1 = changed,
@@ -47,8 +33,8 @@ highlight_changes <- function(list,
   colDropped <- data.frame()
   colInfo <- data.frame()
   flag <- FALSE
-  for (p in 1:(length(list) - 1)) {
-    
+  # for (p in 1:(length(list) - 1)) {
+  for (p in 1:8) {
     c <- p + 1
     
     lprior <- list[[p]]
@@ -77,14 +63,12 @@ highlight_changes <- function(list,
     tcurrent <- flextable::color(tcurrent, color = constant)
     
     # what to do if INTPKGRNAME is in tprior
-    if (!(FALSE %in% ((row.names(
-      tprior$body$dataset
-    )[!grepl("INTPKGRNAME", row.names(tprior$body$dataset))]) != rownames(lprior)))) {
+    if (!(FALSE %in% ((row.names(tprior$body$dataset)[!grepl("INTPKGRNAME", row.names(tprior$body$dataset))]) != rownames(lprior)))) {
       row.names(tprior$body$dataset) <- rownames(lprior)
     }
     row.names(tcurrent$body$dataset) <- rownames(lcurrent)
     
-    if (isFALSE(listInfo[listInfo$n == c, "first"]))  {
+    if (isFALSE(listInfo[listInfo$n == c, "first"])) {
       ivals <-
         row.names(tprior$body$dataset)[row.names(tprior$body$dataset) %in% row.names(lcurrent)]
       jvals <-
@@ -106,9 +90,7 @@ highlight_changes <- function(list,
       tcurrent <- flextable::color(
         tcurrent,
         color = priorCols,
-        i = (
-          as.character(ivals) == row.names(tcurrent$body$dataset)
-        ),
+        i = (as.character(ivals) == row.names(tcurrent$body$dataset)),
         j = jvals
       )
     }
@@ -171,8 +153,7 @@ highlight_changes <- function(list,
         data.frame(name = colnames(lprior), place = seq(1, length(colnames(lprior))))
       
       if (nrow(colInfo) > 0) {
-        colInfo <-
-          rbind(colInfo, subset(new2, name %in% colnames(colDropped)))
+        colInfo <- rbind(colInfo, subset(new2, name %in% colnames(colDropped)))
       } else {
         colInfo <- subset(new2, name %in% colnames(colDropped))
       }
@@ -222,12 +203,10 @@ highlight_changes <- function(list,
     if (nrow(adjData) > 0) {
       for (h in 1:nrow(adjData)) {
         tcurrent <-
-          flextable::color(
-            tcurrent,
-            color = changed,
-            i = as.character(adjData$r[h]),
-            j = adjData$c[h]
-          )
+          flextable::color(tcurrent,
+                           color = changed,
+                           i = as.character(adjData$r[h]),
+                           j = adjData$c[h])
       }
     }
     
@@ -238,36 +217,23 @@ highlight_changes <- function(list,
       lcurrentD <- lprior
       for (d in 1:nrow(oldRowDropped)) {
         lcurrentD <-
-          bind_rows(lcurrentD[1:as.numeric(row.names(oldRowDropped))[d] - 1,],
-                    oldRowDropped[d,],
+          bind_rows(lcurrentD[1:as.numeric(row.names(oldRowDropped))[d] - 1,], 
+                    oldRowDropped[d,], 
                     lcurrentD[as.numeric(row.names(oldRowDropped))[d]:nrow(lcurrentD),])
       }
       
-      rows1 <- c()
+      rows <- c()
       for (r in 1:nrow(lcurrentD)) {
         if (row.names(lcurrentD)[r] %in% row.names(oldRowDropped)) {
-          rows1 <- c(rows1, paste0("INTPKGRNAME", r))
+          rows <- c(rows, paste0("INTPKGRNAME", r))
         } else {
-          rows1 <- c(rows1, savedNames[1])
+          rows <- c(rows, savedNames[1])
           savedNames <- savedNames[-1]
         }
       }
-      row.names(lcurrentD) <- rows1
-      
-      rows2 <- c()
-      priorRows <- row.names(tprior$body$dataset)
-      for (r in 1:nrow(lcurrentD)) {
-        if (grepl("INTPKGRNAME", row.names(lcurrentD)[r])) {
-          rows2 <- c(rows2, row.names(lcurrentD)[r])
-        } else {
-          rows2 <- c(rows2, priorRows[1])
-          priorRows <- priorRows[-1]
-        }
-      }
-      row.names(lcurrentD) <- rows2
+      row.names(lcurrentD) <- rows
       
       tcurrentD <- flextable::flextable(lcurrentD)
-      
       
       tcurrentD <- flextable::color(
         tcurrentD,
@@ -291,15 +257,12 @@ highlight_changes <- function(list,
                    TRUE),
         j = setdiff(colnames(lprior), colnames(oldRowDropped))
       )
-      
-      # do i need to then save rows as rows1?
-      row.names(tcurrentD$body$dataset) <- rows1
-      
     }
     
     if ((isTRUE(listInfo$ext[p]) &
          (ncol(oldColDropped) != 0)) |
         ((p == (length(list) - 1)) & (ncol(oldColDropped) != 0))) {
+      
       if ((nrow(oldRowDropped) == 0) & (p == (length(list) - 1))) {
         lcurrentD <- lcurrent
       }
@@ -340,11 +303,12 @@ highlight_changes <- function(list,
     
     
     ## SAVING
-    if ((((isTRUE(listInfo$ext[p]) & nrow(oldRowDropped) != 0)) | 
-         (((isTRUE(listInfo$ext[p]) & 
-            (ncol(oldColDropped) != 0)) | 
-           ((p == (length(list) - 1)) & (ncol(oldColDropped) != 0))))) & (p == (length(list) - 1))) {
-      tables[[c]] <- tcurrentD
+    if ((isTRUE(listInfo$ext[p]) &
+         (nrow(oldRowDropped) != 0)) |
+        ((isTRUE(listInfo$ext[p]) &
+          (ncol(oldColDropped) != 0)) |
+         ((ncol(oldColDropped) != 0) & (p == (length(list) - 1))))) {
+      tables[[c]] <- tcurrentD 
     } else {
       tables[[c]] <- tcurrent
     }

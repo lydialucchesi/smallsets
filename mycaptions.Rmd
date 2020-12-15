@@ -1,7 +1,7 @@
 ---
 title: "Captions for the smallset timeline"
 author: Lydia
-date: 2020-12-11
+date: 2020-12-15
 output: html_document
 ---
 
@@ -39,7 +39,7 @@ Symbols
 
 Caption: 
 
-### `df3$time <- NULL`
+### `df4 <- left_join(df3, newdata)`
 
 Symbols
 

@@ -1,7 +1,12 @@
 library(smallset)
 
 ## ONE DATASET
-source("other_code/gen_data.R")
+df <- data.frame(
+  year = c(2000,-1999, 2000, 1995, 1996, 2001, 2002, 2003, 2001, 1994, 2000, -1999),
+  count = c(10, 5, 5, 9, NA, 8, 10, 10, 6, 7, NA, 3),
+  time = c(20, 11, 9, 18, 4, 15, 20, NA, 12, 13, 19, 6),
+  defect = c(.6, .5, 1.1, .8, .7, 1.3, .9, 1.1, 1.4, .8, .9, 1.2)
+)
 
 mylist <- prepare_smallset(
   data = df,
@@ -45,7 +50,18 @@ check
 
 
 ## TWO DATASETS
-source("other_code/process_data5.R")
+df1 <- data.frame(
+  year = c(2000, -1999, 2000, 1995, 1996, 2001, 2002, 2003, 2001, 1994, 2000, -1999),
+  count = c(10, 5, 5, 9, NA, 8, 10, 10, 6, 7, NA, 3),
+  time = c(20, 11, 9, 18, 4, 15, 20, 21, 12, 13, 19, 6),
+  defect = c(.6, .5, 1.1, .8, .7, 1.3, .9, 1.1, 1.4, .8, .9, 1.2),
+  id = seq(1, 12)
+)
+
+df2 <- data.frame(
+  id = sample(1:12, 4, replace = FALSE),
+  newVar = c(10, 11, 12, 9)
+)
 
 mylist <- prepare_smallset(
   data = list(df1 = df1, df2 = df2),
@@ -88,10 +104,27 @@ check
 
 
 ## THREE DATASETS
-source("other_code/process_data6.R")
+df1 <- data.frame(
+  year = c(2000, -1999, 2000, 1995, 1996, 2001, 2002, 2003, 2001, 1994, 2000, -1999),
+  count = c(10, 5, 5, 9, NA, 8, 10, 10, 6, 7, NA, 3),
+  time = c(20, 11, 9, 18, 4, 15, 20, 21, 12, 13, 19, 6),
+  defect = c(.6, .5, 1.1, .8, .7, 1.3, .9, 1.1, 1.4, .8, .9, 1.2),
+  id = seq(1, 12)
+)
+
+df2 <- data.frame(
+  id = sample(1:12, 4, replace = FALSE),
+  newVar = c(10, 11, 12, 9)
+)
+
+newdata <- data.frame(
+  id = sample(1:12, 4, replace = FALSE),
+  newVar2 = rep("check", 4)
+)
+
 
 mylist <- prepare_smallset(
-  data = list(df1 = df1, df2 = df2, df3 = df3),
+  data = list(df1 = df1, df2 = df2, df3 = newdata),
   code = "other_code/process_data6.R",
   rowCount = list(6, 2, 2),
 )

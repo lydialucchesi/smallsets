@@ -2,7 +2,8 @@
 #' @description A function to transform the flextable into a colour plot
 #' @keywords internal
 #' @export
-#' @import "reshape2" "ggplot2" "ggforce" "ggfittext" "gplots" "colorspace" "stringr" "ggtext"
+#' @import "reshape2" "ggplot2" "ggforce" "ggfittext" "colorspace" "stringr" "ggtext"
+#' @importFrom gplots col2hex
 
 make_timeline_plot <-
   function(ftsItemNum,

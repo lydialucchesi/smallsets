@@ -1,16 +1,4 @@
-#' Highlight changes
-#'
-#' @param list A list from \code{prep_smallset}
-#' @param constant A colour to represent data cells that have not changed since previous smallset
-#' @param changed A colour to represent data cells that have changed since previous smallset
-#' @param added A colour to represent data cells that have been added since previous smallset
-#' @param deleted A colour to represent cells that will be deleted from next smallset
-#' @param author The author's name for the caption .Rmd file
-#' @param captionScript A file name for the caption .Rmd template
-#' @param captionDir A file path for the caption .Rmd template
-#' @export
-#' @import "flextable"
-#' @importFrom gdata cbindX
+
 
 highlight_changes <- function(list,
                               constant = "#927C5C",
@@ -48,7 +36,7 @@ highlight_changes <- function(list,
   colInfo <- data.frame()
   flag <- FALSE
   for (p in 1:(length(list) - 1)) {
-    
+
     c <- p + 1
     
     lprior <- list[[p]]
@@ -341,9 +329,9 @@ highlight_changes <- function(list,
     
     ## SAVING
     if ((((isTRUE(listInfo$ext[p]) & nrow(oldRowDropped) != 0)) | 
-         (((isTRUE(listInfo$ext[p]) & 
-            (ncol(oldColDropped) != 0)) | 
-           ((p == (length(list) - 1)) & (ncol(oldColDropped) != 0))))) & (p == (length(list) - 1))) {
+        (((isTRUE(listInfo$ext[p]) & 
+           (ncol(oldColDropped) != 0)) | 
+          ((p == (length(list) - 1)) & (ncol(oldColDropped) != 0))))) & (p == (length(list) - 1))) {
       tables[[c]] <- tcurrentD
     } else {
       tables[[c]] <- tcurrent
