@@ -21,6 +21,40 @@ highlight_changes <- function(list,
                               author = NULL,
                               captionScript = "captions",
                               captionDir = getwd()) {
+  if (!is.list(constant)) {
+    constantAlpha = .4
+  } else {
+    constantAlpha = constant[[2]]
+    constant = constant[[1]]
+  }
+  
+  if (!is.list(changed)) {
+    changedAlpha = .4
+  } else {
+    changedAlpha = changed[[2]]
+    changed = changed[[1]]
+  }
+  
+  if (!is.list(added)) {
+    addedAlpha = .4
+  } else {
+    addedAlpha = added[[2]]
+    added = added[[1]]
+  }
+  
+  if (!is.list(deleted)) {
+    deletedAlpha = .4
+  } else {
+    deletedAlpha = deleted[[2]]
+    deleted = deleted[[1]]
+  }
+  
+  tileAlphas <-
+    data.frame(
+      colValue = c(constant, changed, added, deleted),
+      alpha = c(constantAlpha, changedAlpha, addedAlpha, deletedAlpha)
+    )
+  
   write_caption_template(
     authorName = author,
     col1 = changed,
@@ -60,7 +94,7 @@ highlight_changes <- function(list,
     }
     
     if ((nrow(lprior) == nrow(lcurrent)) &
-        (FALSE %in% (rownames(lprior) == rownames(lcurrent)))) {
+        (FALSE %in% suppressWarnings(rownames(lprior) == rownames(lcurrent)))) {
       rownames(lprior) <- rownames(lcurrent)
       # row.names(tprior$body$dataset) <- rownames(lcurrent)
     }
@@ -128,7 +162,7 @@ highlight_changes <- function(list,
       oldRowDropped <- rowDropped
       rowDropped <- data.frame()
     } else {
-      rowDropped <- rbind(rowDropped, lprior[as.numeric(rowsDrop),])
+      rowDropped <- rbind(rowDropped, lprior[as.numeric(rowsDrop), ])
       if (p == (length(list) - 1)) {
         oldRowDropped <- rowDropped
       }
@@ -158,6 +192,7 @@ highlight_changes <- function(list,
       oldColInfo <- colInfo
       colInfo <- data.frame()
     } else {
+      # use all_of here? get note when running for first time in session
       new <- select(lprior, colsDrop)
       if (length(colnames(colDropped)) > 0) {
         colDropped <- gdata::cbindX(colDropped, new)
@@ -198,13 +233,14 @@ highlight_changes <- function(list,
     
     ## DATA EDITS
     if (length(rowsDrop) > 0) {
-      lpriorAdj <- subset(lprior,!(row.names(lprior) %in% rowsDrop))
+      lpriorAdj <- subset(lprior, !(row.names(lprior) %in% rowsDrop))
     } else {
       lpriorAdj <- lprior
     }
     
     if (length(colsAdd) > 0) {
-      selectionCols <- colnames(lprior)[colnames(lprior) %in% colnames(lcurrent)]
+      selectionCols <-
+        colnames(lprior)[colnames(lprior) %in% colnames(lcurrent)]
       lcurrentAdj <- subset(lcurrent, select = selectionCols)
     } else {
       lcurrentAdj <- lcurrent
@@ -248,13 +284,13 @@ highlight_changes <- function(list,
       for (d in 1:nrow(oldRowDropped)) {
         if (row.names(oldRowDropped)[d] > nrow(lcurrentD)) {
           lcurrentD <-
-            bind_rows(lcurrentD[1:as.numeric(row.names(oldRowDropped))[d] - 1,],
-                      oldRowDropped[d,])
+            bind_rows(lcurrentD[1:as.numeric(row.names(oldRowDropped))[d] - 1, ],
+                      oldRowDropped[d, ])
         } else {
           lcurrentD <-
-            bind_rows(lcurrentD[1:as.numeric(row.names(oldRowDropped))[d] - 1,],
-                      oldRowDropped[d,],
-                      lcurrentD[as.numeric(row.names(oldRowDropped))[d]:nrow(lcurrentD),])
+            bind_rows(lcurrentD[1:as.numeric(row.names(oldRowDropped))[d] - 1, ],
+                      oldRowDropped[d, ],
+                      lcurrentD[as.numeric(row.names(oldRowDropped))[d]:nrow(lcurrentD), ])
         }
       }
       
@@ -363,10 +399,16 @@ highlight_changes <- function(list,
     
     
     ## SAVING
-    if ((((isTRUE(listInfo$ext[p]) & nrow(oldRowDropped) != 0)) | 
-         (((isTRUE(listInfo$ext[p]) & 
-            (ncol(oldColDropped) != 0)) | 
-           ((p == (length(list) - 1)) & (ncol(oldColDropped) != 0))))) & (p == (length(list) - 1))) {
+    if ((((
+      isTRUE(listInfo$ext[p]) & nrow(oldRowDropped) != 0
+    )) |
+    (((
+      isTRUE(listInfo$ext[p]) &
+      (ncol(oldColDropped) != 0)
+    ) |
+    ((p == (length(list) - 1)) &
+     (ncol(oldColDropped) != 0)
+    )))) & (p == (length(list) - 1))) {
       tables[[c]] <- tcurrentD
     } else {
       tables[[c]] <- tcurrent
@@ -388,13 +430,16 @@ highlight_changes <- function(list,
   
   tables <- tables[listInfo[listInfo$ext == TRUE, "n"]]
   
-  return(list(
-    tables,
-    constant,
-    changed,
-    added,
-    deleted,
-    captionScript,
-    captionDir
-  ))
+  return(
+    list(
+      tables,
+      constant,
+      changed,
+      added,
+      deleted,
+      captionScript,
+      captionDir,
+      tileAlphas
+    )
+  )
 }

@@ -11,6 +11,7 @@ make_timeline_plot(
   sizing,
   accentCols,
   accentColsDif,
+  otherTextColour,
   stampLoc,
   maxDims,
   timelineFont,

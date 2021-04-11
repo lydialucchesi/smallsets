@@ -11,6 +11,7 @@ create_timeline(
     data = 2.5, legend = 7),
   accentCols = "darker",
   accentColsDif = 0.5,
+  otherTextCol = 1,
   stampLoc = 1,
   timelineRows = NULL,
   timelineFont = "sans",
@@ -27,6 +28,8 @@ create_timeline(
 \item{accentCols}{Either "darker" or "lighter" for stamp colour. Can enter a list corresponding to specific actions.}
 
 \item{accentColsDif}{Degree to which stamp colour is darker or lighter. Can enter a list corresponding to specific actions.}
+
+\item{otherTextCol}{Value between 0 and 1. Default is 1, meaning column names will be black. 0 means columns will be the same colour as the constant colour.}
 
 \item{stampLoc}{Location of stamp. 1 = top left. 2 = top right. 3 = bottom left. 4 = bottom right. 5 = center.}
 

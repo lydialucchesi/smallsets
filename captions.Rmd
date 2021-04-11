@@ -1,7 +1,7 @@
 ---
 title: "Captions for the smallset timeline"
 author: 
-date: 2020-12-15
+date: 2021-01-06
 output: html_document
 ---
 
@@ -15,7 +15,7 @@ Timeline footnote:
 
 Caption: 
 
-### `df1$defect <- ifelse(df1$defect > 1, 1, 0)`
+### `df$defect <- ifelse(df$defect > 1, 1, 0)`
 
 Symbols
 
@@ -27,7 +27,7 @@ Symbols
 
 Caption: 
 
-### `df3 <- left_join(df1, df2)`
+### `df[is.na(df)] <- 0`
 
 Symbols
 
@@ -39,7 +39,7 @@ Symbols
 
 Caption: 
 
-### `df3$time <- NULL`
+### `df$time <- df$time * 60`
 
 Symbols
 

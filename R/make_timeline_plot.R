@@ -12,12 +12,14 @@ make_timeline_plot <-
            sizing,
            accentCols,
            accentColsDif,
+           otherTextColour,
            stampLoc,
            maxDims,
            timelineFont,
            captionSpace,
            accents,
            legendDF) {
+
     tab1 <-
       as.data.frame(ftsList[[1]][[ftsItemNum]]$body$styles$text$color$data)
     tab2 <-
@@ -30,12 +32,12 @@ make_timeline_plot <-
       tab1[, i] <- as.character(tab1[, i])
     }
     tab1$y <- seq(nrow(tab1), 1, -1)
-    tab1Long <- reshape2::melt(tab1, id = c("y"))
+    tab1Long <- suppressWarnings(reshape2::melt(tab1, id = c("y")))
     tab1Long <- merge(tab1Long, xs)
     colnames(tab1Long) <- c("variable", "y", "colValue", "x")
     
     tab2$y <- seq(nrow(tab2), 1, -1)
-    tab2Long <- reshape2::melt(tab2, id = c("y"))
+    tab2Long <- suppressWarnings(reshape2::melt(tab2, id = c("y")))
     tab2Long <- merge(tab2Long, xs)
     colnames(tab2Long) <- c("variable", "y", "datValue", "x")
     
@@ -112,12 +114,15 @@ make_timeline_plot <-
       empty <- rbind(empty, empty2)
     }
     
+    tabs <- suppressMessages(left_join(tabs, ftsList[[8]], by = "colValue"))
+    
     missingCols <- c(lighten(col2hex(ftsList[[2]]), .4), 
                      lighten(col2hex(ftsList[[3]]), .4), 
                      lighten(col2hex(ftsList[[4]]), .4), 
                      lighten(col2hex(ftsList[[5]]), .4))
     tabs$colValue <-
       ifelse(is.na(tabs$datValue), lighten(col2hex(tabs$colValue), .4), tabs$colValue)
+    
     
     tileColGuide <-
       data.frame(
@@ -130,23 +135,24 @@ make_timeline_plot <-
     legendDF <- rbind(legendDF, addNewRows)
     legendDF$fillVar <-
       factor(legendDF$colValue, levels = legendDF$colValue)
-    tabs <- merge(tabs, legendDF[,c("colValue", "fillVar")])
-    
+
+    legendDF$alpha <- c(ftsList[[8]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], ftsList[[8]]$alpha)
+    legendDF$colAlp <- as.factor(alpha(legendDF$fillVar, legendDF$alpha))
+    tabs <- merge(tabs, legendDF[,c("colValue", "colAlp")])
     legendDF <- subset(legendDF, legend == TRUE)
     
     if (nrow(circles) == 0) {
       abstractSmallset <- ggplot() +
         geom_tile(
           data = tabs,
-          aes(x = x, y = y, fill = fillVar),
-          alpha = .4,
+          aes(x = x, y = y, fill = colAlp),
           colour = "white",
           size = sizing[["tiles"]]
         ) +
         scale_fill_identity(
           "",
           labels = legendDF$description,
-          breaks = legendDF$fillVar,
+          breaks = legendDF$colAlp,
           guide = "legend",
           drop = FALSE
         ) +
@@ -154,7 +160,8 @@ make_timeline_plot <-
           data = xs,
           aes(x = x, y = y, label = variable),
           family = timelineFont,
-          size = sizing[["columns"]]
+          size = sizing[["columns"]],
+          colour = otherTextColour
         ) +
         coord_equal() +
         theme(
@@ -168,23 +175,23 @@ make_timeline_plot <-
           legend.title=element_blank(), 
           legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'),
           text = element_text(family = timelineFont,
-                              size = sizing[["legend"]])
+                              size = sizing[["legend"]],
+                              colour = otherTextColour)
         ) +
-        xlim(c(.5, (maxDims[1] + .5))) +
+        xlim(c(.5, (maxDims[1] + .5))) + 
         scale_colour_identity()
     } else {
       abstractSmallset <- ggplot() +
         geom_tile(
           data = tabs,
-          aes(x = x, y = y, fill = fillVar),
-          alpha = .4,
+          aes(x = x, y = y, fill = colAlp),
           colour = "white",
           size = sizing[["tiles"]]
         ) +
         scale_fill_identity(
           "",
           labels = legendDF$description,
-          breaks = legendDF$fillVar,
+          breaks = legendDF$colAlp,
           guide = "legend",
           drop = FALSE
         ) +
@@ -192,7 +199,8 @@ make_timeline_plot <-
           data = xs,
           aes(x = x, y = y, label = variable),
           family = timelineFont,
-          size = sizing[["columns"]]
+          size = sizing[["columns"]],
+          colour = otherTextColour
         ) +
         coord_equal() +
         theme(
@@ -204,10 +212,11 @@ make_timeline_plot <-
           axis.title.y = element_blank(),
           panel.background = element_blank(),
           legend.position = 'bottom',
-          legend.title=element_blank(), 
-          legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'),
+          legend.title = element_blank(), 
+          legend.margin = margin(t=0, r=0, b=0, l=0, unit='cm'),
           text = element_text(family = timelineFont,
-                              size = sizing[["legend"]])
+                              size = sizing[["legend"]],
+                              colour = otherTextColour)
         ) +
         xlim(c(.5, (maxDims[1] + .5))) +
         geom_circle(
@@ -287,7 +296,8 @@ make_timeline_plot <-
         valign = c(.5),
         halign = c(.5),
         size = sizing[["captions"]],
-        box.colour = NA
+        box.colour = NA,
+        colour = otherTextColour
       ) +
       ylim(c(captionSpace * (-1), maxDims[2] + 1))
     

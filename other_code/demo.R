@@ -18,16 +18,15 @@ mylist <- prepare_smallset(
 fts <- highlight_changes(
   list = mylist,
   captionScript = "mycaptions",
-  constant = "cornsilk4",
-  changed = "cornflowerblue",
-  added = "blueviolet",
-  deleted = "darkgoldenrod1",
-  author = "Lydia"
+  constant = constantC,
+  changed = changedC,
+  added = addedC,
+  deleted = deletedC,
 )
 
 check <- create_timeline(
   ftsList = fts,
-  abstract = FALSE,
+  abstract = TRUE,
   sizing =
     list(
       "columns" = 2,
@@ -38,8 +37,8 @@ check <- create_timeline(
       "data" = 2,
       "legend" = 6
     ),
-  accentCols = "darker",
-  accentColsDif = .7,
+  accentCols = "lighter",
+  accentColsDif = 1,
   stampLoc = 5,
   timelineRows = 1,
   timelineFont = "mono",
@@ -72,10 +71,10 @@ mylist <- prepare_smallset(
 fts <- highlight_changes(
   list = mylist,
   captionScript = "mycaptions",
-  constant = "cornsilk4",
-  changed = "cornflowerblue",
-  added = "blueviolet",
-  deleted = "darkgoldenrod1",
+  constant = constantC,
+  changed = changedC,
+  added = addedC,
+  deleted = deletedC,
   author = "Lydia"
 )
 

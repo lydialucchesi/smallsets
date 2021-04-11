@@ -5,6 +5,7 @@
 #' @param sizing A list of size specifications for the column names, the tiles, the captions, the cirlces, and the symbols
 #' @param accentCols Either "darker" or "lighter" for stamp colour. Can enter a list corresponding to specific actions.
 #' @param accentColsDif Degree to which stamp colour is darker or lighter. Can enter a list corresponding to specific actions.
+#' @param otherTextCol Value between 0 and 1. Default is 1, meaning column names will be black. 0 means columns will be the same colour as the constant colour.
 #' @param stampLoc Location of stamp. 1 = top left. 2 = top right. 3 = bottom left. 4 = bottom right. 5 = center.
 #' @param timelineRows Number of rows to divide the smallset timeline into.
 #' @param timelineFont Font family.
@@ -26,10 +27,12 @@ create_timeline <-
            ),
            accentCols = "darker",
            accentColsDif = .5,
+           otherTextCol = 1,
            stampLoc = 1,
            timelineRows = NULL,
            timelineFont = "sans",
            captionSpace = 1) {
+    
     items <- seq(1, length(ftsList[[1]]), 1)
     
     if (is.null(sizing[["columns"]])) {
@@ -133,7 +136,7 @@ create_timeline <-
     rownames(accents) <- NULL
     accents$hex <-
       ifelse(grepl("#", accents$colValue) == TRUE,
-             accents$colValue,
+             as.character(accents$colValue),
              col2hex(accents$colValue))
     accents$colValue2 <-
       ifelse(
@@ -165,6 +168,8 @@ create_timeline <-
       }
     }
     
+    otherTextColour <- darken(legendDF$colValue[1], otherTextCol)
+    
     l <-
       lapply(
         items,
@@ -173,6 +178,7 @@ create_timeline <-
         sizing,
         accentCols,
         accentColsDif,
+        otherTextColour,
         stampLoc,
         maxDims,
         timelineFont,
@@ -234,9 +240,9 @@ create_timeline <-
     )
     
     fontChoice <-
-      paste0(" & theme(text = element_text('", timelineFont, 
-             "'), legend.position = 'bottom', legend.title=element_blank(), legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))")
-    
+      paste0(" & theme(text = element_text(family = '", timelineFont, 
+             "', colour = otherTextColour), legend.position = 'bottom', legend.title=element_blank(), legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))")
+
     patchedPlots <- paste0(patchedPlots, timelineHeader, fontChoice)
     
     return(eval(parse(text = patchedPlots)))

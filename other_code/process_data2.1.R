@@ -1,19 +1,14 @@
-snapshots <- list()
-apply_code <- function(df) {
-snapshots[['1']] <- df
+source("gen_data.R")
+plot(df$count, df$time)
+
+# start smallset
 # snap df
 df$defect <- ifelse(df$defect > 1, 1, 0)
-snapshots[['2']] <- df
 df$total <- df$count + df$time
-snapshots[['2.1']] <- df
 # if I drop incomplete cases here I get an error
 df <- df[complete.cases(df),]
-snapshots[['2.2']] <- df
 # snap df
 df$time <- df$time * 60
-snapshots[['3']] <- df
 df$char <- "testing char"
 # snap df
-snapshots[['4']] <- df
-return(snapshots)
-}
+# end smallset
