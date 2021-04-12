@@ -69,4 +69,17 @@ write_smallset_code <- function(scriptName, dir) {
   writeLines(smallsetCode$command, fileConn)
   close(fileConn)
   
+  snapCount <- -1
+  resumeLocs <- c()
+  for (i in 1:nrow(smallsetCode)) {
+    if (grepl("snapshots", smallsetCode$command[i])) {
+      snapCount <- snapCount + 1
+    }
+    if (grepl("# resume ", smallsetCode$command[i])) {
+      resumeLocs <- c(resumeLocs, snapCount)
+    }
+  }
+  
+  return(resumeLocs)
 }
+

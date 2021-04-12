@@ -27,6 +27,18 @@ Symbols
 
 Caption: 
 
+### `df$total <- df$count + df$time`
+
+Symbols
+
+1. Changed (cornflowerblue):
+
+2. Added (blueviolet):
+
+3. Deleted (darkgoldenrod1):
+
+Caption: 
+
 ### `df$time <- df$time * 60`
 
 Symbols

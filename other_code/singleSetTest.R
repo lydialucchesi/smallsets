@@ -38,7 +38,7 @@ df <- data.frame(
 
 mylist <- prepare_smallset(
   data = df,
-  code = "other_code/process_data2.1.R",
+  code = "other_code/process_data2.R",
   rowCount = 6,
   rowNums = c(2, 5, 8)
 )

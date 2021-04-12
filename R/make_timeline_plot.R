@@ -12,14 +12,13 @@ make_timeline_plot <-
            sizing,
            accentCols,
            accentColsDif,
-           otherTextColour,
+           otherTextCol,
            stampLoc,
            maxDims,
            timelineFont,
            captionSpace,
            accents,
            legendDF) {
-
     tab1 <-
       as.data.frame(ftsList[[1]][[ftsItemNum]]$body$styles$text$color$data)
     tab2 <-
@@ -31,12 +30,12 @@ make_timeline_plot <-
     for (i in 1:ncol(tab1)) {
       tab1[, i] <- as.character(tab1[, i])
     }
-    tab1$y <- seq(nrow(tab1), 1, -1)
+    tab1$y <- seq(nrow(tab1), 1,-1)
     tab1Long <- suppressWarnings(reshape2::melt(tab1, id = c("y")))
     tab1Long <- merge(tab1Long, xs)
     colnames(tab1Long) <- c("variable", "y", "colValue", "x")
     
-    tab2$y <- seq(nrow(tab2), 1, -1)
+    tab2$y <- seq(nrow(tab2), 1,-1)
     tab2Long <- suppressWarnings(reshape2::melt(tab2, id = c("y")))
     tab2Long <- merge(tab2Long, xs)
     colnames(tab2Long) <- c("variable", "y", "datValue", "x")
@@ -67,7 +66,7 @@ make_timeline_plot <-
     }
     
     plotInfo <- read_captions_rmd(ftsList[[6]], ftsList[[7]])
-    circleSymbols <- plotInfo[ftsItemNum, -c(8)]
+    circleSymbols <- plotInfo[ftsItemNum,-c(8)]
     circleSymbols <-
       data.frame(
         action = c(
@@ -114,12 +113,15 @@ make_timeline_plot <-
       empty <- rbind(empty, empty2)
     }
     
-    tabs <- suppressMessages(left_join(tabs, ftsList[[8]], by = "colValue"))
+    tabs <-
+      suppressMessages(left_join(tabs, ftsList[[8]], by = "colValue"))
     
-    missingCols <- c(lighten(col2hex(ftsList[[2]]), .4), 
-                     lighten(col2hex(ftsList[[3]]), .4), 
-                     lighten(col2hex(ftsList[[4]]), .4), 
-                     lighten(col2hex(ftsList[[5]]), .4))
+    missingCols <- c(
+      lighten(col2hex(ftsList[[2]]), .4),
+      lighten(col2hex(ftsList[[3]]), .4),
+      lighten(col2hex(ftsList[[4]]), .4),
+      lighten(col2hex(ftsList[[5]]), .4)
+    )
     tabs$colValue <-
       ifelse(is.na(tabs$datValue), lighten(col2hex(tabs$colValue), .4), tabs$colValue)
     
@@ -131,14 +133,21 @@ make_timeline_plot <-
       )
     
     legendDF$legend <- TRUE
-    addNewRows <- data.frame(colValue = missingCols, description = c(""), legend = c(FALSE))
+    addNewRows <-
+      data.frame(
+        colValue = missingCols,
+        description = c(""),
+        legend = c(FALSE)
+      )
     legendDF <- rbind(legendDF, addNewRows)
     legendDF$fillVar <-
       factor(legendDF$colValue, levels = legendDF$colValue)
-
-    legendDF$alpha <- c(ftsList[[8]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], ftsList[[8]]$alpha)
-    legendDF$colAlp <- as.factor(alpha(legendDF$fillVar, legendDF$alpha))
-    tabs <- merge(tabs, legendDF[,c("colValue", "colAlp")])
+    
+    legendDF$alpha <-
+      c(ftsList[[8]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], ftsList[[8]]$alpha)
+    legendDF$colAlp <-
+      as.factor(alpha(legendDF$fillVar, legendDF$alpha))
+    tabs <- merge(tabs, legendDF[, c("colValue", "colAlp")])
     legendDF <- subset(legendDF, legend == TRUE)
     
     if (nrow(circles) == 0) {
@@ -161,7 +170,7 @@ make_timeline_plot <-
           aes(x = x, y = y, label = variable),
           family = timelineFont,
           size = sizing[["columns"]],
-          colour = otherTextColour
+          colour = otherTextCol
         ) +
         coord_equal() +
         theme(
@@ -172,13 +181,21 @@ make_timeline_plot <-
           axis.title.x = element_blank(),
           axis.title.y = element_blank(),
           panel.background = element_blank(),
-          legend.title=element_blank(), 
-          legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'),
-          text = element_text(family = timelineFont,
-                              size = sizing[["legend"]],
-                              colour = otherTextColour)
+          legend.title = element_blank(),
+          legend.margin = margin(
+            t = 0,
+            r = 0,
+            b = 0,
+            l = 0,
+            unit = 'cm'
+          ),
+          text = element_text(
+            family = timelineFont,
+            size = sizing[["legend"]],
+            colour = otherTextCol
+          )
         ) +
-        xlim(c(.5, (maxDims[1] + .5))) + 
+        xlim(c(.5, (maxDims[1] + .5))) +
         scale_colour_identity()
     } else {
       abstractSmallset <- ggplot() +
@@ -200,7 +217,7 @@ make_timeline_plot <-
           aes(x = x, y = y, label = variable),
           family = timelineFont,
           size = sizing[["columns"]],
-          colour = otherTextColour
+          colour = otherTextCol
         ) +
         coord_equal() +
         theme(
@@ -212,11 +229,19 @@ make_timeline_plot <-
           axis.title.y = element_blank(),
           panel.background = element_blank(),
           legend.position = 'bottom',
-          legend.title = element_blank(), 
-          legend.margin = margin(t=0, r=0, b=0, l=0, unit='cm'),
-          text = element_text(family = timelineFont,
-                              size = sizing[["legend"]],
-                              colour = otherTextColour)
+          legend.title = element_blank(),
+          legend.margin = margin(
+            t = 0,
+            r = 0,
+            b = 0,
+            l = 0,
+            unit = 'cm'
+          ),
+          text = element_text(
+            family = timelineFont,
+            size = sizing[["legend"]],
+            colour = otherTextCol
+          )
         ) +
         xlim(c(.5, (maxDims[1] + .5))) +
         geom_circle(
@@ -297,10 +322,27 @@ make_timeline_plot <-
         halign = c(.5),
         size = sizing[["captions"]],
         box.colour = NA,
-        colour = otherTextColour
+        colour = otherTextCol
       ) +
       ylim(c(captionSpace * (-1), maxDims[2] + 1))
+    
+    if (ftsItemNum %in% ftsList[[9]]) {
+      
+      abstractWithCaption <- abstractWithCaption +
+        geom_segment(
+          aes(
+            x = (maxDims[1] + .5),
+            y = (maxDims[2]),
+            xend = (maxDims[1] + .5),
+            yend = (maxDims[2] + 1)
+          ),
+          colour = otherTextCol,
+          size = .25,
+          data = data.frame())
+    }
     
     return(abstractWithCaption)
     
   }
+
+

@@ -22,6 +22,9 @@ highlight_changes <-
            author = NULL,
            captionScript = "captions",
            captionDir = getwd()) {
+
+    resumeLocs <- list[[2]]
+    list <- list[[1]]
     
     if (!is.list(constant)) {
       constantAlpha = .4
@@ -170,6 +173,7 @@ highlight_changes <-
       deleted,
       captionScript,
       captionDir,
-      tileAlphas
+      tileAlphas,
+      resumeLocs
     ))
   }

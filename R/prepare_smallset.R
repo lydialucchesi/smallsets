@@ -17,11 +17,11 @@ prepare_smallset <-
                                 rowCount = rowCount,
                                 rowNums = rowNums)
     
-    write_smallset_code(scriptName = code, dir = dir)
+    resumeLocs <- write_smallset_code(scriptName = code, dir = dir)
     
     source(paste0(dir, "/smallset_code.R"))
     smallsetList <- apply_code(smallset)
     
-    return(smallsetList)
+    return(list(smallsetList, resumeLocs))
     
   }
