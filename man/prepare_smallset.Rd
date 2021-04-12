@@ -7,7 +7,7 @@
 prepare_smallset(data, code, rowCount = 6, rowNums = NULL, dir = getwd())
 }
 \arguments{
-\item{data}{A data set or a list of data sets. Index name must be same as data frame name (list(df1 = df1)).}
+\item{data}{A data set}
 
 \item{code}{A script to prepare data for use in modelling}
 
