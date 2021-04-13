@@ -5,6 +5,7 @@ plot(df$count, df$time)
 # start smallset
 # snap df
 df$defect <- ifelse(df$defect > 1, 1, 0)
+# resume smallset
 # snap df
 df$total <- df$count + df$time
 # if I drop incomplete cases here I get an error

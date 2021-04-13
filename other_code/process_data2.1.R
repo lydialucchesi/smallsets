@@ -1,14 +1,12 @@
-source("gen_data.R")
-plot(df$count, df$time)
 
 # start smallset
 # snap df
-df$defect <- ifelse(df$defect > 1, 1, 0)
-df$total <- df$count + df$time
-# if I drop incomplete cases here I get an error
+df$V4 <- ifelse(df$V4 > 1, 1, 0)
+df$V5 <- df$V2 + df$V3
 df <- df[complete.cases(df),]
 # snap df
-df$time <- df$time * 60
-df$char <- "testing char"
+df$V3 <- df$V3 * 60
+# resume smallset
+df$V6 <- "A"
 # snap df
 # end smallset

@@ -329,20 +329,18 @@ make_timeline_plot <-
     if (ftsItemNum %in% ftsList[[9]]) {
       
       abstractWithCaption <- abstractWithCaption +
-        geom_segment(
+        geom_point(
           aes(
             x = (maxDims[1] + .5),
-            y = (maxDims[2]),
-            xend = (maxDims[1] + .5),
-            yend = (maxDims[2] + 1)
+            y = ((maxDims[2] + 1) - (captionSpace * (-1))) / 2,
           ),
-          colour = otherTextCol,
-          size = .25,
-          data = data.frame())
+          fill = as.character(ftsList[[8]]$colValue[1]),
+          colour = as.character(ftsList[[8]]$colValue[1]),
+          alpha = ftsList[[8]]$alpha[1],
+          size = 2)
     }
     
     return(abstractWithCaption)
     
   }
-
 

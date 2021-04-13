@@ -2,20 +2,16 @@ snapshots <- list()
 apply_code <- function(df) {
 snapshots[[1]] <- df
 # snap df
-df$defect <- ifelse(df$defect > 1, 1, 0)
+df$V4 <- ifelse(df$V4 > 1, 1, 0)
 snapshots[[2]] <- df
-# snap df
-df$total <- df$count + df$time
-snapshots[[3]] <- df
-# if I drop incomplete cases here I get an error
-# resume smallset
+df$V5 <- df$V2 + df$V3
 df <- df[complete.cases(df),]
 # snap df
-df$time <- df$time * 60
-snapshots[[4]] <- df
+df$V3 <- df$V3 * 60
+snapshots[[3]] <- df
 # resume smallset
-df$char <- "testing char"
+df$V6 <- "A"
 # snap df
-snapshots[[5]] <- df
+snapshots[[4]] <- df
 return(snapshots)
 }
