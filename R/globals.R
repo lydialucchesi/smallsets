@@ -1,0 +1,19 @@
+utils::globalVariables(
+  c(
+    "colValue",
+    "legend",
+    "x",
+    "y",
+    "colAlp",
+    "variable",
+    "xCir",
+    "yCir",
+    "colValue2",
+    "action",
+    "datValue",
+    "apply_code",
+    "captionScript",
+    "captionDir",
+    "author"
+  )
+)

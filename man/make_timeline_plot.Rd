@@ -5,8 +5,8 @@
 \title{Make a timeline plot}
 \usage{
 make_timeline_plot(
-  ftsItemNum,
-  ftsList,
+  ItemNum,
+  snapshotList,
   abstract,
   sizing,
   accentCols,

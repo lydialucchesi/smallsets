@@ -1,6 +1,6 @@
 #' Highlight changes
 #'
-#' @param list A list from \code{prep_smallset}
+#' @param smallsetList A list from \code{prep_smallset}
 #' @param constant A colour to represent data cells that have not changed since previous smallset
 #' @param changed A colour to represent data cells that have changed since previous smallset
 #' @param added A colour to represent data cells that have been added since previous smallset
@@ -14,7 +14,7 @@
 
 
 highlight_changes <-
-  function(list,
+  function(smallsetList,
            constant = "#927C5C",
            changed = "cornflowerblue",
            added = "#689F38",
@@ -23,8 +23,8 @@ highlight_changes <-
            captionScript = "captions",
            captionDir = getwd()) {
 
-    resumeLocs <- list[[2]]
-    list <- list[[1]]
+    resumeLocs <- smallsetList[[2]]
+    smallsetList <- smallsetList[[1]]
     
     if (!is.list(constant)) {
       constantAlpha = .4
@@ -70,11 +70,11 @@ highlight_changes <-
     )
     
     tables <- list()
-    for (p in 1:(length(list) - 1)) {
+    for (p in 1:(length(smallsetList) - 1)) {
       c <- p + 1
       
-      lprior <- list[[p]]
-      lcurrent <- list[[c]]
+      lprior <- smallsetList[[p]]
+      lcurrent <- smallsetList[[c]]
       
       if (p > 1) {
         tprior <- tables[[p]]

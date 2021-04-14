@@ -23,18 +23,12 @@
 # source('~/Desktop/repos/smallset/R/create_timeline.R')
 # source('~/Desktop/repos/smallset/R/add_caption_block.R')
 
+library(smallset)
+
 constantC = list("cornsilk4", .4)
 changedC = list("cornflowerblue", .4)
 addedC = list("blueviolet", .4)
 deletedC = list("darkgoldenrod1", .4)
-
-## ONE DATASET
-df <- data.frame(
-  year = c(2000,-1999, 2000, 1995, 1996, 2001, 2002, 2003, 2001, 1994, 2000, -1999),
-  count = c(10, 5, 5, 9, NA, 8, 10, 10, 6, 7, NA, 3),
-  time = c(20, 11, 9, 18, 4, 15, 20, NA, 12, 13, 19, 6),
-  defect = c(.6, .5, 1.1, .8, .7, 1.3, .9, 1.1, 1.4, .8, .9, 1.2)
-)
 
 df <- data.frame(
   V1 = c(2000,-1999, 2000, 1995, 1996, 2001, 2002, 2003, 2001, 1994, 2000, -1999),
@@ -45,13 +39,13 @@ df <- data.frame(
 
 mylist <- prepare_smallset(
   data = df,
-  code = "other_code/process_data2.1.R",
+  code = "other_code/test_scripts/process_data2.1.R",
   rowCount = 6,
   rowNums = c(2, 5, 8)
 )
 
 fts <- highlight_changes(
-  list = mylist,
+  smallsetList = mylist,
   captionScript = "mycaptions",
   constant = constantC,
   changed = changedC,
@@ -60,7 +54,7 @@ fts <- highlight_changes(
 )
 
 check <- create_timeline(
-  ftsList = fts,
+  snapshotList = fts,
   abstract = TRUE,
   sizing =
     list(

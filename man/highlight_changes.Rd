@@ -5,7 +5,7 @@
 \title{Highlight changes}
 \usage{
 highlight_changes(
-  list,
+  smallsetList,
   constant = "#927C5C",
   changed = "cornflowerblue",
   added = "#689F38",
@@ -16,7 +16,7 @@ highlight_changes(
 )
 }
 \arguments{
-\item{list}{A list from \code{prep_smallset}}
+\item{smallsetList}{A list from \code{prep_smallset}}
 
 \item{constant}{A colour to represent data cells that have not changed since previous smallset}
 

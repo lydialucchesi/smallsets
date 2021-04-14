@@ -1,6 +1,6 @@
 #' Create the timeline
 #'
-#' @param ftsList A list from \code{highlight_changes}
+#' @param snapshotList A list from \code{highlight_changes}
 #' @param abstract TRUE or FALSE for hiding data values in timeline.
 #' @param sizing A list of size specifications for the column names, the tiles, the captions, the cirlces, and the symbols
 #' @param accentCols Either "darker" or "lighter" for stamp colour. Can enter a list corresponding to specific actions.
@@ -14,7 +14,7 @@
 #' @import "patchwork" "gplots" "colorspace"
 
 create_timeline <-
-  function(ftsList,
+  function(snapshotList,
            abstract = TRUE,
            sizing = list(
              "columns" = 2,
@@ -33,7 +33,7 @@ create_timeline <-
            timelineFont = "sans",
            captionSpace = 1) {
     
-    items <- seq(1, length(ftsList[[1]]), 1)
+    items <- seq(1, length(snapshotList[[1]]), 1)
     
     if (is.null(sizing[["columns"]])) {
       sizing[["columns"]] = 2
@@ -125,11 +125,11 @@ create_timeline <-
         )
     }
     
-    maxDims <- get_timeline_dimensions(ftsList)
+    maxDims <- get_timeline_dimensions(snapshotList)
     
     accents <-
       data.frame(
-        colValue = c(ftsList[[2]], ftsList[[3]], ftsList[[4]], fts[[5]]),
+        colValue = c(snapshotList[[2]], snapshotList[[3]], snapshotList[[4]], snapshotList[[5]]),
         accent = unlist(accentCols),
         degree = unlist(accentColsDif)
       )
@@ -147,8 +147,8 @@ create_timeline <-
     accents$hex <- NULL
     
     colsPresent <- c()
-    for (u in 1:length(ftsList[[1]])) {
-      uniqueCols <- ftsList[[1]][[u]]$body$styles$text$color$data
+    for (u in 1:length(snapshotList[[1]])) {
+      uniqueCols <- snapshotList[[1]][[u]]$body$styles$text$color$data
       uniqueCols <- as.vector(as.matrix(uniqueCols))
       uniqueCols <- unique(uniqueCols)
       colsPresent <- c(colsPresent, uniqueCols)
@@ -161,8 +161,8 @@ create_timeline <-
                        "Data will be removed prior to the next snapshot.")
     legendDF <- data.frame(colValue = c(), description = c())
     for (colItemNum in 2:5) {
-      if (ftsList[[colItemNum]] %in% colsPresent) {
-        legendAddition <- data.frame(colValue = c(ftsList[[colItemNum]]),
+      if (snapshotList[[colItemNum]] %in% colsPresent) {
+        legendAddition <- data.frame(colValue = c(snapshotList[[colItemNum]]),
                                      description = descriptions[colItemNum - 1])
         legendDF <- rbind(legendDF, legendAddition)
       }
@@ -173,7 +173,7 @@ create_timeline <-
     l <-
       lapply(
         items,
-        ftsList,
+        snapshotList,
         abstract,
         sizing,
         accentCols,
@@ -205,7 +205,7 @@ create_timeline <-
     }
     
     annotateInfo <-
-      as.data.frame(readLines(paste0(fts[[7]], "/", fts[[6]], ".Rmd")))
+      as.data.frame(readLines(paste0(snapshotList[[7]], "/", snapshotList[[6]], ".Rmd")))
     colnames(annotateInfo) <- c("lines")
     
     title <-

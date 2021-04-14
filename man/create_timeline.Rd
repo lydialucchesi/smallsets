@@ -5,7 +5,7 @@
 \title{Create the timeline}
 \usage{
 create_timeline(
-  ftsList,
+  snapshotList,
   abstract = TRUE,
   sizing = list(columns = 2, tiles = 1, captions = 8, circles = 0.15, symbols = 2.5,
     data = 2.5, legend = 7),
@@ -19,7 +19,7 @@ create_timeline(
 )
 }
 \arguments{
-\item{ftsList}{A list from \code{highlight_changes}}
+\item{snapshotList}{A list from \code{highlight_changes}}
 
 \item{abstract}{TRUE or FALSE for hiding data values in timeline.}
 

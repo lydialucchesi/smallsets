@@ -6,8 +6,8 @@
 #' @importFrom gplots col2hex
 
 make_timeline_plot <-
-  function(ftsItemNum,
-           ftsList,
+  function(ItemNum,
+           snapshotList,
            abstract,
            sizing,
            accentCols,
@@ -20,9 +20,9 @@ make_timeline_plot <-
            accents,
            legendDF) {
     tab1 <-
-      as.data.frame(ftsList[[1]][[ftsItemNum]]$body$styles$text$color$data)
+      as.data.frame(snapshotList[[1]][[ItemNum]]$body$styles$text$color$data)
     tab2 <-
-      as.data.frame(ftsList[[1]][[ftsItemNum]]$body$dataset)
+      as.data.frame(snapshotList[[1]][[ItemNum]]$body$dataset)
     
     xs <-
       data.frame(variable = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
@@ -46,7 +46,7 @@ make_timeline_plot <-
     xs$y <- rep(max(tabs$y) + 1, nrow(xs))
     xs$variable <- str_to_title(xs$variable)
     
-    circles <- subset(tabs, colValue != ftsList[[2]])
+    circles <- subset(tabs, colValue != snapshotList[[2]])
     
     if (stampLoc == 1) {
       circles$xCir <- circles$x - .25
@@ -65,8 +65,8 @@ make_timeline_plot <-
       circles$yCir <- circles$y
     }
     
-    plotInfo <- read_captions_rmd(ftsList[[6]], ftsList[[7]])
-    circleSymbols <- plotInfo[ftsItemNum,-c(8)]
+    plotInfo <- read_captions_rmd(snapshotList[[6]], snapshotList[[7]])
+    circleSymbols <- plotInfo[ItemNum,-c(8)]
     circleSymbols <-
       data.frame(
         action = c(
@@ -87,7 +87,7 @@ make_timeline_plot <-
     circles <- subset(circles, circles$test == FALSE)
     circles$test <- NULL
     
-    smallsetCaption <- plotInfo[ftsItemNum, "caption"]
+    smallsetCaption <- plotInfo[ItemNum, "caption"]
     
     if (max(tabs$x) != maxDims[1]) {
       empty1 <-
@@ -114,13 +114,13 @@ make_timeline_plot <-
     }
     
     tabs <-
-      suppressMessages(left_join(tabs, ftsList[[8]], by = "colValue"))
+      suppressMessages(left_join(tabs, snapshotList[[8]], by = "colValue"))
     
     missingCols <- c(
-      lighten(col2hex(ftsList[[2]]), .4),
-      lighten(col2hex(ftsList[[3]]), .4),
-      lighten(col2hex(ftsList[[4]]), .4),
-      lighten(col2hex(ftsList[[5]]), .4)
+      lighten(col2hex(snapshotList[[2]]), .4),
+      lighten(col2hex(snapshotList[[3]]), .4),
+      lighten(col2hex(snapshotList[[4]]), .4),
+      lighten(col2hex(snapshotList[[5]]), .4)
     )
     tabs$colValue <-
       ifelse(is.na(tabs$datValue), lighten(col2hex(tabs$colValue), .4), tabs$colValue)
@@ -144,7 +144,7 @@ make_timeline_plot <-
       factor(legendDF$colValue, levels = legendDF$colValue)
     
     legendDF$alpha <-
-      c(ftsList[[8]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], ftsList[[8]]$alpha)
+      c(snapshotList[[8]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], snapshotList[[8]]$alpha)
     legendDF$colAlp <-
       as.factor(alpha(legendDF$fillVar, legendDF$alpha))
     tabs <- merge(tabs, legendDF[, c("colValue", "colAlp")])
@@ -326,7 +326,7 @@ make_timeline_plot <-
       ) +
       ylim(c(captionSpace * (-1), maxDims[2] + 1))
     
-    if (ftsItemNum %in% ftsList[[9]]) {
+    if (ItemNum %in% snapshotList[[9]]) {
       
       abstractWithCaption <- abstractWithCaption +
         geom_point(
@@ -334,9 +334,9 @@ make_timeline_plot <-
             x = (maxDims[1] + .5),
             y = ((maxDims[2] + 1) - (captionSpace * (-1))) / 2,
           ),
-          fill = as.character(ftsList[[8]]$colValue[1]),
-          colour = as.character(ftsList[[8]]$colValue[1]),
-          alpha = ftsList[[8]]$alpha[1],
+          fill = as.character(snapshotList[[8]]$colValue[1]),
+          colour = as.character(snapshotList[[8]]$colValue[1]),
+          alpha = snapshotList[[8]]$alpha[1],
           size = 2)
     }
     
