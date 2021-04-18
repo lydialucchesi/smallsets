@@ -10,6 +10,7 @@ make_timeline_plot <-
            snapshotList,
            abstract,
            sizing,
+           truncateData,
            accentCols,
            accentColsDif,
            otherTextCol,
@@ -270,6 +271,10 @@ make_timeline_plot <-
     }
     
     tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
+    
+    if (isFALSE(abstract) & !isFALSE(truncateData)) {
+      tabs$datValue <- str_trunc(tabs$datValue, truncateData, "right")
+    }
     
     if (abstract != TRUE) {
       abstractSmallset <- abstractSmallset +

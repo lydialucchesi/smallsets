@@ -9,6 +9,7 @@ create_timeline(
   abstract = TRUE,
   sizing = list(columns = 2, tiles = 1, captions = 8, circles = 0.15, symbols = 2.5,
     data = 2.5, legend = 7),
+  truncateData = FALSE,
   accentCols = "darker",
   accentColsDif = 0.5,
   otherTextCol = 1,
@@ -24,6 +25,8 @@ create_timeline(
 \item{abstract}{TRUE or FALSE for hiding data values in timeline.}
 
 \item{sizing}{A list of size specifications for the column names, the tiles, the captions, the cirlces, and the symbols}
+
+\item{truncateData}{FALSE if data do not need to be truncated to fit in tiles. Otherwise, an integer specifying width of data value (width includes "...").}
 
 \item{accentCols}{Either "darker" or "lighter" for stamp colour. Can enter a list corresponding to specific actions.}
 

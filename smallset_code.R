@@ -1,17 +1,18 @@
 snapshots <- list()
-apply_code <- function(df) {
-snapshots[[1]] <- df
-# snap df
-df$V4 <- ifelse(df$V4 > 1, 1, 0)
-snapshots[[2]] <- df
-df$V5 <- df$V2 + df$V3
-df <- df[complete.cases(df),]
-# snap df
-df$V3 <- df$V3 * 60
-snapshots[[3]] <- df
+apply_code <- function(bb) {
+snapshots[[1]] <- bb
+# snap bb
+bb$Day <- gsub(".*-*-", "", bb$Day)
+snapshots[[2]] <- bb
+bb[, c(2, 3, 8, 9)] <- NULL
+bb <- subset(bb, !is.na(Rain))
+# snap bb
+bb <- transform(bb, Rain = c(NA, Rain[-nrow(bb)]))
+snapshots[[3]] <- bb
+bb <- bb[-1, ]
 # resume smallset
-df$V6 <- "A"
-# snap df
-snapshots[[4]] <- df
+bb$Rained <- ifelse(bb$Rain == 0.0, 0, 1)
+# snap bb
+snapshots[[4]] <- bb
 return(snapshots)
 }

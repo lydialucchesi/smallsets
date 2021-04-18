@@ -9,13 +9,20 @@ select_smallset <- function(data,
                             rowNums = NULL) {
   if (is.null(rowNums)) {
     smallset <- dplyr::sample_n(data, size = rowCount)
+    smallset$smallsetRowID <- row.names(smallset)
   }
   
   if (!is.null(rowNums)) {
-    smallset <- rbind(data[rowNums, ],
-                      dplyr::sample_n(data[-rowNums, ], size = (rowCount - length(rowNums))))
+    data$smallsetRowID <- row.names(data)
+    smallset1 <- data[rowNums,]
+    smallset2 <-
+      dplyr::sample_n(data[-rowNums,], size = (rowCount - length(rowNums)))
+    smallset <- rbind(smallset1, smallset2)
+    
   }
   
+  smallset <- smallset[order(as.numeric(smallset$smallsetRowID)),]
+  smallset$smallsetRowID <- NULL
   rownames(smallset) <- seq(1, nrow(smallset), 1)
   return(smallset)
 }

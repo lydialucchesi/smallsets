@@ -37,9 +37,11 @@ df <- data.frame(
   V4 = c(.6, .5, 1.1, .8, .7, 1.3, .9, 1.1, 1.4, .8, .9, 1.2)
 )
 
+# df <- as.data.table(df)
+
 mylist <- prepare_smallset(
   data = df,
-  code = "other_code/test_scripts/process_data2.1.R",
+  code = "other_code/test_scripts/process_data2.2.R",
   rowCount = 6,
   rowNums = c(2, 5, 8)
 )

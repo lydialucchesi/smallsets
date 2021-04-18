@@ -3,6 +3,7 @@
 #' @param snapshotList A list from \code{highlight_changes}
 #' @param abstract TRUE or FALSE for hiding data values in timeline.
 #' @param sizing A list of size specifications for the column names, the tiles, the captions, the cirlces, and the symbols
+#' @param truncateData FALSE if data do not need to be truncated to fit in tiles. Otherwise, an integer specifying width of data value (width includes "...").
 #' @param accentCols Either "darker" or "lighter" for stamp colour. Can enter a list corresponding to specific actions.
 #' @param accentColsDif Degree to which stamp colour is darker or lighter. Can enter a list corresponding to specific actions.
 #' @param otherTextCol Value between 0 and 1. Default is 1, meaning column names will be black. 0 means columns will be the same colour as the constant colour.
@@ -25,6 +26,7 @@ create_timeline <-
              "data" = 2.5,
              "legend" = 7
            ),
+           truncateData = FALSE,
            accentCols = "darker",
            accentColsDif = .5,
            otherTextCol = 1,
@@ -176,6 +178,7 @@ create_timeline <-
         snapshotList,
         abstract,
         sizing,
+        truncateData,
         accentCols,
         accentColsDif,
         otherTextColour,

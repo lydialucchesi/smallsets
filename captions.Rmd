@@ -15,7 +15,7 @@ Timeline footnote:
 
 Caption: 
 
-### `bb$Day <- gsub(".*-*-", "", bb$Day)`
+### `bb[, c(8, 9)] <- NULL`
 
 Symbols
 
@@ -27,7 +27,7 @@ Symbols
 
 Caption: 
 
-### `bb <- transform(bb, Rain = c(NA, Rain[-nrow(bb)]))`
+### `bb <- transform(bb, Rain = c(NA, Rain[-nrow(bb)]))[-1, ]`
 
 Symbols
 
@@ -39,7 +39,7 @@ Symbols
 
 Caption: 
 
-### `bb$Rained <- ifelse(bb$Rain == 0.0, 0, 1)`
+### `bb$Rain <- ifelse(bb$Rain == 0.0, 0, 1)`
 
 Symbols
 

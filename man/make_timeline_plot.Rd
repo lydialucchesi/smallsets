@@ -9,6 +9,7 @@ make_timeline_plot(
   snapshotList,
   abstract,
   sizing,
+  truncateData,
   accentCols,
   accentColsDif,
   otherTextCol,
