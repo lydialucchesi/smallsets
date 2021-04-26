@@ -127,6 +127,9 @@ highlight_changes <-
         lcurrentAdj <- lcurrent
       }
       
+      row.names(lpriorAdj) <- as.numeric(row.names(lpriorAdj))
+      row.names(lcurrentAdj) <- as.numeric(row.names(lcurrentAdj))
+      
       original <-
         setdiff(subset(lpriorAdj, select = colnames(lcurrentAdj)), lcurrentAdj)
       update <-
@@ -142,23 +145,23 @@ highlight_changes <-
         }
       }
       
-      adjData$r <- as.integer(as.character(adjData$r))
+      adjData$r <- (as.character(adjData$r))
+      
       # tcurrent <-
-      #   flextable::color(tcurrent,
-      #         color = changed,
-      #         i = adjData$r,
-      #         j = adjData$c)
+      #   flextable::color(
+      #     tcurrent,
+      #     color = changed,
+      #     i = (adjData$r == row.names(tcurrent$body$dataset)),
+      #     j = adjData$c
+      #   )
       
       if (nrow(adjData) > 0) {
         tcurrent <-
-          flextable::color(
-            tcurrent,
-            color = changed,
-            i = (adjData$r == row.names(tcurrent$body$dataset)),
-            j = adjData$c
-          )
+          flextable::color(tcurrent,
+                           color = changed,
+                           i = adjData$r,
+                           j = adjData$c)
       }
-      
       
       tables[[p]] <- tprior
       tables[[c]] <- tcurrent

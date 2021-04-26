@@ -6,10 +6,13 @@
 
 select_smallset <- function(data,
                             rowCount = 6,
-                            rowNums = NULL) {
+                            rowNums = NULL,
+                            runBig = FALSE,
+                            ignoreCols = ignoreCols) {
   if (is.null(rowNums)) {
     smallset <- dplyr::sample_n(data, size = rowCount)
     smallset$smallsetRowID <- row.names(smallset)
+    smallset <- smallset[,!(names(smallset) %in% ignoreCols)]
   }
   
   if (!is.null(rowNums)) {
@@ -18,11 +21,17 @@ select_smallset <- function(data,
     smallset2 <-
       dplyr::sample_n(data[-rowNums,], size = (rowCount - length(rowNums)))
     smallset <- rbind(smallset1, smallset2)
-    
+    smallset <- smallset[,!(names(smallset) %in% ignoreCols)]
   }
   
-  smallset <- smallset[order(as.numeric(smallset$smallsetRowID)),]
-  smallset$smallsetRowID <- NULL
-  rownames(smallset) <- seq(1, nrow(smallset), 1)
-  return(smallset)
+  if (isTRUE(runBig)) {
+    smallsetRowIDs <- sort(as.numeric(smallset$smallsetRowID))
+    return(smallsetRowIDs)
+  } else {
+    smallset <- smallset[order(as.numeric(smallset$smallsetRowID)),]
+    smallset$smallsetRowID <- NULL
+    rownames(smallset) <- seq(1, nrow(smallset), 1)
+    return(smallset)
+  }
+  
 }

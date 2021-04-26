@@ -4,7 +4,15 @@
 \alias{prepare_smallset}
 \title{Prepare smallset}
 \usage{
-prepare_smallset(data, code, rowCount = 6, rowNums = NULL, dir = getwd())
+prepare_smallset(
+  data,
+  code,
+  rowCount = 6,
+  rowNums = NULL,
+  runBig = FALSE,
+  ignoreCols = NULL,
+  dir = getwd()
+)
 }
 \arguments{
 \item{data}{A data set}
@@ -14,6 +22,10 @@ prepare_smallset(data, code, rowCount = 6, rowNums = NULL, dir = getwd())
 \item{rowCount}{The number of rows to include in the smallset}
 
 \item{rowNums}{A numeric vector of row numbers indicating particular rows from the data set to be included in the smallset}
+
+\item{runBig}{Default is FALSE (preprocessing code is run on smallset) - if TRUE, preprocessing code is run on the original dataset and smallset snapshots are extracted from that}
+
+\item{ignoreCols}{A vector of column names that you do not want included in the timeline (cannot be referenced in preprocessing code)}
 
 \item{dir}{A file path for the smallset script}
 }

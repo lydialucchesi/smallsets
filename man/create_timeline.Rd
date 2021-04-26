@@ -7,6 +7,8 @@
 create_timeline(
   snapshotList,
   abstract = TRUE,
+  ghostData = FALSE,
+  highlightNA = TRUE,
   sizing = list(columns = 2, tiles = 1, captions = 8, circles = 0.15, symbols = 2.5,
     data = 2.5, legend = 7),
   truncateData = FALSE,
@@ -24,7 +26,11 @@ create_timeline(
 
 \item{abstract}{TRUE or FALSE for hiding data values in timeline.}
 
-\item{sizing}{A list of size specifications for the column names, the tiles, the captions, the cirlces, and the symbols}
+\item{ghostData}{TRUE or FALSE for including blank tiles where data have been removed.}
+
+\item{highlightNA}{TRUE or FALSE for using a lighter colour to signal data value is missing.}
+
+\item{sizing}{A list of size specifications for the column names, the tiles, the captions, the circles, and the symbols}
 
 \item{truncateData}{FALSE if data do not need to be truncated to fit in tiles. Otherwise, an integer specifying width of data value (width includes "...").}
 

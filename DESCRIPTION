@@ -1,5 +1,5 @@
 Package: smallset
-Title: R package to create smallset timelines for compact and clear communication of data extraction and preprocessing steps
+Title: R package to create smallset timelines for compact and clear communication of data preprocessing steps
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Lydia",
@@ -26,4 +26,5 @@ Imports:
     gplots,
     colorspace,
     patchwork,
-    ggtext
+    ggtext,
+    magrittr

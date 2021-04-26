@@ -1,0 +1,52 @@
+---
+title: "Captions for the smallset timeline"
+author: 
+date: 2021-04-26
+output: html_document
+---
+
+Timeline title: 
+
+Timeline subtitle: 
+
+Timeline footnote: 
+
+### Starting smallset
+
+Caption: 
+
+### `bb$Day <- gsub(".*-*-", "", bb$Day)`
+
+Symbols
+
+1. Changed (#660066):
+
+2. Added (#FFA500):
+
+3. Deleted (#003366):
+
+Caption: 
+
+### `bb <- transform(bb, Rain = c(NA, Rain[-nrow(bb)]))`
+
+Symbols
+
+1. Changed (#660066):
+
+2. Added (#FFA500):
+
+3. Deleted (#003366):
+
+Caption: 
+
+### `bb$Rained <- ifelse(bb$Rain == 0.0, 0, 1)`
+
+Symbols
+
+1. Changed (#660066):
+
+2. Added (#FFA500):
+
+3. Deleted (#003366):
+
+Caption: 

@@ -2,7 +2,9 @@
 #'
 #' @param snapshotList A list from \code{highlight_changes}
 #' @param abstract TRUE or FALSE for hiding data values in timeline.
-#' @param sizing A list of size specifications for the column names, the tiles, the captions, the cirlces, and the symbols
+#' @param ghostData TRUE or FALSE for including blank tiles where data have been removed.
+#' @param highlightNA TRUE or FALSE for using a lighter colour to signal data value is missing.
+#' @param sizing A list of size specifications for the column names, the tiles, the captions, the circles, and the symbols
 #' @param truncateData FALSE if data do not need to be truncated to fit in tiles. Otherwise, an integer specifying width of data value (width includes "...").
 #' @param accentCols Either "darker" or "lighter" for stamp colour. Can enter a list corresponding to specific actions.
 #' @param accentColsDif Degree to which stamp colour is darker or lighter. Can enter a list corresponding to specific actions.
@@ -12,11 +14,13 @@
 #' @param timelineFont Font family.
 #' @param captionSpace Increase room for captions. Any value greater than or equal to .5. Default is one.
 #' @export
-#' @import "patchwork" "gplots" "colorspace"
+#' @import "patchwork" "gplots" "colorspace" "magrittr" "dplyr"
 
 create_timeline <-
   function(snapshotList,
            abstract = TRUE,
+           ghostData = FALSE,
+           highlightNA = TRUE,
            sizing = list(
              "columns" = 2,
              "tiles" = 1,
@@ -34,7 +38,6 @@ create_timeline <-
            timelineRows = NULL,
            timelineFont = "sans",
            captionSpace = 1) {
-    
     items <- seq(1, length(snapshotList[[1]]), 1)
     
     if (is.null(sizing[["columns"]])) {
@@ -137,9 +140,11 @@ create_timeline <-
       )
     rownames(accents) <- NULL
     accents$hex <-
-      ifelse(grepl("#", accents$colValue) == TRUE,
-             as.character(accents$colValue),
-             col2hex(accents$colValue))
+      ifelse(
+        grepl("#", accents$colValue) == TRUE,
+        as.character(accents$colValue),
+        col2hex(accents$colValue)
+      )
     accents$colValue2 <-
       ifelse(
         accents$accent == "darker",
@@ -157,39 +162,102 @@ create_timeline <-
     }
     
     colsPresent <- unique(colsPresent)
-    descriptions <-  c("Data have not changed since previous snapshot.",
-                       "Data have changed since previous snapshot.",
-                       "Data have been added since previous snapshot.",
-                       "Data will be removed prior to the next snapshot.")
+    
+    if (isTRUE(highlightNA)) {
+      descriptions <-
+        c(
+          "Data have not changed since previous snapshot.\nLighter shade signals a missing data value.",
+          "Data have changed since previous snapshot.\nLighter shade signals a missing data value.",
+          "Data have been added since previous snapshot.\nLighter shade signals a missing data value.",
+          "Data will be removed prior to the next snapshot.\nLighter shade signals a missing data value."
+        )
+    } else {
+      descriptions <-
+        c(
+          "Data have not changed since previous snapshot.",
+          "Data have changed since previous snapshot.",
+          "Data have been added since previous snapshot.",
+          "Data will be removed prior to the next snapshot."
+        )
+    }
+
     legendDF <- data.frame(colValue = c(), description = c())
     for (colItemNum in 2:5) {
       if (snapshotList[[colItemNum]] %in% colsPresent) {
-        legendAddition <- data.frame(colValue = c(snapshotList[[colItemNum]]),
-                                     description = descriptions[colItemNum - 1])
+        legendAddition <-
+          data.frame(colValue = c(snapshotList[[colItemNum]]),
+                     description = descriptions[colItemNum - 1])
         legendDF <- rbind(legendDF, legendAddition)
       }
     }
     
     otherTextColour <- darken(legendDF$colValue[1], otherTextCol)
     
-    l <-
-      lapply(
-        items,
-        snapshotList,
-        abstract,
-        sizing,
-        truncateData,
-        accentCols,
-        accentColsDif,
-        otherTextColour,
-        stampLoc,
-        maxDims,
-        timelineFont,
-        captionSpace,
-        accents,
-        legendDF,
-        FUN = make_timeline_plot
-      )
+    if (isTRUE(ghostData)) {
+      ghostDF1 <-
+        as.data.frame(snapshotList[[1]][[1]]$body$styles$text$color$data) %>%
+        mutate_all(as.character)
+      
+      for (i in 1:nrow(ghostDF1)) {
+        for (j in 1:length(colnames(ghostDF1))) {
+          ghostDF1[i, j] <- "#FFFFFF"
+        }
+      }
+      
+      ghostDF2 <-
+        as.data.frame(snapshotList[[1]][[1]]$body$dataset) %>%
+        mutate_all(as.character)
+      
+      for (i in 1:nrow(ghostDF2)) {
+        for (j in 1:length(colnames(ghostDF2))) {
+          ghostDF2[i, j] <- ""
+        }
+      }
+      
+      row.names(ghostDF1) <- row.names(ghostDF2)
+      
+      l <-
+        lapply(
+          items,
+          snapshotList,
+          abstract,
+          sizing,
+          truncateData,
+          accentCols,
+          accentColsDif,
+          otherTextColour,
+          stampLoc,
+          maxDims,
+          timelineFont,
+          captionSpace,
+          accents,
+          legendDF,
+          ghostDF1,
+          ghostDF2,
+          highlightNA,
+          FUN = make_timeline_plot2
+        )
+    } else {
+      l <-
+        lapply(
+          items,
+          snapshotList,
+          abstract,
+          sizing,
+          truncateData,
+          accentCols,
+          accentColsDif,
+          otherTextColour,
+          stampLoc,
+          maxDims,
+          timelineFont,
+          captionSpace,
+          accents,
+          legendDF,
+          highlightNA,
+          FUN = make_timeline_plot1
+        )
+    }
     
     patchedPlots <- ""
     for (s in 1:length(l)) {
@@ -201,14 +269,18 @@ create_timeline <-
       patchedPlots <- paste0(patchedPlots, "plot_layout()")
     } else {
       patchedPlots <-
-        paste0(patchedPlots,
-               "plot_layout(nrow = ",
-               as.character(timelineRows),
-               ", guides = 'collect')")
+        paste0(
+          patchedPlots,
+          "plot_layout(nrow = ",
+          as.character(timelineRows),
+          ", guides = 'collect')"
+        )
     }
     
     annotateInfo <-
-      as.data.frame(readLines(paste0(snapshotList[[7]], "/", snapshotList[[6]], ".Rmd")))
+      as.data.frame(readLines(paste0(
+        snapshotList[[7]], "/", snapshotList[[6]], ".Rmd"
+      )))
     colnames(annotateInfo) <- c("lines")
     
     title <-
@@ -243,12 +315,14 @@ create_timeline <-
     )
     
     fontChoice <-
-      paste0(" & theme(text = element_text(family = '", timelineFont, 
-             "', colour = otherTextColour), legend.position = 'bottom', legend.title=element_blank(), legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))")
-
+      paste0(
+        " & theme(text = element_text(family = '",
+        timelineFont,
+        "', colour = otherTextColour), legend.position = 'bottom', legend.title = element_blank(), legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))"
+      )
+    
     patchedPlots <- paste0(patchedPlots, timelineHeader, fontChoice)
     
     return(eval(parse(text = patchedPlots)))
     
   }
-

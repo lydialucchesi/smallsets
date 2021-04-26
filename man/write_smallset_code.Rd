@@ -4,7 +4,7 @@
 \alias{write_smallset_code}
 \title{Write smallset code}
 \usage{
-write_smallset_code(scriptName, dir)
+write_smallset_code(scriptName, dir, runBig, smallset)
 }
 \description{
 A function to prepare the smallset preprocessing code

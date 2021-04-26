@@ -5,8 +5,8 @@
 #' @import "reshape2" "ggplot2" "ggforce" "ggfittext" "colorspace" "stringr" "ggtext"
 #' @importFrom gplots col2hex
 
-make_timeline_plot <-
-  function(ItemNum,
+make_timeline_plot2 <-
+  function(itemNum,
            snapshotList,
            abstract,
            sizing,
@@ -19,11 +19,70 @@ make_timeline_plot <-
            timelineFont,
            captionSpace,
            accents,
-           legendDF) {
+           legendDF,
+           ghostDF1,
+           ghostDF2,
+           highlightNA) {
     tab1 <-
-      as.data.frame(snapshotList[[1]][[ItemNum]]$body$styles$text$color$data)
+      as.data.frame(snapshotList[[1]][[itemNum]]$body$styles$text$color$data)
     tab2 <-
-      as.data.frame(snapshotList[[1]][[ItemNum]]$body$dataset)
+      as.data.frame(snapshotList[[1]][[itemNum]]$body$dataset)
+    
+    # add in empty colours
+    row.names(tab1) <- row.names(tab2)
+    difRows <- setdiff(row.names(ghostDF1), row.names(tab1))
+    if (length(difRows) > 0) {
+      newColCheck <- setdiff(colnames(tab1), colnames(ghostDF1))
+      if (length(newColCheck > 0)) {
+        for (c in 1:length(newColCheck)) {
+          ghostDF1[, paste0(newColCheck[c])] <- "#FFFFFF"
+        }
+        # ghostDF1 <- ghostDF1[names(tab1)]
+      }
+      
+      tab1 <- rbind(tab1, ghostDF1[difRows, colnames(tab1)])
+      tab1 <- tab1[match(rownames(ghostDF1), rownames(tab1)),]
+    }
+    
+    difCols <- setdiff(colnames(ghostDF1), colnames(tab1))
+    if (length(difCols) > 0) {
+      tab1 <- cbind(tab1, ghostDF1[row.names(tab1), difCols])
+      tab1 <- tab1[order(row.names(tab1)), ]
+      tab1 <- tab1[names(ghostDF1)]
+      
+    }
+    
+    # add in empty data values
+    
+    difRows <- setdiff(row.names(ghostDF2), row.names(tab2))
+    if (length(difRows) > 0) {
+      newColCheck <- setdiff(colnames(tab2), colnames(ghostDF2))
+      if (length(newColCheck > 0)) {
+        for (c in 1:length(newColCheck)) {
+          ghostDF2[, paste0(newColCheck[c])] <- ""
+        }
+        # ghostDF2 <- ghostDF2[names(tab2)]
+      }
+      
+      tab2 <- rbind(tab2, ghostDF2[difRows, colnames(tab2)])
+      tab2 <- tab2[match(rownames(ghostDF2), rownames(tab2)),]
+      
+    }
+    
+    # difRows <- setdiff(row.names(ghostDF2), row.names(tab2))
+    # if (length(difRows) > 0) {
+    #   tab2 <- rbind(tab2, ghostDF2[difRows, colnames(tab2)])
+    #   tab2 <- tab2[order(row.names(tab2)),]
+    #
+    # }
+    
+    difCols <- setdiff(colnames(ghostDF2), colnames(tab2))
+    if (length(difCols) > 0) {
+      tab2 <- cbind(tab2, ghostDF2[row.names(tab2), difCols])
+      tab2 <- tab2[order(row.names(tab2)), ]
+      tab2 <- tab2[names(ghostDF2)]
+      
+    }
     
     xs <-
       data.frame(variable = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
@@ -42,7 +101,7 @@ make_timeline_plot <-
     colnames(tab2Long) <- c("variable", "y", "datValue", "x")
     
     tabs <- merge(tab1Long, tab2Long)
-    tabs <- merge(tabs, accents)
+    tabs <- suppressMessages(left_join(tabs, accents))
     
     xs$y <- rep(max(tabs$y) + 1, nrow(xs))
     xs$variable <- str_to_title(xs$variable)
@@ -66,8 +125,9 @@ make_timeline_plot <-
       circles$yCir <- circles$y
     }
     
-    plotInfo <- read_captions_rmd(snapshotList[[6]], snapshotList[[7]])
-    circleSymbols <- plotInfo[ItemNum,-c(8)]
+    plotInfo <-
+      read_captions_rmd(snapshotList[[6]], snapshotList[[7]])
+    circleSymbols <- plotInfo[itemNum,-c(8)]
     circleSymbols <-
       data.frame(
         action = c(
@@ -88,44 +148,23 @@ make_timeline_plot <-
     circles <- subset(circles, circles$test == FALSE)
     circles$test <- NULL
     
-    smallsetCaption <- plotInfo[ItemNum, "caption"]
-    
-    if (max(tabs$x) != maxDims[1]) {
-      empty1 <-
-        data.frame(expand.grid(x = seq(max(tabs$x) + 1, maxDims[1]),
-                               y = seq(1, maxDims[2])))
-    }
-    
-    if (max(tabs$y) != maxDims[2]) {
-      d <- maxDims[2] - max(tabs$y)
-      tabs$y <- tabs$y + d
-      xs$y <- xs$y + d
-      circles$yCir <- circles$yCir + d
-      empty2 <- data.frame(expand.grid(x = seq(1, maxDims[1]),
-                                       y = seq(1, min(tabs$y) - 1)))
-    }
-    
-    empty <- data.frame()
-    if (exists("empty1")) {
-      empty <- rbind(empty, empty1)
-    }
-    
-    if (exists("empty2")) {
-      empty <- rbind(empty, empty2)
-    }
+    smallsetCaption <- plotInfo[itemNum, "caption"]
     
     tabs <-
       suppressMessages(left_join(tabs, snapshotList[[8]], by = "colValue"))
     
-    missingCols <- c(
-      lighten(col2hex(snapshotList[[2]]), .4),
-      lighten(col2hex(snapshotList[[3]]), .4),
-      lighten(col2hex(snapshotList[[4]]), .4),
-      lighten(col2hex(snapshotList[[5]]), .4)
-    )
-    tabs$colValue <-
-      ifelse(is.na(tabs$datValue), lighten(col2hex(tabs$colValue), .4), tabs$colValue)
-    
+    if (isTRUE(highlightNA)) {
+      missingCols <- c(
+        lighten(col2hex(snapshotList[[2]]), .3),
+        lighten(col2hex(snapshotList[[3]]), .3),
+        lighten(col2hex(snapshotList[[4]]), .3),
+        lighten(col2hex(snapshotList[[5]]), .3)
+      )
+      tabs$colValue <-
+        ifelse(is.na(tabs$datValue),
+               lighten(col2hex(tabs$colValue), .3),
+               tabs$colValue)
+    }
     
     tileColGuide <-
       data.frame(
@@ -134,18 +173,27 @@ make_timeline_plot <-
       )
     
     legendDF$legend <- TRUE
-    addNewRows <-
-      data.frame(
-        colValue = missingCols,
-        description = c(""),
-        legend = c(FALSE)
-      )
-    legendDF <- rbind(legendDF, addNewRows)
+    
+    if (isTRUE(highlightNA)) {
+      addNewRows <-
+        data.frame(
+          colValue = missingCols,
+          description = c(""),
+          legend = c(FALSE)
+        )
+      legendDF <- rbind(legendDF, addNewRows)
+    }
+    
     legendDF$fillVar <-
       factor(legendDF$colValue, levels = legendDF$colValue)
     
-    legendDF$alpha <-
-      c(snapshotList[[8]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], snapshotList[[8]]$alpha)
+    if (isTRUE(highlightNA)) {
+      legendDF$alpha <-
+        c(snapshotList[[8]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], snapshotList[[8]]$alpha)
+    } else {
+      legendDF$alpha <- snapshotList[[8]]$alpha
+    }
+    
     legendDF$colAlp <-
       as.factor(alpha(legendDF$fillVar, legendDF$alpha))
     tabs <- merge(tabs, legendDF[, c("colValue", "colAlp")])
@@ -196,7 +244,7 @@ make_timeline_plot <-
             colour = otherTextCol
           )
         ) +
-        xlim(c(.5, (maxDims[1] + .5))) +
+        # xlim(c(.5, (maxDims[1] + .5))) +
         scale_colour_identity()
     } else {
       abstractSmallset <- ggplot() +
@@ -230,6 +278,7 @@ make_timeline_plot <-
           axis.title.y = element_blank(),
           panel.background = element_blank(),
           legend.position = 'bottom',
+          legend.title.align = 0.5,
           legend.title = element_blank(),
           legend.margin = margin(
             t = 0,
@@ -291,19 +340,6 @@ make_timeline_plot <-
         )
     }
     
-    if (nrow(empty) > 0) {
-      abstractSmallset <- abstractSmallset +
-        geom_tile(
-          data = empty,
-          aes(x = x, y = y),
-          fill = NA,
-          colour = NA,
-          size = sizing[["tiles"]]
-        )
-    } else {
-      abstractSmallset <- abstractSmallset
-    }
-    
     captionInfo <-
       data.frame(
         x = c((maxDims[1] + 1) / 2),
@@ -331,21 +367,21 @@ make_timeline_plot <-
       ) +
       ylim(c(captionSpace * (-1), maxDims[2] + 1))
     
-    if (ItemNum %in% snapshotList[[9]]) {
-      
+    if (itemNum %in% snapshotList[[9]]) {
       abstractWithCaption <- abstractWithCaption +
         geom_point(
-          aes(
-            x = (maxDims[1] + .5),
-            y = ((maxDims[2] + 1) - (captionSpace * (-1))) / 2,
-          ),
+          aes(x = (maxDims[1] + .5),
+              y = ((maxDims[2] + 1) - (
+                captionSpace * (-1)
+              )) / 2, ),
           fill = as.character(snapshotList[[8]]$colValue[1]),
           colour = as.character(snapshotList[[8]]$colValue[1]),
           alpha = snapshotList[[8]]$alpha[1],
-          size = 2)
+          size = 2
+        )
     }
     
+    abstractWithCaption
     return(abstractWithCaption)
     
   }
-

@@ -4,7 +4,13 @@
 \alias{select_smallset}
 \title{Select smallset}
 \usage{
-select_smallset(data, rowCount = 6, rowNums = NULL)
+select_smallset(
+  data,
+  rowCount = 6,
+  rowNums = NULL,
+  runBig = FALSE,
+  ignoreCols = ignoreCols
+)
 }
 \description{
 A function to prepare a smallset
