@@ -3,15 +3,15 @@
 #' @keywords internal
 #' @export
 
-add_caption_block <- function(i, col1, col2, col3, code) {
+add_caption_block <- function(i, code) {
   snapshot <- c(
     "",
     paste0("### `", code$lines[i], "`"),
     "",
     "Symbols",
-    paste0("\n1. Changed (", col1, "):"),
-    paste0("\n2. Added (", col2, "):"),
-    paste0("\n3. Deleted (", col3, "):"),
+    paste0("\n1. Changed:"),
+    paste0("\n2. Added:"),
+    paste0("\n3. Deleted:"),
     "",
     "Caption: "
   )

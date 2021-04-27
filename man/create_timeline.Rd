@@ -6,9 +6,13 @@
 \usage{
 create_timeline(
   snapshotList,
+  constant = list("#cecfd6", 0.7),
+  changed = list("#0f3d1c", 0.7),
+  added = list("#a35222", 0.7),
+  deleted = list("#3e4d63", 0.7),
   abstract = TRUE,
   ghostData = FALSE,
-  highlightNA = TRUE,
+  highlightNA = FALSE,
   sizing = list(columns = 2, tiles = 1, captions = 8, circles = 0.15, symbols = 2.5,
     data = 2.5, legend = 7),
   truncateData = FALSE,
@@ -18,11 +22,21 @@ create_timeline(
   stampLoc = 1,
   timelineRows = NULL,
   timelineFont = "sans",
-  captionSpace = 1
+  captionSpace = 1,
+  captionTemplateName = NULL,
+  captionTemplateDir = NULL
 )
 }
 \arguments{
 \item{snapshotList}{A list from \code{highlight_changes}}
+
+\item{constant}{A colour to represent data that have not changed.}
+
+\item{changed}{A colour to represent data that have changed.}
+
+\item{added}{A colour to represent data that have been added.}
+
+\item{deleted}{A colour to represent data that have been deleted.}
 
 \item{abstract}{TRUE or FALSE for hiding data values in timeline.}
 
@@ -47,6 +61,10 @@ create_timeline(
 \item{timelineFont}{Font family.}
 
 \item{captionSpace}{Increase room for captions. Any value greater than or equal to .5. Default is one.}
+
+\item{captionTemplateName}{Name of caption template if renamed so not written over when running highlight_changes function.}
+
+\item{captionTemplateDir}{Name of caption template directory if moved so not written over when running highlight_changes function.}
 }
 \description{
 Create the timeline

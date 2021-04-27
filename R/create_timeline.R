@@ -1,6 +1,10 @@
 #' Create the timeline
 #'
 #' @param snapshotList A list from \code{highlight_changes}
+#' @param constant A colour to represent data that have not changed.
+#' @param changed A colour to represent data that have changed.
+#' @param added A colour to represent data that have been added.
+#' @param deleted A colour to represent data that have been deleted.
 #' @param abstract TRUE or FALSE for hiding data values in timeline.
 #' @param ghostData TRUE or FALSE for including blank tiles where data have been removed.
 #' @param highlightNA TRUE or FALSE for using a lighter colour to signal data value is missing.
@@ -13,14 +17,21 @@
 #' @param timelineRows Number of rows to divide the smallset timeline into.
 #' @param timelineFont Font family.
 #' @param captionSpace Increase room for captions. Any value greater than or equal to .5. Default is one.
+#' @param captionTemplateName Name of caption template if renamed so not written over when running highlight_changes function.
+#' @param captionTemplateDir Name of caption template directory if moved so not written over when running highlight_changes function.
 #' @export
 #' @import "patchwork" "gplots" "colorspace" "magrittr" "dplyr"
+#' @importFrom plyr mapvalues
 
 create_timeline <-
   function(snapshotList,
+           constant = list("#cecfd6", .7),
+           changed = list("#0f3d1c", .7),
+           added = list("#a35222", .7),
+           deleted = list("#3e4d63", .7),
            abstract = TRUE,
            ghostData = FALSE,
-           highlightNA = TRUE,
+           highlightNA = FALSE,
            sizing = list(
              "columns" = 2,
              "tiles" = 1,
@@ -37,8 +48,57 @@ create_timeline <-
            stampLoc = 1,
            timelineRows = NULL,
            timelineFont = "sans",
-           captionSpace = 1) {
+           captionSpace = 1,
+           captionTemplateName = NULL,
+           captionTemplateDir = NULL) {
     items <- seq(1, length(snapshotList[[1]]), 1)
+    
+    if (!is.list(constant)) {
+      constantAlpha = .4
+    } else {
+      constantAlpha = constant[[2]]
+      constant = constant[[1]]
+    }
+    
+    if (!is.list(changed)) {
+      changedAlpha = .4
+    } else {
+      changedAlpha = changed[[2]]
+      changed = changed[[1]]
+    }
+    
+    if (!is.list(added)) {
+      addedAlpha = .4
+    } else {
+      addedAlpha = added[[2]]
+      added = added[[1]]
+    }
+    
+    if (!is.list(deleted)) {
+      deletedAlpha = .4
+    } else {
+      deletedAlpha = deleted[[2]]
+      deleted = deleted[[1]]
+    }
+    
+    tileAlphas <-
+      data.frame(
+        colValue = c(constant, changed, added, deleted),
+        alpha = c(constantAlpha, changedAlpha, addedAlpha, deletedAlpha)
+      )
+    
+    for (i in 1:length(snapshotList)) {
+      temp <- snapshotList[[1]][[i]]$body$styles$text$color$data
+      for (c in colnames(temp)) {
+        temp[, c] <- mapvalues(
+          temp[, c],
+          from = c("#808080", "#FFFF00", "#0000FF", "#FF0000"),
+          to = c(constant, changed, added, deleted),
+          warn_missing = FALSE
+        )
+      }
+      snapshotList[[1]][[i]]$body$styles$text$color$data <- temp
+    }
     
     if (is.null(sizing[["columns"]])) {
       sizing[["columns"]] = 2
@@ -134,7 +194,7 @@ create_timeline <-
     
     accents <-
       data.frame(
-        colValue = c(snapshotList[[2]], snapshotList[[3]], snapshotList[[4]], snapshotList[[5]]),
+        colValue = c(constant, changed, added, deleted),
         accent = unlist(accentCols),
         degree = unlist(accentColsDif)
       )
@@ -180,13 +240,14 @@ create_timeline <-
           "Data will be removed prior to the next snapshot."
         )
     }
-
+    
     legendDF <- data.frame(colValue = c(), description = c())
-    for (colItemNum in 2:5) {
-      if (snapshotList[[colItemNum]] %in% colsPresent) {
+    colItems <- c(constant, changed, added, deleted)
+    for (colItemNum in 1:length(colItems)) {
+      if (colItems[colItemNum] %in% colsPresent) {
         legendAddition <-
-          data.frame(colValue = c(snapshotList[[colItemNum]]),
-                     description = descriptions[colItemNum - 1])
+          data.frame(colValue = c(colItems[colItemNum]),
+                     description = descriptions[colItemNum])
         legendDF <- rbind(legendDF, legendAddition)
       }
     }
@@ -216,6 +277,12 @@ create_timeline <-
       
       row.names(ghostDF1) <- row.names(ghostDF2)
       
+      snapshotList[[5]] <- constant
+      snapshotList[[6]] <- changed
+      snapshotList[[7]] <- added
+      snapshotList[[8]] <- deleted
+      snapshotList[[9]] <- tileAlphas
+      
       l <-
         lapply(
           items,
@@ -235,6 +302,8 @@ create_timeline <-
           ghostDF1,
           ghostDF2,
           highlightNA,
+          captionTemplateName,
+          captionTemplateDir,
           FUN = make_timeline_plot2
         )
     } else {
@@ -255,6 +324,8 @@ create_timeline <-
           accents,
           legendDF,
           highlightNA,
+          captionTemplateName,
+          captionTemplateDir,
           FUN = make_timeline_plot1
         )
     }
@@ -279,7 +350,7 @@ create_timeline <-
     
     annotateInfo <-
       as.data.frame(readLines(paste0(
-        snapshotList[[7]], "/", snapshotList[[6]], ".Rmd"
+        snapshotList[[3]], "/", snapshotList[[2]], ".Rmd"
       )))
     colnames(annotateInfo) <- c("lines")
     

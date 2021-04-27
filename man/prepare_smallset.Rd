@@ -7,17 +7,22 @@
 prepare_smallset(
   data,
   code,
+  dir = getwd(),
   rowCount = 6,
   rowNums = NULL,
   runBig = FALSE,
   ignoreCols = NULL,
-  dir = getwd()
+  captionTemplateName = "captionTemplate",
+  captionTemplateDir = getwd(),
+  captionTemplateAuthor = NULL
 )
 }
 \arguments{
 \item{data}{A data set}
 
 \item{code}{A script to prepare data for use in modelling}
+
+\item{dir}{A file path for the smallset script}
 
 \item{rowCount}{The number of rows to include in the smallset}
 
@@ -27,7 +32,11 @@ prepare_smallset(
 
 \item{ignoreCols}{A vector of column names that you do not want included in the timeline (cannot be referenced in preprocessing code)}
 
-\item{dir}{A file path for the smallset script}
+\item{captionTemplateName}{A file name for the caption .Rmd template}
+
+\item{captionTemplateDir}{A file path for the caption .Rmd template}
+
+\item{captionTemplateAuthor}{The author's name for the caption .Rmd file}
 }
 \description{
 Prepare smallset

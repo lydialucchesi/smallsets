@@ -19,7 +19,9 @@ make_timeline_plot1(
   captionSpace,
   accents,
   legendDF,
-  highlightNA
+  highlightNA,
+  captionTemplateName,
+  captionTemplateDir
 )
 }
 \description{

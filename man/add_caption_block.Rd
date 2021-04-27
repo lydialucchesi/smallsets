@@ -4,7 +4,7 @@
 \alias{add_caption_block}
 \title{Add caption block}
 \usage{
-add_caption_block(i, col1, col2, col3, code)
+add_caption_block(i, code)
 }
 \description{
 A function to insert a caption block in the caption template

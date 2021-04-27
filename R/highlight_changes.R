@@ -1,72 +1,25 @@
 #' Highlight changes
-#'
-#' @param smallsetList A list from \code{prep_smallset}
-#' @param constant A colour to represent data cells that have not changed since previous smallset
-#' @param changed A colour to represent data cells that have changed since previous smallset
-#' @param added A colour to represent data cells that have been added since previous smallset
-#' @param deleted A colour to represent cells that will be deleted from next smallset
-#' @param author The author's name for the caption .Rmd file
-#' @param captionScript A file name for the caption .Rmd template
-#' @param captionDir A file path for the caption .Rmd template
+#' @description A function to identify changes, additions, and deletions between snapshots
+#' @keywords internal
 #' @export
 #' @import "flextable"
 #' @importFrom gdata cbindX
 
 
 highlight_changes <-
-  function(smallsetList,
-           constant = "#927C5C",
-           changed = "cornflowerblue",
-           added = "#689F38",
-           deleted = "#b2a38c",
-           author = NULL,
-           captionScript = "captions",
-           captionDir = getwd()) {
-
-    resumeLocs <- smallsetList[[2]]
-    smallsetList <- smallsetList[[1]]
+  function(smallsetList = smallsetList,
+           tempName = captionTemplateName,
+           tempDir = captionTemplateDir,
+           tempAuthor = captionTemplateAuthor) {
+    constant = "#808080"
+    changed = "#FFFF00"
+    added = "#0000FF"
+    deleted = "#FF0000"
     
-    if (!is.list(constant)) {
-      constantAlpha = .4
-    } else {
-      constantAlpha = constant[[2]]
-      constant = constant[[1]]
-    }
-    
-    if (!is.list(changed)) {
-      changedAlpha = .4
-    } else {
-      changedAlpha = changed[[2]]
-      changed = changed[[1]]
-    }
-    
-    if (!is.list(added)) {
-      addedAlpha = .4
-    } else {
-      addedAlpha = added[[2]]
-      added = added[[1]]
-    }
-    
-    if (!is.list(deleted)) {
-      deletedAlpha = .4
-    } else {
-      deletedAlpha = deleted[[2]]
-      deleted = deleted[[1]]
-    }
-    
-    tileAlphas <-
-      data.frame(
-        colValue = c(constant, changed, added, deleted),
-        alpha = c(constantAlpha, changedAlpha, addedAlpha, deletedAlpha)
-      )
-    
-    write_caption_template(
-      authorName = author,
-      col1 = changed,
-      col2 = added,
-      col3 = deleted,
-      script = captionScript,
-      pathway = captionDir
+    printMessage <- write_caption_template(
+      authorName = tempAuthor,
+      script = tempName,
+      pathway = tempDir
     )
     
     tables <- list()
@@ -168,15 +121,16 @@ highlight_changes <-
       
     }
     
-    return(list(
-      tables,
-      constant,
-      changed,
-      added,
-      deleted,
-      captionScript,
-      captionDir,
-      tileAlphas,
-      resumeLocs
-    ))
+    print(
+      paste0(
+        "Edits, additions, and deletions identified and ",
+        printMessage,
+        " at ",
+        tempDir,
+        "."
+      )
+    )
+    
+    return(tables)
+    
   }

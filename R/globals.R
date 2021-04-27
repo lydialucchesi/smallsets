@@ -12,8 +12,8 @@ utils::globalVariables(
     "action",
     "datValue",
     "apply_code",
-    "captionScript",
-    "captionDir",
-    "author"
+    "captionTemplateAuthor",
+    "captionTemplateDir",
+    "captionTemplateName"
   )
 )

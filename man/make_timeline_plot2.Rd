@@ -21,7 +21,9 @@ make_timeline_plot2(
   legendDF,
   ghostDF1,
   ghostDF2,
-  highlightNA
+  highlightNA,
+  captionTemplateName,
+  captionTemplateDir
 )
 }
 \description{

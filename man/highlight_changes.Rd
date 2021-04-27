@@ -5,33 +5,13 @@
 \title{Highlight changes}
 \usage{
 highlight_changes(
-  smallsetList,
-  constant = "#927C5C",
-  changed = "cornflowerblue",
-  added = "#689F38",
-  deleted = "#b2a38c",
-  author = NULL,
-  captionScript = "captions",
-  captionDir = getwd()
+  smallsetList = smallsetList,
+  tempName = captionTemplateName,
+  tempDir = captionTemplateDir,
+  tempAuthor = captionTemplateAuthor
 )
 }
-\arguments{
-\item{smallsetList}{A list from \code{prep_smallset}}
-
-\item{constant}{A colour to represent data cells that have not changed since previous smallset}
-
-\item{changed}{A colour to represent data cells that have changed since previous smallset}
-
-\item{added}{A colour to represent data cells that have been added since previous smallset}
-
-\item{deleted}{A colour to represent cells that will be deleted from next smallset}
-
-\item{author}{The author's name for the caption .Rmd file}
-
-\item{captionScript}{A file name for the caption .Rmd template}
-
-\item{captionDir}{A file path for the caption .Rmd template}
-}
 \description{
-Highlight changes
+A function to identify changes, additions, and deletions between snapshots
 }
+\keyword{internal}

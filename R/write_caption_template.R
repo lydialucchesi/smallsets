@@ -4,7 +4,7 @@
 #' @export
 
 write_caption_template <-
-  function(authorName = author, col1, col2, col3, script, pathway) {
+  function(authorName = author, script, pathway) {
     if (is.null(authorName)) {
       authorName <- ""
     }
@@ -42,7 +42,7 @@ write_caption_template <-
     
     
     captionBlocks <-
-      lapply(refRows, col1, col2, col3, code, FUN = add_caption_block)
+      lapply(refRows, code, FUN = add_caption_block)
     captionBlocks <- unlist(captionBlocks)
     
     rmdTotal <- c(heading, titleBlock, firstPlot, captionBlocks)
@@ -52,5 +52,5 @@ write_caption_template <-
     writeLines(rmdTotal, fileConn)
     close(fileConn)
     
-    return(print(paste0(paste0(script, ".Rmd"), " file created")))
+    return((paste0(paste0(script, ".Rmd"), " file created")))
   }

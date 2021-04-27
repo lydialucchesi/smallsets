@@ -20,7 +20,9 @@ make_timeline_plot1 <-
            captionSpace,
            accents,
            legendDF,
-           highlightNA) {
+           highlightNA,
+           captionTemplateName,
+           captionTemplateDir) {
     tab1 <-
       as.data.frame(snapshotList[[1]][[itemNum]]$body$styles$text$color$data)
     tab2 <-
@@ -48,7 +50,7 @@ make_timeline_plot1 <-
     xs$y <- rep(max(tabs$y) + 1, nrow(xs))
     xs$variable <- str_to_title(xs$variable)
     
-    circles <- subset(tabs, colValue != snapshotList[[2]])
+    circles <- subset(tabs, colValue != snapshotList[[5]])
     
     if (stampLoc == 1) {
       circles$xCir <- circles$x - .25
@@ -67,8 +69,23 @@ make_timeline_plot1 <-
       circles$yCir <- circles$y
     }
     
-    plotInfo <-
-      read_captions_rmd(snapshotList[[6]], snapshotList[[7]])
+    if (is.null(captionTemplateName) &
+        is.null(captionTemplateDir)) {
+      plotInfo <-
+        read_captions_rmd(snapshotList[[2]], snapshotList[[3]])
+    } else if (is.null(captionTemplateName) &
+               !is.null(captionTemplateDir)) {
+      plotInfo <-
+        read_captions_rmd(snapshotList[[2]], captionTemplateDir)
+    } else if (!is.null(captionTemplateName) &
+               is.null(captionTemplateDir)) {
+      plotInfo <-
+        read_captions_rmd(captionTemplateName, snapshotList[[3]])
+    } else {
+      plotInfo <-
+        read_captions_rmd(captionTemplateName, captionTemplateDir)
+    }
+    
     circleSymbols <- plotInfo[itemNum,-c(8)]
     circleSymbols <-
       data.frame(
@@ -77,7 +94,7 @@ make_timeline_plot1 <-
           circleSymbols$added,
           circleSymbols$deleted
         ),
-        colValue = c(circleSymbols$col1, circleSymbols$col2, circleSymbols$col3)
+        colValue = c(snapshotList[[6]], snapshotList[[7]], snapshotList[[8]])
       )
     circleSymbols$colValue <- as.character(circleSymbols$colValue)
     circleSymbols <- merge(circleSymbols, accents)
@@ -117,18 +134,18 @@ make_timeline_plot1 <-
     }
     
     tabs <-
-      suppressMessages(left_join(tabs, snapshotList[[8]], by = "colValue"))
+      suppressMessages(left_join(tabs, snapshotList[[9]], by = "colValue"))
     
     if (isTRUE(highlightNA)) {
       missingCols <- c(
-        lighten(col2hex(snapshotList[[2]]), .3),
-        lighten(col2hex(snapshotList[[3]]), .3),
-        lighten(col2hex(snapshotList[[4]]), .3),
-        lighten(col2hex(snapshotList[[5]]), .3)
+        lighten(col2hex(snapshotList[[5]]), .4),
+        lighten(col2hex(snapshotList[[6]]), .4),
+        lighten(col2hex(snapshotList[[7]]), .4),
+        lighten(col2hex(snapshotList[[8]]), .4)
       )
       tabs$colValue <-
         ifelse(is.na(tabs$datValue),
-               lighten(col2hex(tabs$colValue), .3),
+               lighten(col2hex(tabs$colValue), .4),
                tabs$colValue)
     }
     
@@ -155,9 +172,9 @@ make_timeline_plot1 <-
     
     if (isTRUE(highlightNA)) {
       legendDF$alpha <-
-        c(snapshotList[[8]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], snapshotList[[8]]$alpha)
+        c(snapshotList[[9]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], snapshotList[[9]]$alpha)
     } else {
-      legendDF$alpha <- snapshotList[[8]]$alpha
+      legendDF$alpha <- snapshotList[[9]]$alpha
     }
     
     legendDF$colAlp <-
@@ -327,6 +344,11 @@ make_timeline_plot1 <-
         smallsetCaption = c(smallsetCaption)
       )
     
+    if (is.na(captionInfo$smallsetCaption)) {
+      captionInfo$smallsetCaption <- as.character(captionInfo$smallsetCaption)
+      captionInfo$smallsetCaption[1] <- ""
+    }
+    
     abstractWithCaption <- abstractSmallset +
       geom_textbox(
         data = captionInfo,
@@ -347,16 +369,16 @@ make_timeline_plot1 <-
       ) +
       ylim(c(captionSpace * (-1), maxDims[2] + 1))
     
-    if (itemNum %in% snapshotList[[9]]) {
+    if (itemNum %in% snapshotList[[4]]) {
       abstractWithCaption <- abstractWithCaption +
         geom_point(
           aes(x = (maxDims[1] + .5),
               y = ((maxDims[2] + 1) - (
                 captionSpace * (-1)
               )) / 2, ),
-          fill = as.character(snapshotList[[8]]$colValue[1]),
-          colour = as.character(snapshotList[[8]]$colValue[1]),
-          alpha = snapshotList[[8]]$alpha[1],
+          fill = as.character(snapshotList[[9]]$colValue[1]),
+          colour = as.character(snapshotList[[9]]$colValue[1]),
+          alpha = snapshotList[[9]]$alpha[1],
           size = 2
         )
     }

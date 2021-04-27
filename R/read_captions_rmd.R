@@ -4,6 +4,7 @@
 #' @export
 
 read_captions_rmd <- function(script = captionScript, pathway = captionDir) {
+
   plotInfo <- as.data.frame(readLines(paste0(pathway, "/", script, ".Rmd")))
   colnames(plotInfo) <- c("lines")
   
@@ -14,8 +15,8 @@ read_captions_rmd <- function(script = captionScript, pathway = captionDir) {
   colnames(changed) <- c("changed", "id")
   changed$changed <- sub("1. Changed.*:", "", changed$changed)
   colEx <- subset(plotInfo, grepl("1. Changed ", plotInfo$lines))$lines[1]
-  changed$col1 <- gsub("[\\(\\)]", "", regmatches(colEx, gregexpr("\\(.*?\\)", colEx))[[1]])
-  changed$changed <- trimws(changed$changed, which = c("left"))
+  # changed$col1 <- gsub("[\\(\\)]", "", regmatches(colEx, gregexpr("\\(.*?\\)", colEx))[[1]])
+  # changed$changed <- trimws(changed$changed, which = c("left"))
   
   added <- subset(plotInfo, grepl("2. Added ", plotInfo$lines))
   added <- rbind(empty <- data.frame(lines = c("None")), added)
@@ -24,8 +25,8 @@ read_captions_rmd <- function(script = captionScript, pathway = captionDir) {
   colnames(added) <- c("added", "id")
   added$added <- sub("2. Added.*:", "", added$added)
   colEx <- subset(plotInfo, grepl("2. Added ", plotInfo$lines))$lines[1]
-  added$col2 <- gsub("[\\(\\)]", "", regmatches(colEx, gregexpr("\\(.*?\\)", colEx))[[1]])
-  added$added <- trimws(added$added, which = c("left"))
+  # added$col2 <- gsub("[\\(\\)]", "", regmatches(colEx, gregexpr("\\(.*?\\)", colEx))[[1]])
+  # added$added <- trimws(added$added, which = c("left"))
   
   deleted <- subset(plotInfo, grepl("3. Deleted ", plotInfo$lines))
   deleted <- rbind(empty <- data.frame(lines = c("None")), deleted)
@@ -34,8 +35,8 @@ read_captions_rmd <- function(script = captionScript, pathway = captionDir) {
   colnames(deleted) <- c("deleted", "id")
   deleted$deleted <- sub("3. Deleted.*:", "", deleted$deleted)
   colEx <- subset(plotInfo, grepl("3. Deleted ", plotInfo$lines))$lines[1]
-  deleted$col3 <- gsub("[\\(\\)]", "", regmatches(colEx, gregexpr("\\(.*?\\)", colEx))[[1]])
-  deleted$deleted <- trimws(deleted$deleted, which = c("left"))
+  # deleted$col3 <- gsub("[\\(\\)]", "", regmatches(colEx, gregexpr("\\(.*?\\)", colEx))[[1]])
+  # deleted$deleted <- trimws(deleted$deleted, which = c("left"))
   
   captions <- subset(plotInfo, grepl("Caption:", plotInfo$lines))
   captions$id <- seq(1, nrow(captions), 1)

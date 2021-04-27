@@ -4,7 +4,7 @@
 \alias{write_caption_template}
 \title{Write caption template}
 \usage{
-write_caption_template(authorName = author, col1, col2, col3, script, pathway)
+write_caption_template(authorName = author, script, pathway)
 }
 \description{
 A function to prepare the caption template
