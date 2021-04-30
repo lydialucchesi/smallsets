@@ -34,12 +34,12 @@ make_timeline_plot1 <-
     for (i in 1:ncol(tab1)) {
       tab1[, i] <- as.character(tab1[, i])
     }
-    tab1$y <- seq(nrow(tab1), 1,-1)
+    tab1$y <- seq(nrow(tab1), 1, -1)
     tab1Long <- suppressWarnings(reshape2::melt(tab1, id = c("y")))
     tab1Long <- merge(tab1Long, xs)
     colnames(tab1Long) <- c("variable", "y", "colValue", "x")
     
-    tab2$y <- seq(nrow(tab2), 1,-1)
+    tab2$y <- seq(nrow(tab2), 1, -1)
     tab2Long <- suppressWarnings(reshape2::melt(tab2, id = c("y")))
     tab2Long <- merge(tab2Long, xs)
     colnames(tab2Long) <- c("variable", "y", "datValue", "x")
@@ -86,7 +86,7 @@ make_timeline_plot1 <-
         read_captions_rmd(captionTemplateName, captionTemplateDir)
     }
     
-    circleSymbols <- plotInfo[itemNum,-c(8)]
+    circleSymbols <- plotInfo[itemNum, -c(8)]
     circleSymbols <-
       data.frame(
         action = c(
@@ -224,7 +224,7 @@ make_timeline_plot1 <-
           ),
           text = element_text(
             family = timelineFont,
-            size = sizing[["legend"]],
+            size = sizing[["legendText"]],
             colour = otherTextCol
           )
         ) +
@@ -273,7 +273,7 @@ make_timeline_plot1 <-
           ),
           text = element_text(
             family = timelineFont,
-            size = sizing[["legend"]],
+            size = sizing[["legendText"]],
             colour = otherTextCol
           )
         ) +
@@ -345,7 +345,8 @@ make_timeline_plot1 <-
       )
     
     if (is.na(captionInfo$smallsetCaption)) {
-      captionInfo$smallsetCaption <- as.character(captionInfo$smallsetCaption)
+      captionInfo$smallsetCaption <-
+        as.character(captionInfo$smallsetCaption)
       captionInfo$smallsetCaption[1] <- ""
     }
     
@@ -375,7 +376,7 @@ make_timeline_plot1 <-
           aes(x = (maxDims[1] + .5),
               y = ((maxDims[2] + 1) - (
                 captionSpace * (-1)
-              )) / 2, ),
+              )) / 2,),
           fill = as.character(snapshotList[[9]]$colValue[1]),
           colour = as.character(snapshotList[[9]]$colValue[1]),
           alpha = snapshotList[[9]]$alpha[1],

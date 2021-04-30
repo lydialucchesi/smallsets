@@ -257,7 +257,7 @@ make_timeline_plot2 <-
           ),
           text = element_text(
             family = timelineFont,
-            size = sizing[["legend"]],
+            size = sizing[["legendText"]],
             colour = otherTextCol
           )
         ) +
@@ -306,7 +306,7 @@ make_timeline_plot2 <-
           ),
           text = element_text(
             family = timelineFont,
-            size = sizing[["legend"]],
+            size = sizing[["legendText"]],
             colour = otherTextCol
           )
         ) +

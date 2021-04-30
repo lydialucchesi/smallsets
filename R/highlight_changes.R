@@ -12,7 +12,7 @@ highlight_changes <-
            tempDir = captionTemplateDir,
            tempAuthor = captionTemplateAuthor) {
     constant = "#808080"
-    changed = "#FFFF00"
+    changed = "#008000"
     added = "#0000FF"
     deleted = "#FF0000"
     

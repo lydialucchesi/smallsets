@@ -4,7 +4,8 @@
 #' @export
 
 write_caption_template <-
-  function(authorName = author, script, pathway) {
+  function(authorName, script, pathway) {
+    
     if (is.null(authorName)) {
       authorName <- ""
     }

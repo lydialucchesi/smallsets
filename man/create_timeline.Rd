@@ -14,7 +14,7 @@ create_timeline(
   ghostData = FALSE,
   highlightNA = FALSE,
   sizing = list(columns = 2, tiles = 1, captions = 8, circles = 0.15, symbols = 2.5,
-    data = 2.5, legend = 7),
+    data = 2.5, legendText = 7, legendIcons = 1, title = 10, subtitle = 8, footnote = 7),
   truncateData = FALSE,
   accentCols = "darker",
   accentColsDif = 0.5,
@@ -28,44 +28,44 @@ create_timeline(
 )
 }
 \arguments{
-\item{snapshotList}{A list from \code{highlight_changes}}
+\item{snapshotList}{List output from \code{prepare_smallset}.}
 
-\item{constant}{A colour to represent data that have not changed.}
+\item{constant}{Hex colour code. Colour represents data that have not changed since previous snapshot. Can pass in a list with a colour and transparency value (0 to 1) for that colour.}
 
-\item{changed}{A colour to represent data that have changed.}
+\item{changed}{Hex colour code. Colour represents data that have changed since previous snapshot. Can pass in a list with a colour and transparency value (0 to 1) for that colour.}
 
-\item{added}{A colour to represent data that have been added.}
+\item{added}{Hex colour code. Colour represents data that have been added since previous snapshot. Can pass in a list with a colour and transparency value (0 to 1) for that colour.}
 
-\item{deleted}{A colour to represent data that have been deleted.}
+\item{deleted}{Hex colour code. Colour represents data that will be deleted prior to next snapshot. Can pass in a list with a colour and transparency value (0 to 1) for that colour.}
 
-\item{abstract}{TRUE or FALSE for hiding data values in timeline.}
+\item{abstract}{TRUE or FALSE. FALSE prints data values in tables.}
 
-\item{ghostData}{TRUE or FALSE for including blank tiles where data have been removed.}
+\item{ghostData}{TRUE or FALSE. TRUE includes blank tiles where data have been removed.}
 
-\item{highlightNA}{TRUE or FALSE for using a lighter colour to signal data value is missing.}
+\item{highlightNA}{TRUE or FALSE. TRUE plots a lighter colour value to signal data value is missing.}
 
-\item{sizing}{A list of size specifications for the column names, the tiles, the captions, the circles, and the symbols}
+\item{sizing}{List of size specifications. Can specify sizes for column names, table tiles, caption text, stamp symbols, stamp circles, printed data, legend text, legend icons, timeline title, timeline subtitle, and timeline footnote.}
 
-\item{truncateData}{FALSE if data do not need to be truncated to fit in tiles. Otherwise, an integer specifying width of data value (width includes "...").}
+\item{truncateData}{TRUE or FALSE. FALSE if data do not need to be truncated to fit within table tiles. Otherwise, an integer specifying width of data value (width includes "...").}
 
 \item{accentCols}{Either "darker" or "lighter" for stamp colour. Can enter a list corresponding to specific actions.}
 
-\item{accentColsDif}{Degree to which stamp colour is darker or lighter. Can enter a list corresponding to specific actions.}
+\item{accentColsDif}{Value between 0 and 1. Corresponds to how much lighter or darker accent colour will be. Can pass a list with different accent values for different colours.}
 
-\item{otherTextCol}{Value between 0 and 1. Default is 1, meaning column names will be black. 0 means columns will be the same colour as the constant colour.}
+\item{otherTextCol}{Value between 0 and 1. Default is 1, which is when column names are black. 0 means columns will be the constant colour.}
 
-\item{stampLoc}{Location of stamp. 1 = top left. 2 = top right. 3 = bottom left. 4 = bottom right. 5 = center.}
+\item{stampLoc}{Integer of 1, 2, 3, 4 or 5. Location of stamp: 1 = top left, 2 = top right, 3 = bottom left, 4 = bottom right, and 5 = center.}
 
-\item{timelineRows}{Number of rows to divide the smallset timeline into.}
+\item{timelineRows}{Integer greater than or equal to one. Number of rows to divide the smallset timeline into.}
 
-\item{timelineFont}{Font family.}
+\item{timelineFont}{Choose one of sans, serif, or mono.}
 
-\item{captionSpace}{Increase room for captions. Any value greater than or equal to .5. Default is one.}
+\item{captionSpace}{Value greater than or equal to .5. Higher values create more caption space. Default is 1.}
 
-\item{captionTemplateName}{Name of caption template if renamed so not written over when running highlight_changes function.}
+\item{captionTemplateName}{Name of caption template. Can be included so template is not overwritten when running \code{prepare_smallset}.}
 
-\item{captionTemplateDir}{Name of caption template directory if moved so not written over when running highlight_changes function.}
+\item{captionTemplateDir}{Name of caption template directory. Can be included so template is not overwritten when running \code{prepare_smallset}.}
 }
 \description{
-Create the timeline
+This function creates a smallset timeline using output from \code{prepare_smallset}. Timelines have many customisation options. They are detailed below.
 }

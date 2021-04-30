@@ -4,7 +4,7 @@
 \alias{read_captions_rmd}
 \title{Read the caption R markdown file}
 \usage{
-read_captions_rmd(script = captionScript, pathway = captionDir)
+read_captions_rmd(script, pathway)
 }
 \description{
 A function to interpret the caption R markdown file

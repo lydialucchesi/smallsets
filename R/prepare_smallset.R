@@ -1,15 +1,20 @@
 #' Prepare smallset
+#' 
+#' @description This function selects a smallset, 
+#' takes snapshots, and identifies the changes between snapshots. 
+#' The output can be passed to \code{create_timeline} 
+#' to create a smallset timeline. 
 #'
-#' @param data A data set
-#' @param code A script to prepare data for use in modelling
-#' @param dir A file path for the smallset script
-#' @param rowCount The number of rows to include in the smallset
-#' @param rowNums A numeric vector of row numbers indicating particular rows from the data set to be included in the smallset
-#' @param runBig Default is FALSE (preprocessing code is run on smallset) - if TRUE, preprocessing code is run on the original dataset and smallset snapshots are extracted from that
-#' @param ignoreCols A vector of column names that you do not want included in the timeline (cannot be referenced in preprocessing code)
-#' @param captionTemplateName A file name for the caption .Rmd template
-#' @param captionTemplateDir A file path for the caption .Rmd template
-#' @param captionTemplateAuthor The author's name for the caption .Rmd file
+#' @param data Data set.
+#' @param code Script with data preprocessing code for data set.
+#' @param dir File path to data preprocessing code.
+#' @param rowCount Integer greater than or equal to 5. Number of rows to include in the smallset.
+#' @param rowNums Numeric vector of row numbers. Indicates particular rows from the data set to be included in the smallset.
+#' @param runBig TRUE or FALSE. FALSE means preprocessing code will be run on smallset. TRUE means preprocessing code will be run on the big data set, and the smallset will be extracted from that output at each snap point.
+#' @param ignoreCols Character vector of column names. Indicates which columns from the data set should not be included in the smallset. Columns in this vector should usually not be referenced in the data preprocessing code.
+#' @param captionTemplateName File name for the caption template.
+#' @param captionTemplateDir File path for the caption template.
+#' @param captionTemplateAuthor Name of author for the caption template.
 #' @export
 
 prepare_smallset <-
@@ -23,6 +28,15 @@ prepare_smallset <-
            captionTemplateName = "captionTemplate",
            captionTemplateDir = getwd(),
            captionTemplateAuthor = NULL) {
+    
+    if (missing(data)) {
+      print("Must specify a data set. See data argument in ?prepare_smallset.")
+    }
+    
+    if (missing(code)) {
+      print("Must specify preprocessing code. See code argument in ?prepare_smallset.")
+    }
+    
     smallset <- select_smallset(
       data = data,
       rowCount = rowCount,
@@ -67,11 +81,15 @@ prepare_smallset <-
       tempAuthor = captionTemplateAuthor
     )
     
-    return(list(
+    o <- (list(
       smallsetTables,
       captionTemplateName,
       captionTemplateDir,
       resumeLocs
     ))
+    
+    oldClass(o) <- c("smallsetSnapshots", class(o))
+    
+    o
     
   }

@@ -18,26 +18,29 @@ prepare_smallset(
 )
 }
 \arguments{
-\item{data}{A data set}
+\item{data}{Data set.}
 
-\item{code}{A script to prepare data for use in modelling}
+\item{code}{Script with data preprocessing code for data set.}
 
-\item{dir}{A file path for the smallset script}
+\item{dir}{File path to data preprocessing code.}
 
-\item{rowCount}{The number of rows to include in the smallset}
+\item{rowCount}{Integer greater than or equal to 5. Number of rows to include in the smallset.}
 
-\item{rowNums}{A numeric vector of row numbers indicating particular rows from the data set to be included in the smallset}
+\item{rowNums}{Numeric vector of row numbers. Indicates particular rows from the data set to be included in the smallset.}
 
-\item{runBig}{Default is FALSE (preprocessing code is run on smallset) - if TRUE, preprocessing code is run on the original dataset and smallset snapshots are extracted from that}
+\item{runBig}{TRUE or FALSE. FALSE means preprocessing code will be run on smallset. TRUE means preprocessing code will be run on the big data set, and the smallset will be extracted from that output at each snap point.}
 
-\item{ignoreCols}{A vector of column names that you do not want included in the timeline (cannot be referenced in preprocessing code)}
+\item{ignoreCols}{Character vector of column names. Indicates which columns from the data set should not be included in the smallset. Columns in this vector should usually not be referenced in the data preprocessing code.}
 
-\item{captionTemplateName}{A file name for the caption .Rmd template}
+\item{captionTemplateName}{File name for the caption template.}
 
-\item{captionTemplateDir}{A file path for the caption .Rmd template}
+\item{captionTemplateDir}{File path for the caption template.}
 
-\item{captionTemplateAuthor}{The author's name for the caption .Rmd file}
+\item{captionTemplateAuthor}{Name of author for the caption template.}
 }
 \description{
-Prepare smallset
+This function selects a smallset, 
+takes snapshots, and identifies the changes between snapshots. 
+The output can be passed to \code{create_timeline} 
+to create a smallset timeline.
 }
