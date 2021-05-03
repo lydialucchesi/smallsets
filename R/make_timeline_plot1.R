@@ -1,5 +1,5 @@
 #' Make a timeline plot
-#' @description A function to transform the flextable into a colour plot
+#' @description A function to transform the flextable into a colour plot when ghostData = FALSE
 #' @keywords internal
 #' @export
 #' @import "reshape2" "ggplot2" "ggforce" "ggfittext" "colorspace" "stringr" "ggtext"
@@ -14,7 +14,6 @@ make_timeline_plot1 <-
            accentCols,
            accentColsDif,
            otherTextCol,
-           stampLoc,
            maxDims,
            timelineFont,
            captionSpace,
@@ -50,25 +49,6 @@ make_timeline_plot1 <-
     xs$y <- rep(max(tabs$y) + 1, nrow(xs))
     xs$variable <- str_to_title(xs$variable)
     
-    circles <- subset(tabs, colValue != snapshotList[[5]])
-    
-    if (stampLoc == 1) {
-      circles$xCir <- circles$x - .25
-      circles$yCir <- circles$y + .25
-    } else if (stampLoc == 2) {
-      circles$xCir <- circles$x + .25
-      circles$yCir <- circles$y + .25
-    } else if (stampLoc == 3) {
-      circles$xCir <- circles$x - .25
-      circles$yCir <- circles$y - .25
-    } else if (stampLoc == 4) {
-      circles$xCir <- circles$x + .25
-      circles$yCir <- circles$y - .25
-    } else {
-      circles$xCir <- circles$x
-      circles$yCir <- circles$y
-    }
-    
     if (is.null(captionTemplateName) &
         is.null(captionTemplateDir)) {
       plotInfo <-
@@ -85,28 +65,7 @@ make_timeline_plot1 <-
       plotInfo <-
         read_captions_rmd(captionTemplateName, captionTemplateDir)
     }
-    
-    circleSymbols <- plotInfo[itemNum, -c(8)]
-    circleSymbols <-
-      data.frame(
-        action = c(
-          circleSymbols$changed,
-          circleSymbols$added,
-          circleSymbols$deleted
-        ),
-        colValue = c(snapshotList[[6]], snapshotList[[7]], snapshotList[[8]])
-      )
-    circleSymbols$colValue <- as.character(circleSymbols$colValue)
-    circleSymbols <- merge(circleSymbols, accents)
-    
-    circleSymbols[, c("hex", "colDir", "colDirDif")] <- NULL
-    
-    circles <- merge(circles, circleSymbols)
-    circles$action <- as.character(circles$action)
-    circles$test <- circles$action == ""
-    circles <- subset(circles, circles$test == FALSE)
-    circles$test <- NULL
-    
+  
     smallsetCaption <- plotInfo[itemNum, "caption"]
     
     if (max(tabs$x) != maxDims[1]) {
@@ -119,7 +78,6 @@ make_timeline_plot1 <-
       d <- maxDims[2] - max(tabs$y)
       tabs$y <- tabs$y + d
       xs$y <- xs$y + d
-      circles$yCir <- circles$yCir + d
       empty2 <- data.frame(expand.grid(x = seq(1, maxDims[1]),
                                        y = seq(1, min(tabs$y) - 1)))
     }
@@ -181,9 +139,8 @@ make_timeline_plot1 <-
       as.factor(alpha(legendDF$fillVar, legendDF$alpha))
     tabs <- merge(tabs, legendDF[, c("colValue", "colAlp")])
     legendDF <- subset(legendDF, legend == TRUE)
-    
-    if (nrow(circles) == 0) {
-      abstractSmallset <- ggplot() +
+
+    abstractSmallset <- ggplot() +
         geom_tile(
           data = tabs,
           aes(x = x, y = y, fill = colAlp),
@@ -228,81 +185,8 @@ make_timeline_plot1 <-
             colour = otherTextCol
           )
         ) +
-        xlim(c(.5, (maxDims[1] + .5))) +
+        # xlim(c(.5, (maxDims[1] + .5))) +
         scale_colour_identity()
-    } else {
-      abstractSmallset <- ggplot() +
-        geom_tile(
-          data = tabs,
-          aes(x = x, y = y, fill = colAlp),
-          colour = "white",
-          size = sizing[["tiles"]]
-        ) +
-        scale_fill_identity(
-          "",
-          labels = legendDF$description,
-          breaks = legendDF$colAlp,
-          guide = "legend",
-          drop = FALSE
-        ) +
-        geom_text(
-          data = xs,
-          aes(x = x, y = y, label = variable),
-          family = timelineFont,
-          size = sizing[["columns"]],
-          colour = otherTextCol
-        ) +
-        coord_equal() +
-        theme(
-          axis.line = element_blank(),
-          axis.text.x = element_blank(),
-          axis.text.y = element_blank(),
-          axis.ticks = element_blank(),
-          axis.title.x = element_blank(),
-          axis.title.y = element_blank(),
-          panel.background = element_blank(),
-          legend.position = 'bottom',
-          legend.title.align = 0.5,
-          legend.title = element_blank(),
-          legend.margin = margin(
-            t = 0,
-            r = 0,
-            b = 0,
-            l = 0,
-            unit = 'cm'
-          ),
-          text = element_text(
-            family = timelineFont,
-            size = sizing[["legendText"]],
-            colour = otherTextCol
-          )
-        ) +
-        xlim(c(.5, (maxDims[1] + .5))) +
-        geom_circle(
-          data = circles,
-          aes(
-            x0 = xCir,
-            y0 = yCir,
-            r = sizing[["circles"]],
-            colour = colValue2,
-          ),
-          fill = "white",
-          size = .3
-        ) +
-        geom_text(
-          data = circles,
-          aes(
-            x = xCir,
-            y = yCir,
-            label = action,
-            colour = colValue2
-          ),
-          family = timelineFont,
-          size = sizing[["symbols"]]
-        ) +
-        scale_colour_identity()
-    }
-    
     tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
     
     if (isFALSE(abstract) & !isFALSE(truncateData)) {
@@ -372,15 +256,16 @@ make_timeline_plot1 <-
     
     if (itemNum %in% snapshotList[[4]]) {
       abstractWithCaption <- abstractWithCaption +
-        geom_point(
-          aes(x = (maxDims[1] + .5),
-              y = ((maxDims[2] + 1) - (
-                captionSpace * (-1)
-              )) / 2,),
-          fill = as.character(snapshotList[[9]]$colValue[1]),
+        geom_segment(
+          aes(
+            x = (maxDims[1] + 2),
+            xend = (maxDims[1] + 2),
+            y = .5,
+            yend = maxDims[2] + .5
+          ),
           colour = as.character(snapshotList[[9]]$colValue[1]),
           alpha = snapshotList[[9]]$alpha[1],
-          size = 2
+          size = sizing[["resume"]]
         )
     }
     

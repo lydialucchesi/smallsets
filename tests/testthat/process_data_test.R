@@ -1,7 +1,5 @@
 
 library(magrittr)
-library(data.table)
-
 
 df <- data.frame(
   V1 = c(2000,-1999, 2000, 1995, 1996, 2001, 2002, 2003, 2001, 1994, 2000, -1999),
@@ -9,7 +7,6 @@ df <- data.frame(
   V3 = c(20, 11, 9, 18, 4, 15, 20, NA, 12, 13, 19, 6),
   V4 = c(.6, .5, 1.1, .8, .7, 1.3, .9, 1.1, 1.4, .8, .9, 1.2)
 )
-df <- as.data.table(df)
 
 # start smallset
 # snap df

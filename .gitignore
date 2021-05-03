@@ -5,3 +5,7 @@
 *.html
 *.utf8.md
 *.knit.md
+smallset features.pdf
+smallset-features.Rmd
+captionTemplate.Rmd
+smallset_code.R

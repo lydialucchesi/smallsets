@@ -29,8 +29,8 @@ select_smallset <- function(data,
     return(smallsetRowIDs)
   } else {
     smallset <- smallset[order(as.numeric(smallset$smallsetRowID)),]
+    rownames(smallset) <- smallset$smallsetRowID
     smallset$smallsetRowID <- NULL
-    rownames(smallset) <- seq(1, nrow(smallset), 1)
     return(smallset)
   }
   

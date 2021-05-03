@@ -1,5 +1,5 @@
 #' Create the timeline
-#' 
+#'
 #' @description  This function creates a smallset timeline using output from \code{prepare_smallset}. Timelines have many customisation options. They are detailed below.
 #'
 #' @param snapshotList List output from \code{prepare_smallset}.
@@ -7,15 +7,15 @@
 #' @param changed Hex colour code. Colour represents data that have changed since previous snapshot. Can pass in a list with a colour and transparency value (0 to 1) for that colour.
 #' @param added Hex colour code. Colour represents data that have been added since previous snapshot. Can pass in a list with a colour and transparency value (0 to 1) for that colour.
 #' @param deleted Hex colour code. Colour represents data that will be deleted prior to next snapshot. Can pass in a list with a colour and transparency value (0 to 1) for that colour.
+#' @param colScheme NULL, colour scheme name, or vector. If NULL, uses four colour arguments above. If colour scheme name, uses built-in scheme with colours pre-assigned to the four preprocessing states (constant, changed, added, deleted). If vector, it must be a vector of length five, with the first element being the colour scheme name followed by the four preprocessing states in the order that they should be assigned to scheme colours (e.g.,, c("colScheme1", "changed", "constant", "deleted", "added")).
 #' @param abstract TRUE or FALSE. FALSE prints data values in tables.
-#' @param ghostData TRUE or FALSE. TRUE includes blank tiles where data have been removed.
+#' @param ghostData TRUE or FALSE. TRUE includes blank spaces where data have been removed.
 #' @param highlightNA TRUE or FALSE. TRUE plots a lighter colour value to signal data value is missing.
-#' @param sizing List of size specifications. Can specify sizes for column names, table tiles, caption text, stamp symbols, stamp circles, printed data, legend text, legend icons, timeline title, timeline subtitle, and timeline footnote.
+#' @param sizing List of size specifications. Can specify sizes for column names, table tiles, caption text, stamp symbols, stamp circles, printed data, legend text, legend icons, timeline title, timeline subtitle, timeline footnote, and resume marker.
 #' @param truncateData TRUE or FALSE. FALSE if data do not need to be truncated to fit within table tiles. Otherwise, an integer specifying width of data value (width includes "...").
 #' @param accentCols Either "darker" or "lighter" for stamp colour. Can enter a list corresponding to specific actions.
 #' @param accentColsDif Value between 0 and 1. Corresponds to how much lighter or darker accent colour will be. Can pass a list with different accent values for different colours.
 #' @param otherTextCol Value between 0 and 1. Default is 1, which is when column names are black. 0 means columns will be the constant colour.
-#' @param stampLoc Integer of 1, 2, 3, 4 or 5. Location of stamp: 1 = top left, 2 = top right, 3 = bottom left, 4 = bottom right, and 5 = center.
 #' @param timelineRows Integer greater than or equal to one. Number of rows to divide the smallset timeline into.
 #' @param timelineFont Choose one of sans, serif, or mono.
 #' @param captionSpace Value greater than or equal to .5. Higher values create more caption space. Default is 1.
@@ -27,72 +27,144 @@
 
 create_timeline <-
   function(snapshotList,
-           constant = list("#cecfd6", .7),
-           changed = list("#0f3d1c", .7),
-           added = list("#a35222", .7),
-           deleted = list("#3e4d63", .7),
+           constant = list("#cecfd6", .8),
+           changed = list("#0f3d1c", .8),
+           added = list("#a35222", .8),
+           deleted = list("#3e4d63", .8),
+           colScheme = NULL,
            abstract = TRUE,
-           ghostData = FALSE,
+           ghostData = TRUE,
            highlightNA = FALSE,
            sizing = list(
              "columns" = 2,
              "tiles" = 1,
              "captions" = 8,
-             "circles" = .15,
-             "symbols" = 2.5,
              "data" = 2.5,
              "legendText" = 7,
              "legendIcons" = 1,
              "title" = 10,
              "subtitle" = 8,
-             "footnote" = 7
+             "footnote" = 7,
+             "resume" = .25
            ),
            truncateData = FALSE,
            accentCols = "darker",
            accentColsDif = .5,
            otherTextCol = 1,
-           stampLoc = 1,
            timelineRows = NULL,
            timelineFont = "sans",
            captionSpace = 1,
            captionTemplateName = NULL,
            captionTemplateDir = NULL) {
-    
     if (missing(snapshotList)) {
-      stop("Must include object from prepare_smallset. See snapshotList argument in ?create_timeline.")
+      stop(
+        "Must include object from prepare_smallset. See snapshotList argument in ?create_timeline."
+      )
     }
     
-    if((class(snapshotList)[1] != "smallsetSnapshots"))
+    if ((class(snapshotList)[1] != "smallsetSnapshots"))
       stop("Object snapshotList is not of smallsetSnapshots (output from prepare_smallset).'")
     
     items <- seq(1, length(snapshotList[[1]]), 1)
+
+    colScheme1 <- 
+      list(
+        constant = list("#D3D2CC", 1),
+        changed = list("#C9D5F5", 1), 
+        added = list("#CDAFEE", 1),
+        deleted = list("#FBE4B5", 1)
+      )
     
-    if (!is.list(constant)) {
-      constantAlpha = .4
-    } else {
-      constantAlpha = constant[[2]]
-      constant = constant[[1]]
+    colScheme2 <-
+      list(
+        constant = list("#4F5353", 1),
+        changed = list("#BE8F52", 1),
+        added = list("#978878", 1),
+        deleted = list("#6C7C7D", 1)
+      )
+    
+    colScheme3 <- 
+      list(
+        constant = list("#E3D4C3", .7),
+        changed = list("#4c4cff", .7),
+        added = list("#FEE004", .7),
+        deleted = list("#FF0000", .7)
+      )
+    
+    if (!is.null(colScheme)) {
+      if (colScheme[1] == "colScheme1") {
+        chosenScheme <- colScheme1
+      } else if (colScheme[1] == "colScheme2") {
+        chosenScheme <- colScheme2
+      } else if (colScheme[1] == "colScheme3") {
+        chosenScheme <- colScheme3
+      } else {
+        stop("Please choose a colour scheme: colScheme1, colScheme2, or colScheme3. See colScheme argument in ?create_timeline.")
+      }
     }
-    
-    if (!is.list(changed)) {
-      changedAlpha = .4
+
+    if (!is.null(colScheme) & length(colScheme) > 1) {
+      
+      constantPlace <- match("constant", colScheme) - 1
+      constant <- unlist(chosenScheme[constantPlace][1])[1]
+      constantAlpha <- as.numeric(unlist(chosenScheme[constantPlace][1])[2])
+      
+      changedPlace <- match("changed", colScheme) - 1
+      changed <- unlist(chosenScheme[changedPlace][1])[1]
+      changedAlpha <- as.numeric(unlist(chosenScheme[changedPlace][1])[2])
+      
+      addedPlace <- match("added", colScheme) - 1
+      added <- unlist(chosenScheme[addedPlace][1])[1]
+      addedAlpha <- as.numeric(unlist(chosenScheme[addedPlace][1])[2])
+      
+      deletedPlace <- match("constant", colScheme) - 1
+      deleted <- unlist(chosenScheme[deletedPlace][1])[1]
+      deletedAlpha <- as.numeric(unlist(chosenScheme[deletedPlace][1])[2])
+      
+    } else if ((!is.null(colScheme) & length(colScheme) == 1)) {
+      
+      constant <- unlist(chosenScheme[1][1])[1]
+      constantAlpha <- as.numeric(unlist(chosenScheme[1][1])[2])
+      
+      changed <- unlist(chosenScheme[2][1])[1]
+      changedAlpha <- as.numeric(unlist(chosenScheme[2][1])[2])
+      
+      added <- unlist(chosenScheme[3][1])[1]
+      addedAlpha <- as.numeric(unlist(chosenScheme[3][1])[2])
+      
+      deleted <- unlist(chosenScheme[4][1])[1]
+      deletedAlpha <- as.numeric(unlist(chosenScheme[4][1])[2])
+      
     } else {
-      changedAlpha = changed[[2]]
-      changed = changed[[1]]
-    }
-    
-    if (!is.list(added)) {
-      addedAlpha = .4
-    } else {
-      addedAlpha = added[[2]]
-      added = added[[1]]
-    }
-    
-    if (!is.list(deleted)) {
-      deletedAlpha = .4
-    } else {
-      deletedAlpha = deleted[[2]]
-      deleted = deleted[[1]]
+      
+      if (!is.list(constant)) {
+        constantAlpha = .4
+      } else {
+        constantAlpha = constant[[2]]
+        constant = constant[[1]]
+      }
+      
+      if (!is.list(changed)) {
+        changedAlpha = .4
+      } else {
+        changedAlpha = changed[[2]]
+        changed = changed[[1]]
+      }
+      
+      if (!is.list(added)) {
+        addedAlpha = .4
+      } else {
+        addedAlpha = added[[2]]
+        added = added[[1]]
+      }
+      
+      if (!is.list(deleted)) {
+        deletedAlpha = .4
+      } else {
+        deletedAlpha = deleted[[2]]
+        deleted = deleted[[1]]
+      }
+      
     }
     
     tileAlphas <-
@@ -126,14 +198,6 @@ create_timeline <-
       sizing[["captions"]] = 8
     }
     
-    if (is.null(sizing[["circles"]])) {
-      sizing[["circles"]] = .15
-    }
-    
-    if (is.null(sizing[["symbols"]])) {
-      sizing[["symbols"]] = 2.5
-    }
-    
     if (is.null(sizing[["data"]])) {
       sizing[["data"]] = 2.5
     }
@@ -156,6 +220,10 @@ create_timeline <-
     
     if (is.null(sizing[["footnote"]])) {
       sizing[["footnote"]] = 7
+    }
+    
+    if (is.null(sizing[["resume"]])) {
+      sizing[["resume"]] = .25
     }
     
     if (is.list(accentCols)) {
@@ -323,7 +391,6 @@ create_timeline <-
           accentCols,
           accentColsDif,
           otherTextColour,
-          stampLoc,
           maxDims,
           timelineFont,
           captionSpace,
@@ -337,7 +404,6 @@ create_timeline <-
           FUN = make_timeline_plot2
         )
     } else {
-      
       snapshotList[[5]] <- constant
       snapshotList[[6]] <- changed
       snapshotList[[7]] <- added
@@ -354,7 +420,6 @@ create_timeline <-
           accentCols,
           accentColsDif,
           otherTextColour,
-          stampLoc,
           maxDims,
           timelineFont,
           captionSpace,
@@ -385,28 +450,31 @@ create_timeline <-
         )
     }
     
-    if (is.null(captionTemplateName) & is.null(captionTemplateDir)) {
+    if (is.null(captionTemplateName) &
+        is.null(captionTemplateDir)) {
       annotateInfo <-
         as.data.frame(readLines(paste0(
           snapshotList[[3]], "/", snapshotList[[2]], ".Rmd"
         )))
-    } else if (!is.null(captionTemplateName) & is.null(captionTemplateDir)) {
+    } else if (!is.null(captionTemplateName) &
+               is.null(captionTemplateDir)) {
       annotateInfo <-
         as.data.frame(readLines(paste0(
           snapshotList[[3]], "/", captionTemplateName, ".Rmd"
         )))
-    } else if (is.null(captionTemplateName) & !is.null(captionTemplateDir)) {
+    } else if (is.null(captionTemplateName) &
+               !is.null(captionTemplateDir)) {
       annotateInfo <-
         as.data.frame(readLines(paste0(
           captionTemplateDir, "/", snapshotList[[2]], ".Rmd"
         )))
     } else {
       annotateInfo <-
-        as.data.frame(readLines(paste0(
-          captionTemplateDir, "/", captionTemplateName, ".Rmd"
-        )))
+        as.data.frame(readLines(
+          paste0(captionTemplateDir, "/", captionTemplateName, ".Rmd")
+        ))
     }
-
+    
     colnames(annotateInfo) <- c("lines")
     
     title <-
@@ -444,26 +512,25 @@ create_timeline <-
       paste0(
         " & theme(text = element_text(family = '",
         timelineFont,
-        "', colour = otherTextColour), 
-        plot.title = element_text(size = ", 
-        sizing[["title"]], 
+        "', colour = otherTextColour),
+        plot.title = element_text(size = ",
+        sizing[["title"]],
         "), ",
-        "plot.subtitle = element_text(size = ", 
-        sizing[["subtitle"]], 
+        "plot.subtitle = element_text(size = ",
+        sizing[["subtitle"]],
         "), ",
-        "plot.caption = element_text(size = ", 
+        "plot.caption = element_text(size = ",
         sizing[["footnote"]],
         "), ",
         "legend.key.size = unit(",
         sizing[["legendIcons"]],
-        ", 'line'), 
-        legend.position = 'bottom', 
-        legend.title = element_blank(), 
+        ", 'line'),
+        legend.position = 'bottom',
+        legend.title = element_blank(),
         legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))"
       )
     
     patchedPlots <- paste0(patchedPlots, timelineHeader, fontChoice)
-    eval(parse(text = patchedPlots))
     o <- return(eval(parse(text = patchedPlots)))
     
     oldClass(o) <- c("smallsetTimeline", class(o))

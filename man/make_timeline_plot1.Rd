@@ -13,7 +13,6 @@ make_timeline_plot1(
   accentCols,
   accentColsDif,
   otherTextCol,
-  stampLoc,
   maxDims,
   timelineFont,
   captionSpace,
@@ -25,6 +24,6 @@ make_timeline_plot1(
 )
 }
 \description{
-A function to transform the flextable into a colour plot
+A function to transform the flextable into a colour plot when ghostData = FALSE
 }
 \keyword{internal}

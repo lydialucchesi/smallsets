@@ -4,4 +4,6 @@
 ^other_code
 ^smallset_code.R
 ^mycaptions.Rmd
-^captions.Rmd
+^captionTemplate.Rmd
+^smallset-features
+^smallset features

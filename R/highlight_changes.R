@@ -123,7 +123,7 @@ highlight_changes <-
     
     print(
       paste0(
-        "Edits, additions, and deletions identified and ",
+        "Edits, additions, and deletions identified. ",
         printMessage,
         " at ",
         tempDir,
