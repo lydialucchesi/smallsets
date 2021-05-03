@@ -37,6 +37,20 @@ prepare_smallset <-
       print("Must specify preprocessing code. See code argument in ?prepare_smallset.")
     }
     
+    if (class(data)[1] == "data.table") {
+      print("Converting data object from class data.table to data.frame with as.data.frame(data).")
+      data <- as.data.frame(data)
+    }
+    
+    if (class(data)[1] == "tbl_df") {
+      print("Converting data object from class tibble to data.frame with as.data.frame(data).")
+      data <- as.data.frame(data)
+    }
+    
+    if (class(data) != "data.frame") {
+      stop("Data was not of class data frame, data table, or tibble.")
+    }
+    
     smallset <- select_smallset(
       data = data,
       rowCount = rowCount,

@@ -27,11 +27,11 @@
 
 create_timeline <-
   function(snapshotList,
-           constant = list("#cecfd6", .8),
-           changed = list("#0f3d1c", .8),
-           added = list("#a35222", .8),
-           deleted = list("#3e4d63", .8),
-           colScheme = NULL,
+           constant = NULL,
+           changed = NULL,
+           added = NULL,
+           deleted = NULL,
+           colScheme = "colScheme1",
            abstract = TRUE,
            ghostData = TRUE,
            highlightNA = FALSE,
@@ -49,9 +49,9 @@ create_timeline <-
            ),
            truncateData = FALSE,
            accentCols = "darker",
-           accentColsDif = .5,
+           accentColsDif = .8,
            otherTextCol = 1,
-           timelineRows = NULL,
+           timelineRows = 1,
            timelineFont = "sans",
            captionSpace = 1,
            captionTemplateName = NULL,
@@ -66,11 +66,11 @@ create_timeline <-
       stop("Object snapshotList is not of smallsetSnapshots (output from prepare_smallset).'")
     
     items <- seq(1, length(snapshotList[[1]]), 1)
-
-    colScheme1 <- 
+    
+    colScheme1 <-
       list(
         constant = list("#D3D2CC", 1),
-        changed = list("#C9D5F5", 1), 
+        changed = list("#C9D5F5", 1),
         added = list("#CDAFEE", 1),
         deleted = list("#FBE4B5", 1)
       )
@@ -83,7 +83,7 @@ create_timeline <-
         deleted = list("#6C7C7D", 1)
       )
     
-    colScheme3 <- 
+    colScheme3 <-
       list(
         constant = list("#E3D4C3", .7),
         changed = list("#4c4cff", .7),
@@ -94,35 +94,45 @@ create_timeline <-
     if (!is.null(colScheme)) {
       if (colScheme[1] == "colScheme1") {
         chosenScheme <- colScheme1
+        if (isFALSE(abstract)) {
+          
+        }
       } else if (colScheme[1] == "colScheme2") {
         chosenScheme <- colScheme2
+        if (isFALSE(abstract)) {
+          print("Recommended: set argument accentCols = 'lighter'.")
+        }
       } else if (colScheme[1] == "colScheme3") {
         chosenScheme <- colScheme3
       } else {
-        stop("Please choose a colour scheme: colScheme1, colScheme2, or colScheme3. See colScheme argument in ?create_timeline.")
+        stop(
+          "Please choose a colour scheme: colScheme1, colScheme2, or colScheme3. See colScheme argument in ?create_timeline."
+        )
       }
     }
-
+    
     if (!is.null(colScheme) & length(colScheme) > 1) {
-      
       constantPlace <- match("constant", colScheme) - 1
       constant <- unlist(chosenScheme[constantPlace][1])[1]
-      constantAlpha <- as.numeric(unlist(chosenScheme[constantPlace][1])[2])
+      constantAlpha <-
+        as.numeric(unlist(chosenScheme[constantPlace][1])[2])
       
       changedPlace <- match("changed", colScheme) - 1
       changed <- unlist(chosenScheme[changedPlace][1])[1]
-      changedAlpha <- as.numeric(unlist(chosenScheme[changedPlace][1])[2])
+      changedAlpha <-
+        as.numeric(unlist(chosenScheme[changedPlace][1])[2])
       
       addedPlace <- match("added", colScheme) - 1
       added <- unlist(chosenScheme[addedPlace][1])[1]
-      addedAlpha <- as.numeric(unlist(chosenScheme[addedPlace][1])[2])
+      addedAlpha <-
+        as.numeric(unlist(chosenScheme[addedPlace][1])[2])
       
       deletedPlace <- match("constant", colScheme) - 1
       deleted <- unlist(chosenScheme[deletedPlace][1])[1]
-      deletedAlpha <- as.numeric(unlist(chosenScheme[deletedPlace][1])[2])
+      deletedAlpha <-
+        as.numeric(unlist(chosenScheme[deletedPlace][1])[2])
       
     } else if ((!is.null(colScheme) & length(colScheme) == 1)) {
-      
       constant <- unlist(chosenScheme[1][1])[1]
       constantAlpha <- as.numeric(unlist(chosenScheme[1][1])[2])
       
@@ -136,7 +146,6 @@ create_timeline <-
       deletedAlpha <- as.numeric(unlist(chosenScheme[4][1])[2])
       
     } else {
-      
       if (!is.list(constant)) {
         constantAlpha = .4
       } else {
