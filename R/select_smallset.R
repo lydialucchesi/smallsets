@@ -1,7 +1,6 @@
 #' Select smallset
 #' @description A function to prepare a smallset
 #' @keywords internal
-#' @export
 #' @import "dplyr"
 
 select_smallset <- function(data,

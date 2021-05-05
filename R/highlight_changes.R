@@ -1,7 +1,6 @@
 #' Highlight changes
 #' @description A function to identify changes, additions, and deletions between snapshots
 #' @keywords internal
-#' @export
 #' @import "flextable"
 #' @importFrom gdata cbindX
 

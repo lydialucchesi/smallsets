@@ -14,6 +14,9 @@ utils::globalVariables(
     "apply_code",
     "captionTemplateAuthor",
     "captionTemplateDir",
-    "captionTemplateName"
+    "captionTemplateName",
+    "V1",
+    "V2",
+    "label"
   )
 )

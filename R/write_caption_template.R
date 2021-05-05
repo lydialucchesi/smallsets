@@ -1,7 +1,6 @@
 #' Write caption template
 #' @description A function to prepare the caption template
 #' @keywords internal
-#' @export
 
 write_caption_template <-
   function(authorName, script, pathway) {

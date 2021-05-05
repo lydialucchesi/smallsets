@@ -1,15 +1,14 @@
 #' Get timeline dimensions
 #' @description A function to find the maximum and minimum number of rows and columns in the timeline
 #' @keywords internal
-#' @export
 
-get_timeline_dimensions <- function(ftsList) {
+get_timeline_dimensions <- function(tabs) {
   
   rows <- numeric()
   cols <- numeric()
-  for (i in 1:length(ftsList[[1]])) {
-    rows <- c(rows, nrow(ftsList[[1]][[i]]$body$dataset))
-    cols <- c(cols, ncol(ftsList[[1]][[i]]$body$dataset))
+  for (i in 1:length(tabs)) {
+    rows <- c(rows, nrow(tabs[[i]][[1]]))
+    cols <- c(cols, ncol(tabs[[i]][[1]]))
   }
   
   maxX <- max(cols)

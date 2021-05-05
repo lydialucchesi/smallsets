@@ -1,0 +1,15 @@
+#' Extract snapshot tables
+#' @description A function to extract snapshot tables
+#' @keywords internal
+
+extract_tables <- function(itemNum, snapshotList) {
+  
+  tab1 <-
+    as.data.frame(snapshotList[[1]][[itemNum]]$body$styles$text$color$data)
+  
+  tab2 <-
+    as.data.frame(snapshotList[[1]][[itemNum]]$body$dataset)
+  
+  return(list(tab1, tab2))
+
+}

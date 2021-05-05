@@ -21,9 +21,9 @@
 #' @param captionSpace Value greater than or equal to .5. Higher values create more caption space. Default is 1.
 #' @param captionTemplateName Name of caption template. Can be included so template is not overwritten when running \code{prepare_smallset}.
 #' @param captionTemplateDir Name of caption template directory. Can be included so template is not overwritten when running \code{prepare_smallset}.
-#' @export
 #' @import "patchwork" "gplots" "colorspace" "magrittr" "dplyr"
 #' @importFrom plyr mapvalues
+#' @export
 
 create_timeline <-
   function(snapshotList,
@@ -63,53 +63,13 @@ create_timeline <-
     }
     
     if ((class(snapshotList)[1] != "smallsetSnapshots"))
-      stop("Object snapshotList is not of smallsetSnapshots (output from prepare_smallset).'")
+      stop(
+        "Object snapshotList is not of class smallsetSnapshots (output from prepare_smallset).'"
+      )
     
     items <- seq(1, length(snapshotList[[1]]), 1)
     
-    colScheme1 <-
-      list(
-        constant = list("#D3D2CC", 1),
-        changed = list("#C9D5F5", 1),
-        added = list("#CDAFEE", 1),
-        deleted = list("#FBE4B5", 1)
-      )
-    
-    colScheme2 <-
-      list(
-        constant = list("#4F5353", 1),
-        changed = list("#BE8F52", 1),
-        added = list("#978878", 1),
-        deleted = list("#6C7C7D", 1)
-      )
-    
-    colScheme3 <-
-      list(
-        constant = list("#E3D4C3", .7),
-        changed = list("#4c4cff", .7),
-        added = list("#FEE004", .7),
-        deleted = list("#FF0000", .7)
-      )
-    
-    if (!is.null(colScheme)) {
-      if (colScheme[1] == "colScheme1") {
-        chosenScheme <- colScheme1
-        if (isFALSE(abstract)) {
-          
-        }
-      } else if (colScheme[1] == "colScheme2") {
-        chosenScheme <- colScheme2
-        if (isFALSE(abstract)) {
-          print("Recommended: set argument accentCols = 'lighter'.")
-        }
-      } else if (colScheme[1] == "colScheme3") {
-        chosenScheme <- colScheme3
-      } else {
-        stop(
-          "Please choose a colour scheme: colScheme1, colScheme2, or colScheme3. See colScheme argument in ?create_timeline."
-        )
-      }
-    }
+    chosenScheme <- return_scheme(colScheme = colScheme)
     
     if (!is.null(colScheme) & length(colScheme) > 1) {
       constantPlace <- match("constant", colScheme) - 1
@@ -297,8 +257,6 @@ create_timeline <-
         )
     }
     
-    maxDims <- get_timeline_dimensions(snapshotList)
-    
     accents <-
       data.frame(
         colValue = c(constant, changed, added, deleted),
@@ -384,61 +342,51 @@ create_timeline <-
       
       row.names(ghostDF1) <- row.names(ghostDF2)
       
-      snapshotList[[5]] <- constant
-      snapshotList[[6]] <- changed
-      snapshotList[[7]] <- added
-      snapshotList[[8]] <- deleted
-      snapshotList[[9]] <- tileAlphas
-      
-      l <-
-        lapply(
-          items,
-          snapshotList,
-          abstract,
-          sizing,
-          truncateData,
-          accentCols,
-          accentColsDif,
-          otherTextColour,
-          maxDims,
-          timelineFont,
-          captionSpace,
-          accents,
-          legendDF,
-          ghostDF1,
-          ghostDF2,
-          highlightNA,
-          captionTemplateName,
-          captionTemplateDir,
-          FUN = make_timeline_plot2
-        )
+      extTables <-
+        lapply(items, ghostDF1, ghostDF2, snapshotList, FUN = add_ghost_data)
     } else {
-      snapshotList[[5]] <- constant
-      snapshotList[[6]] <- changed
-      snapshotList[[7]] <- added
-      snapshotList[[8]] <- deleted
-      snapshotList[[9]] <- tileAlphas
-      
-      l <-
-        lapply(
-          items,
-          snapshotList,
-          abstract,
-          sizing,
-          truncateData,
-          accentCols,
-          accentColsDif,
-          otherTextColour,
-          maxDims,
-          timelineFont,
-          captionSpace,
-          accents,
-          legendDF,
-          highlightNA,
-          captionTemplateName,
-          captionTemplateDir,
-          FUN = make_timeline_plot1
-        )
+      extTables <- lapply(items, snapshotList, FUN = extract_tables)
+    }
+    
+    maxDims <- get_timeline_dimensions(extTables)
+    
+    snapshotList[[5]] <- constant
+    snapshotList[[6]] <- changed
+    snapshotList[[7]] <- added
+    snapshotList[[8]] <- deleted
+    snapshotList[[9]] <- tileAlphas
+    
+    l <-
+      lapply(
+        items,
+        extTables,
+        snapshotList,
+        abstract,
+        ghostData,
+        sizing,
+        truncateData,
+        accentCols,
+        accentColsDif,
+        otherTextColour,
+        maxDims,
+        timelineFont,
+        captionSpace,
+        accents,
+        legendDF,
+        highlightNA,
+        captionTemplateName,
+        captionTemplateDir,
+        FUN = make_timeline_plot
+      )
+    
+    if (timelineRows > 1) {
+      m <- maxDims[[1]] + .5
+      if (!is.null(snapshotList[[4]])) {
+        m <- maxDims[[1]] + 2.51
+      }
+      for (p in 1:length(l)) {
+        l[[p]] <- l[[p]] + xlim(c(0, m))
+      }
     }
     
     patchedPlots <- ""
@@ -487,7 +435,8 @@ create_timeline <-
     colnames(annotateInfo) <- c("lines")
     
     title <-
-      subset(annotateInfo, grepl("Timeline title: ", annotateInfo$lines))
+      subset(annotateInfo,
+             grepl("Timeline title: ", annotateInfo$lines))
     title <- sub("Timeline title*: ", "", title$lines)[1]
     
     subtitle <-
@@ -539,7 +488,8 @@ create_timeline <-
         legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))"
       )
     
-    patchedPlots <- paste0(patchedPlots, timelineHeader, fontChoice)
+    patchedPlots <-
+      paste0(patchedPlots, timelineHeader, fontChoice)
     o <- return(eval(parse(text = patchedPlots)))
     
     oldClass(o) <- c("smallsetTimeline", class(o))

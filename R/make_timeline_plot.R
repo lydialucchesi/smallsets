@@ -1,14 +1,15 @@
 #' Make a timeline plot
-#' @description A function to transform the flextable into a colour plot when ghostData = FALSE
+#' @description A function to transform the flextable into a colour plot
 #' @keywords internal
-#' @export
 #' @import "reshape2" "ggplot2" "ggforce" "ggfittext" "colorspace" "stringr" "ggtext"
 #' @importFrom gplots col2hex
 
-make_timeline_plot1 <-
+make_timeline_plot <-
   function(itemNum,
+           extTables,
            snapshotList,
            abstract,
+           ghostData,
            sizing,
            truncateData,
            accentCols,
@@ -22,10 +23,8 @@ make_timeline_plot1 <-
            highlightNA,
            captionTemplateName,
            captionTemplateDir) {
-    tab1 <-
-      as.data.frame(snapshotList[[1]][[itemNum]]$body$styles$text$color$data)
-    tab2 <-
-      as.data.frame(snapshotList[[1]][[itemNum]]$body$dataset)
+    tab1 <- extTables[[itemNum]][[1]]
+    tab2 <- extTables[[itemNum]][[2]]
     
     xs <-
       data.frame(variable = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
@@ -33,18 +32,18 @@ make_timeline_plot1 <-
     for (i in 1:ncol(tab1)) {
       tab1[, i] <- as.character(tab1[, i])
     }
-    tab1$y <- seq(nrow(tab1), 1, -1)
+    tab1$y <- seq(nrow(tab1), 1,-1)
     tab1Long <- suppressWarnings(reshape2::melt(tab1, id = c("y")))
     tab1Long <- merge(tab1Long, xs)
     colnames(tab1Long) <- c("variable", "y", "colValue", "x")
     
-    tab2$y <- seq(nrow(tab2), 1, -1)
+    tab2$y <- seq(nrow(tab2), 1,-1)
     tab2Long <- suppressWarnings(reshape2::melt(tab2, id = c("y")))
     tab2Long <- merge(tab2Long, xs)
     colnames(tab2Long) <- c("variable", "y", "datValue", "x")
     
     tabs <- merge(tab1Long, tab2Long)
-    tabs <- merge(tabs, accents)
+    tabs <- suppressMessages(left_join(tabs, accents))
     
     xs$y <- rep(max(tabs$y) + 1, nrow(xs))
     xs$variable <- str_to_title(xs$variable)
@@ -65,31 +64,8 @@ make_timeline_plot1 <-
       plotInfo <-
         read_captions_rmd(captionTemplateName, captionTemplateDir)
     }
-  
+    
     smallsetCaption <- plotInfo[itemNum, "caption"]
-    
-    if (max(tabs$x) != maxDims[1]) {
-      empty1 <-
-        data.frame(expand.grid(x = seq(max(tabs$x) + 1, maxDims[1]),
-                               y = seq(1, maxDims[2])))
-    }
-    
-    if (max(tabs$y) != maxDims[2]) {
-      d <- maxDims[2] - max(tabs$y)
-      tabs$y <- tabs$y + d
-      xs$y <- xs$y + d
-      empty2 <- data.frame(expand.grid(x = seq(1, maxDims[1]),
-                                       y = seq(1, min(tabs$y) - 1)))
-    }
-    
-    empty <- data.frame()
-    if (exists("empty1")) {
-      empty <- rbind(empty, empty1)
-    }
-    
-    if (exists("empty2")) {
-      empty <- rbind(empty, empty2)
-    }
     
     tabs <-
       suppressMessages(left_join(tabs, snapshotList[[9]], by = "colValue"))
@@ -139,54 +115,53 @@ make_timeline_plot1 <-
       as.factor(alpha(legendDF$fillVar, legendDF$alpha))
     tabs <- merge(tabs, legendDF[, c("colValue", "colAlp")])
     legendDF <- subset(legendDF, legend == TRUE)
-
+    
     abstractSmallset <- ggplot() +
-        geom_tile(
-          data = tabs,
-          aes(x = x, y = y, fill = colAlp),
-          colour = "white",
-          size = sizing[["tiles"]]
-        ) +
-        scale_fill_identity(
-          "",
-          labels = legendDF$description,
-          breaks = legendDF$colAlp,
-          guide = "legend",
-          drop = FALSE
-        ) +
-        geom_text(
-          data = xs,
-          aes(x = x, y = y, label = variable),
+      geom_tile(
+        data = tabs,
+        aes(x = x, y = y, fill = colAlp),
+        colour = "white",
+        size = sizing[["tiles"]]
+      ) +
+      scale_fill_identity(
+        "",
+        labels = legendDF$description,
+        breaks = legendDF$colAlp,
+        guide = "legend",
+        drop = FALSE
+      ) +
+      geom_text(
+        data = xs,
+        aes(x = x, y = y, label = variable),
+        family = timelineFont,
+        size = sizing[["columns"]],
+        colour = otherTextCol
+      ) +
+      coord_equal() +
+      theme(
+        axis.line = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        panel.background = element_blank(),
+        legend.title = element_blank(),
+        legend.title.align = 0.5,
+        legend.margin = margin(
+          t = 0,
+          r = 0,
+          b = 0,
+          l = 0,
+          unit = 'cm'
+        ),
+        text = element_text(
           family = timelineFont,
-          size = sizing[["columns"]],
+          size = sizing[["legendText"]],
           colour = otherTextCol
-        ) +
-        coord_equal() +
-        theme(
-          axis.line = element_blank(),
-          axis.text.x = element_blank(),
-          axis.text.y = element_blank(),
-          axis.ticks = element_blank(),
-          axis.title.x = element_blank(),
-          axis.title.y = element_blank(),
-          panel.background = element_blank(),
-          legend.title = element_blank(),
-          legend.title.align = 0.5,
-          legend.margin = margin(
-            t = 0,
-            r = 0,
-            b = 0,
-            l = 0,
-            unit = 'cm'
-          ),
-          text = element_text(
-            family = timelineFont,
-            size = sizing[["legendText"]],
-            colour = otherTextCol
-          )
-        ) +
-        # xlim(c(.5, (maxDims[1] + .5))) +
-        scale_colour_identity()
+        )
+      ) +
+      scale_colour_identity()
     tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
     
     if (isFALSE(abstract) & !isFALSE(truncateData)) {
@@ -208,17 +183,41 @@ make_timeline_plot1 <-
         )
     }
     
-    if (nrow(empty) > 0) {
-      abstractSmallset <- abstractSmallset +
-        geom_tile(
-          data = empty,
-          aes(x = x, y = y),
-          fill = NA,
-          colour = NA,
-          size = sizing[["tiles"]]
-        )
-    } else {
-      abstractSmallset <- abstractSmallset
+    if (isFALSE(ghostData)) {
+      if (max(tabs$x) != maxDims[1]) {
+        empty1 <-
+          data.frame(expand.grid(
+            x = seq(max(tabs$x) + 1, maxDims[1]),
+            y = seq(1, maxDims[2])
+          ))
+      }
+      
+      if (max(tabs$y) != maxDims[2]) {
+        d <- maxDims[2] - max(tabs$y)
+        tabs$y <- tabs$y + d
+        xs$y <- xs$y + d
+        empty2 <- data.frame(expand.grid(x = seq(1, maxDims[1]),
+                                         y = seq(1, min(tabs$y) - 1)))
+      }
+      
+      empty <- data.frame()
+      if (exists("empty1")) {
+        empty <- rbind(empty, empty1)
+      }
+      
+      if (exists("empty2")) {
+        empty <- rbind(empty, empty2)
+      }
+      if (nrow(empty) > 0) {
+        abstractSmallset <- abstractSmallset +
+          geom_tile(
+            data = empty,
+            aes(x = x, y = y),
+            fill = NA,
+            colour = NA,
+            size = sizing[["tiles"]]
+          )
+      }
     }
     
     captionInfo <-

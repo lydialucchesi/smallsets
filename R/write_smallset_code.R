@@ -1,7 +1,6 @@
 #' Write smallset code
 #' @description A function to prepare the smallset preprocessing code
 #' @keywords internal
-#' @export
 
 write_smallset_code <- function(scriptName, dir, runBig, smallset) {
   processTXT <- as.data.frame(readLines(scriptName, warn = FALSE))

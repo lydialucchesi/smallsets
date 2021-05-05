@@ -1,7 +1,6 @@
 #' Read the caption R markdown file
 #' @description A function to interpret the caption R markdown file
 #' @keywords internal
-#' @export
 
 read_captions_rmd <- function(script, pathway) {
 

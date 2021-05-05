@@ -4,7 +4,7 @@
 \alias{get_timeline_dimensions}
 \title{Get timeline dimensions}
 \usage{
-get_timeline_dimensions(ftsList)
+get_timeline_dimensions(tabs)
 }
 \description{
 A function to find the maximum and minimum number of rows and columns in the timeline
