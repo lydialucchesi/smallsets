@@ -10,6 +10,6 @@ view_smallset_colours(scheme = "all")
 \item{scheme}{One of "colScheme1", "colScheme2", "colScheme3", or "all".}
 }
 \description{
-The function is for viewing built-in smallset colour schemes. 
+The function is for viewing built-in smallset colour schemes.
 Schemes can be viewed together or individually.
 }

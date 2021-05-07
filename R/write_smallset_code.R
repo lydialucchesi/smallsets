@@ -4,6 +4,8 @@
 #' @keywords internal
 
 write_smallset_code <- function(scriptName, dir, runBig, smallset) {
+  
+  # Import preprocessing code
   processTXT <- as.data.frame(readLines(scriptName, warn = FALSE))
   colnames(processTXT) <- c("command")
   processTXT$command <- as.character(processTXT$command)
@@ -19,6 +21,7 @@ write_smallset_code <- function(scriptName, dir, runBig, smallset) {
   smallsetCode <- data.frame(command = smallsetCode)
   smallsetCode$command <- as.character(smallsetCode$command)
   
+  # Insert code to take snapshots
   iterLim <-
     nrow(smallsetCode) + nrow(subset(smallsetCode, grepl("# snap ", smallsetCode$command))) - 1
   s = 1
@@ -65,6 +68,7 @@ write_smallset_code <- function(scriptName, dir, runBig, smallset) {
     }
   }
   
+  # Make the preprocessing code a function
   initialName <-
     as.character(stringr::str_remove(subset(
       smallsetCode, grepl("# snap ", smallsetCode$command)
@@ -103,10 +107,12 @@ write_smallset_code <- function(scriptName, dir, runBig, smallset) {
   smallsetCode <- data.frame(command = smallsetCode)
   smallsetCode$command <- as.character(smallsetCode$command)
   
+  # Write the updated preprocessing function to directory
   fileConn <- file(paste0(dir, "/smallset_code.R"))
   writeLines(smallsetCode$command, fileConn)
   close(fileConn)
   
+  # Determine location of any resume comments
   snapCount <- -1
   resumeLocs <- c()
   for (i in 1:nrow(smallsetCode)) {

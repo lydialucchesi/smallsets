@@ -12,6 +12,9 @@ view_smallset_colours <- function(scheme = "all") {
     stop("Please chooose one of 'colScheme1', 'colScheme2', 'colScheme3', or 'all.")
   }
   
+  # Create a data frame of all colour schemes
+  # Create a data frame of numerical labels for the colours
+  # Create a data frame of colour scheme names
   schemes <- data.frame()
   labels1 <- data.frame()
   labels2 <- data.frame()
@@ -64,7 +67,8 @@ view_smallset_colours <- function(scheme = "all") {
     labels2 <- rbind(labels2, name)
   }
   
-  
+  # Subset to selected colour scheme and plot
+  # Or plot all three together
   if (scheme != "all") {
     j <- as.numeric(gsub("colScheme", "", scheme))
     xSub <- (j + j) - 1
@@ -118,7 +122,6 @@ view_smallset_colours <- function(scheme = "all") {
       coord_equal(ratio = 1) +
       theme_void()
   }
-  
   
   return(p)
   

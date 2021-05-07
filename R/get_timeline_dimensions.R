@@ -11,7 +11,10 @@ get_timeline_dimensions <- function(tabs) {
     cols <- c(cols, ncol(tabs[[i]][[1]]))
   }
   
+  # Find longest table
   maxX <- max(cols)
+  
+  # Find widest table
   maxY <- max(rows)
   
   maxDims <- c(maxX, maxY)

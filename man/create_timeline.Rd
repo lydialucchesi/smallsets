@@ -85,7 +85,7 @@ names are black. 0 means columns will be the constant colour.}
 \item{timelineRows}{Integer greater than or equal to one. Number of rows to
 divide the smallset timeline into.}
 
-\item{timelineFont}{Choose one of sans, serif, or mono.}
+\item{timelineFont}{One of "sans", "serif", or "mono".}
 
 \item{captionSpace}{Value greater than or equal to .5. Higher values create
 more caption space. Default is 1.}

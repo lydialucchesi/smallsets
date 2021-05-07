@@ -5,7 +5,6 @@
 #' @import "flextable"
 #' @importFrom gdata cbindX
 
-
 highlight_changes <-
   function(smallsetList = smallsetList,
            tempName = captionTemplateName,
@@ -16,6 +15,7 @@ highlight_changes <-
     added = "#0000FF"
     deleted = "#FF0000"
     
+    # Generate the caption template
     printMessage <- write_caption_template(authorName = tempAuthor,
                                            script = tempName,
                                            pathway = tempDir)
@@ -24,9 +24,11 @@ highlight_changes <-
     for (p in 1:(length(smallsetList) - 1)) {
       c <- p + 1
       
+      # Get two snapshots
       lprior <- smallsetList[[p]]
       lcurrent <- smallsetList[[c]]
       
+      # Set starting colours
       if (p > 1) {
         tprior <- tables[[p]]
       } else {
@@ -37,6 +39,7 @@ highlight_changes <-
       tcurrent <- flextable::flextable(lcurrent)
       tcurrent <- flextable::color(tcurrent, color = constant)
       
+      # Compare rows
       rowsDrop <- setdiff(rownames(lprior), rownames(lcurrent))
       if (length(rowsDrop) > 0) {
         tprior <- flextable::color(tprior, color = deleted, i = rowsDrop)
@@ -48,6 +51,7 @@ highlight_changes <-
           flextable::color(tcurrent, color = added, i = rowsAdd)
       }
       
+      # Compare columns
       colsDrop <- setdiff(colnames(lprior), colnames(lcurrent))
       if (length(colsDrop) > 0) {
         tprior <-
@@ -66,6 +70,7 @@ highlight_changes <-
                            part = "all")
       }
       
+      # Compare data values
       if (length(rowsDrop) > 0) {
         lpriorAdj <- subset(lprior,!(row.names(lprior) %in% rowsDrop))
       } else {
@@ -114,6 +119,7 @@ highlight_changes <-
                            j = adjData$c)
       }
       
+      # Save latest snapshot tables
       tables[[p]] <- tprior
       tables[[c]] <- tcurrent
       

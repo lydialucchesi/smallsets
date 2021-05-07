@@ -8,6 +8,7 @@ write_caption_template <-
       authorName <- ""
     }
     
+    # Prepare some Rmd template sections
     heading <- c(
       "---",
       "title: \"Captions for the smallset timeline\"",
@@ -16,9 +17,6 @@ write_caption_template <-
       "output: html_document",
       "---"
     )
-    
-    code <- as.data.frame(readLines("smallset_code.R"))
-    colnames(code) <- c("lines")
     
     titleBlock <- c("",
                     "Timeline title: ",
@@ -32,21 +30,25 @@ write_caption_template <-
                    "",
                    "Caption: ")
     
+    # Import the preprocessing function as text
+    code <- as.data.frame(readLines("smallset_code.R"))
+    colnames(code) <- c("lines")
     
-    
+    # Find snap points and subsequent line of code
     snaps <- subset(code, grepl("# snap ", code$lines))
     refRows <- as.integer(row.names(snaps)) + 1
     m <- max(refRows)
     refRows[refRows == m] <- refRows[refRows == m] - 2
     
-    
+    # Create a template section for each snap point
     captionBlocks <-
       lapply(refRows, code, FUN = add_caption_block)
     captionBlocks <- unlist(captionBlocks)
     
+    # Compile template parts
     rmdTotal <- c(heading, titleBlock, firstPlot, captionBlocks)
     
-    
+    # Save the template to directory
     fileConn <- file(paste0(script, ".Rmd"))
     writeLines(rmdTotal, fileConn)
     close(fileConn)

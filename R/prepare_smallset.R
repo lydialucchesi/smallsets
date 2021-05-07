@@ -41,22 +41,22 @@ prepare_smallset <-
       print("Must specify preprocessing code. See code argument in ?prepare_smallset.")
     }
     
+    # Make sure data is of class data frame
     if (class(data)[1] == "data.table") {
       print(
         "Converting data object from class data.table to data.frame with as.data.frame(data)."
       )
       data <- as.data.frame(data)
     }
-    
     if (class(data)[1] == "tbl_df") {
       print("Converting data object from class tibble to data.frame with as.data.frame(data).")
       data <- as.data.frame(data)
     }
-    
     if (class(data) != "data.frame") {
       stop("Data was not of class data frame, data table, or tibble.")
     }
     
+    # Generate a smallset
     smallset <- select_smallset(
       data = data,
       rowCount = rowCount,
@@ -65,6 +65,7 @@ prepare_smallset <-
       ignoreCols = ignoreCols
     )
     
+    # Prepare the preprocessing function that takes snapshots
     resumeLocs <-
       write_smallset_code(
         scriptName = code,
@@ -75,6 +76,7 @@ prepare_smallset <-
     
     source(paste0(dir, "/smallset_code.R"))
     
+    # Apply the preprocessing function
     if (isTRUE(runBig)) {
       if (!is.null(ignoreCols)) {
         data <- data[,!(names(data) %in% ignoreCols)]
@@ -88,12 +90,14 @@ prepare_smallset <-
       smallsetList <- apply_code(smallset)
     }
     
+    # Return summary information related to the above tasks
     print(paste0("Summary: ", as.character(length(smallsetList)), " snapshots taken"))
     print("First snapshot:")
     print(smallsetList[[1]])
     print("Last snapshot:")
     print(smallsetList[[length(smallsetList)]])
     
+    # Identify differences between snapshots
     smallsetTables <- highlight_changes(
       smallsetList = smallsetList,
       tempName = captionTemplateName,

@@ -46,7 +46,7 @@
 #'   names are black. 0 means columns will be the constant colour.
 #' @param timelineRows Integer greater than or equal to one. Number of rows to
 #'   divide the smallset timeline into.
-#' @param timelineFont Choose one of sans, serif, or mono.
+#' @param timelineFont One of "sans", "serif", or "mono".
 #' @param captionSpace Value greater than or equal to .5. Higher values create
 #'   more caption space. Default is 1.
 #' @param captionTemplateName Name of caption template. Can be included so
@@ -101,6 +101,7 @@ create_timeline <-
     
     items <- seq(1, length(snapshotList[[1]]), 1)
     
+    # Get four colours ready
     chosenScheme <- return_scheme(colScheme = colScheme)
     
     if (!is.null(colScheme) & length(colScheme) > 1) {
@@ -187,6 +188,7 @@ create_timeline <-
       snapshotList[[1]][[i]]$body$styles$text$color$data <- temp
     }
     
+    # Set argument if it is not specified
     if (is.null(sizing[["columns"]])) {
       sizing[["columns"]] = 2
     }
@@ -289,6 +291,7 @@ create_timeline <-
         )
     }
     
+    # Prepare timeline accent colours
     accents <-
       data.frame(
         colValue = c(constant, changed, added, deleted),
@@ -310,6 +313,7 @@ create_timeline <-
       )
     accents$hex <- NULL
     
+    # Identify which colours are present in the timeline
     colsPresent <- c()
     for (u in 1:length(snapshotList[[1]])) {
       uniqueCols <- snapshotList[[1]][[u]]$body$styles$text$color$data
@@ -320,6 +324,7 @@ create_timeline <-
     
     colsPresent <- unique(colsPresent)
     
+    # Prepare colour legend
     if (isTRUE(highlightNA)) {
       descriptions <-
         c(
@@ -351,6 +356,7 @@ create_timeline <-
     
     otherTextColour <- darken(legendDF$colValue[1], otherTextCol)
     
+    # Insert ghost data
     if (isTRUE(ghostData)) {
       ghostDF1 <-
         as.data.frame(snapshotList[[1]][[1]]$body$styles$text$color$data) %>%
@@ -388,6 +394,7 @@ create_timeline <-
     snapshotList[[8]] <- deleted
     snapshotList[[9]] <- tileAlphas
     
+    # Make the timeline plot for each snapshot
     l <-
       lapply(
         items,
@@ -411,6 +418,7 @@ create_timeline <-
         FUN = make_timeline_plot
       )
     
+    # Set a limits for x-axis if necessary
     if (timelineRows > 1) {
       m <- maxDims[[1]] + .5
       if (!is.null(snapshotList[[4]])) {
@@ -421,6 +429,7 @@ create_timeline <-
       }
     }
     
+    # Connect snapshots into timeline
     patchedPlots <- ""
     for (s in 1:length(l)) {
       addPlot <- paste0("l[[", as.character(s), "]] + ")
@@ -439,6 +448,7 @@ create_timeline <-
         )
     }
     
+    # Add timeline title, subtitle, and footnote
     if (is.null(captionTemplateName) &
         is.null(captionTemplateDir)) {
       annotateInfo <-
@@ -498,6 +508,7 @@ create_timeline <-
       ")"
     )
     
+    # Set timeline design choices
     fontChoice <-
       paste0(
         " & theme(text = element_text(family = '",

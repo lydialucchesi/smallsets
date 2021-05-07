@@ -8,12 +8,15 @@ select_smallset <- function(data,
                             rowNums = NULL,
                             runBig = FALSE,
                             ignoreCols = ignoreCols) {
+  
+  # Randomly sample rows from the original dataset
   if (is.null(rowNums)) {
     smallset <- dplyr::sample_n(data, size = rowCount)
     smallset$smallsetRowID <- row.names(smallset)
     smallset <- smallset[, !(names(smallset) %in% ignoreCols)]
   }
   
+  # Extract the specified rows and randomly sample the rest
   if (!is.null(rowNums)) {
     data$smallsetRowID <- row.names(data)
     smallset1 <- data[rowNums, ]
@@ -23,6 +26,7 @@ select_smallset <- function(data,
     smallset <- smallset[, !(names(smallset) %in% ignoreCols)]
   }
   
+  # Order the smallset based on the row number in original dataset
   if (isTRUE(runBig)) {
     smallsetRowIDs <- sort(as.numeric(smallset$smallsetRowID))
     return(smallsetRowIDs)

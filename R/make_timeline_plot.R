@@ -24,9 +24,12 @@ make_timeline_plot <-
            highlightNA,
            captionTemplateName,
            captionTemplateDir) {
+    
+    # Retrieve colour and data information for a snapshot
     tab1 <- extTables[[itemNum]][[1]]
     tab2 <- extTables[[itemNum]][[2]]
     
+    # Set plot coordinates
     xs <-
       data.frame(variable = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
     
@@ -49,28 +52,10 @@ make_timeline_plot <-
     xs$y <- rep(max(tabs$y) + 1, nrow(xs))
     xs$variable <- str_to_title(xs$variable)
     
-    if (is.null(captionTemplateName) &
-        is.null(captionTemplateDir)) {
-      plotInfo <-
-        read_captions_rmd(snapshotList[[2]], snapshotList[[3]])
-    } else if (is.null(captionTemplateName) &
-               !is.null(captionTemplateDir)) {
-      plotInfo <-
-        read_captions_rmd(snapshotList[[2]], captionTemplateDir)
-    } else if (!is.null(captionTemplateName) &
-               is.null(captionTemplateDir)) {
-      plotInfo <-
-        read_captions_rmd(captionTemplateName, snapshotList[[3]])
-    } else {
-      plotInfo <-
-        read_captions_rmd(captionTemplateName, captionTemplateDir)
-    }
-    
-    smallsetCaption <- plotInfo[itemNum, "caption"]
-    
     tabs <-
       suppressMessages(left_join(tabs, snapshotList[[9]], by = "colValue"))
     
+    # Prepare lighter colour values for tiles with missing data
     if (isTRUE(highlightNA)) {
       missingCols <- c(
         lighten(col2hex(snapshotList[[5]]), .4),
@@ -117,6 +102,7 @@ make_timeline_plot <-
     tabs <- merge(tabs, legendDF[, c("colValue", "colAlp")])
     legendDF <- subset(legendDF, legend == TRUE)
     
+    # Create plot
     abstractSmallset <- ggplot() +
       geom_tile(
         data = tabs,
@@ -163,6 +149,8 @@ make_timeline_plot <-
         )
       ) +
       scale_colour_identity()
+    
+    # Print data in tables
     tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
     
     if (isFALSE(abstract) & !isFALSE(truncateData)) {
@@ -184,6 +172,7 @@ make_timeline_plot <-
         )
     }
     
+    # Add invisible tiles to keep visible tiles equal in size (if ghostData = F)
     if (isFALSE(ghostData)) {
       if (max(tabs$x) != maxDims[1]) {
         empty1 <-
@@ -205,7 +194,6 @@ make_timeline_plot <-
       if (exists("empty1")) {
         empty <- rbind(empty, empty1)
       }
-      
       if (exists("empty2")) {
         empty <- rbind(empty, empty2)
       }
@@ -220,6 +208,25 @@ make_timeline_plot <-
           )
       }
     }
+    
+    # Add captions to the plot
+    if (is.null(captionTemplateName) &
+        is.null(captionTemplateDir)) {
+      plotInfo <-
+        read_captions_rmd(snapshotList[[2]], snapshotList[[3]])
+    } else if (is.null(captionTemplateName) &
+               !is.null(captionTemplateDir)) {
+      plotInfo <-
+        read_captions_rmd(snapshotList[[2]], captionTemplateDir)
+    } else if (!is.null(captionTemplateName) &
+               is.null(captionTemplateDir)) {
+      plotInfo <-
+        read_captions_rmd(captionTemplateName, snapshotList[[3]])
+    } else {
+      plotInfo <-
+        read_captions_rmd(captionTemplateName, captionTemplateDir)
+    }
+    smallsetCaption <- plotInfo[itemNum, "caption"]
     
     captionInfo <-
       data.frame(
@@ -254,6 +261,7 @@ make_timeline_plot <-
       ) +
       ylim(c(captionSpace * (-1), maxDims[2] + 1))
     
+    # Add resume markers (a vertical line between two snapshots)
     if (itemNum %in% snapshotList[[4]]) {
       abstractWithCaption <- abstractWithCaption +
         geom_segment(

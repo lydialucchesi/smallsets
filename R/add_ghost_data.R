@@ -5,11 +5,14 @@
 
 add_ghost_data <-
   function(itemNum, ghostDF1, ghostDF2, snapshotList) {
+    
+    # Extract colour and data tables
     tab1 <-
       as.data.frame(snapshotList[[1]][[itemNum]]$body$styles$text$color$data)
     tab2 <-
       as.data.frame(snapshotList[[1]][[itemNum]]$body$dataset)
     
+    # Insert ghost rows in colour data frame
     row.names(tab1) <- row.names(tab2)
     difRows <- setdiff(row.names(ghostDF1), row.names(tab1))
     if (length(difRows) > 0) {
@@ -23,12 +26,14 @@ add_ghost_data <-
       tab1 <- tab1[match(rownames(ghostDF1), rownames(tab1)), ]
     }
     
+    # Insert ghost columns in colour data frame
     difCols <- setdiff(colnames(ghostDF1), colnames(tab1))
     if (length(difCols) > 0) {
       tab1 <- cbind(tab1, ghostDF1[row.names(tab1), difCols])
       tab1 <- tab1[names(ghostDF1)]
     }
     
+    # Insert ghost rows in data data frame
     difRows <- setdiff(row.names(ghostDF2), row.names(tab2))
     if (length(difRows) > 0) {
       newColCheck <- setdiff(colnames(tab2), colnames(ghostDF2))
@@ -41,6 +46,7 @@ add_ghost_data <-
       tab2 <- tab2[match(rownames(ghostDF2), rownames(tab2)), ]
     }
     
+    # Insert ghost columns in data data frame
     difCols <- setdiff(colnames(ghostDF2), colnames(tab2))
     if (length(difCols) > 0) {
       tab2 <- cbind(tab2, ghostDF2[row.names(tab2), difCols])
