@@ -13,6 +13,6 @@ select_smallset(
 )
 }
 \description{
-A function to prepare a smallset
+The function selects the rows included in the smallset.
 }
 \keyword{internal}

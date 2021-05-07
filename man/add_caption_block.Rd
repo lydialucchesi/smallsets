@@ -7,6 +7,7 @@
 add_caption_block(i, code)
 }
 \description{
-A function to insert a caption block in the caption template
+The function inserts a snapshot section into the caption
+  template.
 }
 \keyword{internal}

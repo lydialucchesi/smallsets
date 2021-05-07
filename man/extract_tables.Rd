@@ -7,6 +7,7 @@
 extract_tables(itemNum, snapshotList)
 }
 \description{
-A function to extract snapshot tables
+The function extracts data and colour information from the
+  flextable objects.
 }
 \keyword{internal}

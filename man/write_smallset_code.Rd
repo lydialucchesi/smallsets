@@ -7,6 +7,7 @@
 write_smallset_code(scriptName, dir, runBig, smallset)
 }
 \description{
-A function to prepare the smallset preprocessing code
+The function turns the preprocessing code into a function that
+  takes snapshots.
 }
 \keyword{internal}

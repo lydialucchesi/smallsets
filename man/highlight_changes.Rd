@@ -12,6 +12,7 @@ highlight_changes(
 )
 }
 \description{
-A function to identify changes, additions, and deletions between snapshots
+The function identifies changes, additions, and deletions
+  between snapshots.
 }
 \keyword{internal}

@@ -7,6 +7,7 @@
 add_ghost_data(itemNum, ghostDF1, ghostDF2, snapshotList)
 }
 \description{
-A function to insert blank squares where data have been removed
+The function inserts blank squares where data have been
+  removed.
 }
 \keyword{internal}

@@ -1,10 +1,9 @@
 #' Write caption template
-#' @description A function to prepare the caption template
+#' @description This function creates a caption template (Rmd file).
 #' @keywords internal
 
 write_caption_template <-
   function(authorName, script, pathway) {
-    
     if (is.null(authorName)) {
       authorName <- ""
     }

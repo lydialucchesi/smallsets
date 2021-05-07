@@ -1,10 +1,10 @@
 #' Read the caption R markdown file
-#' @description A function to interpret the caption R markdown file
+#' @description The function extracts information from the caption template.
 #' @keywords internal
 
 read_captions_rmd <- function(script, pathway) {
-
-  plotInfo <- as.data.frame(readLines(paste0(pathway, "/", script, ".Rmd")))
+  plotInfo <-
+    as.data.frame(readLines(paste0(pathway, "/", script, ".Rmd")))
   colnames(plotInfo) <- c("lines")
   
   captions <- subset(plotInfo, grepl("Caption:", plotInfo$lines))

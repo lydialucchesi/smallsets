@@ -7,6 +7,6 @@
 read_captions_rmd(script, pathway)
 }
 \description{
-A function to interpret the caption R markdown file
+The function extracts information from the caption template.
 }
 \keyword{internal}

@@ -1,5 +1,6 @@
 #' Highlight changes
-#' @description A function to identify changes, additions, and deletions between snapshots
+#' @description The function identifies changes, additions, and deletions
+#'   between snapshots.
 #' @keywords internal
 #' @import "flextable"
 #' @importFrom gdata cbindX
@@ -15,11 +16,9 @@ highlight_changes <-
     added = "#0000FF"
     deleted = "#FF0000"
     
-    printMessage <- write_caption_template(
-      authorName = tempAuthor,
-      script = tempName,
-      pathway = tempDir
-    )
+    printMessage <- write_caption_template(authorName = tempAuthor,
+                                           script = tempName,
+                                           pathway = tempDir)
     
     tables <- list()
     for (p in 1:(length(smallsetList) - 1)) {
@@ -68,7 +67,7 @@ highlight_changes <-
       }
       
       if (length(rowsDrop) > 0) {
-        lpriorAdj <- subset(lprior, !(row.names(lprior) %in% rowsDrop))
+        lpriorAdj <- subset(lprior,!(row.names(lprior) %in% rowsDrop))
       } else {
         lpriorAdj <- lprior
       }

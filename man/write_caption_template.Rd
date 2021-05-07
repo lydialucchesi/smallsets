@@ -7,6 +7,6 @@
 write_caption_template(authorName, script, pathway)
 }
 \description{
-A function to prepare the caption template
+This function creates a caption template (Rmd file).
 }
 \keyword{internal}

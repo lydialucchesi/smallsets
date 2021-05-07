@@ -1,7 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README.Rmd
-^other_code
 ^smallset_code.R
 ^mycaptions.Rmd
 ^captionTemplate.Rmd

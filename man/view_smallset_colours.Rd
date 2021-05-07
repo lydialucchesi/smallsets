@@ -7,8 +7,9 @@
 view_smallset_colours(scheme = "all")
 }
 \arguments{
-\item{scheme}{Either "colScheme1", "colScheme2", "colScheme3", or "all".}
+\item{scheme}{One of "colScheme1", "colScheme2", "colScheme3", or "all".}
 }
 \description{
-This function is for viewing a built-in smallset colour scheme. Schemes can be viewed together or individually.
+The function is for viewing built-in smallset colour schemes. 
+Schemes can be viewed together or individually.
 }

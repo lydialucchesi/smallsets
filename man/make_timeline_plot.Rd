@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_timeline_plot.R
 \name{make_timeline_plot}
 \alias{make_timeline_plot}
-\title{Make a timeline plot}
+\title{Make timeline plot}
 \usage{
 make_timeline_plot(
   itemNum,
@@ -26,6 +26,6 @@ make_timeline_plot(
 )
 }
 \description{
-A function to transform the flextable into a colour plot
+The function transforms a table snapshot into a plot snapshot.
 }
 \keyword{internal}

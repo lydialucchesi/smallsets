@@ -1,9 +1,8 @@
 #' Return selected colour scheme
-#' @description A function to return the selected colour scheme.
+#' @description The function returns a selected colour scheme.
 #' @keywords internal
 
 return_scheme <- function(colScheme = "colScheme1") {
-  
   if (colScheme == "colScheme1") {
     CS <-
       list(
@@ -36,4 +35,3 @@ return_scheme <- function(colScheme = "colScheme1") {
   
   return(CS)
 }
-

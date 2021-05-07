@@ -1,7 +1,8 @@
-#' Make a timeline plot
-#' @description A function to transform the flextable into a colour plot
+#' Make timeline plot
+#' @description The function transforms a table snapshot into a plot snapshot.
 #' @keywords internal
-#' @import "reshape2" "ggplot2" "ggforce" "ggfittext" "colorspace" "stringr" "ggtext"
+#' @import "reshape2" "ggplot2" "ggforce" "ggfittext" "colorspace" "stringr"
+#'   "ggtext"
 #' @importFrom gplots col2hex
 
 make_timeline_plot <-
@@ -32,12 +33,12 @@ make_timeline_plot <-
     for (i in 1:ncol(tab1)) {
       tab1[, i] <- as.character(tab1[, i])
     }
-    tab1$y <- seq(nrow(tab1), 1,-1)
+    tab1$y <- seq(nrow(tab1), 1, -1)
     tab1Long <- suppressWarnings(reshape2::melt(tab1, id = c("y")))
     tab1Long <- merge(tab1Long, xs)
     colnames(tab1Long) <- c("variable", "y", "colValue", "x")
     
-    tab2$y <- seq(nrow(tab2), 1,-1)
+    tab2$y <- seq(nrow(tab2), 1, -1)
     tab2Long <- suppressWarnings(reshape2::melt(tab2, id = c("y")))
     tab2Long <- merge(tab2Long, xs)
     colnames(tab2Long) <- c("variable", "y", "datValue", "x")

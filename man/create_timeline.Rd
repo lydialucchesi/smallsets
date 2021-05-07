@@ -30,42 +30,74 @@ create_timeline(
 \arguments{
 \item{snapshotList}{List output from \code{prepare_smallset}.}
 
-\item{constant}{Hex colour code. Colour represents data that have not changed since previous snapshot. Can pass in a list with a colour and transparency value (0 to 1) for that colour.}
+\item{constant}{Hex colour code. Colour represents data that have not changed
+since previous snapshot. Can pass in a list with a colour and transparency
+value (0 to 1) for that colour.}
 
-\item{changed}{Hex colour code. Colour represents data that have changed since previous snapshot. Can pass in a list with a colour and transparency value (0 to 1) for that colour.}
+\item{changed}{Hex colour code. Colour represents data that have changed
+since previous snapshot. Can pass in a list with a colour and transparency
+value (0 to 1) for that colour.}
 
-\item{added}{Hex colour code. Colour represents data that have been added since previous snapshot. Can pass in a list with a colour and transparency value (0 to 1) for that colour.}
+\item{added}{Hex colour code. Colour represents data that have been added
+since previous snapshot. Can pass in a list with a colour and transparency
+value (0 to 1) for that colour.}
 
-\item{deleted}{Hex colour code. Colour represents data that will be deleted prior to next snapshot. Can pass in a list with a colour and transparency value (0 to 1) for that colour.}
+\item{deleted}{Hex colour code. Colour represents data that will be deleted
+prior to next snapshot. Can pass in a list with a colour and transparency
+value (0 to 1) for that colour.}
 
-\item{colScheme}{NULL, colour scheme name, or vector. If NULL, uses four colour arguments above. If colour scheme name, uses built-in scheme with colours pre-assigned to the four preprocessing states (constant, changed, added, deleted). If vector, it must be a vector of length five, with the first element being the colour scheme name followed by the four preprocessing states in the order that they should be assigned to scheme colours (e.g.,, c("colScheme1", "changed", "constant", "deleted", "added")).}
+\item{colScheme}{NULL, colour scheme name, or vector. If NULL, uses four
+colour arguments above. If colour scheme name, uses built-in scheme with
+colours pre-assigned to the four preprocessing states (constant, changed,
+added, deleted). If vector, it must be a vector of length five, with the
+first element being the colour scheme name followed by the four
+preprocessing states in the order that they should be assigned to scheme
+colours (e.g.,, c("colScheme1", "changed", "constant", "deleted",
+"added")).}
 
 \item{abstract}{TRUE or FALSE. FALSE prints data values in tables.}
 
-\item{ghostData}{TRUE or FALSE. TRUE includes blank spaces where data have been removed.}
+\item{ghostData}{TRUE or FALSE. TRUE includes blank spaces where data have
+been removed.}
 
-\item{highlightNA}{TRUE or FALSE. TRUE plots a lighter colour value to signal data value is missing.}
+\item{highlightNA}{TRUE or FALSE. TRUE plots a lighter colour value to signal
+data value is missing.}
 
-\item{sizing}{List of size specifications. Can specify sizes for column names, table tiles, caption text, stamp symbols, stamp circles, printed data, legend text, legend icons, timeline title, timeline subtitle, timeline footnote, and resume marker.}
+\item{sizing}{List of size specifications. Can specify sizes for column
+names, table tiles, caption text, stamp symbols, stamp circles, printed
+data, legend text, legend icons, timeline title, timeline subtitle,
+timeline footnote, and resume marker.}
 
-\item{truncateData}{TRUE or FALSE. FALSE if data do not need to be truncated to fit within table tiles. Otherwise, an integer specifying width of data value (width includes "...").}
+\item{truncateData}{TRUE or FALSE. FALSE if data do not need to be truncated
+to fit within table tiles. Otherwise, an integer specifying width of data
+value (width includes "...").}
 
-\item{accentCols}{Either "darker" or "lighter" for stamp colour. Can enter a list corresponding to specific actions.}
+\item{accentCols}{Either "darker" or "lighter" for stamp colour. Can enter a
+list corresponding to specific actions.}
 
-\item{accentColsDif}{Value between 0 and 1. Corresponds to how much lighter or darker accent colour will be. Can pass a list with different accent values for different colours.}
+\item{accentColsDif}{Value between 0 and 1. Corresponds to how much lighter
+or darker accent colour will be. Can pass a list with different accent
+values for different colours.}
 
-\item{otherTextCol}{Value between 0 and 1. Default is 1, which is when column names are black. 0 means columns will be the constant colour.}
+\item{otherTextCol}{Value between 0 and 1. Default is 1, which is when column
+names are black. 0 means columns will be the constant colour.}
 
-\item{timelineRows}{Integer greater than or equal to one. Number of rows to divide the smallset timeline into.}
+\item{timelineRows}{Integer greater than or equal to one. Number of rows to
+divide the smallset timeline into.}
 
 \item{timelineFont}{Choose one of sans, serif, or mono.}
 
-\item{captionSpace}{Value greater than or equal to .5. Higher values create more caption space. Default is 1.}
+\item{captionSpace}{Value greater than or equal to .5. Higher values create
+more caption space. Default is 1.}
 
-\item{captionTemplateName}{Name of caption template. Can be included so template is not overwritten when running \code{prepare_smallset}.}
+\item{captionTemplateName}{Name of caption template. Can be included so
+template is not overwritten when running \code{prepare_smallset}.}
 
-\item{captionTemplateDir}{Name of caption template directory. Can be included so template is not overwritten when running \code{prepare_smallset}.}
+\item{captionTemplateDir}{Name of caption template directory. Can be included
+so template is not overwritten when running \code{prepare_smallset}.}
 }
 \description{
-This function creates a smallset timeline using output from \code{prepare_smallset}. Timelines have many customisation options. They are detailed below.
+The function creates a smallset timeline using output from
+  \code{prepare_smallset}. Timelines have many customisation options. They
+  are detailed below.
 }

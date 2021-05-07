@@ -24,13 +24,19 @@ prepare_smallset(
 
 \item{dir}{File path to data preprocessing code.}
 
-\item{rowCount}{Integer greater than or equal to 5. Number of rows to include in the smallset.}
+\item{rowCount}{Integer greater than or equal to 5. Number of rows to include
+in the smallset.}
 
-\item{rowNums}{Numeric vector of row numbers. Indicates particular rows from the data set to be included in the smallset.}
+\item{rowNums}{Numeric vector of row numbers. Indicates particular rows from
+the data set to be included in the smallset.}
 
-\item{runBig}{TRUE or FALSE. FALSE means preprocessing code will be run on smallset. TRUE means preprocessing code will be run on the big data set, and the smallset will be extracted from that output at each snap point.}
+\item{runBig}{TRUE or FALSE. FALSE means preprocessing code will be run on
+smallset. TRUE means preprocessing code will be run on the big data set,
+and the smallset will be extracted from that output at each snap point.}
 
-\item{ignoreCols}{Character vector of column names. Indicates which columns from the data set should not be included in the smallset. Columns in this vector should usually not be referenced in the data preprocessing code.}
+\item{ignoreCols}{Character vector of column names. Indicates which columns
+from the data set should not be included in the smallset. Columns in this
+vector should usually not be referenced in the data preprocessing code.}
 
 \item{captionTemplateName}{File name for the caption template.}
 
@@ -39,8 +45,7 @@ prepare_smallset(
 \item{captionTemplateAuthor}{Name of author for the caption template.}
 }
 \description{
-This function selects a smallset, 
-takes snapshots, and identifies the changes between snapshots. 
-The output can be passed to \code{create_timeline} 
-to create a smallset timeline.
+The function selects a smallset, takes snapshots, and
+  identifies the changes between snapshots. The output can be passed to
+  \code{create_timeline} to create a smallset timeline.
 }
