@@ -175,7 +175,7 @@ create_timeline <-
         alpha = c(constantAlpha, changedAlpha, addedAlpha, deletedAlpha)
       )
     
-    for (i in 1:length(snapshotList)) {
+    for (i in 1:length(snapshotList[[1]])) {
       temp <- snapshotList[[1]][[i]]$body$styles$text$color$data
       for (c in colnames(temp)) {
         temp[, c] <- plyr::mapvalues(

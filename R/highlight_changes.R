@@ -25,8 +25,8 @@ highlight_changes <-
       c <- p + 1
       
       # Get two snapshots
-      lprior <- smallsetList[[p]]
-      lcurrent <- smallsetList[[c]]
+      lprior <- smallsetList[[p]] %>% mutate_all(as.character)
+      lcurrent <- smallsetList[[c]] %>% mutate_all(as.character)
       
       # Set starting colours
       if (p > 1) {
@@ -91,33 +91,36 @@ highlight_changes <-
       update <-
         setdiff(lcurrentAdj, subset(lpriorAdj, select = colnames(lcurrentAdj)))
       
-      adjData <- data.frame(r = numeric(), c = numeric())
-      for (i in 1:nrow(original)) {
-        for (j in 1:ncol(original)) {
-          if (identical(original[i, j], update[i, j]) == FALSE) {
-            adjDatum <- data.frame(r = c(row.names(update)[i]), c = c(j))
-            adjData <- rbind(adjData, adjDatum)
+      if ((nrow(original) != 0) & (nrow(update) != 0)) {
+        adjData <- data.frame(r = numeric(), c = numeric())
+        for (i in 1:nrow(original)) {
+          for (j in 1:ncol(original)) {
+            if (identical(original[i, j], update[i, j]) == FALSE) {
+              adjDatum <- data.frame(r = c(row.names(update)[i]), c = c(j))
+              adjData <- rbind(adjData, adjDatum)
+            }
           }
         }
+        
+        adjData$r <- (as.character(adjData$r))
+        
+        # tcurrent <-
+        #   flextable::color(
+        #     tcurrent,
+        #     color = changed,
+        #     i = (adjData$r == row.names(tcurrent$body$dataset)),
+        #     j = adjData$c
+        #   )
+        
+        if (nrow(adjData) > 0) {
+          tcurrent <-
+            flextable::color(tcurrent,
+                             color = changed,
+                             i = adjData$r,
+                             j = adjData$c)
+        }
       }
-      
-      adjData$r <- (as.character(adjData$r))
-      
-      # tcurrent <-
-      #   flextable::color(
-      #     tcurrent,
-      #     color = changed,
-      #     i = (adjData$r == row.names(tcurrent$body$dataset)),
-      #     j = adjData$c
-      #   )
-      
-      if (nrow(adjData) > 0) {
-        tcurrent <-
-          flextable::color(tcurrent,
-                           color = changed,
-                           i = adjData$r,
-                           j = adjData$c)
-      }
+
       
       # Save latest snapshot tables
       tables[[p]] <- tprior

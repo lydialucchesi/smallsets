@@ -30,6 +30,11 @@ write_caption_template <-
                    "",
                    "Caption: ")
     
+    lastPlot <- c("",
+                   "### Ending smallset",
+                   "",
+                   "Caption: ")
+    
     # Import the preprocessing function as text
     code <- as.data.frame(readLines("smallset_code.R"))
     colnames(code) <- c("lines")
@@ -46,7 +51,7 @@ write_caption_template <-
     captionBlocks <- unlist(captionBlocks)
     
     # Compile template parts
-    rmdTotal <- c(heading, titleBlock, firstPlot, captionBlocks)
+    rmdTotal <- c(heading, titleBlock, firstPlot, captionBlocks, lastPlot)
     
     # Save the template to directory
     fileConn <- file(paste0(script, ".Rmd"))

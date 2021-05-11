@@ -11,9 +11,11 @@ write_smallset_code <- function(scriptName, dir, runBig, smallset) {
   processTXT$command <- as.character(processTXT$command)
   
   rStart <-
-    row.names(processTXT)[processTXT$command == "# start smallset"]
+    row.names(processTXT)[grepl("# start smallset", processTXT$command)]
+  rStartName <- stringr::str_remove(processTXT[rStart, c("command")], "# start smallset ")
   rEnd <-
-    row.names(processTXT)[processTXT$command == "# end smallset"]
+    row.names(processTXT)[grepl("# end smallset", processTXT$command)]
+  rEndName <- stringr::str_remove(processTXT[rEnd, c("command")], "# end smallset ")
   
   smallsetCode <-
     processTXT[(as.numeric(rStart) + 1):(as.numeric(rEnd) - 1),]
@@ -53,28 +55,18 @@ write_smallset_code <- function(scriptName, dir, runBig, smallset) {
         ))
       }
       
-      if (i != iterLim) {
-        smallsetCode <- c(smallsetCode[1:(i + 1),],
+      smallsetCode <- c(smallsetCode[1:(i + 1),],
                           insertSnap,
                           smallsetCode[(i + 2):nrow(smallsetCode),])
-      } else {
-        smallsetCode <- c(smallsetCode[1:i,],
-                          insertSnap,
-                          "return(snapshots)")
       }
       
       smallsetCode <- data.frame(command = smallsetCode)
       smallsetCode$command <- as.character(smallsetCode$command)
     }
-  }
   
   # Make the preprocessing code a function
-  initialName <-
-    as.character(stringr::str_remove(subset(
-      smallsetCode, grepl("# snap ", smallsetCode$command)
-    )[1,], "# snap "))
   functionStart <-
-    paste0("apply_code <- function(", initialName, ") {")
+    paste0("apply_code <- function(", rStartName, ") {")
   
   if (isTRUE(runBig)) {
     smallsetCode <-
@@ -83,14 +75,26 @@ write_smallset_code <- function(scriptName, dir, runBig, smallset) {
         functionStart,
         paste0(
           "snapshots[[1]] <- ",
-          initialName,
+          rStartName,
           as.character("[(row.names("),
-          as.character(stringr::str_remove(smallsetCode$command[i], signal)),
+          rStartName,
           as.character(") %in% c("),
           paste(smallset, collapse = ", "),
           as.character(")), ]")
         ),
         smallsetCode$command,
+        paste0(
+          "snapshots[[", 
+          as.character(s + 1),
+          "]] <- ",
+          rEndName,
+          as.character("[(row.names("),
+          rEndName,
+          as.character(") %in% c("),
+          paste(smallset, collapse = ", "),
+          as.character(")), ]")
+        ),
+        "return(snapshots)",
         "}"
       )
   } else {
@@ -98,8 +102,13 @@ write_smallset_code <- function(scriptName, dir, runBig, smallset) {
       c(
         "snapshots <- list()",
         functionStart,
-        paste0("snapshots[[1]] <- ", initialName),
+        paste0("snapshots[[1]] <- ", rStartName),
         smallsetCode$command,
+        paste0("snapshots[[",
+               as.character(s + 1),
+               "]] <- ", 
+               rEndName),
+        "return(snapshots)",
         "}"
       )
   }

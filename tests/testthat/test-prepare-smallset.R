@@ -103,25 +103,25 @@ mylist <- prepare_smallset(
   rowNums = c(1, 2, 5, 8, 11, 12)
 )
 
-red <- mylist[[1]][[2]]$body$styles$text$color$data[3:5,]
+red <- mylist[[1]][[1]]$body$styles$text$color$data[3:5,]
 red <- unique(as.vector(as.matrix(red)))
 test_that("three rows are red", 
           {expect_true(red == "#FF0000")
             })
 
-blue <- mylist[[1]][[3]]$body$styles$text$color$data[,c("V5")]
+blue <- mylist[[1]][[2]]$body$styles$text$color$data[,c("V5")]
 test_that("new column is blue", {
   expect_equal(blue, 
                c("#0000FF", "#0000FF", "#0000FF"))
 })
 
-green <- mylist[[1]][[3]]$body$styles$text$color$data[,c("V3")]
+green <- mylist[[1]][[2]]$body$styles$text$color$data[,c("V3")]
 test_that("third column is green", {
   expect_equal(green, 
                c("#008000", "#008000", "#008000"))
 })
 
-blue <- mylist[[1]][[4]]$body$styles$text$color$data[,c("V6")]
+blue <- mylist[[1]][[3]]$body$styles$text$color$data[,c("V6")]
 test_that("new column is blue", {
   expect_equal(blue, 
                c("#0000FF", "#0000FF", "#0000FF"))

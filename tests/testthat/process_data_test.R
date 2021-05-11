@@ -8,8 +8,7 @@ df <- data.frame(
   V4 = c(.6, .5, 1.1, .8, .7, 1.3, .9, 1.1, 1.4, .8, .9, 1.2)
 )
 
-# start smallset
-# snap df
+# start smallset df
 df$V4 <- ifelse(df$V4 > 1, 1, 0)
 df$V5 <- df$V2 + df$V3
 df <- df[complete.cases(df),]
@@ -17,5 +16,4 @@ df <- df[complete.cases(df),]
 df2 <- df %>% transform(V3 = V3 %>% multiply_by(60))
 # resume smallset
 df2$V6 <- "A"
-# snap df2
-# end smallset
+# end smallset df2

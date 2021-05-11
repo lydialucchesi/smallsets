@@ -11,8 +11,8 @@ select_smallset <- function(data,
   
   # Randomly sample rows from the original dataset
   if (is.null(rowNums)) {
+    data$smallsetRowID <- row.names(data)
     smallset <- dplyr::sample_n(data, size = rowCount)
-    smallset$smallsetRowID <- row.names(smallset)
     smallset <- smallset[, !(names(smallset) %in% ignoreCols)]
   }
   
