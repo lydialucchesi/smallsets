@@ -86,10 +86,13 @@ highlight_changes <-
       row.names(lpriorAdj) <- as.numeric(row.names(lpriorAdj))
       row.names(lcurrentAdj) <- as.numeric(row.names(lcurrentAdj))
       
-      original <-
-        setdiff(subset(lpriorAdj, select = colnames(lcurrentAdj)), lcurrentAdj)
-      update <-
-        setdiff(lcurrentAdj, subset(lpriorAdj, select = colnames(lcurrentAdj)))
+      # original <-
+      #   setdiff(subset(lpriorAdj, select = colnames(lcurrentAdj)), lcurrentAdj)
+      # update <-
+      #   setdiff(lcurrentAdj, subset(lpriorAdj, select = colnames(lcurrentAdj)))
+      
+      original <- subset(lpriorAdj, select = colnames(lcurrentAdj))
+      update <- lcurrentAdj
       
       if ((nrow(original) != 0) & (nrow(update) != 0)) {
         adjData <- data.frame(r = numeric(), c = numeric())
@@ -120,7 +123,6 @@ highlight_changes <-
                              j = adjData$c)
         }
       }
-
       
       # Save latest snapshot tables
       tables[[p]] <- tprior

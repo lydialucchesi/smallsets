@@ -22,7 +22,8 @@ make_timeline_plot(
   legendDF,
   highlightNA,
   captionTemplateName,
-  captionTemplateDir
+  captionTemplateDir,
+  timelineRows
 )
 }
 \description{

@@ -102,7 +102,12 @@ create_timeline <-
     items <- seq(1, length(snapshotList[[1]]), 1)
     
     # Get four colours ready
-    chosenScheme <- return_scheme(colScheme = colScheme)
+    if (is.null(constant) & is.null(changed) & is.null(added) & is.null(deleted)) {
+      chosenScheme <- return_scheme(colScheme = colScheme)
+    } else {
+      chosenScheme <- NULL
+      colScheme <- NULL
+    }
     
     if (!is.null(colScheme) & length(colScheme) > 1) {
       constantPlace <- match("constant", colScheme) - 1
@@ -392,6 +397,8 @@ create_timeline <-
     snapshotList[[6]] <- changed
     snapshotList[[7]] <- added
     snapshotList[[8]] <- deleted
+    
+    tileAlphas <- subset(tileAlphas, tileAlphas$colValue %in% colsPresent)
     snapshotList[[9]] <- tileAlphas
     
     # Make the timeline plot for each snapshot
@@ -415,6 +422,7 @@ create_timeline <-
         highlightNA,
         captionTemplateName,
         captionTemplateDir,
+        timelineRows,
         FUN = make_timeline_plot
       )
     

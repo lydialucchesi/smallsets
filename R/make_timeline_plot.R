@@ -23,7 +23,8 @@ make_timeline_plot <-
            legendDF,
            highlightNA,
            captionTemplateName,
-           captionTemplateDir) {
+           captionTemplateDir,
+           timelineRows) {
     
     # Retrieve colour and data information for a snapshot
     tab1 <- extTables[[itemNum]][[1]]
@@ -102,6 +103,32 @@ make_timeline_plot <-
     tabs <- merge(tabs, legendDF[, c("colValue", "colAlp")])
     legendDF <- subset(legendDF, legend == TRUE)
     
+    if (isFALSE(ghostData)) {
+      if (max(tabs$x) != maxDims[1]) {
+        empty1 <-
+          data.frame(expand.grid(
+            x = seq(max(tabs$x) + 1, maxDims[1]),
+            y = seq(1, maxDims[2])
+          ))
+      }
+      
+      if (max(tabs$y) != maxDims[2]) {
+        d <- maxDims[2] - max(tabs$y)
+        tabs$y <- tabs$y + d
+        xs$y <- xs$y + d
+        empty2 <- data.frame(expand.grid(x = seq(1, maxDims[1]),
+                                         y = seq(1, min(tabs$y) - 1)))
+      }
+      
+      empty <- data.frame()
+      if (exists("empty1")) {
+        empty <- rbind(empty, empty1)
+      }
+      if (exists("empty2")) {
+        empty <- rbind(empty, empty2)
+      }
+    }
+    
     # Create plot
     abstractSmallset <- ggplot() +
       geom_tile(
@@ -174,29 +201,6 @@ make_timeline_plot <-
     
     # Add invisible tiles to keep visible tiles equal in size (if ghostData = F)
     if (isFALSE(ghostData)) {
-      if (max(tabs$x) != maxDims[1]) {
-        empty1 <-
-          data.frame(expand.grid(
-            x = seq(max(tabs$x) + 1, maxDims[1]),
-            y = seq(1, maxDims[2])
-          ))
-      }
-      
-      if (max(tabs$y) != maxDims[2]) {
-        d <- maxDims[2] - max(tabs$y)
-        tabs$y <- tabs$y + d
-        xs$y <- xs$y + d
-        empty2 <- data.frame(expand.grid(x = seq(1, maxDims[1]),
-                                         y = seq(1, min(tabs$y) - 1)))
-      }
-      
-      empty <- data.frame()
-      if (exists("empty1")) {
-        empty <- rbind(empty, empty1)
-      }
-      if (exists("empty2")) {
-        empty <- rbind(empty, empty2)
-      }
       if (nrow(empty) > 0) {
         abstractSmallset <- abstractSmallset +
           geom_tile(
@@ -228,13 +232,23 @@ make_timeline_plot <-
     }
     smallsetCaption <- plotInfo[itemNum, "caption"]
     
-    captionInfo <-
-      data.frame(
-        x = c((maxDims[1] + 1) / 2),
-        y = c(-.25),
-        smallsetCaption = c(smallsetCaption)
-      )
-    
+    # Fix this - needs to be based on ghostData and timelineRows
+    if ((timelineRows > 1) | (isFALSE(ghostData))) {
+      captionInfo <-
+        data.frame(
+          x = c((maxDims[1] + 1) / 2),
+          y = c(-.25),
+          smallsetCaption = c(smallsetCaption)
+        )
+    } else {
+      captionInfo <-
+        data.frame(
+          x = c((ncol(tab2)) / 2),
+          y = c(-.25),
+          smallsetCaption = c(smallsetCaption)
+        )
+    }
+
     if (is.na(captionInfo$smallsetCaption)) {
       captionInfo$smallsetCaption <-
         as.character(captionInfo$smallsetCaption)
@@ -245,8 +259,8 @@ make_timeline_plot <-
       geom_textbox(
         data = captionInfo,
         aes(
-          x = (maxDims[1] + 1) / 2,
-          y = -.25,
+          x = x,
+          y = y,
           label = smallsetCaption
         ),
         width = grid::unit(.95, "npc"),
