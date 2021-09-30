@@ -1,0 +1,1 @@
+<%= str_to_title(as.english(nrow(altTextInfo$adjData))) %> table cell is <%= editColour %>.

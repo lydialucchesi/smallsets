@@ -71,6 +71,7 @@ prepare_smallset <-
         scriptName = code,
         dir = dir,
         runBig = runBig,
+        ignoreCols = ignoreCols,
         smallset = smallset
       )
     
@@ -106,10 +107,11 @@ prepare_smallset <-
     )
     
     o <- (list(
-      smallsetTables,
+      smallsetTables[[1]],
       captionTemplateName,
       captionTemplateDir,
-      resumeLocs
+      resumeLocs,
+      smallsetTables[[2]]
     ))
     
     oldClass(o) <- c("smallsetSnapshots", class(o))

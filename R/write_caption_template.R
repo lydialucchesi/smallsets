@@ -54,7 +54,7 @@ write_caption_template <-
     rmdTotal <- c(heading, titleBlock, firstPlot, captionBlocks, lastPlot)
     
     # Save the template to directory
-    fileConn <- file(paste0(script, ".Rmd"))
+    fileConn <- file(paste0(pathway, "/", script, ".Rmd"))
     writeLines(rmdTotal, fileConn)
     close(fileConn)
     

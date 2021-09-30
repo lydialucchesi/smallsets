@@ -1,0 +1,1 @@
+Data additions are represented with the colour <%= addColour %>.

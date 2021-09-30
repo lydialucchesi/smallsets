@@ -13,6 +13,8 @@ make_timeline_plot <-
            ghostData,
            sizing,
            truncateData,
+           rotateHeader,
+           headerSpace,
            accentCols,
            accentColsDif,
            otherTextCol,
@@ -57,13 +59,37 @@ make_timeline_plot <-
       suppressMessages(left_join(tabs, snapshotList[[9]], by = "colValue"))
     
     # Prepare lighter colour values for tiles with missing data
+    # if (isTRUE(highlightNA)) {
+    #   missingCols <- c(
+    #     lighten(col2hex(snapshotList[[5]]), .4),
+    #     lighten(col2hex(snapshotList[[6]]), .4),
+    #     lighten(col2hex(snapshotList[[7]]), .4),
+    #     lighten(col2hex(snapshotList[[8]]), .4)
+    #   )
+    #   tabs$colValue <-
+    #     ifelse(is.na(tabs$datValue),
+    #            lighten(col2hex(tabs$colValue), .4),
+    #            tabs$colValue)
+    # }
+    
     if (isTRUE(highlightNA)) {
-      missingCols <- c(
-        lighten(col2hex(snapshotList[[5]]), .4),
-        lighten(col2hex(snapshotList[[6]]), .4),
-        lighten(col2hex(snapshotList[[7]]), .4),
-        lighten(col2hex(snapshotList[[8]]), .4)
-      )
+      missingCols <- c()
+      if (snapshotList[[5]] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(col2hex(snapshotList[[5]]), .4))
+      }
+      
+      if (snapshotList[[6]] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(col2hex(snapshotList[[6]]), .4))
+      }
+      
+      if (snapshotList[[7]] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(col2hex(snapshotList[[7]]), .4))
+      }
+      
+      if (snapshotList[[8]] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(col2hex(snapshotList[[8]]), .4))
+      }
+      
       tabs$colValue <-
         ifelse(is.na(tabs$datValue),
                lighten(col2hex(tabs$colValue), .4),
@@ -94,13 +120,15 @@ make_timeline_plot <-
     if (isTRUE(highlightNA)) {
       legendDF$alpha <-
         c(snapshotList[[9]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], snapshotList[[9]]$alpha)
-    } else {
+      # legendDF$alpha <-
+      #   c(snapshotList[[9]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))])
+      } else {
       legendDF$alpha <- snapshotList[[9]]$alpha
     }
     
     legendDF$colAlp <-
       as.factor(alpha(legendDF$fillVar, legendDF$alpha))
-    tabs <- merge(tabs, legendDF[, c("colValue", "colAlp")])
+    tabs <- suppressMessages(left_join(tabs, legendDF[, c("colValue", "colAlp")]))
     legendDF <- subset(legendDF, legend == TRUE)
     
     if (isFALSE(ghostData)) {
@@ -129,6 +157,16 @@ make_timeline_plot <-
       }
     }
     
+    if (isTRUE(rotateHeader)) {
+      angleVal <- 45
+      hjustVal <- 0
+      vjustVal <- 1
+    } else {
+      angleVal <- 0
+      hjustVal <- .5
+      vjustVal <- .5
+    }
+    
     # Create plot
     abstractSmallset <- ggplot() +
       geom_tile(
@@ -149,7 +187,10 @@ make_timeline_plot <-
         aes(x = x, y = y, label = variable),
         family = timelineFont,
         size = sizing[["columns"]],
-        colour = otherTextCol
+        colour = otherTextCol,
+        angle = angleVal,
+        hjust = hjustVal,
+        vjust = vjustVal
       ) +
       coord_equal() +
       theme(
@@ -176,7 +217,7 @@ make_timeline_plot <-
         )
       ) +
       scale_colour_identity()
-    
+
     # Print data in tables
     tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
     
@@ -236,7 +277,14 @@ make_timeline_plot <-
     if ((timelineRows > 1) | (isFALSE(ghostData))) {
       captionInfo <-
         data.frame(
-          x = c((maxDims[1] + 1) / 2),
+          x = c((maxDims[1] + headerSpace[2]) / 2),
+          y = c(-.25),
+          smallsetCaption = c(smallsetCaption)
+        )
+    } else if ((timelineRows == 1) & (headerSpace[2] != .5)) {
+      captionInfo <-
+        data.frame(
+          x = c((ncol(tab2) + headerSpace[2] - 1) / 2),
           y = c(-.25),
           smallsetCaption = c(smallsetCaption)
         )
@@ -268,12 +316,12 @@ make_timeline_plot <-
         vjust = c(1),
         hjust = c(.5),
         valign = c(.5),
-        halign = c(.5),
+        halign = c(0),
         size = sizing[["captions"]],
         box.colour = NA,
         colour = otherTextCol
       ) +
-      ylim(c(captionSpace * (-1), maxDims[2] + 1))
+      ylim(c(captionSpace * (-1), maxDims[2] + headerSpace[1]))
     
     # Add resume markers (a vertical line between two snapshots)
     if (itemNum %in% snapshotList[[4]]) {

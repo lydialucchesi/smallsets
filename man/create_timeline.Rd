@@ -17,6 +17,8 @@ create_timeline(
   sizing = list(columns = 2, tiles = 1, captions = 8, data = 2.5, legendText = 7,
     legendIcons = 1, title = 10, subtitle = 8, footnote = 7, resume = 0.25),
   truncateData = FALSE,
+  rotateHeader = FALSE,
+  headerSpace = c(1, 0.5),
   accentCols = "darker",
   accentColsDif = 0.8,
   otherTextCol = 1,
@@ -71,6 +73,12 @@ timeline footnote, and resume marker.}
 \item{truncateData}{TRUE or FALSE. FALSE if data do not need to be truncated
 to fit within table tiles. Otherwise, an integer specifying width of data
 value (width includes "...").}
+
+\item{rotateHeader}{TRUE or FALSE. If TRUE, column names are printed at 45
+degree angle. Use if column names overlap when set to FALSE.}
+
+\item{headerSpace}{Vector. Default is c(1, .5). First value corresponds to
+room above the table and second to the right of the table.}
 
 \item{accentCols}{Either "darker" or "lighter" for stamp colour. Can enter a
 list corresponding to specific actions.}

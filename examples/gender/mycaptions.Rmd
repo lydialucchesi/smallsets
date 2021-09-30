@@ -1,0 +1,28 @@
+---
+title: "Captions for the smallset timeline"
+author: 
+date: 2021-09-30
+output: html_document
+---
+
+Timeline title: 
+
+Timeline subtitle: 
+
+Timeline footnote: 
+
+### Starting smallset
+
+Caption: 
+
+### `dat$Time <- (dat$Min * 60) + dat$Sec`
+
+Caption: 
+
+### ``
+
+Caption: 
+
+### Ending smallset
+
+Caption: 

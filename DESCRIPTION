@@ -27,6 +27,11 @@ Imports:
     colorspace,
     patchwork,
     ggtext,
-    magrittr
+    magrittr,
+    brew,
+    knitr,
+    plotrix,
+    readr,
+    english
 Suggests: 
     testthat

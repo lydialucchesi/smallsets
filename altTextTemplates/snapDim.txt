@@ -1,0 +1,1 @@
+Snapshot <%= i %> is <%= nrow(snapshotList[[1]][[i]]$body$dataset) %> rows by <%= ncol(snapshotList[[1]][[i]]$body$dataset) %> columns.

@@ -21,6 +21,7 @@ highlight_changes <-
                                            pathway = tempDir)
     
     tables <- list()
+    altTextInfo <- list()
     for (p in 1:(length(smallsetList) - 1)) {
       c <- p + 1
       
@@ -128,6 +129,9 @@ highlight_changes <-
       tables[[p]] <- tprior
       tables[[c]] <- tcurrent
       
+      newAltTextInfo <- list(rowsDrop = rowsDrop, rowsAdd = rowsAdd, colsAdd = colsAdd, colsDrop = colsDrop, adjData = adjData)
+      altTextInfo <- append(altTextInfo, newAltTextInfo)
+      
     }
     
     print(
@@ -140,6 +144,6 @@ highlight_changes <-
       )
     )
     
-    return(tables)
+    return(list(tables, altTextInfo))
     
   }

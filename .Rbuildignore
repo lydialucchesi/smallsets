@@ -6,4 +6,7 @@
 ^captionTemplate.Rmd
 ^smallset-features
 ^smallset features
+^figureAltText
+^altTextTemplates
 ^\.Rmd$
+^examples

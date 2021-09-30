@@ -37,6 +37,10 @@
 #' @param truncateData TRUE or FALSE. FALSE if data do not need to be truncated
 #'   to fit within table tiles. Otherwise, an integer specifying width of data
 #'   value (width includes "...").
+#' @param rotateHeader TRUE or FALSE. If TRUE, column names are printed at 45
+#'   degree angle. Use if column names overlap when set to FALSE.
+#' @param headerSpace Vector. Default is c(1, .5). First value corresponds to
+#'   room above the table and second to the right of the table.
 #' @param accentCols Either "darker" or "lighter" for stamp colour. Can enter a
 #'   list corresponding to specific actions.
 #' @param accentColsDif Value between 0 and 1. Corresponds to how much lighter
@@ -80,6 +84,8 @@ create_timeline <-
              "resume" = .25
            ),
            truncateData = FALSE,
+           rotateHeader = FALSE,
+           headerSpace = c(1, .5),
            accentCols = "darker",
            accentColsDif = .8,
            otherTextCol = 1,
@@ -99,11 +105,25 @@ create_timeline <-
         "Object snapshotList is not of class smallsetSnapshots (output from prepare_smallset).'"
       )
     
+    if (length(headerSpace) != 2) {
+      headerSpace <- c(1, .5)
+      print(
+        "headerSpace must be a vector of length two. See headerSpace argument in ?create_timeline. Resorting to default c(1, .5)."
+      )
+    }
+    
+    altTextInfo <- snapshotList[[5]]
     items <- seq(1, length(snapshotList[[1]]), 1)
     
     # Get four colours ready
-    if (is.null(constant) & is.null(changed) & is.null(added) & is.null(deleted)) {
-      chosenScheme <- return_scheme(colScheme = colScheme)
+    if (is.null(constant) &
+        is.null(changed) & is.null(added) & is.null(deleted)) {
+      if (length(colScheme) > 1) {
+        chosenScheme <- return_scheme(colScheme = colScheme[1])
+      }
+      else {
+        chosenScheme <- return_scheme(colScheme = colScheme)
+      }
     } else {
       chosenScheme <- NULL
       colScheme <- NULL
@@ -111,24 +131,28 @@ create_timeline <-
     
     if (!is.null(colScheme) & length(colScheme) > 1) {
       constantPlace <- match("constant", colScheme) - 1
-      constant <- unlist(chosenScheme[constantPlace][1])[1]
+      constant <- unlist(chosenScheme[constantPlace])[1]
+      names(constant) <- "constant1"
       constantAlpha <-
-        as.numeric(unlist(chosenScheme[constantPlace][1])[2])
+        as.numeric(unlist(chosenScheme[constantPlace])[[2]])
       
       changedPlace <- match("changed", colScheme) - 1
-      changed <- unlist(chosenScheme[changedPlace][1])[1]
+      changed <- unlist(chosenScheme[changedPlace])[1]
+      names(changed) <- "changed1"
       changedAlpha <-
-        as.numeric(unlist(chosenScheme[changedPlace][1])[2])
+        as.numeric(unlist(chosenScheme[changedPlace])[[2]])
       
       addedPlace <- match("added", colScheme) - 1
-      added <- unlist(chosenScheme[addedPlace][1])[1]
+      added <- unlist(chosenScheme[addedPlace])[1]
+      names(added) <- "added1"
       addedAlpha <-
-        as.numeric(unlist(chosenScheme[addedPlace][1])[2])
+        as.numeric(unlist(chosenScheme[addedPlace])[[2]])
       
-      deletedPlace <- match("constant", colScheme) - 1
-      deleted <- unlist(chosenScheme[deletedPlace][1])[1]
+      deletedPlace <- match("deleted", colScheme) - 1
+      deleted <- unlist(chosenScheme[deletedPlace])[[1]]
+      names(deleted) <- "deleted1"
       deletedAlpha <-
-        as.numeric(unlist(chosenScheme[deletedPlace][1])[2])
+        as.numeric(unlist(chosenScheme[deletedPlace])[[2]])
       
     } else if ((!is.null(colScheme) & length(colScheme) == 1)) {
       constant <- unlist(chosenScheme[1][1])[1]
@@ -333,18 +357,18 @@ create_timeline <-
     if (isTRUE(highlightNA)) {
       descriptions <-
         c(
-          "Data have not changed since previous snapshot.\nLighter shade signals a missing data value.",
-          "Data have changed since previous snapshot.\nLighter shade signals a missing data value.",
-          "Data have been added since previous snapshot.\nLighter shade signals a missing data value.",
-          "Data will be removed prior to the next snapshot.\nLighter shade signals a missing data value."
+          "Data has not changed.\nTint is missing data.",
+          "Data has been edited.\nTint is missing data.",
+          "Data has been added.\nTint is missing data.",
+          "Data will be deleted.\nTint is missing data."
         )
     } else {
       descriptions <-
         c(
-          "Data have not changed since previous snapshot.",
-          "Data have changed since previous snapshot.",
-          "Data have been added since previous snapshot.",
-          "Data will be removed prior to the next snapshot."
+          "Data has not changed.",
+          "Data has been edited.",
+          "Data has been added.",
+          "Data will be deleted."
         )
     }
     
@@ -398,7 +422,8 @@ create_timeline <-
     snapshotList[[7]] <- added
     snapshotList[[8]] <- deleted
     
-    tileAlphas <- subset(tileAlphas, tileAlphas$colValue %in% colsPresent)
+    tileAlphas <-
+      subset(tileAlphas, tileAlphas$colValue %in% colsPresent)
     snapshotList[[9]] <- tileAlphas
     
     # Make the timeline plot for each snapshot
@@ -411,9 +436,11 @@ create_timeline <-
         ghostData,
         sizing,
         truncateData,
+        rotateHeader,
+        headerSpace,
         accentCols,
         accentColsDif,
-        otherTextColour,
+        otherTextCol,
         maxDims,
         timelineFont,
         captionSpace,
@@ -428,10 +455,17 @@ create_timeline <-
     
     # Set a limits for x-axis if necessary
     if (timelineRows > 1) {
-      m <- maxDims[[1]] + .5
+      m <- maxDims[[1]] + headerSpace[2]
       if (!is.null(snapshotList[[4]])) {
         m <- maxDims[[1]] + 2.51
       }
+      for (p in 1:length(l)) {
+        l[[p]] <- l[[p]] + xlim(c(0, m))
+      }
+    }
+    
+    if ((timelineRows == 1) & (headerSpace[2] != .5)) {
+      m <- maxDims[[1]] + headerSpace[2]
       for (p in 1:length(l)) {
         l[[p]] <- l[[p]] + xlim(c(0, m))
       }
@@ -541,6 +575,14 @@ create_timeline <-
     
     patchedPlots <-
       paste0(patchedPlots, timelineHeader, fontChoice)
+    
+    # generate_alt_text(title = title,
+    #                   subtitle = subtitle,
+    #                   footnote = footnote,
+    #                   snapshotList = snapshotList,
+    #                   altTextInfo = altTextInfo,
+    #                   l = l)
+
     o <- return(eval(parse(text = patchedPlots)))
     
     oldClass(o) <- c("smallsetTimeline", class(o))

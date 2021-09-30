@@ -1,0 +1,1 @@
+The Smallset timeline has footnote quote "<%= footnote %>."

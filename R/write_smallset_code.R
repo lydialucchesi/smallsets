@@ -3,7 +3,7 @@
 #'   takes snapshots.
 #' @keywords internal
 
-write_smallset_code <- function(scriptName, dir, runBig, smallset) {
+write_smallset_code <- function(scriptName, dir, runBig, ignoreCols, keepCols, smallset) {
   
   # Import preprocessing code
   processTXT <- as.data.frame(readLines(scriptName, warn = FALSE))

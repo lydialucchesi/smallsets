@@ -12,6 +12,8 @@ make_timeline_plot(
   ghostData,
   sizing,
   truncateData,
+  rotateHeader,
+  headerSpace,
   accentCols,
   accentColsDif,
   otherTextCol,
