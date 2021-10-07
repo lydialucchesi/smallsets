@@ -28,7 +28,7 @@ M <- MissingDataProvider$new()
 # Create data frame
 dat <- data.frame(
   Name = ch_name(n = 1000, local = "en_US"),
-  Age = ch_integer(n = 1000, min = 20, max = 80),
+  Age = ch_integer(n = 1000, min = 20, max = 79),
   Area = code,
   Min = M$make_missing(x = ch_integer(n = 1000, 1, 71)),
   Sec = ch_integer(n = 1000, 0, 60)
