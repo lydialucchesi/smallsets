@@ -57,8 +57,9 @@
 #'   template is not overwritten when running \code{prepare_smallset}.
 #' @param captionTemplateDir Name of caption template directory. Can be included
 #'   so template is not overwritten when running \code{prepare_smallset}.
-#' @import "patchwork" "gplots" "colorspace" "magrittr" "dplyr"
+#' @import "patchwork" "colorspace" "magrittr" "dplyr"
 #' @importFrom plyr mapvalues
+#' @importFrom gplots col2hex
 #' @export
 
 create_timeline <-
@@ -576,12 +577,12 @@ create_timeline <-
     patchedPlots <-
       paste0(patchedPlots, timelineHeader, fontChoice)
     
-    # generate_alt_text(title = title,
-    #                   subtitle = subtitle,
-    #                   footnote = footnote,
-    #                   snapshotList = snapshotList,
-    #                   altTextInfo = altTextInfo,
-    #                   l = l)
+    generate_alt_text(title = title,
+                      subtitle = subtitle,
+                      footnote = footnote,
+                      snapshotList = snapshotList,
+                      altTextInfo = altTextInfo,
+                      l = l)
 
     o <- return(eval(parse(text = patchedPlots)))
     

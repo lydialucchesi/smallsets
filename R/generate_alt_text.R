@@ -1,7 +1,8 @@
 #' Generate Alt Text
 #' @description The function identifies produces alt text for the Smallset timeline figure.
 #' @keywords internal
-#' @import "brew" "knitr" "plotrix" "readr" "english"
+#' @import "brew" "knitr" "readr" "english"
+#' @importFrom plotrix color.id
 
 generate_alt_text <-
   function(title,
@@ -245,6 +246,8 @@ generate_alt_text <-
     fileConn <- file("figureAltText.txt")
     writeLines(altText, fileConn)
     close(fileConn)
+    
+    print("Alt text available in figureAltText.txt")
     
     unlink("altText", recursive = TRUE)
     

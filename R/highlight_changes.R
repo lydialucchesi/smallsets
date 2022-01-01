@@ -73,13 +73,13 @@ highlight_changes <-
       
       # Compare data values
       if (length(rowsDrop) > 0) {
-        lpriorAdj <- subset(lprior,!(row.names(lprior) %in% rowsDrop))
+        lpriorAdj <- subset(lprior, !(row.names(lprior) %in% rowsDrop))
       } else {
         lpriorAdj <- lprior
       }
       
       if (length(colsAdd) > 0) {
-        lcurrentAdj <- subset(lcurrent, select = colnames(lprior))
+        lcurrentAdj <- subset(lcurrent, select = colnames(lprior)[!(colnames(lprior) %in% colsDrop)])
       } else {
         lcurrentAdj <- lcurrent
       }
@@ -116,20 +116,47 @@ highlight_changes <-
         #     j = adjData$c
         #   )
         
+        # if (nrow(adjData) > 0) {
+        #   tcurrent <-
+        #     flextable::color(tcurrent,
+        #                      color = changed,
+        #                      i = adjData$r,
+        #                      j = adjData$c)
+        # }
+        
+        rr <-
+          data.frame(nmbr = seq(1, length(row.names(
+            tcurrent$body$dataset
+          )), 1),
+          r = row.names(tcurrent$body$dataset))
+        adjData <- left_join(adjData, rr, by = "r")
+        
+        
         if (nrow(adjData) > 0) {
-          tcurrent <-
-            flextable::color(tcurrent,
-                             color = changed,
-                             i = adjData$r,
-                             j = adjData$c)
+          for (v in 1:nrow(adjData)) {
+            tcurrent <- flextable::color(
+              tcurrent,
+              color = changed,
+              i = adjData$nmbr[v],
+              j = adjData$c[v]
+            )
+          }
         }
+        
       }
       
       # Save latest snapshot tables
       tables[[p]] <- tprior
       tables[[c]] <- tcurrent
       
-      newAltTextInfo <- list(rowsDrop = rowsDrop, rowsAdd = rowsAdd, colsAdd = colsAdd, colsDrop = colsDrop, adjData = adjData)
+      newAltTextInfo <-
+        list(
+          rowsDrop = rowsDrop,
+          rowsAdd = rowsAdd,
+          colsAdd = colsAdd,
+          colsDrop = colsDrop,
+          adjData = adjData
+        )
       altTextInfo <- append(altTextInfo, newAltTextInfo)
       
     }

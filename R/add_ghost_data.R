@@ -31,10 +31,12 @@ add_ghost_data <-
     # Insert ghost columns in colour data frame
     difCols <- setdiff(colnames(ghostDF1), colnames(tab1))
     if (length(difCols) > 0) {
-      tab1 <- cbind(tab1, ghostDF1[row.names(tab1), difCols])
+      ghostDF1[row.names(tab1), difCols]
+      tab1 <- cbind(tab1, ghostDF1[row.names(tab1), difCols, drop = FALSE])
       newNames <- setdiff(colnames(tab1), colnames(ghostDF1))
       newNames <- c(names(ghostDF1), newNames)
       tab1 <- tab1[newNames]
+      colnames(tab1)[colnames(tab1) %in% difCols] <- " "
     }
     
     # Insert ghost rows in data data frame
@@ -53,10 +55,11 @@ add_ghost_data <-
     # Insert ghost columns in data data frame
     difCols <- setdiff(colnames(ghostDF2), colnames(tab2))
     if (length(difCols) > 0) {
-      tab2 <- cbind(tab2, ghostDF2[row.names(tab2), difCols])
+      tab2 <- cbind(tab2, ghostDF2[row.names(tab2), difCols, drop = FALSE])
       newNames <- setdiff(colnames(tab2), colnames(ghostDF2))
       newNames <- c(names(ghostDF2), newNames)
       tab2 <- tab2[newNames]
+      colnames(tab2)[colnames(tab2) %in% difCols] <- " "
     }
     
     return(list(tab1, tab2))
