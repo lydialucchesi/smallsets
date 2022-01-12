@@ -1,0 +1,24 @@
+---
+title: "Captions for the smallset timeline"
+author: 
+date: 2022-01-12
+output: html_document
+---
+
+Timeline title: 
+
+Timeline subtitle: 
+
+Timeline footnote: 
+
+### Starting smallset
+
+Caption: 
+
+### `ca_data <- subset(ca_data, AGEP > 16)`
+
+Caption: 
+
+### Ending smallset
+
+Caption: 

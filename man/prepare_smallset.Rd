@@ -10,6 +10,7 @@ prepare_smallset(
   dir = getwd(),
   rowCount = 6,
   rowNums = NULL,
+  auto = NULL,
   runBig = FALSE,
   ignoreCols = NULL,
   captionTemplateName = "captionTemplate",
@@ -29,6 +30,9 @@ in the smallset.}
 
 \item{rowNums}{Numeric vector of row numbers. Indicates particular rows from
 the data set to be included in the smallset.}
+
+\item{auto}{1 or 2. 1 = simple gurobi model selection. 2 = advanced gurobi
+model selction.}
 
 \item{runBig}{TRUE or FALSE. FALSE means preprocessing code will be run on
 smallset. TRUE means preprocessing code will be run on the big data set,

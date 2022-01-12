@@ -1,0 +1,24 @@
+---
+title: "Captions for the smallset timeline"
+author: Lydia
+date: 2022-01-09
+output: html_document
+---
+
+Timeline title: Smallset Timeline
+
+Timeline subtitle: 
+
+Timeline footnote: (Based on a synthetic dataset and preprocessing scenario)
+
+### Starting smallset
+
+Caption: Remove rows where C2 is FALSE.
+
+### ``
+
+Caption: Replace missing values in C6 and C8 with category (C1) means. Drop C7 because it has too many missing values.
+
+### Ending smallset
+
+Caption: Create a new column, C9, by summing C3 and C4.

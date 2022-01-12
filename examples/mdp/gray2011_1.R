@@ -33,8 +33,6 @@ mdpData$DECISION_DENSITY[is.na(mdpData$DECISION_DENSITY)] <- 0
 
 # STEP 4: Run integrity checks
 # Section 3.5, p. 552
-# snap mdpData
-mdpData <- mdpData
 # mdpData <-
 #   subset(mdpData,
 #          mdpData$HALSTEAD_LENGTH == mdpData$NUM_OPERANDS + mdpData$NUM_OPERATORS)
@@ -48,6 +46,7 @@ mdpData <- mdpData
 
 
 # STEP 5: Remove repeated and inconsistent cases
+# snap mdpData
 mdpData <- mdpData
 dups <- read.table("examples/mdp/duplicates.txt")$V1
 # Remove duplicate cases

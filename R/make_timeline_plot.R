@@ -273,7 +273,6 @@ make_timeline_plot <-
     }
     smallsetCaption <- plotInfo[itemNum, "caption"]
     
-    # Fix this - needs to be based on ghostData and timelineRows
     if ((timelineRows > 1) | (isFALSE(ghostData))) {
       captionInfo <-
         data.frame(
@@ -284,7 +283,7 @@ make_timeline_plot <-
     } else if ((timelineRows == 1) & (headerSpace[2] != .5)) {
       captionInfo <-
         data.frame(
-          x = c((ncol(tab2) + headerSpace[2] - 1) / 2),
+          x = c((ncol(tab2) + headerSpace[2]) / 2),
           y = c(-.25),
           smallsetCaption = c(smallsetCaption)
         )
@@ -295,6 +294,10 @@ make_timeline_plot <-
           y = c(-.25),
           smallsetCaption = c(smallsetCaption)
         )
+    }
+    
+    if (itemNum %in% snapshotList[[4]]) {
+      captionInfo$x <- captionInfo$x + 1.25
     }
 
     if (is.na(captionInfo$smallsetCaption)) {

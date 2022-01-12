@@ -1,0 +1,1 @@
+The caption is quote "<%= layer_data(l[[i]], 4)$label %>"

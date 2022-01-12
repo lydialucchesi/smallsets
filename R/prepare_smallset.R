@@ -11,6 +11,8 @@
 #'   in the smallset.
 #' @param rowNums Numeric vector of row numbers. Indicates particular rows from
 #'   the data set to be included in the smallset.
+#' @param auto 1 or 2. 1 = simple gurobi model selection. 2 = advanced gurobi
+#'   model selction.
 #' @param runBig TRUE or FALSE. FALSE means preprocessing code will be run on
 #'   smallset. TRUE means preprocessing code will be run on the big data set,
 #'   and the smallset will be extracted from that output at each snap point.
@@ -28,6 +30,7 @@ prepare_smallset <-
            dir = getwd(),
            rowCount = 6,
            rowNums = NULL,
+           auto = NULL,
            runBig = FALSE,
            ignoreCols = NULL,
            captionTemplateName = "captionTemplate",
@@ -56,14 +59,53 @@ prepare_smallset <-
       stop("Data was not of class data frame, data table, or tibble.")
     }
     
-    # Generate a smallset
-    smallset <- select_smallset(
-      data = data,
-      rowCount = rowCount,
-      rowNums = rowNums,
-      runBig = runBig,
-      ignoreCols = ignoreCols
-    )
+    if (!is.null(auto)) {
+      if (!requireNamespace("gurobi", quietly = TRUE)) {
+        warning(
+          "This Smallset selection method uses a gurobi optimization model.
+              Please visit https://www.gurobi.com to obtain a gurobi license (free academic licenses are available)
+              and then install and load the gurobi R package. smallset will then be able to run the selection model."
+        )
+      } else {
+        if (auto == 1) {
+          rowNums <-
+            run_simple_gurobi(
+              data = data,
+              code = code,
+              dir = dir,
+              rowCount = rowCount
+            )
+          if (isTRUE(runBig)) {
+            smallset <- rowNums
+          } else {
+            smallset <- data[rownames(data) %in% rowNums,]
+          }
+        } else {
+          rowNums <-
+            run_advanced_gurobi(
+              data = data,
+              code = code,
+              dir = dir,
+              rowCount = rowCount
+            )
+          if (isTRUE(runBig)) {
+            smallset <- rowNums
+          } else {
+            smallset <- data[rownames(data) %in% rowNums,]
+          }
+        }
+      }
+      
+    } else {
+      # Generate a smallset
+      smallset <- select_smallset(
+        data = data,
+        rowCount = rowCount,
+        rowNums = rowNums,
+        runBig = runBig,
+        ignoreCols = ignoreCols
+      )
+    }
     
     # Prepare the preprocessing function that takes snapshots
     resumeLocs <-
@@ -106,13 +148,15 @@ prepare_smallset <-
       tempAuthor = captionTemplateAuthor
     )
     
-    o <- (list(
-      smallsetTables[[1]],
-      captionTemplateName,
-      captionTemplateDir,
-      resumeLocs,
-      smallsetTables[[2]]
-    ))
+    o <- (
+      list(
+        smallsetTables[[1]],
+        captionTemplateName,
+        captionTemplateDir,
+        resumeLocs,
+        smallsetTables[[2]]
+      )
+    )
     
     oldClass(o) <- c("smallsetSnapshots", class(o))
     

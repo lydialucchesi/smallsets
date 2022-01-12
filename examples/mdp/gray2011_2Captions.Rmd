@@ -1,0 +1,36 @@
+---
+title: "Captions for the smallset timeline"
+author: 
+date: 2022-01-12
+output: html_document
+---
+
+Timeline title: 
+
+Timeline subtitle: 
+
+Timeline footnote: 
+
+### Starting smallset
+
+Caption: 
+
+### `mdpData <- mdpData`
+
+Caption: 
+
+### `mdpData$DECISION_DENSITY[is.na(mdpData$DECISION_DENSITY)] <- 0`
+
+Caption: 
+
+### `mdpData <- mdpData`
+
+Caption: 
+
+### `# STEP 5: Remove repeated and inconsistent cases`
+
+Caption: 
+
+### Ending smallset
+
+Caption: 

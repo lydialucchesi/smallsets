@@ -10,19 +10,21 @@ generate_alt_text <-
            footnote,
            snapshotList,
            altTextInfo,
-           l) {
-    dir.create("altText")
+           l,
+           abstract,
+           ghostData) {
+    suppressWarnings(dir.create("altText"))
     
-    if ((title != "") & (subtitle != "")) {
+    if ((title != "") & (!subtitle %in% c(" ", ""))) {
       suppressWarnings(brew(file = "altTextTemplates/titleOpt1.txt", output = "altText/intro_1.txt"))
     }
     
-    if ((title != "") & (subtitle == "")) {
+    if ((title != "") & (subtitle %in% c(" ", ""))) {
       suppressWarnings(brew(file = "altTextTemplates/titleOpt2.txt", output = "altText/intro_1.txt"))
     }
     
     if (footnote != "") {
-      suppressWarnings(brew(file = "altTextTemplates/titleOpt1.txt", output = "altText/intro_2.txt"))
+      suppressWarnings(brew(file = "altTextTemplates/footnote.txt", output = "altText/intro_2.txt"))
     }
     
     suppressWarnings(brew(file = "altTextTemplates/snapNum.txt", output = "altText/intro_3.txt"))
@@ -203,11 +205,28 @@ generate_alt_text <-
           altTextInfo$colsAdd <- NULL
         }
         
-        if (layer_data(l[[i]], 4)$label != "") {
-          suppressWarnings(
-            brew(file = "altTextTemplates/snapCaption.txt", output = "altText/body_13.txt")
-          )
+        # check on this
+        # what about other combinations of abstract and ghost
+        if (isTRUE(abstract) & isTRUE(ghostData)) {
+          if (layer_data(l[[i]], 3)$label != "") {
+            suppressWarnings(
+              brew(file = "altTextTemplates/snapCaption3.txt", output = "altText/body_13.txt")
+            )
+          }
+        } else if  (isFALSE(abstract) & isFALSE(ghostData)) {
+          if (layer_data(l[[i]], 5)$label != "") {
+            suppressWarnings(
+              brew(file = "altTextTemplates/snapCaption5.txt", output = "altText/body_13.txt")
+            )
+          }
+        } else {
+          if (layer_data(l[[i]], 4)$label != "") {
+            suppressWarnings(
+              brew(file = "altTextTemplates/snapCaption4.txt", output = "altText/body_13.txt")
+            )
+          }
         }
+
         
         snaps <- grep("body", list.files("altText"), value = TRUE)
         snaps <-

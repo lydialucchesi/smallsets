@@ -582,7 +582,9 @@ create_timeline <-
                       footnote = footnote,
                       snapshotList = snapshotList,
                       altTextInfo = altTextInfo,
-                      l = l)
+                      l = l,
+                      abstract = abstract,
+                      ghostData = ghostData)
 
     o <- return(eval(parse(text = patchedPlots)))
     
