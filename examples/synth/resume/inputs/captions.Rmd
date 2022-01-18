@@ -1,7 +1,7 @@
 ---
 title: "Captions for the smallset timeline"
 author: 
-date: 2022-01-12
+date: 2022-01-17
 output: html_document
 ---
 
@@ -15,19 +15,11 @@ Timeline footnote:
 
 Caption: 
 
-### `mdpData <- mdpData`
+### `df$C8[is.na(df$C8)] <- round(as.numeric(levels(C8sub))[C8sub][is.na(df$C8)], 2)`
 
 Caption: 
 
-### `mdpData$DECISION_DENSITY[is.na(mdpData$DECISION_DENSITY)] <- 0`
-
-Caption: 
-
-### `mdpData <- mdpData`
-
-Caption: 
-
-### `# STEP 5: Remove repeated and inconsistent cases`
+### `df$C9 <- df$C3 + df$C4`
 
 Caption: 
 

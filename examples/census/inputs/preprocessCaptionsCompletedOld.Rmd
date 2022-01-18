@@ -1,0 +1,24 @@
+---
+title: "Captions for the smallset timeline"
+author: 
+date: 2022-01-10
+output: html_document
+---
+
+Timeline title: Alternative preprocessing approach, 22.5K income threshold selection
+
+Timeline subtitle: 
+
+Timeline footnote: 
+
+### Starting smallset
+
+Caption: We first subset the dataset to people older than 16 years of age (*Agep*).
+
+### `ca_data$WKHP <- ifelse(is.na(ca_data$WKHP), 0, ca_data$WKHP)`
+
+Caption: Although it is common to remove people with incomes less than 100 dollars or no value for average weekly hours worked (*Wkhp*), we want to retain these observations. We keep all income levels, meaning some in the dataset are negative (reported loss). We replace missing values in the *Wkhp* column with zero. After checking that all survey person weights (*Pwgtp*) are greater than or equal to one, we drop the column so it is not part of modelling.
+
+### Ending smallset
+
+Caption: For the prediction task, we create a binary income variable (*I22_5k*): those who earn more than 22,500 dollars and those who earn less than or equal to that amount. We select the income threshold based on the median income (*Pincp*) after subsetting the dataset to people older than 16 years of age. The dataset is now preprocessed and ready to be used in benchmarking.

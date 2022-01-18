@@ -30,8 +30,7 @@ run_advanced_gurobi <-
       prepare_score_sheet(smallsetList = smallsetList, data = data)
     scores <- scores[, colSums(scores != 0) > 0]
     colours <- prepare_colour_sheet(smallsetList = smallsetList)
-    
-    print(colours)
+
     D <-
       matrix(
         rep(0, nrow(data) * nrow(data)),
@@ -64,7 +63,7 @@ run_advanced_gurobi <-
     model$obj   <- rep(0, nrow(data))
     model$modelsense <- 'max'
     model$rhs   <- c(rep(1, nrow(myscoresT)), rowCount)
-    model$sense <- c(rep('>', nrow(myscoresT)), '<')
+    model$sense <- c(rep('>', nrow(myscoresT)), '=')
     model$vtype <- rep('B', nrow(data))
     
     params <- list(OutputFlag = 0)

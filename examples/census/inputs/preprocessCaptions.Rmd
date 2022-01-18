@@ -1,7 +1,7 @@
 ---
 title: "Captions for the smallset timeline"
 author: 
-date: 2022-01-12
+date: 2022-01-17
 output: html_document
 ---
 
@@ -12,10 +12,6 @@ Timeline subtitle:
 Timeline footnote: 
 
 ### Starting smallset
-
-Caption: 
-
-### ``
 
 Caption: 
 

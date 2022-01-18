@@ -12,12 +12,19 @@ return_scheme <- function(colScheme = "colScheme1") {
         deleted = list("#FBE4B5", 1)
       )
   } else if (colScheme == "colScheme2") {
+    # CS <-
+    #   list(
+    #     constant = list("#4F5353", 1),
+    #     changed = list("#BE8F52", 1),
+    #     added = list("#978878", 1),
+    #     deleted = list("#6C7C7D", 1)
+    #   )
     CS <-
       list(
         constant = list("#4F5353", 1),
         changed = list("#BE8F52", 1),
         added = list("#978878", 1),
-        deleted = list("#6C7C7D", 1)
+        deleted = list("#708F90", 1)
       )
   } else if (colScheme == "colScheme3") {
     CS <-

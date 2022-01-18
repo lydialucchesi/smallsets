@@ -1,12 +1,12 @@
 Package: smallset
-Title: R package to create Smallset timelines for compact and clear communication of data preprocessing steps
+Title: A Tool for Making Smallset Timelines
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "Lydia",
-           family = "Lucchesi",
+    person(given = "Anonymous",
+           family = "Anonymous",
            role = c("aut", "cre"),
-           email = "Lydia.Lucchesi@anu.edu.au")
-Description: The package takes R data preprocessing code and turns it into a Smallset timeline, a visualisation of data preprocessing steps. The Smallset timeline aims to support transparency and accessibility in research dissemination.
+           email = "anonymous@anon.org")
+Description: The package takes R data preprocessing code and turns it into a Smallset Timeline, a visualisation of data preprocessing decisions.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

@@ -5,15 +5,15 @@ date: 2022-01-11
 output: html_document
 ---
 
-Timeline title: Smallset Timeline for Replicating Preprocessing of MDP CM1 Dataset
+Timeline title: 
 
 Timeline subtitle: 
 
-Timeline footnote: Applying translation of preprocessing steps proposed in Gray et al. (2011)
+Timeline footnote: 
 
 ### Starting smallset
 
-Caption: The Smallset contains 10 of the 505 rows in CM1. 18 of the 41 attributes are shown here. All attributes affected by the preprocessing steps are included in the timeline. **Step 1:** All constant attributes are removed from the dataset. These attributes do not offer any useful information when building the classifier. There are three constant attributes in the CM1 dataset: *Global_data_complexity*, *Global_data_density*, and *Pathological_complexity*.
+Caption: **Step 1:** All constant attributes are removed from the dataset. These attributes do not offer any useful information when building the classifier. There are three constant attributes in the CM1 dataset: *Global_data_complexity*, *Global_data_density*, and *Pathological_complexity*.
 
 ### `mdpData <- mdpData`
 
@@ -25,7 +25,7 @@ Caption: **Step 3:** The *Decision_density* attribute is the only attribute that
 
 ### `mdpData <- mdpData`
 
-Caption: **Step 4:** All instances which fail one or more of the data integrity checks are removed from the dataset. The integrity checks identify instances that cannot realistically happen. The following integrity checks are used: *Num_operands* + *Num_operators* = *Halstead_length*; *Cyclomatic_complexity* <= *Num_operators* + 1; *Cyclomatic_complexity* >= 1; *Call_pairs* <= *Num_operators*. (0 rows affected)
+Caption: **Step 4:** All instances which fail one or more of the data integrity checks are removed from the dataset. The integrity checks identify instances that cannot realistically happen. The following integrity checks are used: *Num_operands* + *Num_operators* = *Halstead_length*; *Cyclomatic_complexity* <= *Num_operators* + 1; *Call_pairs* <= *Num_operators*. (0 rows affected)
 
 ### `# STEP 5: Remove repeated and inconsistent cases`
 

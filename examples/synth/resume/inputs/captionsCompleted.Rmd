@@ -1,21 +1,21 @@
 ---
 title: "Captions for the smallset timeline"
 author: 
-date: 2022-01-12
+date: 2022-01-13
 output: html_document
 ---
 
-Timeline title: Smallset Timeline
+Timeline title: 
 
 Timeline subtitle: 
 
-Timeline footnote: (Based on a synthetic dataset and preprocessing scenario)
+Timeline footnote: 
 
 ### Starting smallset
 
 Caption: Remove rows where C2 is FALSE.
 
-### `df <- df`
+### `df$C8[is.na(df$C8)] <- round(as.numeric(levels(C8sub))[C8sub][is.na(df$C8)], 2)`
 
 Caption: Replace missing values in C6 and C8 with category (C1) means. Drop C7 because it has too many missing values.
 

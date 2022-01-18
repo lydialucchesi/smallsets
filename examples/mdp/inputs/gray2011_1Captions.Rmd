@@ -1,7 +1,7 @@
 ---
 title: "Captions for the smallset timeline"
 author: 
-date: 2021-10-01
+date: 2022-01-17
 output: html_document
 ---
 
@@ -15,11 +15,11 @@ Timeline footnote:
 
 Caption: 
 
-### `dat$Time <- (dat$Min * 60) + dat$Sec`
+### `mdpData$DECISION_DENSITY[is.na(mdpData$DECISION_DENSITY)] <- 0`
 
 Caption: 
 
-### ``
+### `mdpData <- mdpData`
 
 Caption: 
 

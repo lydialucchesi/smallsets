@@ -42,8 +42,11 @@ write_caption_template <-
     # Find snap points and subsequent line of code
     snaps <- subset(code, grepl("# snap ", code$lines))
     refRows <- as.integer(row.names(snaps)) + 1
-    m <- max(refRows)
-    refRows[refRows == m] <- refRows[refRows == m] - 2
+    
+    # if (length(refRows) > 1) {
+    #   m <- max(refRows)
+    #   refRows[refRows == m] <- refRows[refRows == m] - 2
+    # }
     
     # Create a template section for each snap point
     captionBlocks <-

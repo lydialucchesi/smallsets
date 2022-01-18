@@ -1,0 +1,20 @@
+---
+title: "Captions for the smallset timeline"
+author: 
+date: 2022-01-16
+output: html_document
+---
+
+Timeline title: 
+
+Timeline subtitle: 
+
+Timeline footnote: 
+
+### Starting smallset
+
+Caption: We first filter to individuals older than 16 years of age (*Agep*). After checking that all survey person weights (*Pwgtp*) are greater than or equal to one, we drop the column so it is not part of modelling. 
+
+### Ending smallset
+
+Caption: It is common to remove individuals with incomes less than 100 dollars or no reported value for average weekly hours worked (*Wkhp*). However, we want to keep these individuals in the dataset. We do not filter by income (we even keep reported losses, or negative incomes) and replace missing values in the *Wkhp* column with zero. The median income of the dataset, 22,500 dollars, is selected as the income threshold for the binary target label.
