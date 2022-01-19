@@ -22,6 +22,7 @@ snapshots <- prepare_smallset(
   data = mdpData,
   code = paste0(getwd(), "/examples/mdp/inputs/gray2011_1.R"),
   rowCount = 6,
+  # ran auto = 1 first time to get automated row selection, then added result to rowNums for faster run times
   rowNums = c(34, 129, 163, 239, 336, 388),
   # auto = 1,
   runBig = TRUE,
