@@ -1,6 +1,0 @@
- The Smallset timeline contains 4 Smallset snapshots. Data edits are represented with the colour lightsteelblue2. Data additions are represented with the colour plum. Data deletions are represented with the colour moccasin.
- Snapshot 1 is 5 rows by 8 columns. The columns, in order from left to right, are: C1, C2, C3, C4, C5, C6, C7, and C8. Two rows are moccasin. The caption is quote "Remove rows where C2 is FALSE."
- Snapshot 2 is 3 rows by 8 columns. Column C7 is moccasin. Three table cells are lightsteelblue2. The caption is quote "Replace missing values in C6 and C8 with category (C1) means. Drop C7 because it has too many missing values."
- Snapshot 3 is 3 rows by 8 columns. Column C9 is plum. The caption is quote "Create a new column, C9, by summing C3 and C4."
- Snapshot 4 is 3 rows by 9 columns. Column C10 is plum. The caption is quote "Create a new categorical variable, C10, based on C9 terciles."
-
