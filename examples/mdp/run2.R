@@ -44,11 +44,11 @@ timeline <- create_timeline(
   highlightNA = TRUE,
   sizing =
     list(
-      "columns" = 2.2,
+      "columns" = 2,
       "tiles" = .1,
-      "captions" = 2.8,
-      "data" = 1.7,
-      "legendText" = 10,
+      "captions" = 1.8,
+      "data" = 1,
+      "legendText" = 8,
       "legendIcons" = 1,
       "title" = 12,
       "subtitle" = 8,
@@ -63,7 +63,7 @@ timeline <- create_timeline(
   otherTextCol = 1,
   timelineRows = 2,
   timelineFont = "sans",
-  captionSpace = 8.2,
+  captionSpace = 9,
   captionTemplateName = "gray2011_2CaptionsCompleted",
   captionTemplateDir = paste0(getwd(), "/examples/mdp/inputs"),
 )

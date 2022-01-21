@@ -4,7 +4,7 @@ source("examples/synth/inputs/data.R")
 
 step1 <- prepare_smallset(
   data = df,
-  code = "examples/synth/inputs/preprocess.R",
+  code = paste0(getwd(), "/examples/synth/inputs/preprocess.R"),
   rowCount = 5,
   # these rowNums were obtained with initial run of auto = 2, added to rowNums to reduce future run times
   rowNums = c(3, 32, 80, 97, 99),
@@ -22,11 +22,11 @@ timeline <- create_timeline(
   highlightNA = TRUE,
   sizing =
     list(
-      "columns" = 3,
+      "columns" = 2,
       "tiles" = .5,
-      "captions" = 3.5,
-      "data" = 3,
-      "legendText" = 11,
+      "captions" = 2,
+      "data" = 2,
+      "legendText" = 8,
       "legendIcons" = 1,
       "title" = 12,
       "subtitle" = 8,

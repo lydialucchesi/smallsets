@@ -4,7 +4,7 @@ library(smallset)
 
 # short timeline
 
-mdpData <- readRDS(file = "examples/mdp/inputs/CM1.rds")
+mdpData <- readRDS(file = paste0(getwd(), "/examples/mdp/inputs/CM1.rds"))
 
 ignore <- colnames(mdpData)
 ignore <- ignore[!ignore %in% c("Defective", 
@@ -39,11 +39,11 @@ timeline <- create_timeline(
   highlightNA = TRUE,
   sizing =
     list(
-      "columns" = 2.5,
+      "columns" = 2,
       "tiles" = .1,
-      "captions" = 3.2,
+      "captions" = 2,
       "data" = 2,
-      "legendText" = 11,
+      "legendText" = 8,
       "legendIcons" = 1,
       "title" = 10,
       "subtitle" = 10,

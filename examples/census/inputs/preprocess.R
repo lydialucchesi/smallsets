@@ -9,5 +9,5 @@ ca_data <- subset(ca_data, AGEP > 16)
 ca_data$WKHP <- ifelse(is.na(ca_data$WKHP), 0, ca_data$WKHP)
 ca_data <- subset(ca_data, PWGTP >= 1)
 ca_data$PWGTP <- NULL
-ca_data$I22_5K <- ifelse(ca_data$PINCP > 22500, 1, 0)
+ca_data$Income <- ifelse(ca_data$PINCP > 22500, 1, 0)
 # end smallset ca_data

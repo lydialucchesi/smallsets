@@ -29,7 +29,7 @@ Caption: **Step 4:** All instances which fail one or more of the data integrity 
 
 ### `# STEP 5: Remove repeated and inconsistent cases`
 
-Caption: **Step 5:** Remove repeated and inconsistent case. Duplicates are dropped (49 rows affected). Inconsistent cases refer to cases in which all values but the class label are equal, and these are dropped as well (2 rows affected).
+Caption: **Step 5:** Remove repeated and inconsistent cases. Duplicates are dropped (49 rows affected). Inconsistent cases refer to cases in which all values but the class label are equal, and these are dropped as well (2 rows affected).
 
 ### Ending smallset
 

@@ -22,12 +22,12 @@ timeline <- create_timeline(
   highlightNA = FALSE,
   sizing =
     list(
-      "columns" = 4.2,
+      "columns" = 2,
       "tiles" = .3,
-      "captions" = 4,
+      "captions" = 2,
       "data" = 3,
-      "legendText" = 14,
-      "legendIcons" = 1.5,
+      "legendText" = 8,
+      "legendIcons" = 1,
       "title" = 14,
       "subtitle" = 12,
       "footnote" = 8,
@@ -40,7 +40,7 @@ timeline <- create_timeline(
   otherTextCol = 1,
   timelineRows = 1,
   timelineFont = "sans",
-  captionSpace = 3.5,
+  captionSpace = 8,
   captionTemplateName = "preprocessCaptionsCompleted",
   captionTemplateDir = paste0(getwd(), "/examples/census/inputs")
 )
