@@ -33,7 +33,7 @@ Imports:
     plotrix,
     readr,
     english,
-    tibble
-Suggests: 
-    gurobi,
+    tibble,
     testthat
+Suggests: 
+    gurobi
