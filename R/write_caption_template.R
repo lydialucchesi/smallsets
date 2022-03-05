@@ -36,7 +36,7 @@ write_caption_template <-
                    "Caption: ")
     
     # Import the preprocessing function as text
-    if (lang == 'Python') {
+    if (lang == "py") {
       code <- as.data.frame(readLines("smallset_code.py"))
       colnames(code) <- c("lines")
     } else {

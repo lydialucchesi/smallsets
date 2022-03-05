@@ -40,7 +40,7 @@ write_smallset_code <-
     iterLim <-
       nrow(smallsetCode) + nrow(subset(smallsetCode, grepl("# snap ", smallsetCode$command))) - 1
     s = 1
-    if (lang == 'Python') {
+    if (lang == "py") {
       for (i in 1:iterLim) {
         signal <- "# snap "
         if (grepl(signal, smallsetCode$command[i])) {
@@ -123,7 +123,7 @@ write_smallset_code <-
     
     
     # Make the preprocessing code a function
-    if (lang == 'Python') {
+    if (lang == "py") {
       functionStart <-
         paste0("def apply_code(", rStartName, "):")
       if (isTRUE(runBig)) {
@@ -213,13 +213,13 @@ write_smallset_code <-
     smallsetCode <- data.frame(command = smallsetCode)
     smallsetCode$command <- as.character(smallsetCode$command)
     
-    if (lang == 'Python') {
+    if (lang == "py") {
       for (i in 3:length(smallsetCode$command))
         smallsetCode$command[i] <- paste0("    ", smallsetCode$command[i])
     }
     
     # Write the updated preprocessing function to directory
-    if (lang == 'Python') {
+    if (lang == "py") {
       fileConn <- file(paste0(dir, "/smallset_code.py"))
     } else {
       fileConn <- file(paste0(dir, "/smallset_code.R"))

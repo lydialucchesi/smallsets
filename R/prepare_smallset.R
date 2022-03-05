@@ -47,7 +47,7 @@ prepare_smallset <-
     
     lang <- file_ext(code)
     if (!lang %in% c("R", "py")) {
-      print("Preprocessing code must be in R or Python. See code argument in ?prepare_smallset for more information.")
+      stop("Preprocessing code must be in R or Python. Filename extension should be included (e.g., 'my_code.R' or 'my_code.py').")
     }
     
     # Make sure data is of class data frame
@@ -125,7 +125,7 @@ prepare_smallset <-
         lang = lang
       )
     
-    if (lang == 'Python') {
+    if (lang == "py") {
       source_python(paste0(dir, "/smallset_code.py"))
       
       # Apply the preprocessing function
