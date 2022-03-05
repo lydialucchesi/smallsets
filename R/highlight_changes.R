@@ -9,7 +9,8 @@ highlight_changes <-
   function(smallsetList = smallsetList,
            tempName = captionTemplateName,
            tempDir = captionTemplateDir,
-           tempAuthor = captionTemplateAuthor) {
+           tempAuthor = captionTemplateAuthor,
+           lang = lang) {
     constant = "#808080"
     changed = "#008000"
     added = "#0000FF"
@@ -18,7 +19,8 @@ highlight_changes <-
     # Generate the caption template
     printMessage <- write_caption_template(authorName = tempAuthor,
                                            script = tempName,
-                                           pathway = tempDir)
+                                           pathway = tempDir,
+                                           lang = lang)
     
     tables <- list()
     altTextInfo <- list()

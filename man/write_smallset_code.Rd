@@ -4,7 +4,15 @@
 \alias{write_smallset_code}
 \title{Write smallset code}
 \usage{
-write_smallset_code(scriptName, dir, runBig, ignoreCols, keepCols, smallset)
+write_smallset_code(
+  scriptName,
+  dir,
+  runBig,
+  ignoreCols,
+  keepCols,
+  smallset,
+  lang
+)
 }
 \description{
 The function turns the preprocessing code into a function that

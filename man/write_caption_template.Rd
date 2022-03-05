@@ -4,7 +4,7 @@
 \alias{write_caption_template}
 \title{Write caption template}
 \usage{
-write_caption_template(authorName, script, pathway)
+write_caption_template(authorName, script, pathway, lang)
 }
 \description{
 This function creates a caption template (Rmd file).

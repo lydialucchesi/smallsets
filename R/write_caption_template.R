@@ -3,7 +3,7 @@
 #' @keywords internal
 
 write_caption_template <-
-  function(authorName, script, pathway) {
+  function(authorName, script, pathway, lang) {
     if (is.null(authorName)) {
       authorName <- ""
     }
@@ -36,9 +36,14 @@ write_caption_template <-
                    "Caption: ")
     
     # Import the preprocessing function as text
-    code <- as.data.frame(readLines("smallset_code.R"))
-    colnames(code) <- c("lines")
-    
+    if (lang == 'Python') {
+      code <- as.data.frame(readLines("smallset_code.py"))
+      colnames(code) <- c("lines")
+    } else {
+      code <- as.data.frame(readLines("smallset_code.R"))
+      colnames(code) <- c("lines")
+    }
+
     # Find snap points and subsequent line of code
     snaps <- subset(code, grepl("# snap ", code$lines))
     refRows <- as.integer(row.names(snaps)) + 1

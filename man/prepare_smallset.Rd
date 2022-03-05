@@ -21,9 +21,9 @@ prepare_smallset(
 \arguments{
 \item{data}{Data set.}
 
-\item{code}{Script with data preprocessing code for data set.}
+\item{code}{R or Python script with data preprocessing code for the data set. Filename extension should be included (e.g., "my_code.R" or "my_code.py").}
 
-\item{dir}{File path to data preprocessing code.}
+\item{dir}{File path to the data preprocessing code. Default is the working directory.}
 
 \item{rowCount}{Integer greater than or equal to 5. Number of rows to include
 in the smallset.}

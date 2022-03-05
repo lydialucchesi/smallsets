@@ -8,7 +8,8 @@ highlight_changes(
   smallsetList = smallsetList,
   tempName = captionTemplateName,
   tempDir = captionTemplateDir,
-  tempAuthor = captionTemplateAuthor
+  tempAuthor = captionTemplateAuthor,
+  lang = lang
 )
 }
 \description{

@@ -5,8 +5,8 @@
 #'   \code{create_timeline} to create a smallset timeline.
 #'
 #' @param data Data set.
-#' @param code Script with data preprocessing code for data set.
-#' @param dir File path to data preprocessing code.
+#' @param code R or Python script with data preprocessing code for the data set. Filename extension should be included (e.g., "my_code.R" or "my_code.py").
+#' @param dir File path to the data preprocessing code. Default is the working directory.
 #' @param rowCount Integer greater than or equal to 5. Number of rows to include
 #'   in the smallset.
 #' @param rowNums Numeric vector of row numbers. Indicates particular rows from
@@ -22,6 +22,7 @@
 #' @param captionTemplateName File name for the caption template.
 #' @param captionTemplateDir File path for the caption template.
 #' @param captionTemplateAuthor Name of author for the caption template.
+#' @import "reticulate" "tools"
 #' @export
 
 prepare_smallset <-
@@ -42,6 +43,11 @@ prepare_smallset <-
     
     if (missing(code)) {
       print("Must specify preprocessing code. See code argument in ?prepare_smallset.")
+    }
+    
+    lang <- file_ext(code)
+    if (!lang %in% c("R", "py")) {
+      print("Preprocessing code must be in R or Python. See code argument in ?prepare_smallset for more information.")
     }
     
     # Make sure data is of class data frame
@@ -115,25 +121,44 @@ prepare_smallset <-
         dir = dir,
         runBig = runBig,
         ignoreCols = ignoreCols,
-        smallset = smallset
+        smallset = smallset,
+        lang = lang
       )
     
-    source(paste0(dir, "/smallset_code.R"))
-    
-    # Apply the preprocessing function
-    if (isTRUE(runBig)) {
-      if (!is.null(ignoreCols)) {
-        data <- data[,!(names(data) %in% ignoreCols)]
-      }
-      smallsetList <- apply_code(data)
-      for (i in 1:length(smallsetList)) {
-        smallsetList[[i]] <-
-          smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
+    if (lang == 'Python') {
+      source_python(paste0(dir, "/smallset_code.py"))
+      
+      # Apply the preprocessing function
+      if (isTRUE(runBig)) {
+        if (!is.null(ignoreCols)) {
+          data <- data[,!(names(data) %in% ignoreCols)]
+        }
+        smallsetList <- apply_code(data)
+        for (i in 1:length(smallsetList)) {
+          smallsetList[[i]] <-
+            smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
+        }
+      } else {
+        smallsetList <- apply_code(smallset)
       }
     } else {
-      smallsetList <- apply_code(smallset)
+      source(paste0(dir, "/smallset_code.R"))
+      
+      # Apply the preprocessing function
+      if (isTRUE(runBig)) {
+        if (!is.null(ignoreCols)) {
+          data <- data[,!(names(data) %in% ignoreCols)]
+        }
+        smallsetList <- apply_code(data)
+        for (i in 1:length(smallsetList)) {
+          smallsetList[[i]] <-
+            smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
+        }
+      } else {
+        smallsetList <- apply_code(smallset)
+      }
     }
-    
+
     # Return summary information related to the above tasks
     print(paste0("Summary: ", as.character(length(smallsetList)), " snapshots taken"))
     print("First snapshot:")
@@ -146,7 +171,8 @@ prepare_smallset <-
       smallsetList = smallsetList,
       tempName = captionTemplateName,
       tempDir = captionTemplateDir,
-      tempAuthor = captionTemplateAuthor
+      tempAuthor = captionTemplateAuthor,
+      lang = lang
     )
     
     o <- (
