@@ -47,22 +47,42 @@ prepare_smallset <-
     
     lang <- file_ext(code)
     if (!lang %in% c("R", "py")) {
-      stop("Preprocessing code must be in R or Python. Filename extension should be included (e.g., 'my_code.R' or 'my_code.py').")
+      stop(
+        "Preprocessing code must be in R or Python. Filename extension should be included (e.g., 'my_code.R' or 'my_code.py')."
+      )
     }
     
-    # Make sure data is of class data frame
-    if (class(data)[1] == "data.table") {
-      print(
-        "Converting data object from class data.table to data.frame with as.data.frame(data)."
-      )
-      data <- as.data.frame(data)
+    if (class(data) != "list") {
+      dataList <- list(data)
+    } else {
+      dataList <- data
     }
-    if (class(data)[1] == "tbl_df") {
-      print("Converting data object from class tibble to data.frame with as.data.frame(data).")
-      data <- as.data.frame(data)
+    
+    dataNum <- 1:length(dataList)
+    
+    if (length(dataList) == 1) {
+      dataNames <- NULL
+    } else {
+      dataNames <- names(dataList)
     }
-    if (class(data) != "data.frame") {
-      stop("Data was not of class data frame, data table, or tibble.")
+    
+    for (dat in 1:length(dataList)) {
+      # Make sure data is of class data frame
+      if (class(dataList[[dat]])[1] == "data.table") {
+        print(
+          "Converting data object from class data.table to data.frame with as.data.frame(data)."
+        )
+        dataList[[dat]] <- as.data.frame(dataList[[dat]])
+      }
+      if (class(dataList[[dat]])[1] == "tbl_df") {
+        print(
+          "Converting data object from class tibble to data.frame with as.data.frame(data)."
+        )
+        dataList[[dat]] <- as.data.frame(dataList[[dat]])
+      }
+      if (class(dataList[[dat]]) != "data.frame") {
+        stop("Data was not of class data frame, data table, or tibble.")
+      }
     }
     
     if (!is.null(auto)) {
@@ -122,7 +142,8 @@ prepare_smallset <-
         runBig = runBig,
         ignoreCols = ignoreCols,
         smallset = smallset,
-        lang = lang
+        lang = lang,
+        dataNames = dataNames
       )
     
     if (lang == "py") {
@@ -133,13 +154,37 @@ prepare_smallset <-
         if (!is.null(ignoreCols)) {
           data <- data[,!(names(data) %in% ignoreCols)]
         }
-        smallsetList <- apply_code(data)
+        if (is.null(dataNames)) {
+          smallsetList <- apply_code(smallsets[[1]])
+        } else {
+          smallsetArgs <- c()
+          for (s in 1:length(dataNames)) {
+            addArg <- paste0("smallsets[[", as.character(s), "]]")
+            smallsetArgs <- c(smallsetArgs, addArg)
+          }
+          smallsetArgs <- paste(smallsetArgs, collapse = ", ")
+          
+          smallsetList <-
+            eval(parse(text = paste0("apply_code(", smallsetArgs, ")")))
+        }
         for (i in 1:length(smallsetList)) {
           smallsetList[[i]] <-
             smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
         }
       } else {
-        smallsetList <- apply_code(smallset)
+        if (is.null(dataNames)) {
+          smallsetList <- apply_code(smallsets[[1]])
+        } else {
+          smallsetArgs <- c()
+          for (s in 1:length(dataNames)) {
+            addArg <- paste0("smallsets[[", as.character(s), "]]")
+            smallsetArgs <- c(smallsetArgs, addArg)
+          }
+          smallsetArgs <- paste(smallsetArgs, collapse = ", ")
+          
+          smallsetList <-
+            eval(parse(text = paste0("apply_code(", smallsetArgs, ")")))
+        }
       }
     } else {
       source(paste0(dir, "/smallset_code.R"))
@@ -149,16 +194,40 @@ prepare_smallset <-
         if (!is.null(ignoreCols)) {
           data <- data[,!(names(data) %in% ignoreCols)]
         }
-        smallsetList <- apply_code(data)
+        if (is.null(dataNames)) {
+          smallsetList <- apply_code(smallsets[[1]])
+        } else {
+          smallsetArgs <- c()
+          for (s in 1:length(dataNames)) {
+            addArg <- paste0("smallsets[[", as.character(s), "]]")
+            smallsetArgs <- c(smallsetArgs, addArg)
+          }
+          smallsetArgs <- paste(smallsetArgs, collapse = ", ")
+          
+          smallsetList <-
+            eval(parse(text = paste0("apply_code(", smallsetArgs, ")")))
+        }
         for (i in 1:length(smallsetList)) {
           smallsetList[[i]] <-
             smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
         }
       } else {
-        smallsetList <- apply_code(smallset)
+        if (is.null(dataNames)) {
+          smallsetList <- apply_code(smallsets[[1]])
+        } else {
+          smallsetArgs <- c()
+          for (s in 1:length(dataNames)) {
+            addArg <- paste0("smallsets[[", as.character(s), "]]")
+            smallsetArgs <- c(smallsetArgs, addArg)
+          }
+          smallsetArgs <- paste(smallsetArgs, collapse = ", ")
+          
+          smallsetList <-
+            eval(parse(text = paste0("apply_code(", smallsetArgs, ")")))
+        }
       }
     }
-
+    
     # Return summary information related to the above tasks
     print(paste0("Summary: ", as.character(length(smallsetList)), " snapshots taken"))
     print("First snapshot:")

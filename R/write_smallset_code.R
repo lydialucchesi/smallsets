@@ -10,7 +10,8 @@ write_smallset_code <-
            ignoreCols,
            keepCols,
            smallset, 
-           lang) {
+           lang,
+           dataNames) {
     # Import preprocessing code
     if (dir != getwd()) {
       processTXT <-
@@ -124,8 +125,15 @@ write_smallset_code <-
     
     # Make the preprocessing code a function
     if (lang == "py") {
-      functionStart <-
-        paste0("def apply_code(", rStartName, "):")
+      if (is.null(dataNames)) {
+        functionStart <-
+          paste0("def apply_code(", rStartName, "):")
+      } else {
+        nameArgs <- paste(dataNames, collapse = ", ")
+        
+        functionStart <-
+          paste0("apply_code <- function(", nameArgs, ") {")
+      }
       if (isTRUE(runBig)) {
         smallsetCode <-
           c(
@@ -161,8 +169,15 @@ write_smallset_code <-
           )
       }
     } else {
-      functionStart <-
-        paste0("apply_code <- function(", rStartName, ") {")
+      if (is.null(dataNames)) {
+        functionStart <-
+          paste0("apply_code <- function(", initialName, ") {")
+      } else {
+        nameArgs <- paste(dataNames, collapse = ", ")
+        
+        functionStart <-
+          paste0("apply_code <- function(", nameArgs, ") {")
+      }
       if (isTRUE(runBig)) {
         smallsetCode <-
           c(
