@@ -4,7 +4,13 @@
 \alias{run_advanced_gurobi}
 \title{Run advanced gurobi}
 \usage{
-run_advanced_gurobi(data = data, code = code, dir = dir, rowCount = rowCount)
+run_advanced_gurobi(
+  data = data,
+  code = code,
+  dir = dir,
+  rowCount = rowCount,
+  lang = lang
+)
 }
 \description{
 Runs advanced gurobi selection model.

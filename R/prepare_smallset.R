@@ -22,7 +22,8 @@
 #' @param captionTemplateName File name for the caption template.
 #' @param captionTemplateDir File path for the caption template.
 #' @param captionTemplateAuthor Name of author for the caption template.
-#' @import "reticulate" "tools"
+#' @import "reticulate"
+#' @importFrom tools file_ext
 #' @export
 
 prepare_smallset <-
@@ -80,7 +81,8 @@ prepare_smallset <-
               data = data,
               code = code,
               dir = dir,
-              rowCount = rowCount
+              rowCount = rowCount,
+              lang = lang
             )
           if (isTRUE(runBig)) {
             smallset <- rowNums
@@ -93,7 +95,8 @@ prepare_smallset <-
               data = data,
               code = code,
               dir = dir,
-              rowCount = rowCount
+              rowCount = rowCount,
+              lang = lang
             )
           if (isTRUE(runBig)) {
             smallset <- rowNums

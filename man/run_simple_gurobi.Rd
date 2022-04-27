@@ -4,7 +4,13 @@
 \alias{run_simple_gurobi}
 \title{Run simple gurobi}
 \usage{
-run_simple_gurobi(data = data, code = code, dir = dir, rowCount = rowCount)
+run_simple_gurobi(
+  data = data,
+  code = code,
+  dir = dir,
+  rowCount = rowCount,
+  lang = lang
+)
 }
 \description{
 Runs simple gurobi selection model.

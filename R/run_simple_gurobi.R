@@ -6,7 +6,8 @@ run_simple_gurobi <-
   function(data = data,
            code = code,
            dir = dir,
-           rowCount = rowCount) {
+           rowCount = rowCount,
+           lang = lang) {
     fullCheck <- select_smallset(
       data = data,
       rowCount = nrow(data),
@@ -20,7 +21,8 @@ run_simple_gurobi <-
         dir = dir,
         runBig = TRUE,
         ignoreCols = NULL,
-        smallset = fullCheck
+        smallset = fullCheck,
+        lang = lang
       )
     
     source(paste0(dir, "/smallset_code.R"))
