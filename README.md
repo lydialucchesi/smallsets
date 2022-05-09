@@ -1,3 +1,3 @@
-smallset
+smallsets
 ================
 

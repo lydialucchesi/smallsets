@@ -53,7 +53,7 @@ make_timeline_plot <-
     tabs <- suppressMessages(left_join(tabs, accents))
     
     xs$y <- rep(max(tabs$y) + 1, nrow(xs))
-    xs$variable <- str_to_title(xs$variable)
+    # xs$variable <- str_to_title(xs$variable)
     
     tabs <-
       suppressMessages(left_join(tabs, snapshotList[[9]], by = "colValue"))
