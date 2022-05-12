@@ -1,5 +1,6 @@
 #' Run simple gurobi
 #' @description Runs simple gurobi selection model.
+#' @import "reticulate"
 #' @keywords internal
 
 run_simple_gurobi <-
@@ -25,7 +26,11 @@ run_simple_gurobi <-
         lang = lang
       )
     
-    source(paste0(dir, "/smallset_code.R"))
+    if (lang == "py") {
+      source_python(paste0(dir, "/smallset_code.py"))
+    } else {
+      source(paste0(dir, "/smallset_code.R"))
+    }
     smallsetList <- apply_code(data)
     
     scores <-
