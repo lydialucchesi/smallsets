@@ -23,7 +23,8 @@ run_simple_gurobi <-
         runBig = TRUE,
         ignoreCols = NULL,
         smallset = fullCheck,
-        lang = lang
+        lang = lang,
+        modelSelection = TRUE
       )
     
     if (lang == "py") {

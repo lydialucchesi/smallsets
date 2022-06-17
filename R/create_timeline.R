@@ -74,8 +74,8 @@ create_timeline <-
            highlightNA = FALSE,
            sizing = list(
              "columns" = 2,
-             "tiles" = 1,
-             "captions" = 8,
+             "tiles" = .3,
+             "captions" = 3,
              "data" = 2.5,
              "legendText" = 7,
              "legendIcons" = 1,
@@ -92,7 +92,7 @@ create_timeline <-
            otherTextCol = 1,
            timelineRows = 1,
            timelineFont = "sans",
-           captionSpace = 1,
+           captionSpace = 3,
            captionTemplateName = NULL,
            captionTemplateDir = NULL) {
     if (missing(snapshotList)) {

@@ -14,7 +14,7 @@ create_timeline(
   abstract = TRUE,
   ghostData = TRUE,
   highlightNA = FALSE,
-  sizing = list(columns = 2, tiles = 1, captions = 8, data = 2.5, legendText = 7,
+  sizing = list(columns = 2, tiles = 0.3, captions = 3, data = 2.5, legendText = 7,
     legendIcons = 1, title = 10, subtitle = 8, footnote = 7, resume = 0.25),
   truncateData = FALSE,
   rotateHeader = FALSE,
@@ -24,7 +24,7 @@ create_timeline(
   otherTextCol = 1,
   timelineRows = 1,
   timelineFont = "sans",
-  captionSpace = 1,
+  captionSpace = 3,
   captionTemplateName = NULL,
   captionTemplateDir = NULL
 )

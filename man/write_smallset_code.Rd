@@ -11,7 +11,8 @@ write_smallset_code(
   ignoreCols,
   keepCols,
   smallset,
-  lang
+  lang,
+  modelSelection = FALSE
 )
 }
 \description{

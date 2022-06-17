@@ -10,7 +10,8 @@ write_smallset_code <-
            ignoreCols,
            keepCols,
            smallset, 
-           lang) {
+           lang,
+           modelSelection = FALSE) {
     # Import preprocessing code
     if (dir != getwd()) {
       processTXT <-
@@ -47,16 +48,23 @@ write_smallset_code <-
           s <- s + 1
           
           if (isTRUE(runBig)) {
+            
+            if (isFALSE(modelSelection)) {
+              rows2snap <- paste0(".iloc[[", 
+                                 paste(smallset, collapse = ", "),
+                                 "]].copy(deep = True))")
+            } else {
+              rows2snap <- paste0("[:].copy(deep = True))")
+            }
+            
             insertSnap <- c(
               paste0(
                 "snapshots.append(",
                 as.character(
                   stringr::str_remove(smallsetCode$command[i], signal)
                 ),
-                as.character(".iloc[["),
-                paste(smallset, collapse = ", "),
-                as.character("]].copy(deep = True))")
-              )
+                rows2snap
+                )
             )
           } else {
             insertSnap <- c(paste0(
@@ -83,6 +91,19 @@ write_smallset_code <-
           s <- s + 1
           
           if (isTRUE(runBig)) {
+            
+            if (isFALSE(modelSelection)) {
+              rows2snap <- paste0("[(row.names(",
+                                  as.character(
+                                    stringr::str_remove(smallsetCode$command[i], signal)
+                                    ),
+                                  ") %in% c(",
+                                  paste(smallset, collapse = ", "),
+                                  ")), ]")
+            } else {
+              rows2snap <- paste0("[, ]")
+            }
+            
             insertSnap <- c(
               paste0(
                 "snapshots[[",
@@ -91,13 +112,7 @@ write_smallset_code <-
                 as.character(
                   stringr::str_remove(smallsetCode$command[i], signal)
                 ),
-                as.character("[(row.names("),
-                as.character(
-                  stringr::str_remove(smallsetCode$command[i], signal)
-                ),
-                as.character(") %in% c("),
-                paste(smallset, collapse = ", "),
-                as.character(")), ]")
+                rows2snap
               )
             )
           } else {
@@ -134,17 +149,13 @@ write_smallset_code <-
             paste0(
               "snapshots.append(",
               rStartName,
-              as.character(".iloc[["),
-              paste(smallset, collapse = ", "),
-              as.character("]].copy(deep = True))")
+              rows2snap
             ),
             smallsetCode$command,
             paste0(
               "snapshots.append(",
               rEndName,
-              as.character(".iloc[["),
-              paste(smallset, collapse = ", "),
-              as.character("]].copy(deep = True))")
+              rows2snap
             ),
             "return snapshots"
           )
@@ -171,11 +182,7 @@ write_smallset_code <-
             paste0(
               "snapshots[[1]] <- ",
               rStartName,
-              as.character("[(row.names("),
-              rStartName,
-              as.character(") %in% c("),
-              paste(smallset, collapse = ", "),
-              as.character(")), ]")
+              rows2snap
             ),
             smallsetCode$command,
             paste0(
@@ -183,11 +190,7 @@ write_smallset_code <-
               as.character(s + 1),
               "]] <- ",
               rEndName,
-              as.character("[(row.names("),
-              rEndName,
-              as.character(") %in% c("),
-              paste(smallset, collapse = ", "),
-              as.character(")), ]")
+              rows2snap
             ),
             "return(snapshots)",
             "}"
