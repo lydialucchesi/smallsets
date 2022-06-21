@@ -5,8 +5,8 @@ Creating Smallset Timelines with `smallsets`
 
 Welcome to the `smallsets` software repository 👋. This is the companion
 repository for the paper [**Smallset Timelines: A Visual Representation
-of Data Preprocessing
-Decisions**](https://dl.acm.org/doi/10.1145/3531146.3533175).
+of Data Preprocessing Decisions**](https://arxiv.org/abs/2206.04875) in
+the proceedings of ACM FAccT ’22.
 
 **Do you use R or Python to preprocess datasets for analyses?** The
 Smallset Timeline is a practical visualisation to document and
