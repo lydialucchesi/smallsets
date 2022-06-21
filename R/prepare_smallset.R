@@ -33,7 +33,7 @@ prepare_smallset <-
            rowCount = 6,
            rowNums = NULL,
            auto = NULL,
-           runBig = FALSE,
+           runBig = TRUE,
            ignoreCols = NULL,
            captionTemplateName = "captionTemplate",
            captionTemplateDir = getwd(),

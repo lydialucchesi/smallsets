@@ -167,8 +167,6 @@ highlight_changes <-
       paste0(
         "Edits, additions, and deletions identified. ",
         printMessage,
-        " at ",
-        tempDir,
         "."
       )
     )
