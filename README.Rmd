@@ -3,6 +3,11 @@ title: "Creating Smallset Timelines with `smallsets`"
 output: github_document
 ---
 
+```{r setup, include=FALSE}
+devtools::install_github("hadley/emo")
+library(emo)
+```
+
 ## Introduction 
 
 Welcome to the `smallsets` software repository `r emo::ji("wave")`. This is the companion repository for the paper [**Smallset Timelines: A Visual Representation of Data Preprocessing Decisions**](https://arxiv.org/abs/2206.04875) in the proceedings of ACM FAccT '22.
