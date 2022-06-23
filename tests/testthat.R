@@ -1,4 +1,4 @@
 library(testthat)
-library(smallset)
+library(smallsets)
 
-test_check("smallset")
+test_check("smallsets")
