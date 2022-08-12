@@ -132,7 +132,6 @@ Caption: Replace missing values in C6 and C8 with category (C1) means. Drop C7 (
 ### Ending smallset
 
 Caption: Create a new column, C9, by summing C3 and C4.
- 
 ```
 
 #### Step 5: Run create_timeline

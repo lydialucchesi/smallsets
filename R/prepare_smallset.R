@@ -69,10 +69,10 @@ prepare_smallset <-
     if (!is.null(auto)) {
       if (!requireNamespace("gurobi", quietly = TRUE)) {
         stop(
-          "This Smallset selection method uses a gurobi optimization model.
-              Please visit https://www.gurobi.com to obtain a gurobi license (free academic licenses are available)
-              and then install and load the gurobi R package. smallset will then be able to run the selection model.
-              Otherwise, please visit the help documentation for information about other Smallset selection options."
+        "This Smallset selection method uses a gurobi optimization model. 
+        Please visit https://www.gurobi.com to obtain a gurobi license (free academic licenses are available) 
+        and then install and load the gurobi R package. smallsets will then be able to run the selection model. 
+        Otherwise, please visit the help documentation for information about other Smallset selection options."
         )
       } else {
         if (auto == 1) {
