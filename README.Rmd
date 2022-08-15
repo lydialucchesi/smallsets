@@ -3,13 +3,18 @@ title: "Creating Smallset Timelines with `smallsets`"
 output: github_document
 ---
 
+```{r setup, include=FALSE}
+devtools::install_github("hadley/emo")
+library(emo)
+```
+
 ## Introduction 
 
 Welcome to the `smallsets` software repository `r emo::ji("wave")`. This is the companion repository for the paper [**Smallset Timelines: A Visual Representation of Data Preprocessing Decisions**](https://arxiv.org/abs/2206.04875) in the proceedings of ACM FAccT '22.
 
 **Do you use R or Python to preprocess datasets for analyses?** The Smallset Timeline is a practical visualisation to document and communicate your data preprocessing decisions. `smallsets` is the R package designed to make it easy to create a Smallset Timeline for your R or Python preprocessing script. 
 
-A short (3 min) and long (15 min) YouTube video about the paper are available [here](https://www.youtube.com/watch?v=_fpn02h3IUo) and [here](https://www.youtube.com/watch?v=I_ksOv6rj1Y), respectively. The quick start example below reproduces Figure 11 from the paper.
+A short ([3 min](https://www.youtube.com/watch?v=_fpn02h3IUo)) and long ([15 min](https://www.youtube.com/watch?v=I_ksOv6rj1Y)) YouTube video provide an introduction to the research. The quick start example below reproduces Figure 11 in [Lucchesi et al. (2022)](https://arxiv.org/abs/2206.04875).
 
 ## Installation
 
