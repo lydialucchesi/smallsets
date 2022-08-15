@@ -60,13 +60,13 @@ mylist <- prepare_smallset(
   data = df,
   code = codeLoc,
   rowCount = 6,
-  rowNums = c(2, 5, 8),
+  rowNums = c(1, 2, 3, 5, 7, 8),
   ignoreCols = c("V1")
 )
 
 test_that("column was ignored",
           {
-            expect_warning(colnames(df) ==
+            expect_warning(colnames(df) == 
                              colnames(mylist[[1]][[1]]$body$dataset))
           })
 
@@ -129,3 +129,4 @@ test_that("new column is blue", {
 
 test_that("test that class was set", 
           {expect_s3_class(mylist, "smallsetSnapshots")})
+

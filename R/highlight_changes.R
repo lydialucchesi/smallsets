@@ -109,22 +109,6 @@ highlight_changes <-
         
         adjData$r <- (as.character(adjData$r))
         
-        # tcurrent <-
-        #   flextable::color(
-        #     tcurrent,
-        #     color = changed,
-        #     i = (adjData$r == row.names(tcurrent$body$dataset)),
-        #     j = adjData$c
-        #   )
-        
-        # if (nrow(adjData) > 0) {
-        #   tcurrent <-
-        #     flextable::color(tcurrent,
-        #                      color = changed,
-        #                      i = adjData$r,
-        #                      j = adjData$c)
-        # }
-        
         rr <-
           data.frame(nmbr = seq(1, length(row.names(
             tcurrent$body$dataset
