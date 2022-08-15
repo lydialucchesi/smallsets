@@ -59,19 +59,6 @@ make_timeline_plot <-
       suppressMessages(left_join(tabs, snapshotList[[9]], by = "colValue"))
     
     # Prepare lighter colour values for tiles with missing data
-    # if (isTRUE(highlightNA)) {
-    #   missingCols <- c(
-    #     lighten(col2hex(snapshotList[[5]]), .4),
-    #     lighten(col2hex(snapshotList[[6]]), .4),
-    #     lighten(col2hex(snapshotList[[7]]), .4),
-    #     lighten(col2hex(snapshotList[[8]]), .4)
-    #   )
-    #   tabs$colValue <-
-    #     ifelse(is.na(tabs$datValue),
-    #            lighten(col2hex(tabs$colValue), .4),
-    #            tabs$colValue)
-    # }
-    
     if (isTRUE(highlightNA)) {
       missingCols <- c()
       if (snapshotList[[5]] %in% legendDF$colValue) {

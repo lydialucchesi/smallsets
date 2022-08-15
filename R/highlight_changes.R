@@ -3,7 +3,6 @@
 #'   between snapshots.
 #' @keywords internal
 #' @import "flextable"
-#' @importFrom gdata cbindX
 
 highlight_changes <-
   function(smallsetList = smallsetList,

@@ -1,12 +1,11 @@
 Package: smallsets
 Title: A Tool for Making Smallset Timelines
 Version: 0.0.0.9000
-Authors@R: 
-    person(given = "Lydia",
-           family = "Lucchesi",
-           role = c("aut", "cre"),
-           email = "Lydia.Lucchesi@anu.edu.au")
-Description: The package takes R data preprocessing code and turns it into a Smallset Timeline, a visualisation of data preprocessing decisions.
+Authors@R: c(person(given = c("Lydia", "R."), family = "Lucchesi", role = c("aut", "cre"), email = "Lydia.Lucchesi@anu.edu.au"),
+             person(given = c("Petra", "M."), family = "Kuhnert", role = "ths"),
+             person(given = c("Jenny", "L."), family = "Davis", role = "ths"),
+             person(given = "Lexing", family = "Xie", role = "ths"))
+Description: The package creates Smallset Timelines for R or Python data preprocessing scripts.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -15,7 +14,6 @@ Depends:
     R (>= 3.5.0)
 Imports:
     stringr,
-    gdata,
     plyr,
     dplyr,
     flextable,
