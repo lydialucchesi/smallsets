@@ -7,7 +7,6 @@
 prepare_colour_sheet(smallsetList = smallsetList)
 }
 \description{
-Generates a colour sheet for automatic Smallset selection
-  between snapshots.
+Generates a colour sheet for automatic Smallset selection.
 }
 \keyword{internal}
