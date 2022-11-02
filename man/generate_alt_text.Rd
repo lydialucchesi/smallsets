@@ -4,16 +4,7 @@
 \alias{generate_alt_text}
 \title{Generate Alt Text}
 \usage{
-generate_alt_text(
-  title,
-  subtitle,
-  footnote,
-  snapshotList,
-  altTextInfo,
-  l,
-  abstract,
-  ghostData
-)
+generate_alt_text(snapshotList, altTextInfo, l, abstract, ghostData)
 }
 \description{
 The function produces alt text for the Smallset Timeline figure.

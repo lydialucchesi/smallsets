@@ -53,10 +53,6 @@
 #' @param timelineFont One of "sans", "serif", or "mono".
 #' @param captionSpace Value greater than or equal to .5. Higher values create
 #'   more caption space. Default is 1.
-#' @param captionTemplateName Name of caption template. Can be included so
-#'   template is not overwritten when running \code{prepare_smallset}.
-#' @param captionTemplateDir Name of caption template directory. Can be included
-#'   so template is not overwritten when running \code{prepare_smallset}.
 #' @import "patchwork" "colorspace" "magrittr" "dplyr"
 #' @importFrom plyr mapvalues
 #' @importFrom gplots col2hex
@@ -92,9 +88,7 @@ create_timeline <-
            otherTextCol = 1,
            timelineRows = 1,
            timelineFont = "sans",
-           captionSpace = 3,
-           captionTemplateName = NULL,
-           captionTemplateDir = NULL) {
+           captionSpace = 3) {
     if (missing(snapshotList)) {
       stop(
         "Must include object from prepare_smallset. See snapshotList argument in ?create_timeline."
@@ -113,7 +107,7 @@ create_timeline <-
       )
     }
     
-    altTextInfo <- snapshotList[[5]]
+    altTextInfo <- snapshotList[[2]]
     items <- seq(1, length(snapshotList[[1]]), 1)
     
     # Get four colours ready
@@ -448,8 +442,6 @@ create_timeline <-
         accents,
         legendDF,
         highlightNA,
-        captionTemplateName,
-        captionTemplateDir,
         timelineRows,
         FUN = make_timeline_plot
       )
@@ -491,81 +483,12 @@ create_timeline <-
         )
     }
     
-    # Add timeline title, subtitle, and footnote
-    if (is.null(captionTemplateName) &
-        is.null(captionTemplateDir)) {
-      annotateInfo <-
-        as.data.frame(readLines(paste0(
-          snapshotList[[3]], "/", snapshotList[[2]], ".Rmd"
-        )))
-    } else if (!is.null(captionTemplateName) &
-               is.null(captionTemplateDir)) {
-      annotateInfo <-
-        as.data.frame(readLines(paste0(
-          snapshotList[[3]], "/", captionTemplateName, ".Rmd"
-        )))
-    } else if (is.null(captionTemplateName) &
-               !is.null(captionTemplateDir)) {
-      annotateInfo <-
-        as.data.frame(readLines(paste0(
-          captionTemplateDir, "/", snapshotList[[2]], ".Rmd"
-        )))
-    } else {
-      annotateInfo <-
-        as.data.frame(readLines(
-          paste0(captionTemplateDir, "/", captionTemplateName, ".Rmd")
-        ))
-    }
-    
-    colnames(annotateInfo) <- c("lines")
-    
-    title <-
-      subset(annotateInfo,
-             grepl("Timeline title: ", annotateInfo$lines))
-    title <- sub("Timeline title*: ", "", title$lines)[1]
-    
-    subtitle <-
-      subset(annotateInfo,
-             grepl("Timeline subtitle: ", annotateInfo$lines))
-    subtitle <- sub("Timeline subtitle*: ", "", subtitle$lines)[1]
-    
-    footnote <-
-      subset(annotateInfo,
-             grepl("Timeline footnote: ", annotateInfo$lines))
-    footnote <- sub("Timeline footnote*: ", "", footnote$lines)[1]
-    
-    quote <- "'"
-    timelineHeader <- paste0(
-      " + plot_annotation(title = ",
-      quote,
-      title,
-      quote,
-      ", subtitle = ",
-      quote,
-      as.character(subtitle),
-      quote,
-      ", caption = ",
-      quote,
-      as.character(footnote),
-      quote,
-      ")"
-    )
-    
     # Set timeline design choices
     fontChoice <-
       paste0(
         " & theme(text = element_text(family = '",
         timelineFont,
-        "', colour = otherTextColour),
-        plot.title = element_text(size = ",
-        sizing[["title"]],
-        "), ",
-        "plot.subtitle = element_text(size = ",
-        sizing[["subtitle"]],
-        "), ",
-        "plot.caption = element_text(size = ",
-        sizing[["footnote"]],
-        "), ",
+        "', colour = otherTextColour),",
         "legend.key.size = unit(",
         sizing[["legendIcons"]],
         ", 'line'),
@@ -575,12 +498,9 @@ create_timeline <-
       )
     
     patchedPlots <-
-      paste0(patchedPlots, timelineHeader, fontChoice)
+      paste0(patchedPlots, fontChoice)
     
-    generate_alt_text(title = title,
-                      subtitle = subtitle,
-                      footnote = footnote,
-                      snapshotList = snapshotList,
+    generate_alt_text(snapshotList = snapshotList,
                       altTextInfo = altTextInfo,
                       l = l,
                       abstract = abstract,

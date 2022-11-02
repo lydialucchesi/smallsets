@@ -6,20 +6,11 @@
 
 highlight_changes <-
   function(smallsetList = smallsetList,
-           tempName = captionTemplateName,
-           tempDir = captionTemplateDir,
-           tempAuthor = captionTemplateAuthor,
            lang = lang) {
     constant = "#808080"
     changed = "#008000"
     added = "#0000FF"
     deleted = "#FF0000"
-    
-    # Generate the caption template
-    printMessage <- write_caption_template(authorName = tempAuthor,
-                                           script = tempName,
-                                           pathway = tempDir,
-                                           lang = lang)
     
     tables <- list()
     altTextInfo <- list()
@@ -145,14 +136,6 @@ highlight_changes <-
       altTextInfo <- append(altTextInfo, newAltTextInfo)
       
     }
-    
-    print(
-      paste0(
-        "Edits, additions, and deletions identified. ",
-        printMessage,
-        "."
-      )
-    )
     
     return(list(tables, altTextInfo))
     

@@ -24,8 +24,6 @@ make_timeline_plot <-
            accents,
            legendDF,
            highlightNA,
-           captionTemplateName,
-           captionTemplateDir,
            timelineRows) {
     
     # Retrieve colour and data information for a snapshot
@@ -242,23 +240,7 @@ make_timeline_plot <-
     }
     
     # Add captions to the plot
-    if (is.null(captionTemplateName) &
-        is.null(captionTemplateDir)) {
-      plotInfo <-
-        read_captions_rmd(snapshotList[[2]], snapshotList[[3]])
-    } else if (is.null(captionTemplateName) &
-               !is.null(captionTemplateDir)) {
-      plotInfo <-
-        read_captions_rmd(snapshotList[[2]], captionTemplateDir)
-    } else if (!is.null(captionTemplateName) &
-               is.null(captionTemplateDir)) {
-      plotInfo <-
-        read_captions_rmd(captionTemplateName, snapshotList[[3]])
-    } else {
-      plotInfo <-
-        read_captions_rmd(captionTemplateName, captionTemplateDir)
-    }
-    smallsetCaption <- plotInfo[itemNum, "caption"]
+    smallsetCaption <- snapshotList[[3]]$text[itemNum]
     
     if ((timelineRows > 1) | (isFALSE(ghostData))) {
       captionInfo <-

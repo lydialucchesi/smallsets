@@ -23,8 +23,6 @@ make_timeline_plot(
   accents,
   legendDF,
   highlightNA,
-  captionTemplateName,
-  captionTemplateDir,
   timelineRows
 )
 }

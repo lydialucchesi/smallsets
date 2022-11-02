@@ -24,9 +24,7 @@ create_timeline(
   otherTextCol = 1,
   timelineRows = 1,
   timelineFont = "sans",
-  captionSpace = 3,
-  captionTemplateName = NULL,
-  captionTemplateDir = NULL
+  captionSpace = 3
 )
 }
 \arguments{
@@ -97,12 +95,6 @@ divide the smallset timeline into.}
 
 \item{captionSpace}{Value greater than or equal to .5. Higher values create
 more caption space. Default is 1.}
-
-\item{captionTemplateName}{Name of caption template. Can be included so
-template is not overwritten when running \code{prepare_smallset}.}
-
-\item{captionTemplateDir}{Name of caption template directory. Can be included
-so template is not overwritten when running \code{prepare_smallset}.}
 }
 \description{
 The function creates a smallset timeline using output from

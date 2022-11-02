@@ -4,13 +4,7 @@
 \alias{highlight_changes}
 \title{Highlight changes}
 \usage{
-highlight_changes(
-  smallsetList = smallsetList,
-  tempName = captionTemplateName,
-  tempDir = captionTemplateDir,
-  tempAuthor = captionTemplateAuthor,
-  lang = lang
-)
+highlight_changes(smallsetList = smallsetList, lang = lang)
 }
 \description{
 The function identifies changes, additions, and deletions

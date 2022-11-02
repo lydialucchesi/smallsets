@@ -19,9 +19,6 @@
 #' @param ignoreCols Character vector of column names. Indicates which columns
 #'   from the data set should not be included in the smallset. Columns in this
 #'   vector should usually not be referenced in the data preprocessing code.
-#' @param captionTemplateName File name for the caption template.
-#' @param captionTemplateDir File path for the caption template.
-#' @param captionTemplateAuthor Name of author for the caption template.
 #' @import "reticulate"
 #' @importFrom tools file_ext
 #' @export
@@ -34,10 +31,7 @@ prepare_smallset <-
            rowNums = NULL,
            auto = NULL,
            runBig = TRUE,
-           ignoreCols = NULL,
-           captionTemplateName = "captionTemplate",
-           captionTemplateDir = getwd(),
-           captionTemplateAuthor = NULL) {
+           ignoreCols = NULL) {
     if (missing(data)) {
       print("Must specify a data set. See data argument in ?prepare_smallset.")
     }
@@ -118,7 +112,7 @@ prepare_smallset <-
     }
     
     # Prepare the preprocessing function that takes snapshots
-    resumeLocs <-
+    output <-
       write_smallset_code(
         scriptName = code,
         dir = dir,
@@ -172,19 +166,15 @@ prepare_smallset <-
     # Identify differences between snapshots
     smallsetTables <- highlight_changes(
       smallsetList = smallsetList,
-      tempName = captionTemplateName,
-      tempDir = captionTemplateDir,
-      tempAuthor = captionTemplateAuthor,
       lang = lang
     )
     
     o <- (
       list(
         smallsetTables[[1]],
-        captionTemplateName,
-        captionTemplateDir,
-        resumeLocs,
-        smallsetTables[[2]]
+        smallsetTables[[2]],
+        output[[1]],
+        output[[2]]
       )
     )
     

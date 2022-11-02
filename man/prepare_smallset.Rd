@@ -12,10 +12,7 @@ prepare_smallset(
   rowNums = NULL,
   auto = NULL,
   runBig = TRUE,
-  ignoreCols = NULL,
-  captionTemplateName = "captionTemplate",
-  captionTemplateDir = getwd(),
-  captionTemplateAuthor = NULL
+  ignoreCols = NULL
 )
 }
 \arguments{
@@ -41,12 +38,6 @@ and the smallset will be extracted from that output at each snap point.}
 \item{ignoreCols}{Character vector of column names. Indicates which columns
 from the data set should not be included in the smallset. Columns in this
 vector should usually not be referenced in the data preprocessing code.}
-
-\item{captionTemplateName}{File name for the caption template.}
-
-\item{captionTemplateDir}{File path for the caption template.}
-
-\item{captionTemplateAuthor}{Name of author for the caption template.}
 }
 \description{
 The function selects a smallset, takes snapshots, and

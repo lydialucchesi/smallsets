@@ -23,6 +23,57 @@ write_smallset_code <-
     colnames(processTXT) <- c("command")
     processTXT$command <- as.character(processTXT$command)
     
+    commentsLines1 <- row.names(processTXT)[grepl("# start smallset", processTXT$command)]
+    commentsLines2 <- row.names(processTXT)[grepl("# snap", processTXT$command)]
+    commentsLines3 <- row.names(processTXT)[grepl("# end smallset", processTXT$command)]
+    commentsLines <- c(commentsLines1, commentsLines2, commentsLines3)
+    captions <- data.frame(n = seq(1, length(commentsLines)), row = as.numeric(commentsLines), caption = NA, stop = NA, text = NA)
+    close <- as.numeric(row.names(processTXT)[grepl("]caption", processTXT$command)])
+    
+    for (c in 1:nrow(captions)) {
+      if (grepl("caption[", processTXT[captions[c, "row"], "command"], fixed = TRUE)) {
+        captions$caption[c] <- TRUE
+        
+        if (c != nrow(captions)) {
+          captions$stop[c] <- close[(close >= captions$row[c]) & (close < captions$row[c+1])]
+        } else {
+          captions$stop[c] <- close[(close >= as.numeric(captions$row[c]))]
+        }
+        
+        caption <- processTXT[captions$row[c]:captions$stop[c], "command"]
+        caption[1] <- gsub(".*\\[", "", caption[1])
+        caption[length(caption)] <- gsub("\\].*", "", caption[length(caption)])
+        
+        if (captions$row[c] != captions$stop[c]) {
+          caption[2:length(caption)] <- substring(caption[2:length(caption)], 2)
+          captions$text[c] <- paste(caption, collapse = '')
+        } else {
+          captions$text[c] <- caption
+        }
+        
+      } else {
+        captions$caption[c] <- FALSE
+      }
+        
+    }
+    
+    processTXT <- processTXT$command
+    for (c in 1:nrow(captions)) {
+      if ((!is.na(captions$stop[c])) & (captions$row[c] != captions$stop[c])){
+        span <- captions$stop[c] - captions$row[c]
+        processTXT <- processTXT[-seq(captions$row[c] + 1, captions$stop[c], 1)]
+        processTXT[captions$row[c]] <- gsub(" caption\\[.*", "", processTXT[captions$row[c]])
+        captions$row <- captions$row - (span)
+        captions$stop <- captions$stop - (span)
+        # processTXT <- as.data.frame(processTXT)
+        # colnames(processTXT) <- c("command")
+      } else {
+        processTXT[captions$row[c]] <- gsub(" caption\\[.*", "", processTXT[captions$row[c]])
+      }
+    }
+
+    processTXT <- data.frame(command = processTXT)
+    processTXT$command <- as.character(processTXT$command)
     rStart <-
       row.names(processTXT)[grepl("# start smallset", processTXT$command)]
     rStartName <-
@@ -236,5 +287,5 @@ write_smallset_code <-
       }
     }
     
-    return(resumeLocs)
+    return(list(captions[,c("n", "text")], resumeLocs))
   }
