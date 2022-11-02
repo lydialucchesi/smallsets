@@ -577,14 +577,14 @@ create_timeline <-
     patchedPlots <-
       paste0(patchedPlots, timelineHeader, fontChoice)
     
-    # generate_alt_text(title = title,
-    #                   subtitle = subtitle,
-    #                   footnote = footnote,
-    #                   snapshotList = snapshotList,
-    #                   altTextInfo = altTextInfo,
-    #                   l = l,
-    #                   abstract = abstract,
-    #                   ghostData = ghostData)
+    generate_alt_text(title = title,
+                      subtitle = subtitle,
+                      footnote = footnote,
+                      snapshotList = snapshotList,
+                      altTextInfo = altTextInfo,
+                      l = l,
+                      abstract = abstract,
+                      ghostData = ghostData)
 
     o <- return(eval(parse(text = patchedPlots)))
     
