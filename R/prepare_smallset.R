@@ -1,43 +1,24 @@
-#' Prepare smallset
-#'
-#' @description The function selects a smallset, takes snapshots, and
-#'   identifies the changes between snapshots. The output can be passed to
-#'   \code{create_timeline} to create a smallset timeline.
-#'
-#' @param data Data set.
-#' @param code R or Python script with data preprocessing code for the data set. Filename extension should be included (e.g., "my_code.R" or "my_code.py").
-#' @param dir File path to the data preprocessing code. Default is the working directory.
-#' @param rowCount Integer greater than or equal to 5. Number of rows to include
-#'   in the smallset.
-#' @param rowNums Numeric vector of row numbers. Indicates particular rows from
-#'   the data set to be included in the smallset.
-#' @param auto 1 or 2. 1 = simple gurobi model selection. 2 = advanced gurobi
-#'   model selction.
-#' @param runBig TRUE or FALSE. FALSE means preprocessing code will be run on
-#'   smallset. TRUE means preprocessing code will be run on the big data set,
-#'   and the smallset will be extracted from that output at each snap point.
-#' @param ignoreCols Character vector of column names. Indicates which columns
-#'   from the data set should not be included in the smallset. Columns in this
-#'   vector should usually not be referenced in the data preprocessing code.
+#' Prepare Smallset
+#' @description Prepares the Smallset.
+#' @keywords internal
 #' @import "reticulate"
 #' @importFrom tools file_ext
-#' @export
 
 prepare_smallset <-
   function(data,
            code,
-           dir = getwd(),
-           rowCount = 6,
-           rowNums = NULL,
-           auto = NULL,
-           runBig = TRUE,
-           ignoreCols = NULL) {
+           dir,
+           rowCount,
+           rowNums,
+           auto,
+           runBig,
+           ignoreCols) {
     if (missing(data)) {
-      print("Must specify a data set. See data argument in ?prepare_smallset.")
+      print("Must specify a data set")
     }
     
     if (missing(code)) {
-      print("Must specify preprocessing code. See code argument in ?prepare_smallset.")
+      print("Must specify preprocessing code")
     }
     
     lang <- file_ext(code)

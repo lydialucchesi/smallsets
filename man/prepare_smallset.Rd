@@ -2,45 +2,11 @@
 % Please edit documentation in R/prepare_smallset.R
 \name{prepare_smallset}
 \alias{prepare_smallset}
-\title{Prepare smallset}
+\title{Prepare Smallset}
 \usage{
-prepare_smallset(
-  data,
-  code,
-  dir = getwd(),
-  rowCount = 6,
-  rowNums = NULL,
-  auto = NULL,
-  runBig = TRUE,
-  ignoreCols = NULL
-)
-}
-\arguments{
-\item{data}{Data set.}
-
-\item{code}{R or Python script with data preprocessing code for the data set. Filename extension should be included (e.g., "my_code.R" or "my_code.py").}
-
-\item{dir}{File path to the data preprocessing code. Default is the working directory.}
-
-\item{rowCount}{Integer greater than or equal to 5. Number of rows to include
-in the smallset.}
-
-\item{rowNums}{Numeric vector of row numbers. Indicates particular rows from
-the data set to be included in the smallset.}
-
-\item{auto}{1 or 2. 1 = simple gurobi model selection. 2 = advanced gurobi
-model selction.}
-
-\item{runBig}{TRUE or FALSE. FALSE means preprocessing code will be run on
-smallset. TRUE means preprocessing code will be run on the big data set,
-and the smallset will be extracted from that output at each snap point.}
-
-\item{ignoreCols}{Character vector of column names. Indicates which columns
-from the data set should not be included in the smallset. Columns in this
-vector should usually not be referenced in the data preprocessing code.}
+prepare_smallset(data, code, dir, rowCount, rowNums, auto, runBig, ignoreCols)
 }
 \description{
-The function selects a smallset, takes snapshots, and
-  identifies the changes between snapshots. The output can be passed to
-  \code{create_timeline} to create a smallset timeline.
+Prepares the Smallset.
 }
+\keyword{internal}

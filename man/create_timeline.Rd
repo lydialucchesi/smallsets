@@ -2,102 +2,31 @@
 % Please edit documentation in R/create_timeline.R
 \name{create_timeline}
 \alias{create_timeline}
-\title{Create the timeline}
+\title{Create the Timeline}
 \usage{
 create_timeline(
   snapshotList,
-  constant = NULL,
-  changed = NULL,
-  added = NULL,
-  deleted = NULL,
-  colScheme = "colScheme1",
-  abstract = TRUE,
-  ghostData = TRUE,
-  highlightNA = FALSE,
-  sizing = list(columns = 2, tiles = 0.3, captions = 3, data = 2.5, legendText = 7,
-    legendIcons = 1, title = 10, subtitle = 8, footnote = 7, resume = 0.25),
-  truncateData = FALSE,
-  rotateHeader = FALSE,
-  headerSpace = c(1, 0.5),
-  accentCols = "darker",
-  accentColsDif = 0.8,
-  otherTextCol = 1,
-  timelineRows = 1,
-  timelineFont = "sans",
-  captionSpace = 3
+  constant,
+  changed,
+  added,
+  deleted,
+  colScheme,
+  abstract,
+  ghostData,
+  highlightNA,
+  sizing,
+  truncateData,
+  rotateHeader,
+  headerSpace,
+  accentCols,
+  accentColsDif,
+  otherTextCol,
+  timelineRows,
+  timelineFont,
+  captionSpace
 )
 }
-\arguments{
-\item{snapshotList}{List output from \code{prepare_smallset}.}
-
-\item{constant}{Hex colour code. Colour represents data that have not changed
-since previous snapshot. Can pass in a list with a colour and transparency
-value (0 to 1) for that colour.}
-
-\item{changed}{Hex colour code. Colour represents data that have changed
-since previous snapshot. Can pass in a list with a colour and transparency
-value (0 to 1) for that colour.}
-
-\item{added}{Hex colour code. Colour represents data that have been added
-since previous snapshot. Can pass in a list with a colour and transparency
-value (0 to 1) for that colour.}
-
-\item{deleted}{Hex colour code. Colour represents data that will be deleted
-prior to next snapshot. Can pass in a list with a colour and transparency
-value (0 to 1) for that colour.}
-
-\item{colScheme}{NULL, colour scheme name, or vector. If NULL, uses four
-colour arguments above. If colour scheme name, uses built-in scheme with
-colours pre-assigned to the four preprocessing states (constant, changed,
-added, deleted). If vector, it must be a vector of length five, with the
-first element being the colour scheme name followed by the four
-preprocessing states in the order that they should be assigned to scheme
-colours (e.g.,, c("colScheme1", "changed", "constant", "deleted",
-"added")).}
-
-\item{abstract}{TRUE or FALSE. FALSE prints data values in tables.}
-
-\item{ghostData}{TRUE or FALSE. TRUE includes blank spaces where data have
-been removed.}
-
-\item{highlightNA}{TRUE or FALSE. TRUE plots a lighter colour value to signal
-data value is missing.}
-
-\item{sizing}{List of size specifications. Can specify sizes for column
-names, table tiles, caption text, stamp symbols, stamp circles, printed
-data, legend text, legend icons, timeline title, timeline subtitle,
-timeline footnote, and resume marker.}
-
-\item{truncateData}{TRUE or FALSE. FALSE if data do not need to be truncated
-to fit within table tiles. Otherwise, an integer specifying width of data
-value (width includes "...").}
-
-\item{rotateHeader}{TRUE or FALSE. If TRUE, column names are printed at 45
-degree angle. Use if column names overlap when set to FALSE.}
-
-\item{headerSpace}{Vector. Default is c(1, .5). First value corresponds to
-room above the table and second to the right of the table.}
-
-\item{accentCols}{Either "darker" or "lighter" for stamp colour. Can enter a
-list corresponding to specific actions.}
-
-\item{accentColsDif}{Value between 0 and 1. Corresponds to how much lighter
-or darker accent colour will be. Can pass a list with different accent
-values for different colours.}
-
-\item{otherTextCol}{Value between 0 and 1. Default is 1, which is when column
-names are black. 0 means columns will be the constant colour.}
-
-\item{timelineRows}{Integer greater than or equal to one. Number of rows to
-divide the smallset timeline into.}
-
-\item{timelineFont}{One of "sans", "serif", or "mono".}
-
-\item{captionSpace}{Value greater than or equal to .5. Higher values create
-more caption space. Default is 1.}
-}
 \description{
-The function creates a smallset timeline using output from
-  \code{prepare_smallset}. Timelines have many customisation options. They
-  are detailed below.
+Creates the Timeline.
 }
+\keyword{internal}
