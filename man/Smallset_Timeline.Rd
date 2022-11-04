@@ -18,9 +18,9 @@ Smallset_Timeline(
   added = NULL,
   deleted = NULL,
   colScheme = "colScheme1",
-  abstract = TRUE,
+  printedData = TRUE,
   ghostData = TRUE,
-  highlightNA = FALSE,
+  missingDataTints = FALSE,
   sizing = list(columns = 2, tiles = 0.3, captions = 3, data = 2.5, legendText = 7,
     legendIcons = 1, title = 10, subtitle = 8, footnote = 7, resume = 0.25),
   truncateData = FALSE,
@@ -84,12 +84,12 @@ preprocessing states in the order that they should be assigned to scheme
 colours (e.g.,, c("colScheme1", "changed", "constant", "deleted",
 "added")).}
 
-\item{abstract}{TRUE or FALSE. FALSE prints data values in tables.}
+\item{printedData}{TRUE or FALSE. FALSE prints data values in tables.}
 
 \item{ghostData}{TRUE or FALSE. TRUE includes blank spaces where data have
 been removed.}
 
-\item{highlightNA}{TRUE or FALSE. TRUE plots a lighter colour value to signal
+\item{missingDataTints}{TRUE or FALSE. TRUE plots a lighter colour value to signal
 data value is missing.}
 
 \item{sizing}{List of size specifications. Can specify sizes for column

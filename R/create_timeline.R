@@ -12,9 +12,9 @@ create_timeline <-
            added,
            deleted,
            colScheme,
-           abstract,
+           printedData,
            ghostData,
-           highlightNA,
+           missingDataTints,
            sizing,
            truncateData,
            rotateHeader,
@@ -285,7 +285,7 @@ create_timeline <-
     colsPresent <- unique(colsPresent)
     
     # Prepare colour legend
-    if (isTRUE(highlightNA)) {
+    if (isTRUE(missingDataTints)) {
       descriptions <-
         c(
           "Data has not changed.\nTint is missing data.",
@@ -363,7 +363,7 @@ create_timeline <-
         items,
         extTables,
         snapshotList,
-        abstract,
+        printedData,
         ghostData,
         sizing,
         truncateData,
@@ -377,7 +377,7 @@ create_timeline <-
         captionSpace,
         accents,
         legendDF,
-        highlightNA,
+        missingDataTints,
         timelineRows,
         FUN = make_timeline_plot
       )
@@ -439,7 +439,7 @@ create_timeline <-
     generate_alt_text(snapshotList = snapshotList,
                       altTextInfo = altTextInfo,
                       l = l,
-                      abstract = abstract,
+                      printedData = printedData,
                       ghostData = ghostData)
 
     o <- return(eval(parse(text = patchedPlots)))

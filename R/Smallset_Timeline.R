@@ -38,10 +38,10 @@
 #'   preprocessing states in the order that they should be assigned to scheme
 #'   colours (e.g.,, c("colScheme1", "changed", "constant", "deleted",
 #'   "added")).
-#' @param abstract TRUE or FALSE. FALSE prints data values in tables.
+#' @param printedData TRUE or FALSE. FALSE prints data values in tables.
 #' @param ghostData TRUE or FALSE. TRUE includes blank spaces where data have
 #'   been removed.
-#' @param highlightNA TRUE or FALSE. TRUE plots a lighter colour value to signal
+#' @param missingDataTints TRUE or FALSE. TRUE plots a lighter colour value to signal
 #'   data value is missing.
 #' @param sizing List of size specifications. Can specify sizes for column
 #'   names, table tiles, caption text, stamp symbols, stamp circles, printed
@@ -84,9 +84,9 @@ Smallset_Timeline <- function(data,
                               added = NULL,
                               deleted = NULL,
                               colScheme = "colScheme1",
-                              abstract = TRUE,
+                              printedData = TRUE,
                               ghostData = TRUE,
-                              highlightNA = FALSE,
+                              missingDataTints = FALSE,
                               sizing = list(
                                 "columns" = 2,
                                 "tiles" = .3,
@@ -124,9 +124,9 @@ Smallset_Timeline <- function(data,
                             added = added,
                             deleted = deleted,
                             colScheme = "colScheme1",
-                            abstract = abstract,
+                            printedData = printedData,
                             ghostData = ghostData,
-                            highlightNA = highlightNA,
+                            missingDataTints = missingDataTints,
                             sizing = sizing,
                             truncateData = truncateData,
                             rotateHeader = rotateHeader,

@@ -9,7 +9,7 @@ make_timeline_plot <-
   function(itemNum,
            extTables,
            snapshotList,
-           abstract,
+           printedData,
            ghostData,
            sizing,
            truncateData,
@@ -23,7 +23,7 @@ make_timeline_plot <-
            captionSpace,
            accents,
            legendDF,
-           highlightNA,
+           missingDataTints,
            timelineRows) {
     
     # Retrieve colour and data information for a snapshot
@@ -57,7 +57,7 @@ make_timeline_plot <-
       suppressMessages(left_join(tabs, snapshotList[[9]], by = "colValue"))
     
     # Prepare lighter colour values for tiles with missing data
-    if (isTRUE(highlightNA)) {
+    if (isTRUE(missingDataTints)) {
       missingCols <- c()
       if (snapshotList[[5]] %in% legendDF$colValue) {
         missingCols <- c(missingCols, lighten(col2hex(snapshotList[[5]]), .4))
@@ -89,7 +89,7 @@ make_timeline_plot <-
     
     legendDF$legend <- TRUE
     
-    if (isTRUE(highlightNA)) {
+    if (isTRUE(missingDataTints)) {
       addNewRows <-
         data.frame(
           colValue = missingCols,
@@ -102,7 +102,7 @@ make_timeline_plot <-
     legendDF$fillVar <-
       factor(legendDF$colValue, levels = legendDF$colValue)
     
-    if (isTRUE(highlightNA)) {
+    if (isTRUE(missingDataTints)) {
       legendDF$alpha <-
         c(snapshotList[[9]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], snapshotList[[9]]$alpha)
       # legendDF$alpha <-
@@ -206,11 +206,11 @@ make_timeline_plot <-
     # Print data in tables
     tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
     
-    if (isFALSE(abstract) & !isFALSE(truncateData)) {
+    if (isFALSE(printedData) & !isFALSE(truncateData)) {
       tabs$datValue <- str_trunc(tabs$datValue, truncateData, "right")
     }
     
-    if (abstract != TRUE) {
+    if (printedData != TRUE) {
       abstractSmallset <- abstractSmallset +
         geom_text(
           data = tabs,

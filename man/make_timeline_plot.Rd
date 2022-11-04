@@ -8,7 +8,7 @@ make_timeline_plot(
   itemNum,
   extTables,
   snapshotList,
-  abstract,
+  printedData,
   ghostData,
   sizing,
   truncateData,
@@ -22,7 +22,7 @@ make_timeline_plot(
   captionSpace,
   accents,
   legendDF,
-  highlightNA,
+  missingDataTints,
   timelineRows
 )
 }
