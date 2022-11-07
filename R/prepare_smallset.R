@@ -138,11 +138,7 @@ prepare_smallset <-
     }
 
     # Return summary information related to the above tasks
-    print(paste0("Summary: ", as.character(length(smallsetList)), " snapshots taken"))
-    print("First snapshot:")
-    print(smallsetList[[1]])
-    print("Last snapshot:")
-    print(smallsetList[[length(smallsetList)]])
+    print(paste0(as.character(length(smallsetList)), " snapshots taken"))
     
     # Identify differences between snapshots
     smallsetTables <- highlight_changes(

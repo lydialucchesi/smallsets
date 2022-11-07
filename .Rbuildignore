@@ -8,4 +8,5 @@
 ^smallset features
 ^figureAltText
 ^altTextTemplates
+^README_files
 ^\.Rmd$

@@ -158,7 +158,7 @@ make_timeline_plot <-
         data = tabs,
         aes(x = x, y = y, fill = colAlp),
         colour = "white",
-        size = sizing[["tiles"]]
+        size = sizing$tiles
       ) +
       scale_fill_identity(
         "",
@@ -171,7 +171,7 @@ make_timeline_plot <-
         data = xs,
         aes(x = x, y = y, label = variable),
         family = timelineFont,
-        size = sizing[["columns"]],
+        size = sizing$columns,
         colour = otherTextCol,
         angle = angleVal,
         hjust = hjustVal,
@@ -197,7 +197,7 @@ make_timeline_plot <-
         ),
         text = element_text(
           family = timelineFont,
-          size = sizing[["legendText"]],
+          size = sizing$legendText,
           colour = otherTextCol
         )
       ) +
@@ -206,11 +206,11 @@ make_timeline_plot <-
     # Print data in tables
     tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
     
-    if (isFALSE(printedData) & !isFALSE(truncateData)) {
+    if (isTRUE(printedData) & !isFALSE(truncateData)) {
       tabs$datValue <- str_trunc(tabs$datValue, truncateData, "right")
     }
     
-    if (printedData != TRUE) {
+    if (printedData != FALSE) {
       abstractSmallset <- abstractSmallset +
         geom_text(
           data = tabs,
@@ -221,7 +221,7 @@ make_timeline_plot <-
             colour = colValue2
           ),
           family = timelineFont,
-          size = sizing[["data"]]
+          size = sizing$data
         )
     }
     
@@ -234,7 +234,7 @@ make_timeline_plot <-
             aes(x = x, y = y),
             fill = NA,
             colour = NA,
-            size = sizing[["tiles"]]
+            size = sizing$tiles
           )
       }
     }
@@ -289,7 +289,7 @@ make_timeline_plot <-
         hjust = c(.5),
         valign = c(.5),
         halign = c(0),
-        size = sizing[["captions"]],
+        size = sizing$captions,
         box.colour = NA,
         colour = otherTextCol
       ) +
@@ -307,7 +307,7 @@ make_timeline_plot <-
           ),
           colour = as.character(snapshotList[[9]]$colValue[1]),
           alpha = snapshotList[[9]]$alpha[1],
-          size = sizing[["resume"]]
+          size = sizing$resume
         )
     }
     

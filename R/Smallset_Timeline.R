@@ -3,7 +3,7 @@
 #' @description The command for creating a Smallset Timeline.
 #'
 #' @param data Dataset.
-#' @param code R or Python script with data preprocessing code for the dataset. 
+#' @param code R or Python script with data preprocessing code for the dataset.
 #'   Filename extension should be included (e.g., "my_code.R" or "my_code.py").
 #' @param dir File path to the data preprocessing code. Default is the working directory.
 #' @param rowCount Integer greater than or equal to 5. Number of rows to include
@@ -38,15 +38,12 @@
 #'   preprocessing states in the order that they should be assigned to scheme
 #'   colours (e.g.,, c("colScheme1", "changed", "constant", "deleted",
 #'   "added")).
-#' @param printedData TRUE or FALSE. FALSE prints data values in tables.
+#' @param printedData TRUE or FALSE. TRUE prints data values in tables.
 #' @param ghostData TRUE or FALSE. TRUE includes blank spaces where data have
 #'   been removed.
 #' @param missingDataTints TRUE or FALSE. TRUE plots a lighter colour value to signal
 #'   data value is missing.
-#' @param sizing List of size specifications. Can specify sizes for column
-#'   names, table tiles, caption text, stamp symbols, stamp circles, printed
-#'   data, legend text, legend icons, timeline title, timeline subtitle,
-#'   timeline footnote, and resume marker.
+#' @param sizing List of size specifications.
 #' @param truncateData TRUE or FALSE. FALSE if data do not need to be truncated
 #'   to fit within table tiles. Otherwise, an integer specifying width of data
 #'   value (width includes "...").
@@ -79,25 +76,23 @@ Smallset_Timeline <- function(data,
                               rowNums = NULL,
                               auto = NULL,
                               runBig = TRUE,
-                              ignoreCols = NULL,constant = NULL,
+                              ignoreCols = NULL,
+                              constant = NULL,
                               changed = NULL,
                               added = NULL,
                               deleted = NULL,
                               colScheme = "colScheme1",
-                              printedData = TRUE,
+                              printedData = FALSE,
                               ghostData = TRUE,
                               missingDataTints = FALSE,
                               sizing = list(
-                                "columns" = 2,
-                                "tiles" = .3,
-                                "captions" = 3,
-                                "data" = 2.5,
-                                "legendText" = 7,
-                                "legendIcons" = 1,
-                                "title" = 10,
-                                "subtitle" = 8,
-                                "footnote" = 7,
-                                "resume" = .25
+                                columns = 3,
+                                captions = 3,
+                                tiles = .1,
+                                data = 2.5,
+                                legendText = 10,
+                                legendIcons = 1,
+                                resume = .25
                               ),
                               truncateData = FALSE,
                               rotateHeader = FALSE,
@@ -107,43 +102,39 @@ Smallset_Timeline <- function(data,
                               otherTextCol = 1,
                               timelineRows = 1,
                               timelineFont = "sans",
-                              captionSpace = 3
-) {
-  snapshots <- prepare_smallset(data,
-                                code,
-                                dir = getwd(),
-                                rowCount = 6,
-                                rowNums = rowNums,
-                                auto = auto,
-                                runBig = runBig,
-                                ignoreCols = ignoreCols)
+                              captionSpace = 3) {
+  snapshots <- prepare_smallset(
+    data = data,
+    code = code,
+    dir = dir,
+    rowCount = rowCount,
+    rowNums = rowNums,
+    auto = auto,
+    runBig = runBig,
+    ignoreCols = ignoreCols
+  )
   
-  figure <- create_timeline(snapshotList = snapshots,
-                            constant = constant,
-                            changed = changed,
-                            added = added,
-                            deleted = deleted,
-                            colScheme = "colScheme1",
-                            printedData = printedData,
-                            ghostData = ghostData,
-                            missingDataTints = missingDataTints,
-                            sizing = sizing,
-                            truncateData = truncateData,
-                            rotateHeader = rotateHeader,
-                            headerSpace = headerSpace,
-                            accentCols = accentCols,
-                            accentColsDif = accentColsDif,
-                            otherTextCol = otherTextCol,
-                            timelineRows = timelineRows,
-                            timelineFont = timelineFont,
-                            captionSpace = captionSpace
+  figure <- create_timeline(
+    snapshotList = snapshots,
+    constant = constant,
+    changed = changed,
+    added = added,
+    deleted = deleted,
+    colScheme = colScheme,
+    printedData = printedData,
+    ghostData = ghostData,
+    missingDataTints = missingDataTints,
+    sizing = sizing,
+    truncateData = truncateData,
+    rotateHeader = rotateHeader,
+    headerSpace = headerSpace,
+    accentCols = accentCols,
+    accentColsDif = accentColsDif,
+    otherTextCol = otherTextCol,
+    timelineRows = timelineRows,
+    timelineFont = timelineFont,
+    captionSpace = captionSpace
     
   )
   return(figure)
 }
-
-
-
-
-
-

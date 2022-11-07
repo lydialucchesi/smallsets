@@ -18,11 +18,11 @@ Smallset_Timeline(
   added = NULL,
   deleted = NULL,
   colScheme = "colScheme1",
-  printedData = TRUE,
+  printedData = FALSE,
   ghostData = TRUE,
   missingDataTints = FALSE,
-  sizing = list(columns = 2, tiles = 0.3, captions = 3, data = 2.5, legendText = 7,
-    legendIcons = 1, title = 10, subtitle = 8, footnote = 7, resume = 0.25),
+  sizing = list(columns = 3, captions = 3, tiles = 0.1, data = 2.5, legendText = 10,
+    legendIcons = 1, resume = 0.25),
   truncateData = FALSE,
   rotateHeader = FALSE,
   headerSpace = c(1, 0.5),
@@ -37,7 +37,7 @@ Smallset_Timeline(
 \arguments{
 \item{data}{Dataset.}
 
-\item{code}{R or Python script with data preprocessing code for the dataset. 
+\item{code}{R or Python script with data preprocessing code for the dataset.
 Filename extension should be included (e.g., "my_code.R" or "my_code.py").}
 
 \item{dir}{File path to the data preprocessing code. Default is the working directory.}
@@ -84,7 +84,7 @@ preprocessing states in the order that they should be assigned to scheme
 colours (e.g.,, c("colScheme1", "changed", "constant", "deleted",
 "added")).}
 
-\item{printedData}{TRUE or FALSE. FALSE prints data values in tables.}
+\item{printedData}{TRUE or FALSE. TRUE prints data values in tables.}
 
 \item{ghostData}{TRUE or FALSE. TRUE includes blank spaces where data have
 been removed.}
@@ -92,10 +92,7 @@ been removed.}
 \item{missingDataTints}{TRUE or FALSE. TRUE plots a lighter colour value to signal
 data value is missing.}
 
-\item{sizing}{List of size specifications. Can specify sizes for column
-names, table tiles, caption text, stamp symbols, stamp circles, printed
-data, legend text, legend icons, timeline title, timeline subtitle,
-timeline footnote, and resume marker.}
+\item{sizing}{List of size specifications.}
 
 \item{truncateData}{TRUE or FALSE. FALSE if data do not need to be truncated
 to fit within table tiles. Otherwise, an integer specifying width of data

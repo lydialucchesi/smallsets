@@ -149,44 +149,32 @@ create_timeline <-
     }
     
     # Set argument if it is not specified
-    if (is.null(sizing[["columns"]])) {
-      sizing[["columns"]] = 2
+    if (is.null(sizing$columns)) {
+      sizing$columns = 3
     }
     
-    if (is.null(sizing[["tiles"]])) {
-      sizing[["tiles"]] = 1
+    if (is.null(sizing$tiles)) {
+      sizing$tiles = .1
     }
     
-    if (is.null(sizing[["captions"]])) {
-      sizing[["captions"]] = 8
+    if (is.null(sizing$captions)) {
+      sizing$captions = 3
     }
     
-    if (is.null(sizing[["data"]])) {
-      sizing[["data"]] = 2.5
+    if (is.null(sizing$data)) {
+      sizing$data = 2.5
     }
     
-    if (is.null(sizing[["legendText"]])) {
-      sizing[["legendText"]] = 7
+    if (is.null(sizing$legendText)) {
+      sizing$legendText = 10
     }
     
-    if (is.null(sizing[["legendIcons"]])) {
-      sizing[["legendIcons"]] = 1
+    if (is.null(sizing$legendIcons)) {
+      sizing$legendIcons = 1
     }
     
-    if (is.null(sizing[["title"]])) {
-      sizing[["title"]] = 10
-    }
-    
-    if (is.null(sizing[["subtitle"]])) {
-      sizing[["subtitle"]] = 8
-    }
-    
-    if (is.null(sizing[["footnote"]])) {
-      sizing[["footnote"]] = 7
-    }
-    
-    if (is.null(sizing[["resume"]])) {
-      sizing[["resume"]] = .25
+    if (is.null(sizing$resume)) {
+      sizing$resume = .25
     }
     
     if (is.list(accentCols)) {
