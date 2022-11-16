@@ -63,10 +63,6 @@
 #' @param timelineFont One of "sans", "serif", or "mono".
 #' @param captionSpace Value greater than or equal to .5. Higher values create
 #'   more caption space. Default is 1.
-#' @import "reticulate" "patchwork" "colorspace" "magrittr" "dplyr"
-#' @importFrom tools file_ext
-#' @importFrom plyr mapvalues
-#' @importFrom gplots col2hex
 #' @export
 
 Smallset_Timeline <- function(data,
