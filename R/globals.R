@@ -12,9 +12,6 @@ utils::globalVariables(
     "action",
     "datValue",
     "apply_code",
-    "captionTemplateAuthor",
-    "captionTemplateDir",
-    "captionTemplateName",
     "V1",
     "V2",
     "label"

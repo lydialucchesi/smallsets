@@ -1,52 +1,26 @@
-#' Prepare smallset
-#'
-#' @description The function selects a smallset, takes snapshots, and
-#'   identifies the changes between snapshots. The output can be passed to
-#'   \code{create_timeline} to create a smallset timeline.
-#'
-#' @param data Data set.
-#' @param code R or Python script with data preprocessing code for the data set. Filename extension should be included (e.g., "my_code.R" or "my_code.py").
-#' @param dir File path to the data preprocessing code. Default is the working directory.
-#' @param rowCount Integer greater than or equal to 5. Number of rows to include
-#'   in the smallset.
-#' @param rowNums Numeric vector of row numbers. Indicates particular rows from
-#'   the data set to be included in the smallset.
-#' @param auto 1 or 2. 1 = simple gurobi model selection. 2 = advanced gurobi
-#'   model selction.
-#' @param runBig TRUE or FALSE. FALSE means preprocessing code will be run on
-#'   smallset. TRUE means preprocessing code will be run on the big data set,
-#'   and the smallset will be extracted from that output at each snap point.
-#' @param ignoreCols Character vector of column names. Indicates which columns
-#'   from the data set should not be included in the smallset. Columns in this
-#'   vector should usually not be referenced in the data preprocessing code.
-#' @param captionTemplateName File name for the caption template.
-#' @param captionTemplateDir File path for the caption template.
-#' @param captionTemplateAuthor Name of author for the caption template.
+#' Prepare Smallset
+#' @description Prepares the Smallset.
+#' @keywords internal
 #' @import "reticulate"
-#' @importFrom tools file_ext
-#' @export
 
 prepare_smallset <-
   function(data,
            code,
-           dir = getwd(),
-           rowCount = 6,
-           rowNums = NULL,
-           auto = NULL,
-           runBig = TRUE,
-           ignoreCols = NULL,
-           captionTemplateName = "captionTemplate",
-           captionTemplateDir = getwd(),
-           captionTemplateAuthor = NULL) {
+           dir,
+           rowCount,
+           rowNums,
+           auto,
+           runBig,
+           ignoreCols) {
     if (missing(data)) {
-      print("Must specify a data set. See data argument in ?prepare_smallset.")
+      print("Must specify a data set")
     }
     
     if (missing(code)) {
-      print("Must specify preprocessing code. See code argument in ?prepare_smallset.")
+      print("Must specify preprocessing code")
     }
     
-    lang <- file_ext(code)
+    lang <- tools::file_ext(code)
     if (!lang %in% c("R", "py")) {
       stop("Preprocessing code must be in R or Python. Filename extension should be included (e.g., 'my_code.R' or 'my_code.py').")
     }
@@ -118,7 +92,7 @@ prepare_smallset <-
     }
     
     # Prepare the preprocessing function that takes snapshots
-    resumeLocs <-
+    output <-
       write_smallset_code(
         scriptName = code,
         dir = dir,
@@ -163,28 +137,20 @@ prepare_smallset <-
     }
 
     # Return summary information related to the above tasks
-    print(paste0("Summary: ", as.character(length(smallsetList)), " snapshots taken"))
-    print("First snapshot:")
-    print(smallsetList[[1]])
-    print("Last snapshot:")
-    print(smallsetList[[length(smallsetList)]])
+    print(paste0(as.character(length(smallsetList)), " snapshots taken"))
     
     # Identify differences between snapshots
     smallsetTables <- highlight_changes(
       smallsetList = smallsetList,
-      tempName = captionTemplateName,
-      tempDir = captionTemplateDir,
-      tempAuthor = captionTemplateAuthor,
       lang = lang
     )
     
     o <- (
       list(
         smallsetTables[[1]],
-        captionTemplateName,
-        captionTemplateDir,
-        resumeLocs,
-        smallsetTables[[2]]
+        smallsetTables[[2]],
+        output[[1]],
+        output[[2]]
       )
     )
     

@@ -1,100 +1,30 @@
-#' Create the timeline
-#'
-#' @description  The function creates a smallset timeline using output from
-#'   \code{prepare_smallset}. Timelines have many customisation options. They
-#'   are detailed below.
-#'
-#' @param snapshotList List output from \code{prepare_smallset}.
-#' @param constant Hex colour code. Colour represents data that have not changed
-#'   since previous snapshot. Can pass in a list with a colour and transparency
-#'   value (0 to 1) for that colour.
-#' @param changed Hex colour code. Colour represents data that have changed
-#'   since previous snapshot. Can pass in a list with a colour and transparency
-#'   value (0 to 1) for that colour.
-#' @param added Hex colour code. Colour represents data that have been added
-#'   since previous snapshot. Can pass in a list with a colour and transparency
-#'   value (0 to 1) for that colour.
-#' @param deleted Hex colour code. Colour represents data that will be deleted
-#'   prior to next snapshot. Can pass in a list with a colour and transparency
-#'   value (0 to 1) for that colour.
-#' @param colScheme NULL, colour scheme name, or vector. If NULL, uses four
-#'   colour arguments above. If colour scheme name, uses built-in scheme with
-#'   colours pre-assigned to the four preprocessing states (constant, changed,
-#'   added, deleted). If vector, it must be a vector of length five, with the
-#'   first element being the colour scheme name followed by the four
-#'   preprocessing states in the order that they should be assigned to scheme
-#'   colours (e.g.,, c("colScheme1", "changed", "constant", "deleted",
-#'   "added")).
-#' @param abstract TRUE or FALSE. FALSE prints data values in tables.
-#' @param ghostData TRUE or FALSE. TRUE includes blank spaces where data have
-#'   been removed.
-#' @param highlightNA TRUE or FALSE. TRUE plots a lighter colour value to signal
-#'   data value is missing.
-#' @param sizing List of size specifications. Can specify sizes for column
-#'   names, table tiles, caption text, stamp symbols, stamp circles, printed
-#'   data, legend text, legend icons, timeline title, timeline subtitle,
-#'   timeline footnote, and resume marker.
-#' @param truncateData TRUE or FALSE. FALSE if data do not need to be truncated
-#'   to fit within table tiles. Otherwise, an integer specifying width of data
-#'   value (width includes "...").
-#' @param rotateHeader TRUE or FALSE. If TRUE, column names are printed at 45
-#'   degree angle. Use if column names overlap when set to FALSE.
-#' @param headerSpace Vector. Default is c(1, .5). First value corresponds to
-#'   room above the table and second to the right of the table.
-#' @param accentCols Either "darker" or "lighter" for stamp colour. Can enter a
-#'   list corresponding to specific actions.
-#' @param accentColsDif Value between 0 and 1. Corresponds to how much lighter
-#'   or darker accent colour will be. Can pass a list with different accent
-#'   values for different colours.
-#' @param otherTextCol Value between 0 and 1. Default is 1, which is when column
-#'   names are black. 0 means columns will be the constant colour.
-#' @param timelineRows Integer greater than or equal to one. Number of rows to
-#'   divide the smallset timeline into.
-#' @param timelineFont One of "sans", "serif", or "mono".
-#' @param captionSpace Value greater than or equal to .5. Higher values create
-#'   more caption space. Default is 1.
-#' @param captionTemplateName Name of caption template. Can be included so
-#'   template is not overwritten when running \code{prepare_smallset}.
-#' @param captionTemplateDir Name of caption template directory. Can be included
-#'   so template is not overwritten when running \code{prepare_smallset}.
+#' Create the Timeline
+#' @description  Creates the Timeline.
+#' @keywords internal
 #' @import "patchwork" "colorspace" "magrittr" "dplyr"
 #' @importFrom plyr mapvalues
 #' @importFrom gplots col2hex
-#' @export
 
 create_timeline <-
   function(snapshotList,
-           constant = NULL,
-           changed = NULL,
-           added = NULL,
-           deleted = NULL,
-           colScheme = "colScheme1",
-           abstract = TRUE,
-           ghostData = TRUE,
-           highlightNA = FALSE,
-           sizing = list(
-             "columns" = 2,
-             "tiles" = .3,
-             "captions" = 3,
-             "data" = 2.5,
-             "legendText" = 7,
-             "legendIcons" = 1,
-             "title" = 10,
-             "subtitle" = 8,
-             "footnote" = 7,
-             "resume" = .25
-           ),
-           truncateData = FALSE,
-           rotateHeader = FALSE,
-           headerSpace = c(1, .5),
-           accentCols = "darker",
-           accentColsDif = .8,
-           otherTextCol = 1,
-           timelineRows = 1,
-           timelineFont = "sans",
-           captionSpace = 3,
-           captionTemplateName = NULL,
-           captionTemplateDir = NULL) {
+           constant,
+           changed,
+           added,
+           deleted,
+           colScheme,
+           printedData,
+           ghostData,
+           missingDataTints,
+           sizing,
+           truncateData,
+           rotateHeader,
+           headerSpace,
+           accentCols,
+           accentColsDif,
+           otherTextCol,
+           timelineRows,
+           timelineFont,
+           captionSpace) {
     if (missing(snapshotList)) {
       stop(
         "Must include object from prepare_smallset. See snapshotList argument in ?create_timeline."
@@ -113,7 +43,7 @@ create_timeline <-
       )
     }
     
-    altTextInfo <- snapshotList[[5]]
+    altTextInfo <- snapshotList[[2]]
     items <- seq(1, length(snapshotList[[1]]), 1)
     
     # Get four colours ready
@@ -219,44 +149,32 @@ create_timeline <-
     }
     
     # Set argument if it is not specified
-    if (is.null(sizing[["columns"]])) {
-      sizing[["columns"]] = 2
+    if (is.null(sizing$columns)) {
+      sizing$columns = 3
     }
     
-    if (is.null(sizing[["tiles"]])) {
-      sizing[["tiles"]] = 1
+    if (is.null(sizing$tiles)) {
+      sizing$tiles = .1
     }
     
-    if (is.null(sizing[["captions"]])) {
-      sizing[["captions"]] = 8
+    if (is.null(sizing$captions)) {
+      sizing$captions = 3
     }
     
-    if (is.null(sizing[["data"]])) {
-      sizing[["data"]] = 2.5
+    if (is.null(sizing$data)) {
+      sizing$data = 2.5
     }
     
-    if (is.null(sizing[["legendText"]])) {
-      sizing[["legendText"]] = 7
+    if (is.null(sizing$legendText)) {
+      sizing$legendText = 10
     }
     
-    if (is.null(sizing[["legendIcons"]])) {
-      sizing[["legendIcons"]] = 1
+    if (is.null(sizing$legendIcons)) {
+      sizing$legendIcons = 1
     }
     
-    if (is.null(sizing[["title"]])) {
-      sizing[["title"]] = 10
-    }
-    
-    if (is.null(sizing[["subtitle"]])) {
-      sizing[["subtitle"]] = 8
-    }
-    
-    if (is.null(sizing[["footnote"]])) {
-      sizing[["footnote"]] = 7
-    }
-    
-    if (is.null(sizing[["resume"]])) {
-      sizing[["resume"]] = .25
+    if (is.null(sizing$resume)) {
+      sizing$resume = .25
     }
     
     if (is.list(accentCols)) {
@@ -355,7 +273,7 @@ create_timeline <-
     colsPresent <- unique(colsPresent)
     
     # Prepare colour legend
-    if (isTRUE(highlightNA)) {
+    if (isTRUE(missingDataTints)) {
       descriptions <-
         c(
           "Data has not changed.\nTint is missing data.",
@@ -433,7 +351,7 @@ create_timeline <-
         items,
         extTables,
         snapshotList,
-        abstract,
+        printedData,
         ghostData,
         sizing,
         truncateData,
@@ -447,9 +365,7 @@ create_timeline <-
         captionSpace,
         accents,
         legendDF,
-        highlightNA,
-        captionTemplateName,
-        captionTemplateDir,
+        missingDataTints,
         timelineRows,
         FUN = make_timeline_plot
       )
@@ -491,81 +407,12 @@ create_timeline <-
         )
     }
     
-    # Add timeline title, subtitle, and footnote
-    if (is.null(captionTemplateName) &
-        is.null(captionTemplateDir)) {
-      annotateInfo <-
-        as.data.frame(readLines(paste0(
-          snapshotList[[3]], "/", snapshotList[[2]], ".Rmd"
-        )))
-    } else if (!is.null(captionTemplateName) &
-               is.null(captionTemplateDir)) {
-      annotateInfo <-
-        as.data.frame(readLines(paste0(
-          snapshotList[[3]], "/", captionTemplateName, ".Rmd"
-        )))
-    } else if (is.null(captionTemplateName) &
-               !is.null(captionTemplateDir)) {
-      annotateInfo <-
-        as.data.frame(readLines(paste0(
-          captionTemplateDir, "/", snapshotList[[2]], ".Rmd"
-        )))
-    } else {
-      annotateInfo <-
-        as.data.frame(readLines(
-          paste0(captionTemplateDir, "/", captionTemplateName, ".Rmd")
-        ))
-    }
-    
-    colnames(annotateInfo) <- c("lines")
-    
-    title <-
-      subset(annotateInfo,
-             grepl("Timeline title: ", annotateInfo$lines))
-    title <- sub("Timeline title*: ", "", title$lines)[1]
-    
-    subtitle <-
-      subset(annotateInfo,
-             grepl("Timeline subtitle: ", annotateInfo$lines))
-    subtitle <- sub("Timeline subtitle*: ", "", subtitle$lines)[1]
-    
-    footnote <-
-      subset(annotateInfo,
-             grepl("Timeline footnote: ", annotateInfo$lines))
-    footnote <- sub("Timeline footnote*: ", "", footnote$lines)[1]
-    
-    quote <- "'"
-    timelineHeader <- paste0(
-      " + plot_annotation(title = ",
-      quote,
-      title,
-      quote,
-      ", subtitle = ",
-      quote,
-      as.character(subtitle),
-      quote,
-      ", caption = ",
-      quote,
-      as.character(footnote),
-      quote,
-      ")"
-    )
-    
     # Set timeline design choices
     fontChoice <-
       paste0(
         " & theme(text = element_text(family = '",
         timelineFont,
-        "', colour = otherTextColour),
-        plot.title = element_text(size = ",
-        sizing[["title"]],
-        "), ",
-        "plot.subtitle = element_text(size = ",
-        sizing[["subtitle"]],
-        "), ",
-        "plot.caption = element_text(size = ",
-        sizing[["footnote"]],
-        "), ",
+        "', colour = otherTextColour),",
         "legend.key.size = unit(",
         sizing[["legendIcons"]],
         ", 'line'),
@@ -575,15 +422,12 @@ create_timeline <-
       )
     
     patchedPlots <-
-      paste0(patchedPlots, timelineHeader, fontChoice)
+      paste0(patchedPlots, fontChoice)
     
-    generate_alt_text(title = title,
-                      subtitle = subtitle,
-                      footnote = footnote,
-                      snapshotList = snapshotList,
+    generate_alt_text(snapshotList = snapshotList,
                       altTextInfo = altTextInfo,
                       l = l,
-                      abstract = abstract,
+                      printedData = printedData,
                       ghostData = ghostData)
 
     o <- return(eval(parse(text = patchedPlots)))

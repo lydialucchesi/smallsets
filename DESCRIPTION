@@ -33,7 +33,6 @@ Imports:
     english,
     tibble,
     testthat,
-    reticulate,
-    tools
+    reticulate
 Suggests: 
     gurobi

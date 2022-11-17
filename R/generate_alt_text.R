@@ -5,28 +5,13 @@
 #' @importFrom plotrix color.id
 
 generate_alt_text <-
-  function(title,
-           subtitle,
-           footnote,
-           snapshotList,
+  function(snapshotList,
            altTextInfo,
            l,
-           abstract,
+           printedData,
            ghostData) {
     suppressWarnings(dir.create("altText"))
-    
-    if ((title != "") & (!subtitle %in% c(" ", ""))) {
-      suppressWarnings(brew(file = system.file("altTextTemplates", "titleOpt1.txt", package="smallsets"), output = "altText/intro_1.txt"))
-    }
-    
-    if ((title != "") & (subtitle %in% c(" ", ""))) {
-      suppressWarnings(brew(file = system.file("altTextTemplates", "titleOpt2.txt", package="smallsets"), output = "altText/intro_1.txt"))
-    }
-    
-    if (footnote != "") {
-      suppressWarnings(brew(file = system.file("altTextTemplates", "footnote.txt", package="smallsets"), output = "altText/intro_2.txt"))
-    }
-    
+  
     suppressWarnings(brew(file = system.file("altTextTemplates", "snapNum.txt", package="smallsets"), output = "altText/intro_3.txt"))
     
     if (("changed1" %in% row.names(snapshotList[[9]])) | (snapshotList[[6]] %in% snapshotList[[9]]$colValue)) {
@@ -104,13 +89,13 @@ generate_alt_text <-
           altTextInfo$colsDrop <- NULL
         }
         
-        if (isTRUE(abstract) & isTRUE(ghostData)) {
+        if (isFALSE(printedData) & isTRUE(ghostData)) {
           if (layer_data(l[[i]], 3)$label != "") {
             suppressWarnings(
               brew(file = system.file("altTextTemplates", "snapCaption3.txt", package="smallsets"), output = "altText/body_13.txt")
             )
           }
-        } else if (isFALSE(abstract) & isFALSE(ghostData)) {
+        } else if (isTRUE(printedData) & isFALSE(ghostData)) {
           if (layer_data(l[[i]], 5)$label != "") {
             suppressWarnings(
               brew(file = system.file("altTextTemplates", "snapCaption5.txt", package="smallsets"), output = "altText/body_13.txt")
@@ -225,15 +210,13 @@ generate_alt_text <-
           altTextInfo$colsAdd <- NULL
         }
         
-        # check on this
-        # what about other combinations of abstract and ghost
-        if (isTRUE(abstract) & isTRUE(ghostData)) {
+        if (isFALSE(printedData) & isTRUE(ghostData)) {
           if (layer_data(l[[i]], 3)$label != "") {
             suppressWarnings(
               brew(file = system.file("altTextTemplates", "snapCaption3.txt", package="smallsets"), output = "altText/body_13.txt")
             )
           }
-        } else if (isFALSE(abstract) & isFALSE(ghostData)) {
+        } else if (isTRUE(printedData) & isFALSE(ghostData)) {
           if (layer_data(l[[i]], 5)$label != "") {
             suppressWarnings(
               brew(file = system.file("altTextTemplates", "snapCaption5.txt", package="smallsets"), output = "altText/body_13.txt")
