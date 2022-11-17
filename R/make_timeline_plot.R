@@ -1,9 +1,8 @@
 #' Make timeline plot
 #' @description The function transforms a table snapshot into a plot snapshot.
 #' @keywords internal
-#' @import "reshape2" "ggplot2" "ggforce" "ggfittext" "colorspace" "stringr"
+#' @import "ggplot2" "ggforce" "ggfittext" "colorspace" "stringr"
 #'   "ggtext"
-#' @importFrom gplots col2hex
 
 make_timeline_plot <-
   function(itemNum,
@@ -28,22 +27,21 @@ make_timeline_plot <-
     
     # Retrieve colour and data information for a snapshot
     tab1 <- extTables[[itemNum]][[1]]
+    tab1[] <- lapply(tab1, as.character)
+    
     tab2 <- extTables[[itemNum]][[2]]
     
     # Set plot coordinates
     xs <-
-      data.frame(variable = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
+      data.frame(ind = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
     
-    for (i in 1:ncol(tab1)) {
-      tab1[, i] <- as.character(tab1[, i])
-    }
     tab1$y <- seq(nrow(tab1), 1, -1)
-    tab1Long <- suppressWarnings(reshape2::melt(tab1, id = c("y")))
+    tab1Long <- suppressWarnings(cbind(tab1[ncol(tab1)], utils::stack(tab1[-ncol(tab1)])))
     tab1Long <- merge(tab1Long, xs)
     colnames(tab1Long) <- c("variable", "y", "colValue", "x")
     
     tab2$y <- seq(nrow(tab2), 1, -1)
-    tab2Long <- suppressWarnings(reshape2::melt(tab2, id = c("y")))
+    tab2Long <- suppressWarnings(cbind(tab2[ncol(tab2)], utils::stack(tab2[-ncol(tab2)])))
     tab2Long <- merge(tab2Long, xs)
     colnames(tab2Long) <- c("variable", "y", "datValue", "x")
     
@@ -51,7 +49,6 @@ make_timeline_plot <-
     tabs <- suppressMessages(left_join(tabs, accents))
     
     xs$y <- rep(max(tabs$y) + 1, nrow(xs))
-    # xs$variable <- str_to_title(xs$variable)
     
     tabs <-
       suppressMessages(left_join(tabs, snapshotList[[9]], by = "colValue"))
@@ -60,24 +57,24 @@ make_timeline_plot <-
     if (isTRUE(missingDataTints)) {
       missingCols <- c()
       if (snapshotList[[5]] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(col2hex(snapshotList[[5]]), .4))
+        missingCols <- c(missingCols, lighten(snapshotList[[5]], .4))
       }
       
       if (snapshotList[[6]] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(col2hex(snapshotList[[6]]), .4))
+        missingCols <- c(missingCols, lighten(snapshotList[[6]], .4))
       }
       
       if (snapshotList[[7]] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(col2hex(snapshotList[[7]]), .4))
+        missingCols <- c(missingCols, lighten(snapshotList[[7]], .4))
       }
       
       if (snapshotList[[8]] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(col2hex(snapshotList[[8]]), .4))
+        missingCols <- c(missingCols, lighten(snapshotList[[8]], .4))
       }
       
       tabs$colValue <-
         ifelse(is.na(tabs$datValue),
-               lighten(col2hex(tabs$colValue), .4),
+               lighten(tabs$colValue, .4),
                tabs$colValue)
     }
     
@@ -105,8 +102,6 @@ make_timeline_plot <-
     if (isTRUE(missingDataTints)) {
       legendDF$alpha <-
         c(snapshotList[[9]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], snapshotList[[9]]$alpha)
-      # legendDF$alpha <-
-      #   c(snapshotList[[9]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))])
       } else {
       legendDF$alpha <- snapshotList[[9]]$alpha
     }
@@ -169,7 +164,7 @@ make_timeline_plot <-
       ) +
       geom_text(
         data = xs,
-        aes(x = x, y = y, label = variable),
+        aes(x = x, y = y, label = ind),
         family = timelineFont,
         size = sizing$columns,
         colour = otherTextCol,

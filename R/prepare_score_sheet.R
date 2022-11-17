@@ -2,7 +2,7 @@
 #' @description Generates a score sheet for automatic Smallset selection
 #'   between snapshots.
 #' @keywords internal
-#' @import "flextable" "dplyr" "magrittr"
+#' @import "flextable" "dplyr"
 
 prepare_score_sheet <-
   
@@ -22,8 +22,11 @@ prepare_score_sheet <-
       c <- p + 1
       
       # Get two snapshots
-      lprior <- smallsetList[[p]] %>% mutate_all(as.character)
-      lcurrent <- smallsetList[[c]] %>% mutate_all(as.character)
+      lprior <- smallsetList[[p]]
+      lprior[] <- lapply(lprior, as.character)
+      
+      lcurrent <- smallsetList[[c]]
+      lcurrent[] <- lapply(lcurrent, as.character)
       
       # Set starting colours
       if (p > 1) {

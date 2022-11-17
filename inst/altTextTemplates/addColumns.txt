@@ -1,1 +1,7 @@
-Columns <%= combine_words(altTextInfo$colsAdd) %> are <%= addColour %>.
+Columns <%= if (length(altTextInfo$colsAdd) == 2) {
+  paste(altTextInfo$colsAdd[1], "and", altTextInfo$colsAdd[2])
+} else {
+  altTextInfo$colsAdd[1:length(altTextInfo$colsAdd) - 1] <- paste0(altTextInfo$colsAdd[1:length(altTextInfo$colsAdd) - 1], ",")
+  altTextInfo$colsAdd[length(altTextInfo$colsAdd)] <- paste0("and ", altTextInfo$colsAdd[length(altTextInfo$colsAdd)])
+  cat(altTextInfo$colsAdd)
+} %> are <%= addColour %>.

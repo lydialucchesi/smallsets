@@ -1,1 +1,1 @@
-<%= str_to_title(as.english(length(altTextInfo$rowsDrop))) %> rows are <%= delColour %>.
+<%= as.character(length(altTextInfo$rowsDrop)) %> rows are <%= delColour %>.

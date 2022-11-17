@@ -11,7 +11,8 @@ select_smallset <- function(data,
   # Randomly sample rows from the original dataset
   if (is.null(rowNums)) {
     data$smallsetRowID <- row.names(data)
-    smallset <- dplyr::sample_n(data, size = rowCount)
+    smallset <- sample(data$smallsetRowID, size = rowCount)
+    smallset <- data[c(smallset), ]
     smallset <- smallset[,!(names(smallset) %in% ignoreCols)]
   }
   
@@ -19,8 +20,8 @@ select_smallset <- function(data,
   if (!is.null(rowNums)) {
     data$smallsetRowID <- row.names(data)
     smallset1 <- data[rowNums,]
-    smallset2 <-
-      dplyr::sample_n(data[-rowNums,], size = (rowCount - length(rowNums)))
+    smallset2 <- sample(subset(data, !(as.numeric(data$smallsetRowID) %in% rowNums))$smallsetRowID, rowCount - length(rowNums))
+    smallset2 <- data[c(smallset2), ]
     smallset <- rbind(smallset1, smallset2)
     smallset <- smallset[,!(names(smallset) %in% ignoreCols)]
   }

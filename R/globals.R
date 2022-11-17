@@ -5,7 +5,7 @@ utils::globalVariables(
     "x",
     "y",
     "colAlp",
-    "variable",
+    "ind",
     "xCir",
     "yCir",
     "colValue2",

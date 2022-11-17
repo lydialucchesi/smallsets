@@ -18,8 +18,11 @@ highlight_changes <-
       c <- p + 1
       
       # Get two snapshots
-      lprior <- smallsetList[[p]] %>% mutate_all(as.character)
-      lcurrent <- smallsetList[[c]] %>% mutate_all(as.character)
+      lprior <- smallsetList[[p]]
+      lprior[] <- lapply(lprior, as.character)
+      
+      lcurrent <- smallsetList[[c]]
+      lcurrent[] <- lapply(lcurrent, as.character)
       
       # Set starting colours
       if (p > 1) {
@@ -78,11 +81,6 @@ highlight_changes <-
       
       row.names(lpriorAdj) <- as.numeric(row.names(lpriorAdj))
       row.names(lcurrentAdj) <- as.numeric(row.names(lcurrentAdj))
-      
-      # original <-
-      #   setdiff(subset(lpriorAdj, select = colnames(lcurrentAdj)), lcurrentAdj)
-      # update <-
-      #   setdiff(lcurrentAdj, subset(lpriorAdj, select = colnames(lcurrentAdj)))
       
       original <- subset(lpriorAdj, select = colnames(lcurrentAdj))
       update <- lcurrentAdj

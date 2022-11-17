@@ -7,12 +7,11 @@ add_ghost_data <-
   function(itemNum, ghostDF1, ghostDF2, snapshotList) {
     
     # Extract colour and data tables
-    tab1 <-
-      as.data.frame(snapshotList[[1]][[itemNum]]$body$styles$text$color$data) %>%
-      mutate_all(as.character)
-    tab2 <-
-      as.data.frame(snapshotList[[1]][[itemNum]]$body$dataset) %>%
-      mutate_all(as.character)
+    tab1 <- as.data.frame(snapshotList[[1]][[itemNum]]$body$styles$text$color$data)
+    tab1[] <- lapply(tab1, as.character)
+
+    tab2 <- as.data.frame(snapshotList[[1]][[itemNum]]$body$dataset)
+    tab2[] <- lapply(tab2, as.character)
     
     # Insert ghost rows in colour data frame
     row.names(tab1) <- row.names(tab2)

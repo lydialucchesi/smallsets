@@ -13,26 +13,20 @@ RoxygenNote: 7.1.1
 Depends:
     R (>= 3.5.0)
 Imports:
-    stringr,
-    plyr,
+    brew,
+    colorspace,
     dplyr,
     flextable,
-    reshape2,
-    ggplot2,
-    ggforce,
     ggfittext,
-    gplots,
-    colorspace,
-    patchwork,
+    ggforce,
+    ggplot2,
     ggtext,
-    magrittr,
-    brew,
-    knitr,
+    gplots,
+    patchwork,
     plotrix,
-    readr,
-    english,
-    tibble,
+    reticulate,
+    stringr,
     testthat,
-    reticulate
+    tibble
 Suggests: 
     gurobi

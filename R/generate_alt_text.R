@@ -1,7 +1,7 @@
 #' Generate Alt Text
 #' @description The function produces alt text for the Smallset Timeline figure.
 #' @keywords internal
-#' @import "brew" "knitr" "readr" "english"
+#' @import "brew"
 #' @importFrom plotrix color.id
 
 generate_alt_text <-
@@ -37,8 +37,7 @@ generate_alt_text <-
     
     at <- c()
     for (s in snaps) {
-      atNew <-
-        readr::read_file(paste0("altText/intro_", as.character(s), ".txt"))
+      atNew <- utils::read.delim(paste0("altText/intro_", as.character(s), ".txt"), header = FALSE)[1, 1]
       at <- paste(at, atNew)
     }
     at <- str_replace_all(at, "[\r\n]" , "")
@@ -117,7 +116,7 @@ generate_alt_text <-
         
         at <- c()
         for (s in snaps) {
-          atNew <- readr::read_file(paste0("altText/body_", as.character(s), ".txt"))
+          atNew <- utils::read.delim(paste0("altText/body_", as.character(s), ".txt"), header = FALSE)[1, 1]
           at <- paste(at, atNew)
         }
         at <- str_replace_all(at, "[\r\n]" , "")
@@ -239,7 +238,7 @@ generate_alt_text <-
         
         at <- c()
         for (s in snaps) {
-          atNew <- readr::read_file(paste0("altText/body_", as.character(s), ".txt"))
+          atNew <- utils::read.delim(paste0("altText/body_", as.character(s), ".txt"), header = FALSE)[1, 1]
           at <- paste(at, atNew)
         }
         at <- str_replace_all(at, "[\r\n]" , "")
@@ -261,7 +260,7 @@ generate_alt_text <-
     
     altText <- c()
     for (i in 1:length(txtFiles)) {
-      newPart <- readr::read_file(paste0("altText/", txtFiles[i]))
+      newPart <- utils::read.delim(paste0("altText/", txtFiles[i]), header = FALSE)[1, 1]
       altText <- paste0(altText, newPart)
     }
     

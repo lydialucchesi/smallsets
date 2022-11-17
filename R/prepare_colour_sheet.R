@@ -11,9 +11,11 @@ prepare_colour_sheet <-
     added = "#0000FF"
     deleted = "#FF0000"
     
-    first <- smallsetList[[1]] %>% mutate_all(as.character)
-    last <-
-      smallsetList[[length(smallsetList)]] %>% mutate_all(as.character)
+    first <- smallsetList[[1]]
+    first[] <- lapply(first, as.character)
+    
+    last <- smallsetList[[length(smallsetList)]]
+    last[] <- lapply(last, as.character)
     
     colsDrop <- setdiff(colnames(first), colnames(last))
     rowsDrop <- setdiff(rownames(first), rownames(last))
@@ -49,8 +51,11 @@ prepare_colour_sheet <-
     for (p in 1:(length(smallsetList) - 1)) {
       c <- p + 1
       
-      lprior <- smallsetList[[p]] %>% mutate_all(as.character)
-      lcurrent <- smallsetList[[c]] %>% mutate_all(as.character)
+      lprior <- smallsetList[[p]]
+      lprior[] <- lapply(lprior, as.character)
+      
+      lcurrent <- smallsetList[[c]]
+      lcurrent[] <- lapply(lcurrent, as.character)
       
       if (p > 1) {
         tprior <- tables[[p]]

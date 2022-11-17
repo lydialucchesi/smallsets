@@ -1,9 +1,7 @@
 #' Create the Timeline
 #' @description  Creates the Timeline.
 #' @keywords internal
-#' @import "patchwork" "colorspace" "magrittr" "dplyr"
-#' @importFrom plyr mapvalues
-#' @importFrom gplots col2hex
+#' @import "patchwork" "colorspace"
 
 create_timeline <-
   function(snapshotList,
@@ -138,12 +136,10 @@ create_timeline <-
     for (i in 1:length(snapshotList[[1]])) {
       temp <- snapshotList[[1]][[i]]$body$styles$text$color$data
       for (c in colnames(temp)) {
-        temp[, c] <- plyr::mapvalues(
-          temp[, c],
-          from = c("#808080", "#008000", "#0000FF", "#FF0000"),
-          to = c(constant, changed, added, deleted),
-          warn_missing = FALSE
-        )
+        temp[,c] <- replace(temp[,c], temp[,c] == "#808080", constant)
+        temp[,c] <- replace(temp[,c], temp[,c] == "#008000", changed)
+        temp[,c] <- replace(temp[,c], temp[,c] == "#0000FF", added)
+        temp[,c] <- replace(temp[,c], temp[,c] == "#FF0000", deleted)
       }
       snapshotList[[1]][[i]]$body$styles$text$color$data <- temp
     }
@@ -247,19 +243,12 @@ create_timeline <-
         degree = unlist(accentColsDif)
       )
     rownames(accents) <- NULL
-    accents$hex <-
-      ifelse(
-        grepl("#", accents$colValue) == TRUE,
-        as.character(accents$colValue),
-        col2hex(accents$colValue)
-      )
     accents$colValue2 <-
       ifelse(
         accents$accent == "darker",
-        darken(accents$hex, accents$degree),
-        lighten(accents$hex, accents$degree)
+        darken(accents$colValue, accents$degree),
+        lighten(accents$colValue, accents$degree)
       )
-    accents$hex <- NULL
     
     # Identify which colours are present in the timeline
     colsPresent <- c()
@@ -306,9 +295,8 @@ create_timeline <-
     
     # Insert ghost data
     if (isTRUE(ghostData)) {
-      ghostDF1 <-
-        as.data.frame(snapshotList[[1]][[1]]$body$styles$text$color$data) %>%
-        mutate_all(as.character)
+      ghostDF1 <- as.data.frame(snapshotList[[1]][[1]]$body$styles$text$color$data)
+      ghostDF1[] <- lapply(ghostDF1, as.character)
       
       for (i in 1:nrow(ghostDF1)) {
         for (j in 1:length(colnames(ghostDF1))) {
@@ -316,9 +304,8 @@ create_timeline <-
         }
       }
       
-      ghostDF2 <-
-        as.data.frame(snapshotList[[1]][[1]]$body$dataset) %>%
-        mutate_all(as.character)
+      ghostDF2 <- as.data.frame(snapshotList[[1]][[1]]$body$dataset)
+      ghostDF2[] <- lapply(ghostDF2, as.character)
       
       for (i in 1:nrow(ghostDF2)) {
         for (j in 1:length(colnames(ghostDF2))) {

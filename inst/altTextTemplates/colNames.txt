@@ -1,1 +1,7 @@
-The columns, in order from left to right, are: <%= combine_words(colnames(snapshotList[[1]][[1]]$body$dataset)) %>.
+The columns, in order from left to right, are: <%= if (length(colnames(snapshotList[[1]][[1]]$body$dataset)) == 2) {
+  paste(colnames(snapshotList[[1]][[1]]$body$dataset)[1], "and", colnames(snapshotList[[1]][[1]]$body$dataset)[2])
+} else {
+  colnames(snapshotList[[1]][[1]]$body$dataset)[1:length(colnames(snapshotList[[1]][[1]]$body$dataset)) - 1] <- paste0(colnames(snapshotList[[1]][[1]]$body$dataset)[1:length(colnames(snapshotList[[1]][[1]]$body$dataset)) - 1], ",")
+  colnames(snapshotList[[1]][[1]]$body$dataset)[length(colnames(snapshotList[[1]][[1]]$body$dataset))] <- paste0("and ", colnames(snapshotList[[1]][[1]]$body$dataset)[length(colnames(snapshotList[[1]][[1]]$body$dataset))])
+  cat(colnames(snapshotList[[1]][[1]]$body$dataset))
+} %>.
