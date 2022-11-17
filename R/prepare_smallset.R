@@ -2,7 +2,6 @@
 #' @description Prepares the Smallset.
 #' @keywords internal
 #' @import "reticulate"
-#' @importFrom tools file_ext
 
 prepare_smallset <-
   function(data,
@@ -21,7 +20,7 @@ prepare_smallset <-
       print("Must specify preprocessing code")
     }
     
-    lang <- file_ext(code)
+    lang <- tools::file_ext(code)
     if (!lang %in% c("R", "py")) {
       stop("Preprocessing code must be in R or Python. Filename extension should be included (e.g., 'my_code.R' or 'my_code.py').")
     }
