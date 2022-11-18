@@ -13,8 +13,8 @@ make_timeline_plot <-
            truncateData,
            rotateHeader,
            headerSpace,
-           accentCols,
-           accentColsDif,
+           accentCol,
+           accentColDif,
            otherTextCol,
            maxDims,
            timelineFont,
@@ -31,8 +31,7 @@ make_timeline_plot <-
     tab2 <- extTables[[itemNum]][[2]]
     
     # Set plot coordinates
-    xs <-
-      data.frame(ind = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
+    xs <- data.frame(ind = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
     
     tab1$y <- seq(nrow(tab1), 1, -1)
     tab1Long <- suppressWarnings(cbind(tab1[ncol(tab1)], utils::stack(tab1[-ncol(tab1)])))
@@ -49,26 +48,23 @@ make_timeline_plot <-
     
     xs$y <- rep(max(tabs$y) + 1, nrow(xs))
     
-    tabs <-
-      suppressMessages(merge(tabs, snapshotList[[9]], by = "colValue"))
-    
     # Prepare lighter colour values for tiles with missing data
     if (isTRUE(missingDataTints)) {
       missingCols <- c()
-      if (snapshotList[[5]] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(snapshotList[[5]], .4))
+      if (snapshotList[[5]]$colValue[1] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(snapshotList[[5]]$colValue[1], .4))
       }
       
-      if (snapshotList[[6]] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(snapshotList[[6]], .4))
+      if (snapshotList[[5]]$colValue[2] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(snapshotList[[5]]$colValue[2], .4))
       }
       
-      if (snapshotList[[7]] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(snapshotList[[7]], .4))
+      if (snapshotList[[5]]$colValue[3] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(snapshotList[[5]]$colValue[3], .4))
       }
       
-      if (snapshotList[[8]] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(snapshotList[[8]], .4))
+      if (snapshotList[[5]]$colValue[4] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(snapshotList[[5]]$colValue[4], .4))
       }
       
       tabs$colValue <-
@@ -77,38 +73,7 @@ make_timeline_plot <-
                tabs$colValue)
     }
     
-    tileColGuide <-
-      data.frame(
-        breaks = accents$colValue,
-        labels = c("constant", "changed", "added", "deleted")
-      )
-    
-    legendDF$legend <- TRUE
-    
-    if (isTRUE(missingDataTints)) {
-      addNewRows <-
-        data.frame(
-          colValue = missingCols,
-          description = c(""),
-          legend = c(FALSE)
-        )
-      legendDF <- rbind(legendDF, addNewRows)
-    }
-    
-    legendDF$fillVar <-
-      factor(legendDF$colValue, levels = legendDF$colValue)
-    
-    if (isTRUE(missingDataTints)) {
-      legendDF$alpha <-
-        c(snapshotList[[9]]$alpha[1:nrow(subset(legendDF, legendDF == TRUE))], snapshotList[[9]]$alpha)
-      } else {
-      legendDF$alpha <- snapshotList[[9]]$alpha
-    }
-    
-    legendDF$colAlp <-
-      as.factor(alpha(legendDF$fillVar, legendDF$alpha))
-    tabs <- suppressMessages(merge(tabs, legendDF[, c("colValue", "colAlp")]))
-    legendDF <- subset(legendDF, legend == TRUE)
+    tabs$colValue <- factor(tabs$colValue, levels = legendDF$colValue)
     
     if (isFALSE(ghostData)) {
       if (max(tabs$x) != maxDims[1]) {
@@ -145,19 +110,19 @@ make_timeline_plot <-
       hjustVal <- .5
       vjustVal <- .5
     }
-    
+
     # Create plot
     abstractSmallset <- ggplot() +
       geom_tile(
         data = tabs,
-        aes(x = x, y = y, fill = colAlp),
+        aes(x = x, y = y, fill = colValue),
         colour = "white",
         size = sizing$tiles
       ) +
       scale_fill_identity(
         "",
         labels = legendDF$description,
-        breaks = legendDF$colAlp,
+        breaks = legendDF$colValue,
         guide = "legend",
         drop = FALSE
       ) +
@@ -206,7 +171,7 @@ make_timeline_plot <-
       tabs$datValue <- paste0(tabs$datValue, "...")
     }
     
-    if (printedData != FALSE) {
+    if (isTRUE(printedData)) {
       abstractSmallset <- abstractSmallset +
         geom_text(
           data = tabs,
@@ -302,7 +267,6 @@ make_timeline_plot <-
             yend = maxDims[2] + .5
           ),
           colour = as.character(snapshotList[[9]]$colValue[1]),
-          alpha = snapshotList[[9]]$alpha[1],
           size = sizing$resume
         )
     }

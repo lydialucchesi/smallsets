@@ -6,6 +6,7 @@
 
 generate_alt_text <-
   function(snapshotList,
+           legendDF,
            altTextInfo,
            l,
            printedData,
@@ -14,18 +15,18 @@ generate_alt_text <-
   
     suppressWarnings(brew(file = system.file("altTextTemplates", "snapNum.txt", package="smallsets"), output = "altText/intro_3.txt"))
     
-    if (("changed1" %in% row.names(snapshotList[[9]])) | (snapshotList[[6]] %in% snapshotList[[9]]$colValue)) {
-      editColour <- sapply(snapshotList[[6]], color.id)[1]
+    if (sum(grepl("Data has been edited.", legendDF)) == 1) {
+      editColour <- sapply(snapshotList[[5]]$colValue[2], color.id)[1]
       suppressWarnings(brew(file = system.file("altTextTemplates", "editColour.txt", package="smallsets"), output = "altText/intro_4.txt"))
     }
     
-    if (("added1" %in% row.names(snapshotList[[9]])) | (snapshotList[[7]] %in% snapshotList[[9]]$colValue)) {
-      addColour <- sapply(snapshotList[[7]], color.id)[1]
+    if (sum(grepl("Data has been added.", legendDF)) == 1) {
+      addColour <- sapply(snapshotList[[5]]$colValue[3], color.id)[1]
       suppressWarnings(brew(file = system.file("altTextTemplates", "addColour.txt", package="smallsets"), output = "altText/intro_5.txt"))
     }
     
-    if (("deleted1" %in% row.names(snapshotList[[9]])) | (snapshotList[[8]] %in% snapshotList[[9]]$colValue)) {
-      delColour <- sapply(snapshotList[[8]], color.id)[1]
+    if (sum(grepl("Data will be deleted.", legendDF)) == 1) {
+      delColour <- sapply(snapshotList[[5]]$colValue[4], color.id)[1]
       suppressWarnings(brew(file = system.file("altTextTemplates", "delColour.txt", package="smallsets"), output = "altText/intro_6.txt"))
     }
     

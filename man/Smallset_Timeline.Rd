@@ -13,11 +13,7 @@ Smallset_Timeline(
   auto = NULL,
   runBig = TRUE,
   ignoreCols = NULL,
-  constant = NULL,
-  changed = NULL,
-  added = NULL,
-  deleted = NULL,
-  colScheme = "colScheme1",
+  colours = "colScheme1",
   printedData = FALSE,
   ghostData = TRUE,
   missingDataTints = FALSE,
@@ -26,8 +22,8 @@ Smallset_Timeline(
   truncateData = FALSE,
   rotateHeader = FALSE,
   headerSpace = c(1, 0.5),
-  accentCols = "darker",
-  accentColsDif = 0.8,
+  accentCol = "darker",
+  accentColDif = 0.8,
   otherTextCol = 1,
   timelineRows = 1,
   timelineFont = "sans",
@@ -59,30 +55,7 @@ and the smallset will be extracted from that output at each snap point.}
 from the data set should not be included in the smallset. Columns in this
 vector should usually not be referenced in the data preprocessing code.}
 
-\item{constant}{Hex colour code. Colour represents data that have not changed
-since previous snapshot. Can pass in a list with a colour and transparency
-value (0 to 1) for that colour.}
-
-\item{changed}{Hex colour code. Colour represents data that have changed
-since previous snapshot. Can pass in a list with a colour and transparency
-value (0 to 1) for that colour.}
-
-\item{added}{Hex colour code. Colour represents data that have been added
-since previous snapshot. Can pass in a list with a colour and transparency
-value (0 to 1) for that colour.}
-
-\item{deleted}{Hex colour code. Colour represents data that will be deleted
-prior to next snapshot. Can pass in a list with a colour and transparency
-value (0 to 1) for that colour.}
-
-\item{colScheme}{NULL, colour scheme name, or vector. If NULL, uses four
-colour arguments above. If colour scheme name, uses built-in scheme with
-colours pre-assigned to the four preprocessing states (constant, changed,
-added, deleted). If vector, it must be a vector of length five, with the
-first element being the colour scheme name followed by the four
-preprocessing states in the order that they should be assigned to scheme
-colours (e.g.,, c("colScheme1", "changed", "constant", "deleted",
-"added")).}
+\item{colours}{how to select colours}
 
 \item{printedData}{TRUE or FALSE. TRUE prints data values in tables.}
 
@@ -104,10 +77,10 @@ degree angle. Use if column names overlap when set to FALSE.}
 \item{headerSpace}{Vector. Default is c(1, .5). First value corresponds to
 room above the table and second to the right of the table.}
 
-\item{accentCols}{Either "darker" or "lighter" for stamp colour. Can enter a
+\item{accentCol}{Either "darker" or "lighter" for stamp colour. Can enter a
 list corresponding to specific actions.}
 
-\item{accentColsDif}{Value between 0 and 1. Corresponds to how much lighter
+\item{accentColDif}{Value between 0 and 1. Corresponds to how much lighter
 or darker accent colour will be. Can pass a list with different accent
 values for different colours.}
 

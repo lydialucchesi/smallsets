@@ -5,11 +5,7 @@
 
 create_timeline <-
   function(snapshotList,
-           constant,
-           changed,
-           added,
-           deleted,
-           colScheme,
+           colours,
            printedData,
            ghostData,
            missingDataTints,
@@ -17,131 +13,20 @@ create_timeline <-
            truncateData,
            rotateHeader,
            headerSpace,
-           accentCols,
-           accentColsDif,
+           accentCol,
+           accentColDif,
            otherTextCol,
            timelineRows,
            timelineFont,
            captionSpace) {
-    if (missing(snapshotList)) {
-      stop(
-        "Must include object from prepare_smallset. See snapshotList argument in ?create_timeline."
-      )
-    }
     
-    if ((class(snapshotList)[1] != "smallsetSnapshots"))
-      stop(
-        "Object snapshotList is not of class smallsetSnapshots (output from prepare_smallset).'"
-      )
+    items <- seq(1, length(snapshotList[[1]]), 1)
     
     if (length(headerSpace) != 2) {
       headerSpace <- c(1, .5)
       print(
         "headerSpace must be a vector of length two. See headerSpace argument in ?create_timeline. Resorting to default c(1, .5)."
       )
-    }
-    
-    altTextInfo <- snapshotList[[2]]
-    items <- seq(1, length(snapshotList[[1]]), 1)
-    
-    # Get four colours ready
-    if (is.null(constant) &
-        is.null(changed) & is.null(added) & is.null(deleted)) {
-      if (length(colScheme) > 1) {
-        chosenScheme <- return_scheme(colScheme = colScheme[1])
-      }
-      else {
-        chosenScheme <- return_scheme(colScheme = colScheme)
-      }
-    } else {
-      chosenScheme <- NULL
-      colScheme <- NULL
-    }
-    
-    if (!is.null(colScheme) & length(colScheme) > 1) {
-      constantPlace <- match("constant", colScheme) - 1
-      constant <- unlist(chosenScheme[constantPlace])[1]
-      names(constant) <- "constant1"
-      constantAlpha <-
-        as.numeric(unlist(chosenScheme[constantPlace])[[2]])
-      
-      changedPlace <- match("changed", colScheme) - 1
-      changed <- unlist(chosenScheme[changedPlace])[1]
-      names(changed) <- "changed1"
-      changedAlpha <-
-        as.numeric(unlist(chosenScheme[changedPlace])[[2]])
-      
-      addedPlace <- match("added", colScheme) - 1
-      added <- unlist(chosenScheme[addedPlace])[1]
-      names(added) <- "added1"
-      addedAlpha <-
-        as.numeric(unlist(chosenScheme[addedPlace])[[2]])
-      
-      deletedPlace <- match("deleted", colScheme) - 1
-      deleted <- unlist(chosenScheme[deletedPlace])[[1]]
-      names(deleted) <- "deleted1"
-      deletedAlpha <-
-        as.numeric(unlist(chosenScheme[deletedPlace])[[2]])
-      
-    } else if ((!is.null(colScheme) & length(colScheme) == 1)) {
-      constant <- unlist(chosenScheme[1][1])[1]
-      constantAlpha <- as.numeric(unlist(chosenScheme[1][1])[2])
-      
-      changed <- unlist(chosenScheme[2][1])[1]
-      changedAlpha <- as.numeric(unlist(chosenScheme[2][1])[2])
-      
-      added <- unlist(chosenScheme[3][1])[1]
-      addedAlpha <- as.numeric(unlist(chosenScheme[3][1])[2])
-      
-      deleted <- unlist(chosenScheme[4][1])[1]
-      deletedAlpha <- as.numeric(unlist(chosenScheme[4][1])[2])
-      
-    } else {
-      if (!is.list(constant)) {
-        constantAlpha = .4
-      } else {
-        constantAlpha = constant[[2]]
-        constant = constant[[1]]
-      }
-      
-      if (!is.list(changed)) {
-        changedAlpha = .4
-      } else {
-        changedAlpha = changed[[2]]
-        changed = changed[[1]]
-      }
-      
-      if (!is.list(added)) {
-        addedAlpha = .4
-      } else {
-        addedAlpha = added[[2]]
-        added = added[[1]]
-      }
-      
-      if (!is.list(deleted)) {
-        deletedAlpha = .4
-      } else {
-        deletedAlpha = deleted[[2]]
-        deleted = deleted[[1]]
-      }
-      
-    }
-    
-    tileAlphas <-
-      data.frame(
-        colValue = c(constant, changed, added, deleted),
-        alpha = c(constantAlpha, changedAlpha, addedAlpha, deletedAlpha)
-      )
-    
-    for (i in 1:length(snapshotList[[1]])) {
-      temp <- snapshotList[[1]][[i]]$body$styles$text$color$data
-      for (c in colnames(temp)) {
-        temp[,c] <- replace(temp[,c], temp[,c] == "#808080", constant)
-        temp[,c] <- replace(temp[,c], temp[,c] == "#008000", changed)
-        temp[,c] <- replace(temp[,c], temp[,c] == "#0000FF", added)
-        temp[,c] <- replace(temp[,c], temp[,c] == "#FF0000", deleted)
-      }
-      snapshotList[[1]][[i]]$body$styles$text$color$data <- temp
     }
     
     # Set argument if it is not specified
@@ -173,76 +58,44 @@ create_timeline <-
       sizing$resume = .25
     }
     
-    if (is.list(accentCols)) {
-      if (is.null(accentCols[["constant"]])) {
-        accentCols[["constant"]] = "darker"
-      }
-      
-      if (is.null(accentCols[["changed"]])) {
-        accentCols[["changed"]] = "darker"
-      }
-      
-      if (is.null(accentCols[["added"]])) {
-        accentCols[["added"]] = "darker"
-      }
-      
-      if (is.null(accentCols[["deleted"]])) {
-        accentCols[["deleted"]] = "darker"
-      }
+    altTextInfo <- snapshotList[[2]]
+    
+    # Get four colours ready
+    colClass <- class(colours)
+    
+    if (colClass == "character") {
+      chosenScheme <- return_scheme(colScheme = colours)
+      same <- chosenScheme$same
+      edit <- chosenScheme$edit
+      add <- chosenScheme$add
+      delete <- chosenScheme$delete
     } else {
-      if (accentCols == "darker") {
-        accentCols <-
-          list(
-            constant = "darker",
-            changed = "darker",
-            added = "darker",
-            deleted = "darker"
-          )
-      } else {
-        accentCols <-
-          list(
-            constant = "lighter",
-            changed = "lighter",
-            added = "lighter",
-            deleted = "lighter"
-          )
-      }
+      same <- colours$same
+      edit <- colours$edit
+      add <- colours$add
+      delete <- colours$delete
     }
     
-    if (is.list(accentColsDif)) {
-      if (is.null(accentColsDif[["constant"]])) {
-        accentColsDif[["constant"]] = .5
+    tileColours <- data.frame(colValue = c(same, edit, add, delete))
+    
+    for (i in 1:length(snapshotList[[1]])) {
+      temp <- snapshotList[[1]][[i]]$body$styles$text$color$data
+      for (c in colnames(temp)) {
+        temp[,c] <- replace(temp[,c], temp[,c] == "#808080", same)
+        temp[,c] <- replace(temp[,c], temp[,c] == "#008000", edit)
+        temp[,c] <- replace(temp[,c], temp[,c] == "#0000FF", add)
+        temp[,c] <- replace(temp[,c], temp[,c] == "#FF0000", delete)
       }
-      
-      if (is.null(accentColsDif[["changed"]])) {
-        accentColsDif[["changed"]] = .5
-      }
-      
-      if (is.null(accentColsDif[["added"]])) {
-        accentColsDif[["added"]] = .5
-      }
-      
-      if (is.null(accentColsDif[["deleted"]])) {
-        accentColsDif[["deleted"]] = .5
-      }
-    } else {
-      accentColsDif <-
-        list(
-          constant = accentColsDif,
-          changed = accentColsDif,
-          added = accentColsDif,
-          deleted = accentColsDif
-        )
+      snapshotList[[1]][[i]]$body$styles$text$color$data <- temp
     }
     
     # Prepare timeline accent colours
     accents <-
       data.frame(
-        colValue = c(constant, changed, added, deleted),
-        accent = unlist(accentCols),
-        degree = unlist(accentColsDif)
+        colValue = c(same, edit, add, delete),
+        accent = accentCol,
+        degree = accentColDif
       )
-    rownames(accents) <- NULL
     accents$colValue2 <-
       ifelse(
         accents$accent == "darker",
@@ -281,7 +134,7 @@ create_timeline <-
     }
     
     legendDF <- data.frame(colValue = c(), description = c())
-    colItems <- c(constant, changed, added, deleted)
+    colItems <- c(same, edit, add, delete)
     for (colItemNum in 1:length(colItems)) {
       if (colItems[colItemNum] %in% colsPresent) {
         legendAddition <-
@@ -323,14 +176,9 @@ create_timeline <-
     
     maxDims <- get_timeline_dimensions(extTables)
     
-    snapshotList[[5]] <- constant
-    snapshotList[[6]] <- changed
-    snapshotList[[7]] <- added
-    snapshotList[[8]] <- deleted
-    
-    tileAlphas <-
-      subset(tileAlphas, tileAlphas$colValue %in% colsPresent)
-    snapshotList[[9]] <- tileAlphas
+    tileColours <-
+      subset(tileColours, tileColours$colValue %in% colsPresent)
+    snapshotList[[5]] <- tileColours
     
     # Make the timeline plot for each snapshot
     l <-
@@ -344,8 +192,8 @@ create_timeline <-
         truncateData,
         rotateHeader,
         headerSpace,
-        accentCols,
-        accentColsDif,
+        accentCol,
+        accentColDif,
         otherTextCol,
         maxDims,
         timelineFont,
@@ -412,6 +260,7 @@ create_timeline <-
       paste0(patchedPlots, fontChoice)
     
     generate_alt_text(snapshotList = snapshotList,
+                      legendDF = legendDF,
                       altTextInfo = altTextInfo,
                       l = l,
                       printedData = printedData,

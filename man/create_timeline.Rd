@@ -6,11 +6,7 @@
 \usage{
 create_timeline(
   snapshotList,
-  constant,
-  changed,
-  added,
-  deleted,
-  colScheme,
+  colours,
   printedData,
   ghostData,
   missingDataTints,
@@ -18,8 +14,8 @@ create_timeline(
   truncateData,
   rotateHeader,
   headerSpace,
-  accentCols,
-  accentColsDif,
+  accentCol,
+  accentColDif,
   otherTextCol,
   timelineRows,
   timelineFont,
