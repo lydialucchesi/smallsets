@@ -1,7 +1,7 @@
 #' Prepare colour sheet
 #' @description Generates a colour sheet for automatic Smallset selection.
 #' @keywords internal
-#' @import "flextable" "dplyr" "tibble"
+#' @import "flextable" "tibble"
 
 prepare_colour_sheet <-
   
@@ -133,7 +133,7 @@ prepare_colour_sheet <-
             tcurrent$body$dataset
           )), 1),
           r = row.names(tcurrent$body$dataset))
-        adjData <- left_join(adjData, rr, by = "r")
+        adjData <- merge(adjData, rr, by = "r")
         
         
         if (nrow(adjData) > 0) {

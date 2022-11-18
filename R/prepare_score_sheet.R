@@ -2,7 +2,7 @@
 #' @description Generates a score sheet for automatic Smallset selection
 #'   between snapshots.
 #' @keywords internal
-#' @import "flextable" "dplyr"
+#' @import "flextable"
 
 prepare_score_sheet <-
   
@@ -86,11 +86,6 @@ prepare_score_sheet <-
       row.names(lpriorAdj) <- as.numeric(row.names(lpriorAdj))
       row.names(lcurrentAdj) <- as.numeric(row.names(lcurrentAdj))
       
-      # original <-
-      #   setdiff(subset(lpriorAdj, select = colnames(lcurrentAdj)), lcurrentAdj)
-      # update <-
-      #   setdiff(lcurrentAdj, subset(lpriorAdj, select = colnames(lcurrentAdj)))
-      
       original <- subset(lpriorAdj, select = colnames(lcurrentAdj))
       update <- lcurrentAdj
       
@@ -107,28 +102,12 @@ prepare_score_sheet <-
         
         adjData$r <- (as.character(adjData$r))
         
-        # tcurrent <-
-        #   flextable::color(
-        #     tcurrent,
-        #     color = changed,
-        #     i = (adjData$r == row.names(tcurrent$body$dataset)),
-        #     j = adjData$c
-        #   )
-        
-        # if (nrow(adjData) > 0) {
-        #   tcurrent <-
-        #     flextable::color(tcurrent,
-        #                      color = changed,
-        #                      i = adjData$r,
-        #                      j = adjData$c)
-        # }
-        
         rr <-
           data.frame(nmbr = seq(1, length(row.names(
             tcurrent$body$dataset
           )), 1),
           r = row.names(tcurrent$body$dataset))
-        adjData <- left_join(adjData, rr, by = "r")
+        adjData <- merge(adjData, rr, by = "r")
         
         
         if (nrow(adjData) > 0) {
@@ -155,7 +134,8 @@ prepare_score_sheet <-
       rownames(tab) <- rownames(tables[[t]]$body$dataset)
       tab[tab != "#808080"] <- 1
       tab[tab == "#808080"] <- 0
-      tab <- mutate_all(tab, function(x) as.numeric(as.character(x)))
+      tab[] <- lapply(tab, as.character)
+      tab[] <- lapply(tab, as.numeric)
       tab$scoreSum <- rowSums(tab)
       score1 <- rownames(subset(tab, tab$scoreSum > 0))
       scores[ ,t] <- ifelse(rownames(scores) %in% score1, 1, 0)

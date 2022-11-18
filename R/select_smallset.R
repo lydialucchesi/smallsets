@@ -1,7 +1,6 @@
 #' Select smallset
 #' @description The function selects the rows included in the smallset.
 #' @keywords internal
-#' @import "dplyr"
 
 select_smallset <- function(data,
                             rowCount = 6,

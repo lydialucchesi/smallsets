@@ -14,6 +14,7 @@ utils::globalVariables(
     "apply_code",
     "V1",
     "V2",
-    "label"
+    "label",
+    "n"
   )
 )

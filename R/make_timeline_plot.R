@@ -1,8 +1,7 @@
 #' Make timeline plot
 #' @description The function transforms a table snapshot into a plot snapshot.
 #' @keywords internal
-#' @import "ggplot2" "ggforce" "ggfittext" "colorspace" "stringr"
-#'   "ggtext"
+#' @import "ggplot2" "ggforce" "ggfittext" "colorspace" "ggtext"
 
 make_timeline_plot <-
   function(itemNum,
@@ -46,12 +45,12 @@ make_timeline_plot <-
     colnames(tab2Long) <- c("variable", "y", "datValue", "x")
     
     tabs <- merge(tab1Long, tab2Long)
-    tabs <- suppressMessages(left_join(tabs, accents))
+    tabs <- suppressMessages(merge(tabs, accents))
     
     xs$y <- rep(max(tabs$y) + 1, nrow(xs))
     
     tabs <-
-      suppressMessages(left_join(tabs, snapshotList[[9]], by = "colValue"))
+      suppressMessages(merge(tabs, snapshotList[[9]], by = "colValue"))
     
     # Prepare lighter colour values for tiles with missing data
     if (isTRUE(missingDataTints)) {
@@ -108,7 +107,7 @@ make_timeline_plot <-
     
     legendDF$colAlp <-
       as.factor(alpha(legendDF$fillVar, legendDF$alpha))
-    tabs <- suppressMessages(left_join(tabs, legendDF[, c("colValue", "colAlp")]))
+    tabs <- suppressMessages(merge(tabs, legendDF[, c("colValue", "colAlp")]))
     legendDF <- subset(legendDF, legend == TRUE)
     
     if (isFALSE(ghostData)) {
@@ -202,7 +201,9 @@ make_timeline_plot <-
     tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
     
     if (isTRUE(printedData) & !isFALSE(truncateData)) {
-      tabs$datValue <- str_trunc(tabs$datValue, truncateData, "right")
+      t <- truncateData - 3
+      tabs$datValue <- substr(tabs$datValue, 1, t)
+      tabs$datValue <- paste0(tabs$datValue, "...")
     }
     
     if (printedData != FALSE) {

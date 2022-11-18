@@ -40,7 +40,7 @@ generate_alt_text <-
       atNew <- utils::read.delim(paste0("altText/intro_", as.character(s), ".txt"), header = FALSE)[1, 1]
       at <- paste(at, atNew)
     }
-    at <- str_replace_all(at, "[\r\n]" , "")
+    at <- gsub("[\r\n]", "", at)
     
     fileConn <-
       file("altText/intro.txt")
@@ -119,7 +119,7 @@ generate_alt_text <-
           atNew <- utils::read.delim(paste0("altText/body_", as.character(s), ".txt"), header = FALSE)[1, 1]
           at <- paste(at, atNew)
         }
-        at <- str_replace_all(at, "[\r\n]" , "")
+        at <- gsub("[\r\n]", "", at)
         
         fileConn <-
           file(paste0("altText/snap", as.character(i), ".txt"))
@@ -241,7 +241,7 @@ generate_alt_text <-
           atNew <- utils::read.delim(paste0("altText/body_", as.character(s), ".txt"), header = FALSE)[1, 1]
           at <- paste(at, atNew)
         }
-        at <- str_replace_all(at, "[\r\n]" , "")
+        at <- gsub("[\r\n]", "", at)
         
         fileConn <-
           file(paste0("altText/snap", as.character(i), ".txt"))

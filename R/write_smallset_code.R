@@ -76,12 +76,10 @@ write_smallset_code <-
     processTXT$command <- as.character(processTXT$command)
     rStart <-
       row.names(processTXT)[grepl("# start smallset", processTXT$command)]
-    rStartName <-
-      stringr::str_remove(processTXT[rStart, c("command")], "# start smallset ")
+    rStartName <- gsub("# start smallset ", "", processTXT[rStart, c("command")])
     rEnd <-
       row.names(processTXT)[grepl("# end smallset", processTXT$command)]
-    rEndName <-
-      stringr::str_remove(processTXT[rEnd, c("command")], "# end smallset ")
+    rEndName <- gsub("# end smallset ", "", processTXT[rEnd, c("command")])
     
     smallsetCode <-
       processTXT[(as.numeric(rStart) + 1):(as.numeric(rEnd) - 1),]
@@ -114,13 +112,13 @@ write_smallset_code <-
           if (isTRUE(runBig)) {
             insertSnap <- c(paste0(
               "snapshots.append(",
-              as.character(stringr::str_remove(smallsetCode$command[i], signal)),
-              gen_rows2snap(as.character(stringr::str_remove(smallsetCode$command[i], signal)))
+              as.character(gsub(signal, "", smallsetCode$command[i])),
+              gen_rows2snap(as.character(gsub(signal, "", smallsetCode$command[i])))
             ))
           } else {
             insertSnap <- c(paste0(
               "snapshots.append(",
-              as.character(stringr::str_remove(smallsetCode$command[i], signal)),
+              as.character(gsub(signal, "", smallsetCode$command[i])),
               ".copy(deep = True))"
             ))
           }
@@ -145,9 +143,9 @@ write_smallset_code <-
                 "snapshots[[",
                 as.character(s),
                 "]] <- ",
-                as.character(stringr::str_remove(smallsetCode$command[i], signal)),
+                as.character(gsub(signal, "", smallsetCode$command[i])),
                 "[(row.names(",
-                as.character(stringr::str_remove(smallsetCode$command[i], signal)),
+                as.character(gsub(signal, "", smallsetCode$command[i])),
                 ") %in% c(",
                 paste(smallset, collapse = ", "),
                 ")), ]"
@@ -158,7 +156,7 @@ write_smallset_code <-
               "snapshots[[",
               as.character(s),
               "]] <- ",
-              as.character(stringr::str_remove(smallsetCode$command[i], signal))
+              as.character(gsub(signal, "", smallsetCode$command[i]))
             ))
           }
           

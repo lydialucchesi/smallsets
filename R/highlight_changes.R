@@ -103,7 +103,7 @@ highlight_changes <-
             tcurrent$body$dataset
           )), 1),
           r = row.names(tcurrent$body$dataset))
-        adjData <- left_join(adjData, rr, by = "r")
+        adjData <- merge(adjData, rr, by = "r")
         
         
         if (nrow(adjData) > 0) {

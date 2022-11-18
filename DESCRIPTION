@@ -15,7 +15,6 @@ Depends:
 Imports:
     brew,
     colorspace,
-    dplyr,
     flextable,
     ggfittext,
     ggforce,
@@ -25,7 +24,6 @@ Imports:
     patchwork,
     plotrix,
     reticulate,
-    stringr,
     testthat,
     tibble
 Suggests: 
