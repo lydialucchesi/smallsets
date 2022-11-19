@@ -5,7 +5,8 @@
 #' @importFrom plotrix color.id
 
 generate_alt_text <-
-  function(snapshotList,
+  function(smallsetTables,
+           tileColours,
            legendDF,
            altTextInfo,
            l,
@@ -16,17 +17,17 @@ generate_alt_text <-
     suppressWarnings(brew(file = system.file("altTextTemplates", "snapNum.txt", package="smallsets"), output = "altText/intro_3.txt"))
     
     if (sum(grepl("Data has been edited.", legendDF)) == 1) {
-      editColour <- sapply(snapshotList[[5]]$colValue[2], color.id)[1]
+      editColour <- sapply(tileColours$colValue[2], color.id)[1]
       suppressWarnings(brew(file = system.file("altTextTemplates", "editColour.txt", package="smallsets"), output = "altText/intro_4.txt"))
     }
     
     if (sum(grepl("Data has been added.", legendDF)) == 1) {
-      addColour <- sapply(snapshotList[[5]]$colValue[3], color.id)[1]
+      addColour <- sapply(tileColours$colValue[3], color.id)[1]
       suppressWarnings(brew(file = system.file("altTextTemplates", "addColour.txt", package="smallsets"), output = "altText/intro_5.txt"))
     }
     
     if (sum(grepl("Data will be deleted.", legendDF)) == 1) {
-      delColour <- sapply(snapshotList[[5]]$colValue[4], color.id)[1]
+      delColour <- sapply(tileColours$colValue[4], color.id)[1]
       suppressWarnings(brew(file = system.file("altTextTemplates", "delColour.txt", package="smallsets"), output = "altText/intro_6.txt"))
     }
     
@@ -52,7 +53,7 @@ generate_alt_text <-
       file.remove(paste0("altText/intro_", as.character(s), ".txt"))
     }
     
-    for (i in 1:length(snapshotList[[1]])) {
+    for (i in 1:length(smallsetTables)) {
       
       suppressWarnings(brew(file = system.file("altTextTemplates", "snapDim.txt", package="smallsets"), output = "altText/body_1.txt"))
       

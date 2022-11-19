@@ -5,7 +5,8 @@
 \title{Generate Alt Text}
 \usage{
 generate_alt_text(
-  snapshotList,
+  smallsetTables,
+  tileColours,
   legendDF,
   altTextInfo,
   l,

@@ -30,7 +30,7 @@ Smallset_Timeline(
 )
 }
 \arguments{
-\item{data}{Dataset.}
+\item{data}{The dataset.}
 
 \item{code}{R or Python script with data preprocessing code for the dataset.
 Filename extension should be included (e.g., "my_code.R" or "my_code.py").}

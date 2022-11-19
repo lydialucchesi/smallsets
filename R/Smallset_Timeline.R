@@ -2,7 +2,7 @@
 #'
 #' @description The command for creating a Smallset Timeline.
 #'
-#' @param data Dataset.
+#' @param data The dataset.
 #' @param code R or Python script with data preprocessing code for the dataset.
 #'   Filename extension should be included (e.g., "my_code.R" or "my_code.py").
 #' @param dir File path to the data preprocessing code. Default is the working directory.
@@ -39,6 +39,7 @@
 #' @param timelineFont One of "sans", "serif", or "mono".
 #' @param captionSpace Value greater than or equal to .5. Higher values create
 #'   more caption space. Default is 1.
+#' @import "patchwork"
 #' @export
 
 Smallset_Timeline <- function(data,
@@ -70,33 +71,340 @@ Smallset_Timeline <- function(data,
                               timelineRows = 1,
                               timelineFont = "sans",
                               captionSpace = 3) {
-  snapshots <- prepare_smallset(
-    data = data,
-    code = code,
-    dir = dir,
-    rowCount = rowCount,
-    rowNums = rowNums,
-    auto = auto,
-    ignoreCols = ignoreCols
+  if (missing(data)) {
+    print("Must specify a data set")
+  }
+  
+  if (missing(code)) {
+    print("Must specify preprocessing code")
+  }
+  
+  lang <- tools::file_ext(code)
+  if (!lang %in% c("R", "py")) {
+    stop(
+      "Preprocessing code must be in R or Python. Filename extension should be included (e.g., 'my_code.R' or 'my_code.py')."
+    )
+  }
+  
+  # Make sure data is of class data frame
+  if (class(data)[1] == "data.table") {
+    print("Converting data object from a data table to a data frame.")
+    data <- as.data.frame(data)
+  }
+  if (class(data)[1] == "tbl_df") {
+    print("Converting data object from class tibble to a data frame.")
+    data <- as.data.frame(data)
+  }
+  if (class(data) != "data.frame") {
+    stop("Data was not of class data frame, data table, or tibble.")
+  }
+  
+  if (length(headerSpace) != 2) {
+    headerSpace <- c(1, .5)
+    print("headerSpace must be a vector of length two. Resorting to default c(1, .5).")
+  }
+  
+  # Fill in any sizing parameters not specified
+  sizing <- set_sizes(sizing = sizing)
+  
+  # Select the Smallset rows
+  if (!is.null(auto)) {
+    if (!requireNamespace("gurobi", quietly = TRUE)) {
+      stop(
+        "This Smallset selection method uses a gurobi optimisation model.
+        Please visit https://www.gurobi.com to obtain a gurobi license (free academic licenses are available)
+        and then install and load the gurobi R package. smallsets will then be able to run the selection model.
+        Otherwise, please visit the help documentation for information about other Smallset selection options."
+      )
+    } else {
+      if (auto == 1) {
+        rowNums <-
+          run_simple_gurobi(
+            data = data,
+            code = code,
+            dir = dir,
+            rowCount = rowCount,
+            lang = lang
+          )
+        
+        smallset <- rowNums
+      } else {
+        rowNums <-
+          run_advanced_gurobi(
+            data = data,
+            code = code,
+            dir = dir,
+            rowCount = rowCount,
+            lang = lang
+          )
+        
+        smallset <- rowNums
+        
+      }
+    }
+    
+  } else {
+    smallset <- select_smallset(
+      data = data,
+      rowCount = rowCount,
+      rowNums = rowNums,
+      ignoreCols = ignoreCols
+    )
+  }
+  
+  # Prepare the preprocessing function that takes snapshots
+  output <-
+    write_smallset_code(
+      scriptName = code,
+      dir = dir,
+      ignoreCols = ignoreCols,
+      smallset = smallset,
+      lang = lang
+    )
+  
+  # Apply the preprocessing function
+  if (lang == "py") {
+    source_python(paste0(dir, "/smallset_code.py"))
+    if (!is.null(ignoreCols)) {
+      data <- data[, !(names(data) %in% ignoreCols)]
+    }
+    smallsetList <- apply_code(data)
+    for (i in 1:length(smallsetList)) {
+      smallsetList[[i]] <-
+        smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")), ]
+    }
+    
+  } else {
+    source(paste0(dir, "/smallset_code.R"))
+    if (!is.null(ignoreCols)) {
+      data <- data[, !(names(data) %in% ignoreCols)]
+    }
+    smallsetList <- apply_code(data)
+    for (i in 1:length(smallsetList)) {
+      smallsetList[[i]] <-
+        smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")), ]
+    }
+  }
+  
+  # Print Smallset and snapshot information to console
+  print(paste0("Selected Smallset rows: ", paste0(smallset, collapse = ", ")))
+  print(paste0("Number of snapshots: ", as.character(length(smallsetList))))
+  
+  # Identify data differences between snapshots
+  tables <- list()
+  altTextInfo <- list()
+  smallsetTables <-
+    find_data_changes(
+      smallsetList = smallsetList,
+      tables = tables,
+      altText = TRUE,
+      altTextInfo = altTextInfo
+    )
+  items <- seq(1, length(smallsetTables[[1]]), 1)
+  
+  # Get four colours ready
+  colClass <- class(colours)
+  
+  if (colClass == "character") {
+    chosenScheme <- return_scheme(colScheme = colours)
+    same <- chosenScheme$same
+    edit <- chosenScheme$edit
+    add <- chosenScheme$add
+    delete <- chosenScheme$delete
+  } else {
+    same <- colours$same
+    edit <- colours$edit
+    add <- colours$add
+    delete <- colours$delete
+  }
+  
+  tileColours <- data.frame(colValue = c(same, edit, add, delete))
+  
+  for (i in 1:length(smallsetTables[[1]])) {
+    temp <- smallsetTables[[1]][[i]]$body$styles$text$color$data
+    for (c in colnames(temp)) {
+      temp[, c] <- replace(temp[, c], temp[, c] == "#808080", same)
+      temp[, c] <- replace(temp[, c], temp[, c] == "#008000", edit)
+      temp[, c] <- replace(temp[, c], temp[, c] == "#0000FF", add)
+      temp[, c] <-
+        replace(temp[, c], temp[, c] == "#FF0000", delete)
+    }
+    smallsetTables[[1]][[i]]$body$styles$text$color$data <- temp
+  }
+  
+  # Prepare timeline accent colours
+  accents <-
+    data.frame(
+      colValue = c(same, edit, add, delete),
+      accent = accentCol,
+      degree = accentColDif
+    )
+  accents$colValue2 <-
+    ifelse(
+      accents$accent == "darker",
+      darken(accents$colValue, accents$degree),
+      lighten(accents$colValue, accents$degree)
+    )
+  
+  # Identify which colours are present in the timeline
+  colsPresent <- c()
+  for (u in 1:length(smallsetTables[[1]])) {
+    uniqueCols <- smallsetTables[[1]][[u]]$body$styles$text$color$data
+    uniqueCols <- as.vector(as.matrix(uniqueCols))
+    uniqueCols <- unique(uniqueCols)
+    colsPresent <- c(colsPresent, uniqueCols)
+  }
+  
+  colsPresent <- unique(colsPresent)
+  tileColours <-
+    subset(tileColours, tileColours$colValue %in% colsPresent)
+  
+  # Prepare colour legend
+  if (isTRUE(missingDataTints)) {
+    descriptions <-
+      c(
+        "Data has not changed.\nTint is missing data.",
+        "Data has been edited.\nTint is missing data.",
+        "Data has been added.\nTint is missing data.",
+        "Data will be deleted.\nTint is missing data."
+      )
+  } else {
+    descriptions <-
+      c(
+        "Data has not changed.",
+        "Data has been edited.",
+        "Data has been added.",
+        "Data will be deleted."
+      )
+  }
+  
+  legendDF <- data.frame(colValue = c(), description = c())
+  colItems <- c(same, edit, add, delete)
+  for (colItemNum in 1:length(colItems)) {
+    if (colItems[colItemNum] %in% colsPresent) {
+      legendAddition <-
+        data.frame(colValue = c(colItems[colItemNum]),
+                   description = descriptions[colItemNum])
+      legendDF <- rbind(legendDF, legendAddition)
+    }
+  }
+  
+  otherTextColour <- darken(legendDF$colValue[1], otherTextCol)
+  
+  # Insert ghost data rows/columns
+  if (isTRUE(ghostData)) {
+    ghostDF1 <-
+      as.data.frame(smallsetTables[[1]][[1]]$body$styles$text$color$data)
+    ghostDF1[] <- "#FFFFFF"
+    
+    ghostDF2 <- as.data.frame(smallsetTables[[1]][[1]]$body$dataset)
+    ghostDF2[] <- ""
+    
+    row.names(ghostDF1) <- row.names(ghostDF2)
+    
+    extTables <-
+      lapply(items, ghostDF1, ghostDF2, smallsetTables, FUN = add_ghost_data)
+  } else {
+    extTables <- lapply(items, smallsetTables, FUN = extract_tables)
+  }
+  
+  # Find the Timeline's dimensions
+  maxDims <- get_timeline_dimensions(extTables)
+  
+  # Make the graphic for each snapshot
+  l <-
+    lapply(
+      items,
+      extTables,
+      smallsetTables,
+      output,
+      tileColours,
+      printedData,
+      ghostData,
+      sizing,
+      truncateData,
+      rotateHeader,
+      headerSpace,
+      accentCol,
+      accentColDif,
+      otherTextCol,
+      maxDims,
+      timelineFont,
+      captionSpace,
+      accents,
+      legendDF,
+      missingDataTints,
+      timelineRows,
+      FUN = plot_snapshots
+    )
+  
+  # Set limits for the x-axis
+  if (timelineRows > 1) {
+    m <- maxDims[[1]] + headerSpace[2]
+    if (!is.null(output[[2]])) {
+      m <- maxDims[[1]] + 2.51
+    }
+    for (p in 1:length(l)) {
+      l[[p]] <- l[[p]] + xlim(c(0, m))
+    }
+  }
+  
+  if ((timelineRows == 1) & (headerSpace[2] != .5)) {
+    m <- maxDims[[1]] + headerSpace[2]
+    for (p in 1:length(l)) {
+      l[[p]] <- l[[p]] + xlim(c(0, m))
+    }
+  }
+  
+  # Assemble snapshots into a Smallset Timeline
+  patchedPlots <- ""
+  for (s in 1:length(l)) {
+    addPlot <- paste0("l[[", as.character(s), "]] + ")
+    patchedPlots <- paste0(patchedPlots, addPlot)
+  }
+  
+  if (is.null(timelineRows)) {
+    patchedPlots <- paste0(patchedPlots, "plot_layout()")
+  } else {
+    patchedPlots <-
+      paste0(
+        patchedPlots,
+        "plot_layout(nrow = ",
+        as.character(timelineRows),
+        ", guides = 'collect')"
+      )
+  }
+  
+  # Set Timeline design choices
+  fontChoice <-
+    paste0(
+      " & theme(text = element_text(family = '",
+      timelineFont,
+      "', colour = otherTextColour),",
+      "legend.key.size = unit(",
+      sizing[["legendIcons"]],
+      ", 'line'),
+        legend.position = 'bottom',
+        legend.title = element_blank(),
+        legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))"
+    )
+  
+  patchedPlots <-
+    paste0(patchedPlots, fontChoice)
+  
+  # Generate alternative text for the Smallset Timeline
+  generate_alt_text(
+    smallsetTables = smallsetTables[[1]],
+    tileColours = tileColours,
+    legendDF = legendDF,
+    altTextInfo = smallsetTables[[2]],
+    l = l,
+    printedData = printedData,
+    ghostData = ghostData
   )
   
-  figure <- create_timeline(
-    snapshotList = snapshots,
-    colours = colours,
-    printedData = printedData,
-    ghostData = ghostData,
-    missingDataTints = missingDataTints,
-    sizing = sizing,
-    truncateData = truncateData,
-    rotateHeader = rotateHeader,
-    headerSpace = headerSpace,
-    accentCol = accentCol,
-    accentColDif = accentColDif,
-    otherTextCol = otherTextCol,
-    timelineRows = timelineRows,
-    timelineFont = timelineFont,
-    captionSpace = captionSpace
-    
-  )
-  return(figure)
+  o <- eval(parse(text = patchedPlots))
+  oldClass(o) <- c("SmallsetTimeline", class(o))
+  return(o)
+  
 }

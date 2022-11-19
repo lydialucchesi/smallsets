@@ -1,12 +1,14 @@
-#' Make timeline plot
+#' Plot the snapshots
 #' @description The function transforms a table snapshot into a plot snapshot.
 #' @keywords internal
 #' @import "colorspace" "ggfittext" "ggforce" "ggplot2" "ggtext"
 
-make_timeline_plot <-
+plot_snapshots <-
   function(itemNum,
            extTables,
-           snapshotList,
+           smallsetTables,
+           output,
+           tileColours,
            printedData,
            ghostData,
            sizing,
@@ -52,20 +54,20 @@ make_timeline_plot <-
     # Prepare lighter colour values for tiles with missing data
     if (isTRUE(missingDataTints)) {
       missingCols <- c()
-      if (snapshotList[[5]]$colValue[1] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(snapshotList[[5]]$colValue[1], .4))
+      if (tileColours$colValue[1] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(tileColours$colValue[1], .4))
       }
       
-      if (snapshotList[[5]]$colValue[2] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(snapshotList[[5]]$colValue[2], .4))
+      if (tileColours$colValue[2] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(tileColours$colValue[2], .4))
       }
       
-      if (snapshotList[[5]]$colValue[3] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(snapshotList[[5]]$colValue[3], .4))
+      if (tileColours$colValue[3] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(tileColours$colValue[3], .4))
       }
       
-      if (snapshotList[[5]]$colValue[4] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(snapshotList[[5]]$colValue[4], .4))
+      if (tileColours$colValue[4] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(tileColours$colValue[4], .4))
       }
       
       tabs$colValue <-
@@ -202,7 +204,7 @@ make_timeline_plot <-
     }
     
     # Add snapshot caption to the plot
-    smallsetCaption <- snapshotList[[3]]$text[itemNum]
+    smallsetCaption <- output[[1]]$text[itemNum]
     
     if ((timelineRows > 1) | (isFALSE(ghostData))) {
       captionInfo <-
@@ -227,7 +229,7 @@ make_timeline_plot <-
         )
     }
     
-    if (itemNum %in% snapshotList[[4]]) {
+    if (itemNum %in% output[[2]]) {
       captionInfo$x <- captionInfo$x + 1.25
     }
 
@@ -258,7 +260,7 @@ make_timeline_plot <-
       ylim(c(captionSpace * (-1), maxDims[2] + headerSpace[1]))
     
     # Add a resume marker (a vertical line between two snapshots)
-    if (itemNum %in% snapshotList[[4]]) {
+    if (itemNum %in% output[[2]]) {
       abstractWithCaption <- abstractWithCaption +
         geom_segment(
           aes(
@@ -267,7 +269,7 @@ make_timeline_plot <-
             y = .5,
             yend = maxDims[2] + .5
           ),
-          colour = as.character(snapshotList[[9]]$colValue[1]),
+          colour = as.character(tileColours$colValue[1]),
           size = sizing$resume
         )
     }

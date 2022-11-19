@@ -4,7 +4,7 @@
 \alias{extract_tables}
 \title{Extract snapshot tables}
 \usage{
-extract_tables(itemNum, snapshotList)
+extract_tables(itemNum, smallsetTables)
 }
 \description{
 The function extracts data and colour information from the

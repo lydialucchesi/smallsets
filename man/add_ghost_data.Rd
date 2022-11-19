@@ -4,7 +4,7 @@
 \alias{add_ghost_data}
 \title{Add ghost data}
 \usage{
-add_ghost_data(itemNum, ghostDF1, ghostDF2, snapshotList)
+add_ghost_data(itemNum, ghostDF1, ghostDF2, smallsetTables)
 }
 \description{
 The function inserts blank squares where data have been
