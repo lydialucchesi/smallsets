@@ -4,7 +4,7 @@
 \alias{prepare_smallset}
 \title{Prepare Smallset}
 \usage{
-prepare_smallset(data, code, dir, rowCount, rowNums, auto, runBig, ignoreCols)
+prepare_smallset(data, code, dir, rowCount, rowNums, auto, ignoreCols)
 }
 \description{
 Prepares the Smallset.

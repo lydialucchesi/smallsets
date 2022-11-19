@@ -7,7 +7,6 @@
 write_smallset_code(
   scriptName,
   dir,
-  runBig,
   ignoreCols,
   keepCols,
   smallset,

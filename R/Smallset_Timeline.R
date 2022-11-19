@@ -12,9 +12,6 @@
 #'   the data set to be included in the smallset.
 #' @param auto 1 or 2. 1 = simple gurobi model selection. 2 = advanced gurobi
 #'   model selction.
-#' @param runBig TRUE or FALSE. FALSE means preprocessing code will be run on
-#'   smallset. TRUE means preprocessing code will be run on the big data set,
-#'   and the smallset will be extracted from that output at each snap point.
 #' @param ignoreCols Character vector of column names. Indicates which columns
 #'   from the data set should not be included in the smallset. Columns in this
 #'   vector should usually not be referenced in the data preprocessing code.
@@ -50,7 +47,6 @@ Smallset_Timeline <- function(data,
                               rowCount = 6,
                               rowNums = NULL,
                               auto = NULL,
-                              runBig = TRUE,
                               ignoreCols = NULL,
                               colours = "colScheme1",
                               printedData = FALSE,
@@ -81,7 +77,6 @@ Smallset_Timeline <- function(data,
     rowCount = rowCount,
     rowNums = rowNums,
     auto = auto,
-    runBig = runBig,
     ignoreCols = ignoreCols
   )
   

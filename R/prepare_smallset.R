@@ -10,7 +10,6 @@ prepare_smallset <-
            rowCount,
            rowNums,
            auto,
-           runBig,
            ignoreCols) {
     if (missing(data)) {
       print("Must specify a data set")
@@ -22,7 +21,9 @@ prepare_smallset <-
     
     lang <- tools::file_ext(code)
     if (!lang %in% c("R", "py")) {
-      stop("Preprocessing code must be in R or Python. Filename extension should be included (e.g., 'my_code.R' or 'my_code.py').")
+      stop(
+        "Preprocessing code must be in R or Python. Filename extension should be included (e.g., 'my_code.R' or 'my_code.py')."
+      )
     }
     
     # Make sure data is of class data frame
@@ -43,9 +44,9 @@ prepare_smallset <-
     if (!is.null(auto)) {
       if (!requireNamespace("gurobi", quietly = TRUE)) {
         stop(
-        "This Smallset selection method uses a gurobi optimization model. 
-        Please visit https://www.gurobi.com to obtain a gurobi license (free academic licenses are available) 
-        and then install and load the gurobi R package. smallsets will then be able to run the selection model. 
+          "This Smallset selection method uses a gurobi optimization model.
+        Please visit https://www.gurobi.com to obtain a gurobi license (free academic licenses are available)
+        and then install and load the gurobi R package. smallsets will then be able to run the selection model.
         Otherwise, please visit the help documentation for information about other Smallset selection options."
         )
       } else {
@@ -58,11 +59,8 @@ prepare_smallset <-
               rowCount = rowCount,
               lang = lang
             )
-          if (isTRUE(runBig)) {
-            smallset <- rowNums
-          } else {
-            smallset <- data[rownames(data) %in% rowNums,]
-          }
+          
+          smallset <- rowNums
         } else {
           rowNums <-
             run_advanced_gurobi(
@@ -72,11 +70,9 @@ prepare_smallset <-
               rowCount = rowCount,
               lang = lang
             )
-          if (isTRUE(runBig)) {
-            smallset <- rowNums
-          } else {
-            smallset <- data[rownames(data) %in% rowNums,]
-          }
+          
+          smallset <- rowNums
+          
         }
       }
       
@@ -86,7 +82,6 @@ prepare_smallset <-
         data = data,
         rowCount = rowCount,
         rowNums = rowNums,
-        runBig = runBig,
         ignoreCols = ignoreCols
       )
     }
@@ -96,7 +91,6 @@ prepare_smallset <-
       write_smallset_code(
         scriptName = code,
         dir = dir,
-        runBig = runBig,
         ignoreCols = ignoreCols,
         smallset = smallset,
         lang = lang
@@ -106,36 +100,32 @@ prepare_smallset <-
       source_python(paste0(dir, "/smallset_code.py"))
       
       # Apply the preprocessing function
-      if (isTRUE(runBig)) {
-        if (!is.null(ignoreCols)) {
-          data <- data[,!(names(data) %in% ignoreCols)]
-        }
-        smallsetList <- apply_code(data)
-        for (i in 1:length(smallsetList)) {
-          smallsetList[[i]] <-
-            smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
-        }
-      } else {
-        smallsetList <- apply_code(smallset)
+      
+      if (!is.null(ignoreCols)) {
+        data <- data[,!(names(data) %in% ignoreCols)]
       }
+      smallsetList <- apply_code(data)
+      for (i in 1:length(smallsetList)) {
+        smallsetList[[i]] <-
+          smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
+      }
+      
     } else {
       source(paste0(dir, "/smallset_code.R"))
       
       # Apply the preprocessing function
-      if (isTRUE(runBig)) {
-        if (!is.null(ignoreCols)) {
-          data <- data[,!(names(data) %in% ignoreCols)]
-        }
-        smallsetList <- apply_code(data)
-        for (i in 1:length(smallsetList)) {
-          smallsetList[[i]] <-
-            smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
-        }
-      } else {
-        smallsetList <- apply_code(smallset)
+      
+      if (!is.null(ignoreCols)) {
+        data <- data[,!(names(data) %in% ignoreCols)]
       }
+      smallsetList <- apply_code(data)
+      for (i in 1:length(smallsetList)) {
+        smallsetList[[i]] <-
+          smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
+      }
+      
     }
-
+    
     # Return summary information related to the above tasks
     print(paste0(as.character(length(smallsetList)), " snapshots taken"))
     
@@ -143,19 +133,17 @@ prepare_smallset <-
     tables <- list()
     altTextInfo <- list()
     smallsetTables <-
-      find_data_changes(smallsetList = smallsetList,
-                        tables = tables,
-                        altText = TRUE,
-                        altTextInfo = altTextInfo)
-    
-    o <- (
-      list(
-        smallsetTables[[1]],
-        smallsetTables[[2]],
-        output[[1]],
-        output[[2]]
+      find_data_changes(
+        smallsetList = smallsetList,
+        tables = tables,
+        altText = TRUE,
+        altTextInfo = altTextInfo
       )
-    )
+    
+    o <- (list(smallsetTables[[1]],
+               smallsetTables[[2]],
+               output[[1]],
+               output[[2]]))
     
     oldClass(o) <- c("smallsetSnapshots", class(o))
     

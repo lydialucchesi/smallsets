@@ -9,18 +9,14 @@ run_advanced_gurobi <-
            dir = dir,
            rowCount = rowCount,
            lang = lang) {
-    fullCheck <- select_smallset(
-      data = data,
-      rowCount = nrow(data),
-      runBig = TRUE,
-      ignoreCols = NULL
-    )
+    fullCheck <- select_smallset(data = data,
+                                 rowCount = nrow(data),
+                                 ignoreCols = NULL)
     
     notNeeded <-
       write_smallset_code(
         scriptName = code,
         dir = dir,
-        runBig = TRUE,
         ignoreCols = NULL,
         smallset = fullCheck,
         lang = lang,
@@ -38,7 +34,7 @@ run_advanced_gurobi <-
       prepare_score_sheet(smallsetList = smallsetList, data = data)
     scores <- scores[, colSums(scores != 0) > 0]
     colours <- prepare_colour_sheet(smallsetList = smallsetList)
-
+    
     D <-
       matrix(
         rep(0, nrow(data) * nrow(data)),
@@ -48,8 +44,8 @@ run_advanced_gurobi <-
       )
     for (i1 in 1:nrow(data)) {
       for (i2 in 1:nrow(data)) {
-        di <- as.vector(colours[i1, ])
-        dj <- as.vector(colours[i2, ])
+        di <- as.vector(colours[i1,])
+        dj <- as.vector(colours[i2,])
         counter <- 0
         for (j in 1:ncol(colours)) {
           if (isFALSE(di[j] == dj[j])) {
@@ -61,7 +57,7 @@ run_advanced_gurobi <-
       }
     }
     
-    myscoresT <- t(as.matrix(scores[,]))
+    myscoresT <- t(as.matrix(scores[, ]))
     krow = t(rep(1, nrow(scores)))
     
     model <- list()

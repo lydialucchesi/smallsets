@@ -5,7 +5,6 @@
 select_smallset <- function(data,
                             rowCount = 6,
                             rowNums = NULL,
-                            runBig = FALSE,
                             ignoreCols = ignoreCols) {
   # Randomly sample rows from the original dataset
   if (is.null(rowNums)) {
@@ -26,14 +25,7 @@ select_smallset <- function(data,
   }
   
   # Order the smallset based on the row number in original dataset
-  if (isTRUE(runBig)) {
-    smallsetRowIDs <- sort(as.numeric(smallset$smallsetRowID))
-    return(smallsetRowIDs)
-  } else {
-    smallset <- smallset[order(as.numeric(smallset$smallsetRowID)),]
-    rownames(smallset) <- smallset$smallsetRowID
-    smallset$smallsetRowID <- NULL
-    return(smallset)
-  }
+  smallsetRowIDs <- sort(as.numeric(smallset$smallsetRowID))
+  return(smallsetRowIDs)
   
 }

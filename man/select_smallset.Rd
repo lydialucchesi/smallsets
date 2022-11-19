@@ -4,13 +4,7 @@
 \alias{select_smallset}
 \title{Select smallset}
 \usage{
-select_smallset(
-  data,
-  rowCount = 6,
-  rowNums = NULL,
-  runBig = FALSE,
-  ignoreCols = ignoreCols
-)
+select_smallset(data, rowCount = 6, rowNums = NULL, ignoreCols = ignoreCols)
 }
 \description{
 The function selects the rows included in the smallset.

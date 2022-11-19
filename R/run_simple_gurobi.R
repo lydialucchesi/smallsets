@@ -9,18 +9,14 @@ run_simple_gurobi <-
            dir = dir,
            rowCount = rowCount,
            lang = lang) {
-    fullCheck <- select_smallset(
-      data = data,
-      rowCount = nrow(data),
-      runBig = TRUE,
-      ignoreCols = NULL
-    )
+    fullCheck <- select_smallset(data = data,
+                                 rowCount = nrow(data),
+                                 ignoreCols = NULL)
     
     notNeeded <-
       write_smallset_code(
         scriptName = code,
         dir = dir,
-        runBig = TRUE,
         ignoreCols = NULL,
         smallset = fullCheck,
         lang = lang,
@@ -38,7 +34,7 @@ run_simple_gurobi <-
       prepare_score_sheet(smallsetList = smallsetList, data = data)
     scores <- scores[, colSums(scores != 0) > 0]
     
-    myscoresT <- t(as.matrix(scores[, ]))
+    myscoresT <- t(as.matrix(scores[,]))
     krow = t(rep(1, nrow(scores)))
     
     model <- list()
