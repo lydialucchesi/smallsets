@@ -1,7 +1,7 @@
 #' Make timeline plot
 #' @description The function transforms a table snapshot into a plot snapshot.
 #' @keywords internal
-#' @import "ggplot2" "ggforce" "ggfittext" "colorspace" "ggtext"
+#' @import "colorspace" "ggfittext" "ggforce" "ggplot2" "ggtext"
 
 make_timeline_plot <-
   function(itemNum,
@@ -27,17 +27,18 @@ make_timeline_plot <-
     # Retrieve colour and data information for a snapshot
     tab1 <- extTables[[itemNum]][[1]]
     tab1[] <- lapply(tab1, as.character)
-    
     tab2 <- extTables[[itemNum]][[2]]
     
     # Set plot coordinates
     xs <- data.frame(ind = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
     
+    # Assign coordinates to tile colours
     tab1$y <- seq(nrow(tab1), 1, -1)
     tab1Long <- suppressWarnings(cbind(tab1[ncol(tab1)], utils::stack(tab1[-ncol(tab1)])))
     tab1Long <- merge(tab1Long, xs)
     colnames(tab1Long) <- c("variable", "y", "colValue", "x")
     
+    # Assign coordinates to tile data
     tab2$y <- seq(nrow(tab2), 1, -1)
     tab2Long <- suppressWarnings(cbind(tab2[ncol(tab2)], utils::stack(tab2[-ncol(tab2)])))
     tab2Long <- merge(tab2Long, xs)
@@ -111,7 +112,7 @@ make_timeline_plot <-
       vjustVal <- .5
     }
 
-    # Create plot
+    # Create snapshot plot
     abstractSmallset <- ggplot() +
       geom_tile(
         data = tabs,
@@ -162,7 +163,7 @@ make_timeline_plot <-
       ) +
       scale_colour_identity()
 
-    # Print data in tables
+    # Print data in Smallset snapshots
     tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
     
     if (isTRUE(printedData) & !isFALSE(truncateData)) {
@@ -200,7 +201,7 @@ make_timeline_plot <-
       }
     }
     
-    # Add captions to the plot
+    # Add snapshot caption to the plot
     smallsetCaption <- snapshotList[[3]]$text[itemNum]
     
     if ((timelineRows > 1) | (isFALSE(ghostData))) {
@@ -256,7 +257,7 @@ make_timeline_plot <-
       ) +
       ylim(c(captionSpace * (-1), maxDims[2] + headerSpace[1]))
     
-    # Add resume markers (a vertical line between two snapshots)
+    # Add a resume marker (a vertical line between two snapshots)
     if (itemNum %in% snapshotList[[4]]) {
       abstractWithCaption <- abstractWithCaption +
         geom_segment(

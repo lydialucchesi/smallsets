@@ -19,46 +19,16 @@ create_timeline <-
            timelineRows,
            timelineFont,
            captionSpace) {
-    
     items <- seq(1, length(snapshotList[[1]]), 1)
     
     if (length(headerSpace) != 2) {
       headerSpace <- c(1, .5)
       print(
-        "headerSpace must be a vector of length two. See headerSpace argument in ?create_timeline. Resorting to default c(1, .5)."
+        "headerSpace must be a vector of length two. See headerSpace argument in ?Smallset_Timeline. Resorting to default c(1, .5)."
       )
     }
     
-    # Set argument if it is not specified
-    if (is.null(sizing$columns)) {
-      sizing$columns = 3
-    }
-    
-    if (is.null(sizing$tiles)) {
-      sizing$tiles = .1
-    }
-    
-    if (is.null(sizing$captions)) {
-      sizing$captions = 3
-    }
-    
-    if (is.null(sizing$data)) {
-      sizing$data = 2.5
-    }
-    
-    if (is.null(sizing$legendText)) {
-      sizing$legendText = 10
-    }
-    
-    if (is.null(sizing$legendIcons)) {
-      sizing$legendIcons = 1
-    }
-    
-    if (is.null(sizing$resume)) {
-      sizing$resume = .25
-    }
-    
-    altTextInfo <- snapshotList[[2]]
+    sizing <- set_sizes(sizing = sizing)
     
     # Get four colours ready
     colClass <- class(colours)
@@ -81,10 +51,11 @@ create_timeline <-
     for (i in 1:length(snapshotList[[1]])) {
       temp <- snapshotList[[1]][[i]]$body$styles$text$color$data
       for (c in colnames(temp)) {
-        temp[,c] <- replace(temp[,c], temp[,c] == "#808080", same)
-        temp[,c] <- replace(temp[,c], temp[,c] == "#008000", edit)
-        temp[,c] <- replace(temp[,c], temp[,c] == "#0000FF", add)
-        temp[,c] <- replace(temp[,c], temp[,c] == "#FF0000", delete)
+        temp[, c] <- replace(temp[, c], temp[, c] == "#808080", same)
+        temp[, c] <- replace(temp[, c], temp[, c] == "#008000", edit)
+        temp[, c] <- replace(temp[, c], temp[, c] == "#0000FF", add)
+        temp[, c] <-
+          replace(temp[, c], temp[, c] == "#FF0000", delete)
       }
       snapshotList[[1]][[i]]$body$styles$text$color$data <- temp
     }
@@ -113,6 +84,9 @@ create_timeline <-
     }
     
     colsPresent <- unique(colsPresent)
+    tileColours <-
+      subset(tileColours, tileColours$colValue %in% colsPresent)
+    snapshotList[[5]] <- tileColours
     
     # Prepare colour legend
     if (isTRUE(missingDataTints)) {
@@ -148,7 +122,8 @@ create_timeline <-
     
     # Insert ghost data
     if (isTRUE(ghostData)) {
-      ghostDF1 <- as.data.frame(snapshotList[[1]][[1]]$body$styles$text$color$data)
+      ghostDF1 <-
+        as.data.frame(snapshotList[[1]][[1]]$body$styles$text$color$data)
       ghostDF1[] <- lapply(ghostDF1, as.character)
       
       for (i in 1:nrow(ghostDF1)) {
@@ -175,10 +150,6 @@ create_timeline <-
     }
     
     maxDims <- get_timeline_dimensions(extTables)
-    
-    tileColours <-
-      subset(tileColours, tileColours$colValue %in% colsPresent)
-    snapshotList[[5]] <- tileColours
     
     # Make the timeline plot for each snapshot
     l <-
@@ -259,13 +230,16 @@ create_timeline <-
     patchedPlots <-
       paste0(patchedPlots, fontChoice)
     
-    generate_alt_text(snapshotList = snapshotList,
-                      legendDF = legendDF,
-                      altTextInfo = altTextInfo,
-                      l = l,
-                      printedData = printedData,
-                      ghostData = ghostData)
-
+    altTextInfo <- snapshotList[[2]]
+    generate_alt_text(
+      snapshotList = snapshotList,
+      legendDF = legendDF,
+      altTextInfo = altTextInfo,
+      l = l,
+      printedData = printedData,
+      ghostData = ghostData
+    )
+    
     o <- return(eval(parse(text = patchedPlots)))
     
     oldClass(o) <- c("smallsetTimeline", class(o))

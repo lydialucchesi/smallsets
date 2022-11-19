@@ -77,12 +77,10 @@ degree angle. Use if column names overlap when set to FALSE.}
 \item{headerSpace}{Vector. Default is c(1, .5). First value corresponds to
 room above the table and second to the right of the table.}
 
-\item{accentCol}{Either "darker" or "lighter" for stamp colour. Can enter a
-list corresponding to specific actions.}
+\item{accentCol}{Either "darker" or "lighter."}
 
 \item{accentColDif}{Value between 0 and 1. Corresponds to how much lighter
-or darker accent colour will be. Can pass a list with different accent
-values for different colours.}
+or darker accent colour will be.}
 
 \item{otherTextCol}{Value between 0 and 1. Default is 1, which is when column
 names are black. 0 means columns will be the constant colour.}

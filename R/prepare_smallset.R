@@ -140,10 +140,13 @@ prepare_smallset <-
     print(paste0(as.character(length(smallsetList)), " snapshots taken"))
     
     # Identify differences between snapshots
-    smallsetTables <- highlight_changes(
-      smallsetList = smallsetList,
-      lang = lang
-    )
+    tables <- list()
+    altTextInfo <- list()
+    smallsetTables <-
+      find_data_changes(smallsetList = smallsetList,
+                        tables = tables,
+                        altText = TRUE,
+                        altTextInfo = altTextInfo)
     
     o <- (
       list(

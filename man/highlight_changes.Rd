@@ -4,7 +4,7 @@
 \alias{highlight_changes}
 \title{Highlight changes}
 \usage{
-highlight_changes(smallsetList = smallsetList, lang = lang)
+highlight_changes(smallsetList = smallsetList)
 }
 \description{
 The function identifies changes, additions, and deletions
