@@ -7,7 +7,6 @@
 get_timeline_dimensions(tabs)
 }
 \description{
-The function finds the maximum and minimum number of rows and
-  columns in the timeline.
+Finds the maximum and minimum number of rows and columns in the Smallset Timeline.
 }
 \keyword{internal}

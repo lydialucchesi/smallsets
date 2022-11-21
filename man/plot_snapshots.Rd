@@ -29,6 +29,6 @@ plot_snapshots(
 )
 }
 \description{
-The function transforms a table snapshot into a plot snapshot.
+Transforms a table snapshot into a plot snapshot.
 }
 \keyword{internal}

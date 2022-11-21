@@ -7,6 +7,6 @@
 return_scheme(colScheme = "colScheme1")
 }
 \description{
-The function returns a selected colour scheme.
+Returns the colours in a pre-built scheme.
 }
 \keyword{internal}

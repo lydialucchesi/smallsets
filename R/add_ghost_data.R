@@ -1,6 +1,5 @@
 #' Add ghost data
-#' @description The function inserts blank squares where data have been
-#'   removed.
+#' @description Inserts blank squares where data have been removed.
 #' @keywords internal
 
 add_ghost_data <-

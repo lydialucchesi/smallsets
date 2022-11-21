@@ -1,5 +1,5 @@
 #' Plot the snapshots
-#' @description The function transforms a table snapshot into a plot snapshot.
+#' @description Transforms a table snapshot into a plot snapshot.
 #' @keywords internal
 #' @import "colorspace" "ggfittext" "ggforce" "ggplot2" "ggtext"
 

@@ -1,5 +1,5 @@
 #' Generate Alt Text
-#' @description The function produces alt text for the Smallset Timeline figure.
+#' @description Produces alternative text (alt text) for the Smallset Timeline figure.
 #' @keywords internal
 #' @import "brew"
 #' @importFrom plotrix color.id

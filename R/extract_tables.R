@@ -1,6 +1,5 @@
 #' Extract snapshot tables
-#' @description The function extracts data and colour information from the
-#'   flextable objects.
+#' @description Extracts data and colour information from the flextable objects.
 #' @keywords internal
 
 extract_tables <- function(itemNum, smallsetTables) {

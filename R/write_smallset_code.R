@@ -1,6 +1,5 @@
 #' Write smallset code
-#' @description The function turns the preprocessing code into a function that
-#'   takes snapshots.
+#' @description Turns the preprocessing code into a function that takes snapshots.
 #' @keywords internal
 
 write_smallset_code <-

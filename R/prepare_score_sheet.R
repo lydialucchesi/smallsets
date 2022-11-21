@@ -1,6 +1,5 @@
 #' Prepare score sheet
-#' @description Generates a score sheet for automatic Smallset selection
-#'   between snapshots.
+#' @description Generates a coverage indicator matrix for automated Smallset selection (autoSelect = 1 or 2).
 #' @keywords internal
 #' @import "flextable"
 

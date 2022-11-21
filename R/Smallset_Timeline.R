@@ -1,34 +1,51 @@
 #' Smallset Timeline
 #'
-#' @description The command for creating a Smallset Timeline.
+#' @description This is the command for creating a Smallset Timeline to visualise 
+#' data preprocessing decisions. Prior to running this command, 
+#' you will need to add structured comments to your R or Python data preprocessing script, 
+#' providing snapshot points and captions.
+#'\itemize{
+#'\item{`# start smallset mydata` - start tracking code and take the first data snapshot, where "mydata" is the name of your data object}
+#'\item{`# snap mydata` - take a data snapshot after the next line of code}
+#'\item{`# end smallset mydata` - stop tracking code and take the last data snapshot}
+#'\item{Snapshot captions are added between caption brackets: `caption[...]caption`.}}
 #'
-#' @param data The dataset.
-#' @param code R or Python script with data preprocessing code for the dataset.
+#'@return A plot.
+#'
+#' @param data The dataset that is being preprocessed.
+#' @param code The R or Python data preprocessing script.
 #'   Filename extension should be included (e.g., "my_code.R" or "my_code.py").
 #' @param dir File path to the data preprocessing code. Default is the working directory.
-#' @param rowCount Integer greater than or equal to 5. Number of rows to include
-#'   in the smallset.
+#' @param rowCount Integer between 5-15 (number rows in the Smallset).
 #' @param rowNums Numeric vector of row numbers. Indicates particular rows from
-#'   the data set to be included in the smallset.
-#' @param auto 1 or 2. 1 = simple gurobi model selection. 2 = advanced gurobi
-#'   model selction.
+#'   the data set to be included in the Smallset.
+#' @param autoSelect 1 or 2. 1 = select Smallset rows using the coverage optimisation model.
+#' 2 = select Smallset rows using the coverage+variety optimisation model (can take a long time to run).
+#' These optimisation problems are solved using Gurobi. Please visit https://www.gurobi.com to obtain 
+#' a gurobi license (free academic licenses are available) in order to use these selection methods. Otherwise, 
+#' leave auto = NULL, and the rows will be randomly sampled from the dataset.
 #' @param ignoreCols Character vector of column names. Indicates which columns
-#'   from the data set should not be included in the smallset. Columns in this
-#'   vector should usually not be referenced in the data preprocessing code.
-#' @param colours how to select colours
-#' @param printedData TRUE or FALSE. TRUE prints data values in tables.
+#'   from the data set should not be included in the Smallset. Columns in this
+#'   vector cannot be referenced in the data preprocessing code.
+#' @param colours Either one of the pre-built colour schemes ("colScheme1", "colScheme2", or 
+#' "colScheme3") or a list with four hex colour codes for same, edit, add, and delete 
+#' (e.g., list(same = "#E6E3DF", edit = "#FFC500", add = "#5BA2A6", delete = "#DDC492")).
+#' @param printedData TRUE or FALSE. TRUE prints data values in the Smallset snapshots.
 #' @param ghostData TRUE or FALSE. TRUE includes blank spaces where data have
 #'   been removed.
 #' @param missingDataTints TRUE or FALSE. TRUE plots a lighter colour value to signal
-#'   data value is missing.
-#' @param sizing List of size specifications.
+#'   a missing data value.
+#' @param sizing List of size specifications for column names (columns), caption text (captions),
+#' tile size, (tiles), printed data (data), legend text (legendText), legend icons (legendIcons), 
+#' and resume markers (resume).
 #' @param truncateData TRUE or FALSE. FALSE if data do not need to be truncated
 #'   to fit within table tiles. Otherwise, an integer specifying width of data
-#'   value (width includes "...").
+#'   value (width includes "...", which equates to 3 spaces).
 #' @param rotateHeader TRUE or FALSE. If TRUE, column names are printed at 45
-#'   degree angle. Use if column names overlap when set to FALSE.
-#' @param headerSpace Vector. Default is c(1, .5). First value corresponds to
-#'   room above the table and second to the right of the table.
+#'   degree angle.
+#' @param headerSpace Vector of length two. First element determines the
+#'   vertical space above the column names. Second element determines the space 
+#'   to the right of the snapshot. Default is c(1, .5). 
 #' @param accentCol Either "darker" or "lighter."
 #' @param accentColDif Value between 0 and 1. Corresponds to how much lighter
 #'   or darker accent colour will be.
@@ -39,15 +56,28 @@
 #' @param timelineFont One of "sans", "serif", or "mono".
 #' @param captionSpace Value greater than or equal to .5. Higher values create
 #'   more caption space. Default is 1.
+#'   
+#' @examples 
+#'set.seed(107)
+#'
+#'data(mydata)
+#'
+#'Smallset_Timeline(
+#'   data = mydata, 
+#'   code = system.file("preprocess_data.R", package = "smallsets")
+#')
+#'  
+#'    
 #' @import "patchwork"
 #' @export
+
 
 Smallset_Timeline <- function(data,
                               code,
                               dir = getwd(),
                               rowCount = 6,
                               rowNums = NULL,
-                              auto = NULL,
+                              autoSelect = NULL,
                               ignoreCols = NULL,
                               colours = "colScheme1",
                               printedData = FALSE,
@@ -108,7 +138,7 @@ Smallset_Timeline <- function(data,
   sizing <- set_sizes(sizing = sizing)
   
   # Select the Smallset rows
-  if (!is.null(auto)) {
+  if (!is.null(autoSelect)) {
     if (!requireNamespace("gurobi", quietly = TRUE)) {
       stop(
         "This Smallset selection method uses a gurobi optimisation model.
@@ -117,7 +147,7 @@ Smallset_Timeline <- function(data,
         Otherwise, please visit the help documentation for information about other Smallset selection options."
       )
     } else {
-      if (auto == 1) {
+      if (autoSelect == 1) {
         rowNums <-
           run_simple_gurobi(
             data = data,

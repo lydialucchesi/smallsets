@@ -7,7 +7,6 @@
 prepare_score_sheet(smallsetList = smallsetList, data = data)
 }
 \description{
-Generates a score sheet for automatic Smallset selection
-  between snapshots.
+Generates a coverage indicator matrix for automated Smallset selection (autoSelect = 1 or 2).
 }
 \keyword{internal}

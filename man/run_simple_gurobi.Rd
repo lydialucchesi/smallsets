@@ -13,6 +13,6 @@ run_simple_gurobi(
 )
 }
 \description{
-Runs simple gurobi selection model.
+Runs the coverage optimisation problem.
 }
 \keyword{internal}

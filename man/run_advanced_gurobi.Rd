@@ -13,6 +13,6 @@ run_advanced_gurobi(
 )
 }
 \description{
-Runs advanced gurobi selection model.
+Runs the coverage+variety optimisation problem.
 }
 \keyword{internal}

@@ -7,6 +7,6 @@
 select_smallset(data, rowCount = 6, rowNums = NULL, ignoreCols = ignoreCols)
 }
 \description{
-The function selects the rows included in the smallset.
+Selects the rows included in the Smallset.
 }
 \keyword{internal}

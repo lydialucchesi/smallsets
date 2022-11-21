@@ -1,5 +1,5 @@
 #' Prepare colour sheet
-#' @description Generates a colour sheet for automatic Smallset selection.
+#' @description Generates a visual appearance matrix for automated Smallset selection (autoSelect = 2).
 #' @keywords internal
 #' @import "flextable" "tibble"
 

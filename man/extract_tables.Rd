@@ -7,7 +7,6 @@
 extract_tables(itemNum, smallsetTables)
 }
 \description{
-The function extracts data and colour information from the
-  flextable objects.
+Extracts data and colour information from the flextable objects.
 }
 \keyword{internal}

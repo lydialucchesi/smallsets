@@ -1,5 +1,5 @@
 #' Run advanced gurobi
-#' @description Runs advanced gurobi selection model.
+#' @description Runs the coverage+variety optimisation problem.
 #' @import "reticulate"
 #' @keywords internal
 

@@ -1,5 +1,5 @@
 #' Select smallset
-#' @description The function selects the rows included in the smallset.
+#' @description Selects the rows included in the Smallset.
 #' @keywords internal
 
 select_smallset <- function(data,

@@ -15,7 +15,6 @@ write_smallset_code(
 )
 }
 \description{
-The function turns the preprocessing code into a function that
-  takes snapshots.
+Turns the preprocessing code into a function that takes snapshots.
 }
 \keyword{internal}

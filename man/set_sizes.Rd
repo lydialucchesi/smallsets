@@ -7,6 +7,6 @@
 set_sizes(sizing)
 }
 \description{
-The function sets sizing parameters if not specified.
+Sets sizing parameters if not all specified in list object.
 }
 \keyword{internal}

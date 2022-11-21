@@ -7,6 +7,6 @@
 find_data_changes(smallsetList, tables, altText = FALSE, altTextInfo = NULL)
 }
 \description{
-The function finds data changes between snapshots.
+Finds data edits, additions, and deletions between snapshots.
 }
 \keyword{internal}

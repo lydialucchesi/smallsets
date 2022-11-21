@@ -1,13 +1,13 @@
-#' View smallset colour schemes
+#' View schemes
 #'
-#' @description  The function is for viewing built-in smallset colour schemes.
+#' @description  This command is for viewing built-in colour schemes.
 #' Schemes can be viewed together or individually.
 #'
 #' @param scheme One of "colScheme1", "colScheme2", "colScheme3", or "all".
 #' @import "ggplot2"
 #' @export
 
-view_smallset_colours <- function(scheme = "all") {
+view_schemes <- function(scheme = "all") {
   if (!(scheme %in% c("colScheme1", "colScheme2", "colScheme3", "all"))) {
     stop("Please chooose one of 'colScheme1', 'colScheme2', 'colScheme3', or 'all.")
   }

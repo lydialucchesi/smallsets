@@ -7,7 +7,6 @@
 add_ghost_data(itemNum, ghostDF1, ghostDF2, smallsetTables)
 }
 \description{
-The function inserts blank squares where data have been
-  removed.
+Inserts blank squares where data have been removed.
 }
 \keyword{internal}

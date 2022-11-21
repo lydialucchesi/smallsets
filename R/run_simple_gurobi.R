@@ -1,5 +1,5 @@
 #' Run simple gurobi
-#' @description Runs simple gurobi selection model.
+#' @description Runs the coverage optimisation problem.
 #' @import "reticulate"
 #' @keywords internal
 

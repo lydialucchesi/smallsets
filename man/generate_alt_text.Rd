@@ -15,6 +15,6 @@ generate_alt_text(
 )
 }
 \description{
-The function produces alt text for the Smallset Timeline figure.
+Produces alternative text (alt text) for the Smallset Timeline figure.
 }
 \keyword{internal}

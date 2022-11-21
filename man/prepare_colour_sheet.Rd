@@ -7,6 +7,6 @@
 prepare_colour_sheet(smallsetList = smallsetList)
 }
 \description{
-Generates a colour sheet for automatic Smallset selection.
+Generates a visual appearance matrix for automated Smallset selection (autoSelect = 2).
 }
 \keyword{internal}

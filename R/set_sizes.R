@@ -1,5 +1,5 @@
 #' Set sizes
-#' @description The function sets sizing parameters if not specified.
+#' @description Sets sizing parameters if not all specified in list object.
 #' @keywords internal
 
 set_sizes <- function(sizing) {
