@@ -1,8 +1,8 @@
-#' Set sizes
+#' Set sizing
 #' @description Sets sizing parameters if not all specified in list object.
 #' @keywords internal
 
-set_sizes <- function(sizing) {
+set_sizing <- function(sizing) {
   if (is.null(sizing$columns)) {
     sizing$columns = 3
   }

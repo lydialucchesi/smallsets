@@ -13,19 +13,13 @@ plot_snapshots(
   printedData,
   ghostData,
   sizing,
+  spacing,
   truncateData,
-  rotateHeader,
-  headerSpace,
-  accentCol,
-  accentColDif,
-  otherTextCol,
   maxDims,
   timelineFont,
-  captionSpace,
   accents,
   legendDF,
-  missingDataTints,
-  timelineRows
+  missingDataTints
 )
 }
 \description{

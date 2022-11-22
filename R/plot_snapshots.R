@@ -12,42 +12,39 @@ plot_snapshots <-
            printedData,
            ghostData,
            sizing,
+           spacing,
            truncateData,
-           rotateHeader,
-           headerSpace,
-           accentCol,
-           accentColDif,
-           otherTextCol,
            maxDims,
            timelineFont,
-           captionSpace,
            accents,
            legendDF,
-           missingDataTints,
-           timelineRows) {
-    
+           missingDataTints) {
     # Retrieve colour and data information for a snapshot
     tab1 <- extTables[[itemNum]][[1]]
     tab1[] <- lapply(tab1, as.character)
     tab2 <- extTables[[itemNum]][[2]]
+    tab2[] <- lapply(tab2, as.character)
     
     # Set plot coordinates
-    xs <- data.frame(ind = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
+    xs <-
+      data.frame(ind = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
     
     # Assign coordinates to tile colours
     tab1$y <- seq(nrow(tab1), 1, -1)
-    tab1Long <- suppressWarnings(cbind(tab1[ncol(tab1)], utils::stack(tab1[-ncol(tab1)])))
+    tab1Long <-
+      suppressWarnings(cbind(tab1[ncol(tab1)], utils::stack(tab1[-ncol(tab1)])))
     tab1Long <- merge(tab1Long, xs)
     colnames(tab1Long) <- c("variable", "y", "colValue", "x")
     
     # Assign coordinates to tile data
     tab2$y <- seq(nrow(tab2), 1, -1)
-    tab2Long <- suppressWarnings(cbind(tab2[ncol(tab2)], utils::stack(tab2[-ncol(tab2)])))
+    tab2Long <-
+      suppressWarnings(cbind(tab2[ncol(tab2)], utils::stack(tab2[-ncol(tab2)])))
     tab2Long <- merge(tab2Long, xs)
     colnames(tab2Long) <- c("variable", "y", "datValue", "x")
     
     tabs <- merge(tab1Long, tab2Long)
-    tabs <- suppressMessages(merge(tabs, accents))
+    tabs <- suppressMessages(merge(tabs, accents, all.x = TRUE))
     
     xs$y <- rep(max(tabs$y) + 1, nrow(xs))
     
@@ -76,7 +73,8 @@ plot_snapshots <-
                tabs$colValue)
     }
     
-    tabs$colValue <- factor(tabs$colValue, levels = legendDF$colValue)
+    tabs$colValue <-
+      factor(tabs$colValue, levels = legendDF$colValue)
     
     if (isFALSE(ghostData)) {
       if (max(tabs$x) != maxDims[1]) {
@@ -104,8 +102,9 @@ plot_snapshots <-
       }
     }
     
-    if (isTRUE(rotateHeader)) {
-      angleVal <- 45
+    # Rotate column names
+    if (spacing$columnsDeg != 0) {
+      angleVal <- spacing$columnsDeg
       hjustVal <- 0
       vjustVal <- 1
     } else {
@@ -113,7 +112,31 @@ plot_snapshots <-
       hjustVal <- .5
       vjustVal <- .5
     }
-
+    
+    # Assign column name colours to match column addition and deletion colours
+    colNameCols <-
+      data.frame(ind = unique(tabs$variable), col = accents$colValue[1])
+    for (v in as.character(unique(tabs$variable))) {
+      uniCols <-
+        as.character(unique(subset(tabs, variable == v)$colValue))
+      uniCols <- uniCols[!is.na(uniCols)]
+      if (length(uniCols) > 0) {
+        if (sum(length(uniCols) == 1 &
+                uniCols == accents$colValue[3]) == 1) {
+          colNameCols[colNameCols$ind == v, c("col")] <- accents$colValue2[3]
+        } else if (sum(length(uniCols) == 1 &
+                       uniCols == accents$colValue[4]) == 1) {
+          colNameCols[colNameCols$ind == v, c("col")] <- accents$colValue2[4]
+        } else {
+          colNameCols[colNameCols$ind == v, c("col")] <- accents$colValue2[1]
+        }
+      } else {
+        colNameCols[colNameCols$ind == v, c("col")] <- "#FFFFFF"
+      }
+    }
+    
+    xs <- merge(xs, colNameCols)
+    
     # Create snapshot plot
     abstractSmallset <- ggplot() +
       geom_tile(
@@ -131,10 +154,14 @@ plot_snapshots <-
       ) +
       geom_text(
         data = xs,
-        aes(x = x, y = y, label = ind),
+        aes(
+          x = x,
+          y = y,
+          label = ind,
+          colour = col
+        ),
         family = timelineFont,
         size = sizing$columns,
-        colour = otherTextCol,
         angle = angleVal,
         hjust = hjustVal,
         vjust = vjustVal
@@ -160,15 +187,15 @@ plot_snapshots <-
         text = element_text(
           family = timelineFont,
           size = sizing$legendText,
-          colour = otherTextCol
+          colour = "black"
         )
       ) +
       scale_colour_identity()
-
+    
     # Print data in Smallset snapshots
     tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
     
-    if (isTRUE(printedData) & !isFALSE(truncateData)) {
+    if (isTRUE(printedData) & !is.null(truncateData)) {
       t <- truncateData - 3
       tabs$datValue <- substr(tabs$datValue, 1, t)
       tabs$datValue <- paste0(tabs$datValue, "...")
@@ -206,17 +233,17 @@ plot_snapshots <-
     # Add snapshot caption to the plot
     smallsetCaption <- output[[1]]$text[itemNum]
     
-    if ((timelineRows > 1) | (isFALSE(ghostData))) {
+    if ((spacing$rows > 1) | (isFALSE(ghostData))) {
       captionInfo <-
         data.frame(
-          x = c((maxDims[1] + headerSpace[2]) / 2),
+          x = c((maxDims[1] + spacing$tablesR) / 2),
           y = c(-.25),
           smallsetCaption = c(smallsetCaption)
         )
-    } else if ((timelineRows == 1) & (headerSpace[2] != .5)) {
+    } else if ((spacing$rows == 1) & (spacing$tablesR != .5)) {
       captionInfo <-
         data.frame(
-          x = c((ncol(tab2) + headerSpace[2]) / 2),
+          x = c((ncol(tab2) + spacing$tablesR) / 2),
           y = c(-.25),
           smallsetCaption = c(smallsetCaption)
         )
@@ -232,7 +259,7 @@ plot_snapshots <-
     if (itemNum %in% output[[2]]) {
       captionInfo$x <- captionInfo$x + 1.25
     }
-
+    
     if (is.na(captionInfo$smallsetCaption)) {
       captionInfo$smallsetCaption <-
         as.character(captionInfo$smallsetCaption)
@@ -242,11 +269,9 @@ plot_snapshots <-
     abstractWithCaption <- abstractSmallset +
       geom_textbox(
         data = captionInfo,
-        aes(
-          x = x,
-          y = y,
-          label = smallsetCaption
-        ),
+        aes(x = x,
+            y = y,
+            label = smallsetCaption),
         width = grid::unit(.95, "npc"),
         family = timelineFont,
         vjust = c(1),
@@ -255,9 +280,9 @@ plot_snapshots <-
         halign = c(0),
         size = sizing$captions,
         box.colour = NA,
-        colour = otherTextCol
+        colour = "black"
       ) +
-      ylim(c(captionSpace * (-1), maxDims[2] + headerSpace[1]))
+      ylim(c(spacing$captionB * (-1), maxDims[2] + spacing$columnsT))
     
     # Add a resume marker (a vertical line between two snapshots)
     if (itemNum %in% output[[2]]) {

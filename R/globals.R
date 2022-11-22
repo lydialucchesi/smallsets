@@ -15,6 +15,7 @@ utils::globalVariables(
     "V1",
     "V2",
     "label",
-    "n"
+    "n",
+    "variable"
   )
 )

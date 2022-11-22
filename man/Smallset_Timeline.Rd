@@ -14,19 +14,14 @@ Smallset_Timeline(
   ignoreCols = NULL,
   colours = "colScheme1",
   printedData = FALSE,
+  truncateData = NULL,
   ghostData = TRUE,
   missingDataTints = FALSE,
+  timelineFont = "sans",
   sizing = list(columns = 3, captions = 3, tiles = 0.1, data = 2.5, legendText = 10,
     legendIcons = 1, resume = 0.25),
-  truncateData = FALSE,
-  rotateHeader = FALSE,
-  headerSpace = c(1, 0.5),
-  accentCol = "darker",
-  accentColDif = 0.8,
-  otherTextCol = 1,
-  timelineRows = 1,
-  timelineFont = "sans",
-  captionSpace = 3
+  spacing = list(captionB = 3, columnsT = 1, tablesR = 0.5, rows = 1, columnsDeg = 0),
+  labelling = list(labelsCol = "darker", labelsColDif = 0.5)
 )
 }
 \arguments{
@@ -42,21 +37,25 @@ Filename extension should be included (e.g., "my_code.R" or "my_code.py").}
 \item{rowNums}{Numeric vector of row numbers. Indicates particular rows from
 the data set to be included in the Smallset.}
 
-\item{autoSelect}{1 or 2. 1 = select Smallset rows using the coverage optimisation model.
+\item{autoSelect}{1, 2, or NULL (default). 1 = select Smallset rows using the coverage optimisation model.
 2 = select Smallset rows using the coverage+variety optimisation model (can take a long time to run).
-These optimisation problems are solved using Gurobi. Please visit https://www.gurobi.com to obtain 
-a gurobi license (free academic licenses are available) in order to use these selection methods. Otherwise, 
+These optimisation problems are solved using Gurobi. Please visit https://www.gurobi.com to obtain
+a gurobi license (free academic licenses are available) in order to use these selection methods. Otherwise,
 leave auto = NULL, and the rows will be randomly sampled from the dataset.}
 
-\item{ignoreCols}{Character vector of column names. Indicates which columns
-from the data set should not be included in the Smallset. Columns in this
-vector cannot be referenced in the data preprocessing code.}
+\item{ignoreCols}{Character vector of column names. Indicates columns
+from the dataset to exclude from the Smallset. These columns can't be
+referenced in the data preprocessing code.}
 
-\item{colours}{Either one of the pre-built colour schemes ("colScheme1", "colScheme2", or 
-"colScheme3") or a list with four hex colour codes for same, edit, add, and delete 
+\item{colours}{Either one of the pre-built colour schemes ("colScheme1", "colScheme2", or
+"colScheme3") or a list with four hex colour codes for same, edit, add, and delete
 (e.g., list(same = "#E6E3DF", edit = "#FFC500", add = "#5BA2A6", delete = "#DDC492")).}
 
 \item{printedData}{TRUE or FALSE. TRUE prints data values in the Smallset snapshots.}
+
+\item{truncateData}{Integer specifying width of data
+value in each table cell (width includes "...", which counts as three spots).
+Default is NULL, where entire data value is printed.}
 
 \item{ghostData}{TRUE or FALSE. TRUE includes blank spaces where data have
 been removed.}
@@ -64,50 +63,46 @@ been removed.}
 \item{missingDataTints}{TRUE or FALSE. TRUE plots a lighter colour value to signal
 a missing data value.}
 
-\item{sizing}{List of size specifications for column names (columns), caption text (captions),
-tile size, (tiles), printed data (data), legend text (legendText), legend icons (legendIcons), 
-and resume markers (resume).}
+\item{timelineFont}{Any font you have installed in R. Default is "sans".}
 
-\item{truncateData}{TRUE or FALSE. FALSE if data do not need to be truncated
-to fit within table tiles. Otherwise, an integer specifying width of data
-value (width includes "...", which equates to 3 spaces).}
+\item{sizing}{List of size specifications: column names (columns), caption text (captions),
+tile size, (tiles), printed data (data), legend text (legendText), legend icons (legendIcons),
+and resume markers (resume).
+List of defaults: list(columns = 3, captions = 3, tiles = .1, data = 2.5, legendText = 10,
+legendIcons = 1, resume = .25).}
 
-\item{rotateHeader}{TRUE or FALSE. If TRUE, column names are printed at 45
-degree angle.}
+\item{spacing}{List of spacing specifications: space below captions (captionB),
+space above columns (columnsT), space to the right of Smallset tables (tablesR),
+number of Timeline rows (rows), and degree rotation of column names (columnsDeg). List of
+defaults: list(captionB = 3, columnsT = 1, tablesR = .5, rows = 1, columnsDeg = 0).}
 
-\item{headerSpace}{Vector of length two. First element determines the
-vertical space above the column names. Second element determines the space 
-to the right of the snapshot. Default is c(1, .5).}
-
-\item{accentCol}{Either "darker" or "lighter."}
-
-\item{accentColDif}{Value between 0 and 1. Corresponds to how much lighter
-or darker accent colour will be.}
-
-\item{otherTextCol}{Value between 0 and 1. Default is 1, which is when column
-names are black. 0 means columns will be the constant colour.}
-
-\item{timelineRows}{Integer greater than or equal to one. Number of rows to
-divide the smallset timeline into.}
-
-\item{timelineFont}{One of "sans", "serif", or "mono".}
-
-\item{captionSpace}{Value greater than or equal to .5. Higher values create
-more caption space. Default is 1.}
+\item{labelling}{List of colour specifications for labelling, which includes column names and 
+printed data. First specification is whether the labels should be lighter or 
+darker than the tile colours (labelsCol). The second specification is a value between 0 and 1 specifying
+how much lighter or darker it should be (labelsColDif). Example 1: list(labelsCol = "darker", labelsColDif = 1) means 
+labels are black. Example 2: list(labelsCol = "lighter", labelsColDif = 1) means labels are white.
+Example 3: list(labelsCol = "lighter", labelsColDif = 0) means same colour as tile colours. 
+Example 4: list(labelsCol = "lighter", labelsColDif = .5) means midpoint between white and tile colours. Default is
+list(labelsCol = "darker", labelsColDif = .5), which is midpoint between tile colours and black.}
 }
 \value{
 A plot.
 }
 \description{
-This is the command for creating a Smallset Timeline to visualise 
-data preprocessing decisions. Prior to running this command, 
-you will need to add structured comments to your R or Python data preprocessing script, 
+This is the command for creating a Smallset Timeline to visualise
+data preprocessing decisions.
+}
+\details{
+Prior to running this command,
+you will need to add structured comments to your R or Python data preprocessing script,
 providing snapshot points and captions.
 \itemize{
-\item{`# start smallset mydata` - start tracking code and take the first data snapshot, where "mydata" is the name of your data object}
+\item{`# start smallset mydata` - start tracking code and take the first 
+data snapshot, where "mydata" is the name of your data object}
 \item{`# snap mydata` - take a data snapshot after the next line of code}
 \item{`# end smallset mydata` - stop tracking code and take the last data snapshot}
-\item{Snapshot captions are added between caption brackets: `caption[...]caption`.}}
+\item{Snapshot captions are added between caption brackets, `caption[...]caption`, 
+at the end of the comments listed above}}
 }
 \examples{
 set.seed(107)
@@ -115,9 +110,8 @@ set.seed(107)
 data(mydata)
 
 Smallset_Timeline(
-  data = mydata, 
+  data = mydata,
   code = system.file("preprocess_data.R", package = "smallsets")
 )
- 
-   
+
 }
