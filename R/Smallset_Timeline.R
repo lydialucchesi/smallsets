@@ -23,7 +23,7 @@
 #' (e.g., list(same = "#E6E3DF", edit = "#FFC500", add = "#5BA2A6", delete = "#DDC492")).
 #'@param printedData TRUE or FALSE. TRUE prints data values in the Smallset snapshots.
 #'@param truncateData Integer specifying width of data
-#'   value in each table cell (width includes "...", which counts as three spots).
+#'   value in each table cell (results in width + "...").
 #'   Default is NULL, where entire data value is printed.
 #'@param ghostData TRUE or FALSE. TRUE includes blank spaces where data have
 #'   been removed.
@@ -41,12 +41,13 @@
 #' defaults: list(captionB = 3, columnsT = 1, tablesR = .5, rows = 1, columnsDeg = 0).
 #'@param labelling List of colour specifications for labelling, which includes column names and 
 #'printed data. First specification is whether the labels should be lighter or 
-#'darker than the tile colours (labelsCol). The second specification is a value between 0 and 1 specifying
+#'darker than the tile colours (labelsCol). Second specification is a value between 0 and 1 for 
 #'how much lighter or darker it should be (labelsColDif). Example 1: list(labelsCol = "darker", labelsColDif = 1) means 
 #'labels are black. Example 2: list(labelsCol = "lighter", labelsColDif = 1) means labels are white.
-#'Example 3: list(labelsCol = "lighter", labelsColDif = 0) means same colour as tile colours. 
-#'Example 4: list(labelsCol = "lighter", labelsColDif = .5) means midpoint between white and tile colours. Default is
-#'list(labelsCol = "darker", labelsColDif = .5), which is midpoint between tile colours and black.
+#'Example 3: list(labelsCol = "lighter", labelsColDif = 0) means labels are same colour as tile colours. 
+#'Example 4: list(labelsCol = "lighter", labelsColDif = .5) means labels are midpoint between white 
+#'and tile colours. Default is list(labelsCol = "darker", labelsColDif = .5), 
+#'which is midpoint between tile colours and black.
 #'
 #'@details Prior to running this command,
 #' you will need to add structured comments to your R or Python data preprocessing script,

@@ -196,9 +196,10 @@ plot_snapshots <-
     tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
     
     if (isTRUE(printedData) & !is.null(truncateData)) {
-      t <- truncateData - 3
-      tabs$datValue <- substr(tabs$datValue, 1, t)
-      tabs$datValue <- paste0(tabs$datValue, "...")
+      tabs$datValue <-
+        ifelse(nchar(tabs$datValue) > truncateData,
+               paste0(substr(tabs$datValue, 1, truncateData), "..."),
+               tabs$datValue)
     }
     
     if (isTRUE(printedData)) {
