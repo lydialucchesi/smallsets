@@ -20,8 +20,8 @@ prepare_score_sheet <-
     for (t in 1:length(tables)) {
       tab <- as.data.frame(tables[[t]]$body$styles$text$color$data)
       rownames(tab) <- rownames(tables[[t]]$body$dataset)
-      tab[tab != "#808080"] <- 1
-      tab[tab == "#808080"] <- 0
+      tab[tab != fourCols[1]] <- 1
+      tab[tab == fourCols[1]] <- 0
       tab[] <- lapply(tab, as.character)
       tab[] <- lapply(tab, as.numeric)
       tab$scoreSum <- rowSums(tab)

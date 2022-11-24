@@ -148,7 +148,7 @@ Smallset_Timeline <- function(data,
   spacing <- set_spacing(spacing = spacing)
   labelling <- set_labelling(labelling = labelling)
   
-  # Get four colours ready
+  # Get four tile colours ready
   colClass <- class(colours)
   if (colClass == "character") {
     fourCols <- unlist(return_scheme(colScheme = colours),
@@ -244,13 +244,15 @@ Smallset_Timeline <- function(data,
   items <- seq(1, length(smallsetTables[[1]]), 1)
   
   # Prepare the label colours
+  if (labelling$labelsCol == "darker") {
+    colValue2 <- darken(fourCols, labelling$labelsColDif)
+  } else {
+    colValue2 <- lighten(fourCols, labelling$labelsColDif)
+  }
   accents <-
     data.frame(
       colValue = fourCols,
-      colValue2 = ifelse(labelling$labelsCol == "darker",
-                         darken(fourCols, labelling$labelsColDif),
-                         lighten(fourCols, labelling$labelsColDif)
-                         )
+      colValue2 = colValue2
     )
   
   # Find which colours are present in the Timeline
@@ -262,7 +264,7 @@ Smallset_Timeline <- function(data,
     colsPresent <- c(colsPresent, uniqueCols)
   }
   colsPresent <- unique(colsPresent)
-  fourCols <- fourCols[fourCols %in% colsPresent]
+  fourColsP <- fourCols[fourCols %in% colsPresent]
   
   # Prepare colour legend
   if (isTRUE(missingDataTints)) {
