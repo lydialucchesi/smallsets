@@ -23,7 +23,6 @@ plot_snapshots <-
     tab1 <- extTables[[itemNum]][[1]]
     tab1[] <- lapply(tab1, as.character)
     tab2 <- extTables[[itemNum]][[2]]
-    tab2[] <- lapply(tab2, as.character)
     
     # Set plot coordinates
     xs <-
@@ -71,10 +70,14 @@ plot_snapshots <-
         ifelse(is.na(tabs$datValue),
                lighten(tabs$colValue, .4),
                tabs$colValue)
+      
+      legendDF <- rbind(legendDF, data.frame(colValue = missingCols, description = ""))
+      tabs$colValue <- factor(tabs$colValue, levels = legendDF$colValue)
+      legendDF <- subset(legendDF, description != "")
+    } else {
+      tabs$colValue <- factor(tabs$colValue, levels = legendDF$colValue)
     }
-    
-    tabs$colValue <-
-      factor(tabs$colValue, levels = legendDF$colValue)
+
     
     if (isFALSE(ghostData)) {
       if (max(tabs$x) != maxDims[1]) {
@@ -119,7 +122,7 @@ plot_snapshots <-
     for (v in as.character(unique(tabs$variable))) {
       uniCols <-
         as.character(unique(subset(tabs, variable == v)$colValue))
-      uniCols <- uniCols[!is.na(uniCols)]
+      uniCols <- uniCols[!is.na(uniCols) & (uniCols %in% unique(legendDF$colValue))]
       if (length(uniCols) > 0) {
         if (sum(length(uniCols) == 1 &
                 uniCols == accents$colValue[3]) == 1) {
@@ -195,6 +198,7 @@ plot_snapshots <-
     # Print data in Smallset snapshots
     tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
     
+    # Truncate long data values
     if (isTRUE(printedData) & !is.null(truncateData)) {
       tabs$datValue <-
         ifelse(nchar(tabs$datValue) > truncateData,

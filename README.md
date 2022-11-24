@@ -1,4 +1,4 @@
-Creating Smallset Timelines with `smallsets`
+Smallset Timelines with `smallsets`
 ================
 
 ## Introduction
@@ -12,17 +12,16 @@ min](https://www.youtube.com/watch?v=_fpn02h3IUo)) and long ([15
 min](https://www.youtube.com/watch?v=I_ksOv6rj1Y)) YouTube video provide
 an introduction to the project.
 
-**Do you use R or Python to preprocess datasets for analyses?** The
-Smallset Timeline (or Timeline) is a practical visualisation to document
-and communicate your data preprocessing decisions. `smallsets` is the R
-package for creating a Smallset Timeline for your R or Python
-preprocessing script.
+**Do you use R or Python to preprocess datasets for analyses?**
+`smallsets` is an R package that transforms your R or Python
+preprocessing script into a Smallset Timeline, so that you can document
+and share your preprocessing decisions in a practical manner.
 
 *If you have questions about using `smallsets` or would like help
 building a Smallset Timeline, please email Lydia at
 <Lydia.Lucchesi@anu.edu.au>.*
 
-## Installation
+## Installation in R
 
 ``` r
 remotes::install_github(repo = "lydialucchesi/smallsets")
@@ -30,15 +29,19 @@ remotes::install_github(repo = "lydialucchesi/smallsets")
 
 ## Quick start example
 
-**Copy, paste, and run the following snippet of code to create your
-first Smallset Timeline!**
+<span style="color:#FF6633">**Copy, paste, and run the following snippet
+of code to create your first Smallset Timeline!**</span>
 
-*Check out the following section to see how snapshots and captions are
-added by “commenting” the preprocessing script.*
+*Check out the following section to see how to choose snapshot points
+and provide captions with structured comments in the preprocessing
+script.*
+
+*There are many built-in options to customise the appearance of your
+Smallset Timeline. See `?Smallset_Timeline` for details.*
 
 ``` r
 library(smallsets)
-set.seed(107)
+set.seed(145)
 
 data(mydata)
 
@@ -48,7 +51,8 @@ Smallset_Timeline(
   )
 ```
 
-    ## [1] "3 snapshots taken"
+    ## [1] "Selected Smallset rows: 2, 47, 54, 64, 75, 92"
+    ## [1] "Number of snapshots: 3"
     ## [1] "Alt text available in figureAltText.txt"
 
 ![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
@@ -61,15 +65,15 @@ series of structured comments were added to the preprocessing script,
 informing `smallsets` what to do.
 
 -   `# start smallset mydata` - start tracking code and take the first
-    data snapshot
+    data snapshot, where “mydata” is the name of your data object
 
 -   `# snap mydata` - take a data snapshot after the next line of code
 
 -   `# end smallset mydata` - stop tracking code and take the last data
     snapshot
 
--   snapshot captions are added between caption brackets:
-    `caption[...]caption`
+-   snapshot captions are added between caption brackets
+    `caption[...]caption` at the end of structured comments
 
 This script is included in the package and can be viewed on GitHub here.
 
@@ -78,21 +82,11 @@ This script is included in the package and can be viewed on GitHub here.
 # is FALSE.]caption
 mydata <- mydata[mydata$C2 == TRUE,]
 
-mC6 <- tapply(mydata$C6, mydata$C1, function(x)
-  mean(x, na.rm = TRUE))
-C6sub <- as.factor(mydata$C1)
-levels(C6sub) <- mC6
-mydata$C6[is.na(mydata$C6)] <- round(as.numeric(levels(C6sub))[C6sub][is.na(mydata$C6)], 2)
-
-mC8 <- tapply(mydata$C8, mydata$C1, function(x)
-  mean(x, na.rm = TRUE))
-C8sub <- as.factor(mydata$C1)
-levels(C8sub) <- mC8
+mydata$C6[is.na(mydata$C6)] <- mean(mydata$C6, na.rm = TRUE)
 # snap mydata caption[Replace missing values in C6 and 
-# C8 with category (C1) means. Drop C7 (too many missing 
-# values).]caption
-mydata$C8[is.na(mydata$C8)] <- round(as.numeric(levels(C8sub))[C8sub][is.na(mydata$C8)], 2)
-
+# C8 with mean values. Drop C7 because there are too many 
+# missing values.]caption
+mydata$C8[is.na(mydata$C8)] <- mean(mydata$C8, na.rm = TRUE)
 mydata$C7 <- NULL
 
 mydata$C9 <- mydata$C3 + mydata$C4
