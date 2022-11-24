@@ -63,18 +63,13 @@ below. Prior to building the Timeline with `Smallset_Timeline()`, a
 series of structured comments were added to the preprocessing script,
 informing `smallsets` what to do.
 
--   `# start smallset mydata` - start tracking code and take the first
-    data snapshot, where “mydata” is the name of your data object
-
--   `# snap mydata` - take a data snapshot after the next line of code
-
--   `# end smallset mydata` - stop tracking code and take the last data
-    snapshot
-
--   snapshot captions are added between caption brackets
-    `caption[...]caption` at the end of structured comments
-
-This script is included in the package and can be viewed on GitHub here.
+-   `# start smallset` + `data name` (e.g., “mydata”) = start tracking
+    code and take the first data snapshot
+-   `# snap` + `data name` = take a data snapshot after the next line of
+    code
+-   `# end smallset`+ `data name` = stop tracking code and take the last
+    data snapshot
+-   `caption[...]caption` = add this caption to the snapshot
 
 ``` r
 # start smallset mydata caption[Remove rows where C2 
@@ -83,7 +78,7 @@ mydata <- mydata[mydata$C2 == TRUE,]
 
 mydata$C6[is.na(mydata$C6)] <- mean(mydata$C6, na.rm = TRUE)
 # snap mydata caption[Replace missing values in C6 and 
-# C8 with mean values. Drop C7 because there are too many 
+# C8 with column means. Drop C7 because there are too many 
 # missing values.]caption
 mydata$C8[is.na(mydata$C8)] <- mean(mydata$C8, na.rm = TRUE)
 mydata$C7 <- NULL

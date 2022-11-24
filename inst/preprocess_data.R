@@ -4,7 +4,7 @@ mydata <- mydata[mydata$C2 == TRUE,]
 
 mydata$C6[is.na(mydata$C6)] <- mean(mydata$C6, na.rm = TRUE)
 # snap mydata caption[Replace missing values in C6 and 
-# C8 with mean values. Drop C7 because there are too many 
+# C8 with column means. Drop C7 because there are too many 
 # missing values.]caption
 mydata$C8[is.na(mydata$C8)] <- mean(mydata$C8, na.rm = TRUE)
 mydata$C7 <- NULL
