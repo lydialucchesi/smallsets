@@ -3,14 +3,16 @@
 #' @keywords internal
 
 find_data_changes <- function(smallsetList,
-                              tables,
-                              altText = FALSE,
-                              altTextInfo = NULL) {
-  constant = "#808080"
-  changed = "#008000"
-  added = "#0000FF"
-  deleted = "#FF0000"
+                              fourCols,
+                              altText = FALSE
+                              ) {
+  tables <- list()
   
+  if (isTRUE(altText)) {
+    altTextInfo <- list()
+  }
+  
+  # Loop through snapshots comparing two at a time
   for (p in 1:(length(smallsetList) - 1)) {
     c <- p + 1
     
@@ -26,22 +28,22 @@ find_data_changes <- function(smallsetList,
       tprior <- tables[[p]]
     } else {
       tprior <- flextable::flextable(lprior)
-      tprior <- flextable::color(tprior, color = constant)
+      tprior <- flextable::color(tprior, color = fourCols[1])
     }
     
     tcurrent <- flextable::flextable(lcurrent)
-    tcurrent <- flextable::color(tcurrent, color = constant)
+    tcurrent <- flextable::color(tcurrent, color = fourCols[1])
     
     # Compare rows
     rowsDrop <- setdiff(rownames(lprior), rownames(lcurrent))
     if (length(rowsDrop) > 0) {
-      tprior <- flextable::color(tprior, color = deleted, i = rowsDrop)
+      tprior <- flextable::color(tprior, color = fourCols[4], i = rowsDrop)
     }
     
     rowsAdd <- setdiff(rownames(lcurrent), rownames(lprior))
     if (length(rowsAdd) > 0) {
       tcurrent <-
-        flextable::color(tcurrent, color = added, i = rowsAdd)
+        flextable::color(tcurrent, color = fourCols[3], i = rowsAdd)
     }
     
     # Compare columns
@@ -49,7 +51,7 @@ find_data_changes <- function(smallsetList,
     if (length(colsDrop) > 0) {
       tprior <-
         flextable::color(tprior,
-                         color = deleted,
+                         color = fourCols[4],
                          j = colsDrop,
                          part = "all")
     }
@@ -58,7 +60,7 @@ find_data_changes <- function(smallsetList,
     if (length(colsAdd) > 0) {
       tcurrent <-
         flextable::color(tcurrent,
-                         color = added,
+                         color = fourCols[3],
                          j = colsAdd,
                          part = "all")
     }
@@ -108,7 +110,7 @@ find_data_changes <- function(smallsetList,
         for (v in 1:nrow(adjData)) {
           tcurrent <- flextable::color(
             tcurrent,
-            color = changed,
+            color = fourCols[2],
             i = adjData$nmbr[v],
             j = adjData$c[v]
           )

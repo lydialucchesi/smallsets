@@ -1,64 +1,72 @@
-#' Smallset Timeline
+#'Smallset Timeline
 #'
 #'@description This is the command for creating a Smallset Timeline to visualise
-#' data preprocessing decisions.
+#'  data preprocessing decisions.
 #'
 #'@param data The dataset that is being preprocessed.
-#'@param code The R or Python data preprocessing script.
-#'   Filename extension should be included (e.g., "my_code.R" or "my_code.py").
-#'@param dir File path to the data preprocessing code. Default is the working directory.
+#'@param code The R or Python data preprocessing script. Filename extension
+#'  should be included (e.g., "my_code.R" or "my_code.py").
+#'@param dir File path to the data preprocessing code. Default is the working
+#'  directory.
 #'@param rowCount Integer between 5-15 (number rows in the Smallset).
 #'@param rowNums Numeric vector of row numbers. Indicates particular rows from
-#'   the data set to be included in the Smallset.
-#'@param autoSelect 1, 2, or NULL (default). 1 = select Smallset rows using the coverage optimisation model.
-#' 2 = select Smallset rows using the coverage+variety optimisation model (can take a long time to run).
-#' These optimisation problems are solved using Gurobi. Please visit https://www.gurobi.com to obtain
-#' a gurobi license (free academic licenses are available) in order to use these selection methods. Otherwise,
-#' leave auto = NULL, and the rows will be randomly sampled from the dataset.
-#'@param ignoreCols Character vector of column names. Indicates columns
-#'   from the dataset to exclude from the Smallset. These columns can't be
-#'   referenced in the data preprocessing code.
-#'@param colours Either one of the pre-built colour schemes ("colScheme1", "colScheme2", or
-#' "colScheme3") or a list with four hex colour codes for same, edit, add, and delete
-#' (e.g., list(same = "#E6E3DF", edit = "#FFC500", add = "#5BA2A6", delete = "#DDC492")).
-#'@param printedData TRUE or FALSE. TRUE prints data values in the Smallset snapshots.
-#'@param truncateData Integer specifying width of data
-#'   value in each table cell (results in width + "...").
-#'   Default is NULL, where entire data value is printed.
+#'  the data set to be included in the Smallset.
+#'@param autoSelect 1, 2, or NULL (default). 1 = select Smallset rows using the
+#'  coverage optimisation model. 2 = select Smallset rows using the
+#'  coverage+variety optimisation model (can take a long time to run). These
+#'  optimisation problems are solved using Gurobi. Please visit
+#'  https://www.gurobi.com to obtain a gurobi license (free academic licenses
+#'  are available) in order to use these selection methods. Otherwise, leave
+#'  auto = NULL, and the rows will be randomly sampled from the dataset.
+#'@param ignoreCols Character vector of column names. Indicates columns from the
+#'  dataset to exclude from the Smallset. These columns can't be referenced in
+#'  the data preprocessing code.
+#'@param colours Either one of the pre-built colour schemes ("colScheme1",
+#'  "colScheme2", or "colScheme3") or a list with four hex colour codes for
+#'  same, edit, add, and delete (e.g., list(same = "#E6E3DF", edit = "#FFC500",
+#'  add = "#5BA2A6", delete = "#DDC492")).
+#'@param printedData TRUE or FALSE. TRUE prints data values in the Smallset
+#'  snapshots.
+#'@param truncateData Integer specifying width of data value in each table cell
+#'  (results in width + "..."). Default is NULL, where entire data value is
+#'  printed.
 #'@param ghostData TRUE or FALSE. TRUE includes blank spaces where data have
-#'   been removed.
-#'@param missingDataTints TRUE or FALSE. TRUE plots a lighter colour value to signal
-#'   a missing data value.
+#'  been removed.
+#'@param missingDataTints TRUE or FALSE. TRUE plots a lighter colour value to
+#'  signal a missing data value.
 #'@param timelineFont Any font you have installed in R. Default is "sans".
-#'@param sizing List of size specifications: column names (columns), caption text (captions),
-#' tile size, (tiles), printed data (data), legend text (legendText), legend icons (legendIcons),
-#' and resume markers (resume).
-#' List of defaults: list(columns = 3, captions = 3, tiles = .1, data = 2.5, legendText = 10,
-#' legendIcons = 1, resume = .25).
-#'@param spacing List of spacing specifications: space below captions (captionB),
-#' space above columns (columnsT), space to the right of Smallset tables (tablesR),
-#' number of Timeline rows (rows), and degree rotation of column names (columnsDeg). List of
-#' defaults: list(captionB = 3, columnsT = 1, tablesR = .5, rows = 1, columnsDeg = 0).
-#'@param labelling List of colour specifications for labelling, which includes column names and 
-#'printed data. First specification is whether the labels should be lighter or 
-#'darker than the tile colours (labelsCol). Second specification is a value between 0 and 1 for 
-#'how much lighter or darker it should be (labelsColDif). Example 1: list(labelsCol = "darker", labelsColDif = 1) means 
-#'labels are black. Example 2: list(labelsCol = "lighter", labelsColDif = 1) means labels are white.
-#'Example 3: list(labelsCol = "lighter", labelsColDif = 0) means labels are same colour as tile colours. 
-#'Example 4: list(labelsCol = "lighter", labelsColDif = .5) means labels are midpoint between white 
-#'and tile colours. Default is list(labelsCol = "darker", labelsColDif = .5), 
-#'which is midpoint between tile colours and black.
+#'@param sizing List of size specifications: column names (columns), caption
+#'  text (captions), tile size, (tiles), printed data (data), legend text
+#'  (legendText), legend icons (legendIcons), and resume markers (resume). List
+#'  of defaults: list(columns = 3, captions = 3, tiles = .1, data = 2.5,
+#'  legendText = 10, legendIcons = 1, resume = .25).
+#'@param spacing List of spacing specifications: space below captions
+#'  (captionB), space above columns (columnsT), space to the right of Smallset
+#'  tables (tablesR), number of Timeline rows (rows), and degree rotation of
+#'  column names (columnsDeg). List of defaults: list(captionB = 3, columnsT =
+#'  1, tablesR = .5, rows = 1, columnsDeg = 0).
+#'@param labelling List of colour specifications for labelling, which includes
+#'  column names and printed data. First specification is whether the labels
+#'  should be lighter or darker than the tile colours (labelsCol). Second
+#'  specification is a value between 0 and 1 for how much lighter or darker it
+#'  should be (labelsColDif). Example 1: list(labelsCol = "darker", labelsColDif
+#'  = 1) means labels are black. Example 2: list(labelsCol = "lighter",
+#'  labelsColDif = 1) means labels are white. Example 3: list(labelsCol =
+#'  "lighter", labelsColDif = 0) means labels are same colour as tile colours.
+#'  Example 4: list(labelsCol = "lighter", labelsColDif = .5) means labels are
+#'  midpoint between white and tile colours. Default is list(labelsCol =
+#'  "darker", labelsColDif = .5), which is midpoint between tile colours and
+#'  black.
 #'
-#'@details Prior to running this command,
-#' you will need to add structured comments to your R or Python data preprocessing script,
-#' providing snapshot points and captions.
-#'\itemize{
-#'\item{`# start smallset mydata` - start tracking code and take the first 
-#'data snapshot, where "mydata" is the name of your data object}
-#'\item{`# snap mydata` - take a data snapshot after the next line of code}
-#'\item{`# end smallset mydata` - stop tracking code and take the last data snapshot}
-#'\item{Snapshot captions are added between caption brackets, `caption[...]caption`, 
-#'at the end of the comments listed above}}
+#'@details Prior to running this command, you will need to add structured
+#'  comments to your R or Python data preprocessing script, providing snapshot
+#'  points and captions. \itemize{ \item{`# start smallset mydata` - start
+#'  tracking code and take the first data snapshot, where "mydata" is the name
+#'  of your data object} \item{`# snap mydata` - take a data snapshot after the
+#'  next line of code} \item{`# end smallset mydata` - stop tracking code and
+#'  take the last data snapshot} \item{Snapshot captions are added between
+#'  caption brackets, `caption[...]caption`, at the end of the comments listed
+#'  above}}
 #'
 #'@return A plot.
 #'
@@ -104,11 +112,9 @@ Smallset_Timeline <- function(data,
                                 rows = 1,
                                 columnsDeg = 0
                               ),
-                              labelling = list(
-                                labelsCol = "darker",
-                                labelsColDif = .5
-                              )
-                              ) {
+                              labelling = list(labelsCol = "darker",
+                                               labelsColDif = .5)) {
+  # Check that dataset and R/Python preprocessing code were provided
   if (missing(data)) {
     print("Must specify a data set")
   }
@@ -142,6 +148,16 @@ Smallset_Timeline <- function(data,
   spacing <- set_spacing(spacing = spacing)
   labelling <- set_labelling(labelling = labelling)
   
+  # Get four colours ready
+  colClass <- class(colours)
+  if (colClass == "character") {
+    fourCols <- unlist(return_scheme(colScheme = colours),
+                       use.names = FALSE)
+  } else {
+    fourCols <- unlist(colours,
+                       use.names = FALSE)
+  }
+  
   # Select the Smallset rows
   if (!is.null(autoSelect)) {
     if (!requireNamespace("gurobi", quietly = TRUE)) {
@@ -153,31 +169,27 @@ Smallset_Timeline <- function(data,
       )
     } else {
       if (autoSelect == 1) {
-        rowNums <-
+        smallset <-
           run_simple_gurobi(
             data = data,
             code = code,
             dir = dir,
             rowCount = rowCount,
-            lang = lang
+            lang = lang,
+            fourCols = fourCols
           )
-        
-        smallset <- rowNums
       } else {
-        rowNums <-
+        smallset <-
           run_advanced_gurobi(
             data = data,
             code = code,
             dir = dir,
             rowCount = rowCount,
-            lang = lang
+            lang = lang,
+            fourCols = fourCols
           )
-        
-        smallset <- rowNums
-        
       }
     }
-    
   } else {
     smallset <- select_smallset(
       data = data,
@@ -190,7 +202,7 @@ Smallset_Timeline <- function(data,
   # Prepare the preprocessing function that takes snapshots
   output <-
     write_smallset_code(
-      scriptName = code,
+      code = code,
       dir = dir,
       ignoreCols = ignoreCols,
       smallset = smallset,
@@ -208,7 +220,6 @@ Smallset_Timeline <- function(data,
       smallsetList[[i]] <-
         smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
     }
-    
   } else {
     source(paste0(dir, "/smallset_code.R"))
     if (!is.null(ignoreCols)) {
@@ -225,63 +236,24 @@ Smallset_Timeline <- function(data,
   print(paste0("Selected Smallset rows: ", paste0(smallset, collapse = ", ")))
   print(paste0("Number of snapshots: ", as.character(length(smallsetList))))
   
-  # Identify data differences between snapshots
-  tables <- list()
-  altTextInfo <- list()
+  # Find the data differences between snapshots
   smallsetTables <-
-    find_data_changes(
-      smallsetList = smallsetList,
-      tables = tables,
-      altText = TRUE,
-      altTextInfo = altTextInfo
-    )
+    find_data_changes(smallsetList = smallsetList,
+                      fourCols = fourCols,
+                      altText = TRUE)
   items <- seq(1, length(smallsetTables[[1]]), 1)
   
-  # Get four colours ready
-  colClass <- class(colours)
-  
-  if (colClass == "character") {
-    chosenScheme <- return_scheme(colScheme = colours)
-    same <- chosenScheme$same
-    edit <- chosenScheme$edit
-    add <- chosenScheme$add
-    delete <- chosenScheme$delete
-  } else {
-    same <- colours$same
-    edit <- colours$edit
-    add <- colours$add
-    delete <- colours$delete
-  }
-  
-  tileColours <- data.frame(colValue = c(same, edit, add, delete))
-  
-  for (i in 1:length(smallsetTables[[1]])) {
-    temp <- smallsetTables[[1]][[i]]$body$styles$text$color$data
-    for (c in colnames(temp)) {
-      temp[, c] <- replace(temp[, c], temp[, c] == "#808080", same)
-      temp[, c] <- replace(temp[, c], temp[, c] == "#008000", edit)
-      temp[, c] <- replace(temp[, c], temp[, c] == "#0000FF", add)
-      temp[, c] <-
-        replace(temp[, c], temp[, c] == "#FF0000", delete)
-    }
-    smallsetTables[[1]][[i]]$body$styles$text$color$data <- temp
-  }
-  
-  # Prepare timeline accent colours
+  # Prepare the label colours
   accents <-
     data.frame(
-      colValue = c(same, edit, add, delete),
-      accent = rep(labelling$labelsCol, 4),
-      degree = rep(labelling$labelsColDif, 4)
-    )
-  accents$colValue2 <-
-    ifelse(
-      accents$accent == "darker",
-      darken(accents$colValue, accents$degree),
-      lighten(accents$colValue, accents$degree)
+      colValue = fourCols,
+      colValue2 = ifelse(labelling$labelsCol == "darker",
+                         darken(fourCols, labelling$labelsColDif),
+                         lighten(fourCols, labelling$labelsColDif)
+                         )
     )
   
-  # Identify which colours are present in the timeline
+  # Find which colours are present in the Timeline
   colsPresent <- c()
   for (u in 1:length(smallsetTables[[1]])) {
     uniqueCols <- smallsetTables[[1]][[u]]$body$styles$text$color$data
@@ -289,10 +261,8 @@ Smallset_Timeline <- function(data,
     uniqueCols <- unique(uniqueCols)
     colsPresent <- c(colsPresent, uniqueCols)
   }
-  
   colsPresent <- unique(colsPresent)
-  tileColours <-
-    subset(tileColours, tileColours$colValue %in% colsPresent)
+  fourCols <- fourCols[fourCols %in% colsPresent]
   
   # Prepare colour legend
   if (isTRUE(missingDataTints)) {
@@ -314,11 +284,10 @@ Smallset_Timeline <- function(data,
   }
   
   legendDF <- data.frame(colValue = c(), description = c())
-  colItems <- c(same, edit, add, delete)
-  for (colItemNum in 1:length(colItems)) {
-    if (colItems[colItemNum] %in% colsPresent) {
+  for (colItemNum in 1:length(fourCols)) {
+    if (fourCols[colItemNum] %in% colsPresent) {
       legendAddition <-
-        data.frame(colValue = c(colItems[colItemNum]),
+        data.frame(colValue = c(fourCols[colItemNum]),
                    description = descriptions[colItemNum])
       legendDF <- rbind(legendDF, legendAddition)
     }
@@ -351,7 +320,7 @@ Smallset_Timeline <- function(data,
       extTables,
       smallsetTables,
       output,
-      tileColours,
+      fourCols,
       printedData,
       ghostData,
       sizing,
@@ -395,7 +364,7 @@ Smallset_Timeline <- function(data,
     "plot_layout(nrow = ",
     as.character(spacing$rows),
     ", guides = 'collect')"
-    )
+  )
   
   # Set Timeline design choices
   fontChoice <-
@@ -417,7 +386,7 @@ Smallset_Timeline <- function(data,
   # Generate alternative text for the Smallset Timeline
   generate_alt_text(
     smallsetTables = smallsetTables[[1]],
-    tileColours = tileColours,
+    fourCols = fourCols,
     legendDF = legendDF,
     altTextInfo = smallsetTables[[2]],
     l = l,

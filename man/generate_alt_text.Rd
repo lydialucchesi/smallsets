@@ -6,7 +6,7 @@
 \usage{
 generate_alt_text(
   smallsetTables,
-  tileColours,
+  fourCols,
   legendDF,
   altTextInfo,
   l,

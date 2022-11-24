@@ -2,10 +2,10 @@
 % Please edit documentation in R/write_smallset_code.R
 \name{write_smallset_code}
 \alias{write_smallset_code}
-\title{Write smallset code}
+\title{Write Smallset code}
 \usage{
 write_smallset_code(
-  scriptName,
+  code,
   dir,
   ignoreCols,
   keepCols,

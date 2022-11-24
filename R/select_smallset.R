@@ -5,7 +5,7 @@
 select_smallset <- function(data,
                             rowCount = 6,
                             rowNums = NULL,
-                            ignoreCols = ignoreCols) {
+                            ignoreCols) {
   # Randomly sample rows from the original dataset
   if (is.null(rowNums)) {
     data$smallsetRowID <- row.names(data)

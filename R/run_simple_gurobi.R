@@ -4,18 +4,19 @@
 #' @keywords internal
 
 run_simple_gurobi <-
-  function(data = data,
-           code = code,
-           dir = dir,
-           rowCount = rowCount,
-           lang = lang) {
+  function(data,
+           code,
+           dir,
+           rowCount,
+           lang,
+           fourCols) {
+    # Take snapshots of dataset at snapshot points
     fullCheck <- select_smallset(data = data,
                                  rowCount = nrow(data),
                                  ignoreCols = NULL)
-    
     notNeeded <-
       write_smallset_code(
-        scriptName = code,
+        code = code,
         dir = dir,
         ignoreCols = NULL,
         smallset = fullCheck,
@@ -30,25 +31,28 @@ run_simple_gurobi <-
     }
     smallsetList <- apply_code(data)
     
+    # Generate coverage indicator matrix
     scores <-
-      prepare_score_sheet(smallsetList = smallsetList, data = data)
+      prepare_score_sheet(smallsetList = smallsetList, fourCols = fourCols)
     scores <- scores[, colSums(scores != 0) > 0]
     
-    myscoresT <- t(as.matrix(scores[,]))
+    # Run coverage+variety optimisation model
+    scoresT <- t(as.matrix(scores[,]))
     krow = t(rep(1, nrow(scores)))
     
     model <- list()
     
-    model$A          <- rbind(myscoresT, krow)
-    # model$obj        <- obj
+    model$A          <- rbind(scoresT, krow)
     model$modelsense <- 'max'
-    model$rhs        <- c(rep(1, nrow(myscoresT)), rowCount)
-    model$sense      <- c(rep('>', nrow(myscoresT)), '=')
+    model$rhs        <- c(rep(1, nrow(scoresT)), rowCount)
+    model$sense      <- c(rep('>', nrow(scoresT)), '=')
     model$vtype      <- 'B'
     
     params <- list(OutputFlag = 0)
     
     result <- gurobi::gurobi(model, params)
+    
+    # Format model result
     modelSelect <- result$x
     rowNums <- data.frame(rows = rownames(data), modelSelect)
     rowNums <- subset(rowNums, rowNums$modelSelect == 1)$rows

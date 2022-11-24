@@ -9,7 +9,7 @@ plot_snapshots(
   extTables,
   smallsetTables,
   output,
-  tileColours,
+  fourCols,
   printedData,
   ghostData,
   sizing,

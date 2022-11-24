@@ -6,7 +6,7 @@
 
 generate_alt_text <-
   function(smallsetTables,
-           tileColours,
+           fourCols,
            legendDF,
            altTextInfo,
            l,
@@ -17,17 +17,17 @@ generate_alt_text <-
     suppressWarnings(brew(file = system.file("altTextTemplates", "snapNum.txt", package="smallsets"), output = "altText/intro_3.txt"))
     
     if (sum(grepl("Data has been edited.", legendDF)) == 1) {
-      editColour <- sapply(tileColours$colValue[2], color.id)[1]
+      editColour <- sapply(fourCols[2], color.id)[1]
       suppressWarnings(brew(file = system.file("altTextTemplates", "editColour.txt", package="smallsets"), output = "altText/intro_4.txt"))
     }
     
     if (sum(grepl("Data has been added.", legendDF)) == 1) {
-      addColour <- sapply(tileColours$colValue[3], color.id)[1]
+      addColour <- sapply(fourCols[3], color.id)[1]
       suppressWarnings(brew(file = system.file("altTextTemplates", "addColour.txt", package="smallsets"), output = "altText/intro_5.txt"))
     }
     
     if (sum(grepl("Data will be deleted.", legendDF)) == 1) {
-      delColour <- sapply(tileColours$colValue[4], color.id)[1]
+      delColour <- sapply(fourCols[4], color.id)[1]
       suppressWarnings(brew(file = system.file("altTextTemplates", "delColour.txt", package="smallsets"), output = "altText/intro_6.txt"))
     }
     

@@ -4,7 +4,7 @@
 \alias{prepare_score_sheet}
 \title{Prepare score sheet}
 \usage{
-prepare_score_sheet(smallsetList = smallsetList, data = data)
+prepare_score_sheet(smallsetList, fourCols)
 }
 \description{
 Generates a coverage indicator matrix for automated Smallset selection (autoSelect = 1 or 2).

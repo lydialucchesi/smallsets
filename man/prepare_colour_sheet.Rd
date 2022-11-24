@@ -4,7 +4,7 @@
 \alias{prepare_colour_sheet}
 \title{Prepare colour sheet}
 \usage{
-prepare_colour_sheet(smallsetList = smallsetList)
+prepare_colour_sheet(smallsetList, fourCols)
 }
 \description{
 Generates a visual appearance matrix for automated Smallset selection (autoSelect = 2).

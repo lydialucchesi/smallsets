@@ -27,83 +27,91 @@ Smallset_Timeline(
 \arguments{
 \item{data}{The dataset that is being preprocessed.}
 
-\item{code}{The R or Python data preprocessing script.
-Filename extension should be included (e.g., "my_code.R" or "my_code.py").}
+\item{code}{The R or Python data preprocessing script. Filename extension
+should be included (e.g., "my_code.R" or "my_code.py").}
 
-\item{dir}{File path to the data preprocessing code. Default is the working directory.}
+\item{dir}{File path to the data preprocessing code. Default is the working
+directory.}
 
 \item{rowCount}{Integer between 5-15 (number rows in the Smallset).}
 
 \item{rowNums}{Numeric vector of row numbers. Indicates particular rows from
 the data set to be included in the Smallset.}
 
-\item{autoSelect}{1, 2, or NULL (default). 1 = select Smallset rows using the coverage optimisation model.
-2 = select Smallset rows using the coverage+variety optimisation model (can take a long time to run).
-These optimisation problems are solved using Gurobi. Please visit https://www.gurobi.com to obtain
-a gurobi license (free academic licenses are available) in order to use these selection methods. Otherwise,
-leave auto = NULL, and the rows will be randomly sampled from the dataset.}
+\item{autoSelect}{1, 2, or NULL (default). 1 = select Smallset rows using the
+coverage optimisation model. 2 = select Smallset rows using the
+coverage+variety optimisation model (can take a long time to run). These
+optimisation problems are solved using Gurobi. Please visit
+https://www.gurobi.com to obtain a gurobi license (free academic licenses
+are available) in order to use these selection methods. Otherwise, leave
+auto = NULL, and the rows will be randomly sampled from the dataset.}
 
-\item{ignoreCols}{Character vector of column names. Indicates columns
-from the dataset to exclude from the Smallset. These columns can't be
-referenced in the data preprocessing code.}
+\item{ignoreCols}{Character vector of column names. Indicates columns from the
+dataset to exclude from the Smallset. These columns can't be referenced in
+the data preprocessing code.}
 
-\item{colours}{Either one of the pre-built colour schemes ("colScheme1", "colScheme2", or
-"colScheme3") or a list with four hex colour codes for same, edit, add, and delete
-(e.g., list(same = "#E6E3DF", edit = "#FFC500", add = "#5BA2A6", delete = "#DDC492")).}
+\item{colours}{Either one of the pre-built colour schemes ("colScheme1",
+"colScheme2", or "colScheme3") or a list with four hex colour codes for
+same, edit, add, and delete (e.g., list(same = "#E6E3DF", edit = "#FFC500",
+add = "#5BA2A6", delete = "#DDC492")).}
 
-\item{printedData}{TRUE or FALSE. TRUE prints data values in the Smallset snapshots.}
+\item{printedData}{TRUE or FALSE. TRUE prints data values in the Smallset
+snapshots.}
 
-\item{truncateData}{Integer specifying width of data
-value in each table cell (results in width + "...").
-Default is NULL, where entire data value is printed.}
+\item{truncateData}{Integer specifying width of data value in each table cell
+(results in width + "..."). Default is NULL, where entire data value is
+printed.}
 
 \item{ghostData}{TRUE or FALSE. TRUE includes blank spaces where data have
 been removed.}
 
-\item{missingDataTints}{TRUE or FALSE. TRUE plots a lighter colour value to signal
-a missing data value.}
+\item{missingDataTints}{TRUE or FALSE. TRUE plots a lighter colour value to
+signal a missing data value.}
 
 \item{timelineFont}{Any font you have installed in R. Default is "sans".}
 
-\item{sizing}{List of size specifications: column names (columns), caption text (captions),
-tile size, (tiles), printed data (data), legend text (legendText), legend icons (legendIcons),
-and resume markers (resume).
-List of defaults: list(columns = 3, captions = 3, tiles = .1, data = 2.5, legendText = 10,
-legendIcons = 1, resume = .25).}
+\item{sizing}{List of size specifications: column names (columns), caption
+text (captions), tile size, (tiles), printed data (data), legend text
+(legendText), legend icons (legendIcons), and resume markers (resume). List
+of defaults: list(columns = 3, captions = 3, tiles = .1, data = 2.5,
+legendText = 10, legendIcons = 1, resume = .25).}
 
-\item{spacing}{List of spacing specifications: space below captions (captionB),
-space above columns (columnsT), space to the right of Smallset tables (tablesR),
-number of Timeline rows (rows), and degree rotation of column names (columnsDeg). List of
-defaults: list(captionB = 3, columnsT = 1, tablesR = .5, rows = 1, columnsDeg = 0).}
+\item{spacing}{List of spacing specifications: space below captions
+(captionB), space above columns (columnsT), space to the right of Smallset
+tables (tablesR), number of Timeline rows (rows), and degree rotation of
+column names (columnsDeg). List of defaults: list(captionB = 3, columnsT =
+1, tablesR = .5, rows = 1, columnsDeg = 0).}
 
-\item{labelling}{List of colour specifications for labelling, which includes column names and 
-printed data. First specification is whether the labels should be lighter or 
-darker than the tile colours (labelsCol). Second specification is a value between 0 and 1 for 
-how much lighter or darker it should be (labelsColDif). Example 1: list(labelsCol = "darker", labelsColDif = 1) means 
-labels are black. Example 2: list(labelsCol = "lighter", labelsColDif = 1) means labels are white.
-Example 3: list(labelsCol = "lighter", labelsColDif = 0) means labels are same colour as tile colours. 
-Example 4: list(labelsCol = "lighter", labelsColDif = .5) means labels are midpoint between white 
-and tile colours. Default is list(labelsCol = "darker", labelsColDif = .5), 
-which is midpoint between tile colours and black.}
+\item{labelling}{List of colour specifications for labelling, which includes
+column names and printed data. First specification is whether the labels
+should be lighter or darker than the tile colours (labelsCol). Second
+specification is a value between 0 and 1 for how much lighter or darker it
+should be (labelsColDif). Example 1: list(labelsCol = "darker", labelsColDif
+= 1) means labels are black. Example 2: list(labelsCol = "lighter",
+labelsColDif = 1) means labels are white. Example 3: list(labelsCol =
+"lighter", labelsColDif = 0) means labels are same colour as tile colours.
+Example 4: list(labelsCol = "lighter", labelsColDif = .5) means labels are
+midpoint between white and tile colours. Default is list(labelsCol =
+"darker", labelsColDif = .5), which is midpoint between tile colours and
+black.}
 }
 \value{
 A plot.
 }
 \description{
 This is the command for creating a Smallset Timeline to visualise
-data preprocessing decisions.
+ data preprocessing decisions.
 }
 \details{
-Prior to running this command,
-you will need to add structured comments to your R or Python data preprocessing script,
-providing snapshot points and captions.
-\itemize{
-\item{`# start smallset mydata` - start tracking code and take the first 
-data snapshot, where "mydata" is the name of your data object}
-\item{`# snap mydata` - take a data snapshot after the next line of code}
-\item{`# end smallset mydata` - stop tracking code and take the last data snapshot}
-\item{Snapshot captions are added between caption brackets, `caption[...]caption`, 
-at the end of the comments listed above}}
+Prior to running this command, you will need to add structured
+ comments to your R or Python data preprocessing script, providing snapshot
+ points and captions. \itemize{ \item{`# start smallset mydata` - start
+ tracking code and take the first data snapshot, where "mydata" is the name
+ of your data object} \item{`# snap mydata` - take a data snapshot after the
+ next line of code} \item{`# end smallset mydata` - stop tracking code and
+ take the last data snapshot} \item{Snapshot captions are added between
+ caption brackets, `caption[...]caption`, at the end of the comments listed
+ above}}
 }
 \examples{
 set.seed(107)

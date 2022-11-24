@@ -8,7 +8,7 @@ plot_snapshots <-
            extTables,
            smallsetTables,
            output,
-           tileColours,
+           fourCols,
            printedData,
            ghostData,
            sizing,
@@ -50,20 +50,20 @@ plot_snapshots <-
     # Prepare lighter colour values for tiles with missing data
     if (isTRUE(missingDataTints)) {
       missingCols <- c()
-      if (tileColours$colValue[1] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(tileColours$colValue[1], .4))
+      if (fourCols[1] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(fourCols[1], .4))
       }
       
-      if (tileColours$colValue[2] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(tileColours$colValue[2], .4))
+      if (fourCols[2] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(fourCols[2], .4))
       }
       
-      if (tileColours$colValue[3] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(tileColours$colValue[3], .4))
+      if (fourCols[3] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(fourCols[3], .4))
       }
       
-      if (tileColours$colValue[4] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(tileColours$colValue[4], .4))
+      if (fourCols[4] %in% legendDF$colValue) {
+        missingCols <- c(missingCols, lighten(fourCols[4], .4))
       }
       
       tabs$colValue <-
@@ -299,7 +299,7 @@ plot_snapshots <-
             y = .5,
             yend = maxDims[2] + .5
           ),
-          colour = as.character(tileColours$colValue[1]),
+          colour = as.character(fourCols[1]),
           size = sizing$resume
         )
     }

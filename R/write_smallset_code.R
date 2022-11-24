@@ -1,9 +1,9 @@
-#' Write smallset code
+#' Write Smallset code
 #' @description Turns the preprocessing code into a function that takes snapshots.
 #' @keywords internal
 
 write_smallset_code <-
-  function(scriptName,
+  function(code,
            dir,
            ignoreCols,
            keepCols,
@@ -13,9 +13,9 @@ write_smallset_code <-
     # Import preprocessing code
     if (dir != getwd()) {
       processTXT <-
-        as.data.frame(readLines(paste0(dir, scriptName), warn = FALSE))
+        as.data.frame(readLines(paste0(dir, code), warn = FALSE))
     } else {
-      processTXT <- as.data.frame(readLines(scriptName, warn = FALSE))
+      processTXT <- as.data.frame(readLines(code, warn = FALSE))
     }
     colnames(processTXT) <- c("command")
     processTXT$command <- as.character(processTXT$command)
@@ -45,7 +45,8 @@ write_smallset_code <-
         
         if (c != nrow(captions)) {
           captions$stop[c] <-
-            close[(close >= captions$row[c]) & (close < captions$row[c + 1])]
+            close[(close >= captions$row[c]) &
+                    (close < captions$row[c + 1])]
         } else {
           captions$stop[c] <- close[(close >= as.numeric(captions$row[c]))]
         }
@@ -81,8 +82,6 @@ write_smallset_code <-
           gsub(" caption\\[.*", "", processTXT[captions$row[c]])
         captions$row <- captions$row - (span)
         captions$stop <- captions$stop - (span)
-        # processTXT <- as.data.frame(processTXT)
-        # colnames(processTXT) <- c("command")
       } else {
         processTXT[captions$row[c]] <-
           gsub(" caption\\[.*", "", processTXT[captions$row[c]])
@@ -101,13 +100,12 @@ write_smallset_code <-
       gsub("# end smallset ", "", processTXT[rEnd, c("command")])
     
     smallsetCode <-
-      processTXT[(as.numeric(rStart) + 1):(as.numeric(rEnd) - 1), ]
+      processTXT[(as.numeric(rStart) + 1):(as.numeric(rEnd) - 1),]
     
     smallsetCode <- data.frame(command = smallsetCode)
     smallsetCode$command <- as.character(smallsetCode$command)
     
     # Prepare Python rows2snap function
-    # (will get an error if calling a removed row)
     gen_rows2snap <- function(theDatasetName) {
       return(
         paste0(
@@ -142,9 +140,9 @@ write_smallset_code <-
             ))
           ))
           
-          smallsetCode <- c(smallsetCode[1:(i + 1),],
+          smallsetCode <- c(smallsetCode[1:(i + 1), ],
                             insertSnap,
-                            smallsetCode[(i + 2):nrow(smallsetCode),])
+                            smallsetCode[(i + 2):nrow(smallsetCode), ])
         }
         
         smallsetCode <- data.frame(command = smallsetCode)
@@ -174,9 +172,9 @@ write_smallset_code <-
             )
           )
           
-          smallsetCode <- c(smallsetCode[1:(i + 1),],
+          smallsetCode <- c(smallsetCode[1:(i + 1), ],
                             insertSnap,
-                            smallsetCode[(i + 2):nrow(smallsetCode),])
+                            smallsetCode[(i + 2):nrow(smallsetCode), ])
         }
         
         smallsetCode <- data.frame(command = smallsetCode)
@@ -258,7 +256,7 @@ write_smallset_code <-
     writeLines(smallsetCode$command, fileConn)
     close(fileConn)
     
-    # Determine location of any resume comments
+    # Determine location of any resume markers
     snapCount <- -1
     resumeLocs <- c()
     for (i in 1:nrow(smallsetCode)) {
