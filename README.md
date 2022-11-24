@@ -29,8 +29,8 @@ remotes::install_github(repo = "lydialucchesi/smallsets")
 
 ## Quick start example
 
-<span style="color:#FF6633">**Copy, paste, and run the snippet of code
-to create your first Smallset Timeline!**</span>
+**Copy, paste, and run the snippet of code to create your first Smallset
+Timeline!**
 
 The following section shows how to select snapshot points and provide
 captions with structured comments in the preprocessing script.
@@ -50,11 +50,7 @@ Smallset_Timeline(
   )
 ```
 
-    ## [1] "Selected Smallset rows: 2, 47, 54, 64, 75, 92"
-    ## [1] "Number of snapshots: 3"
-    ## [1] "Alt text available in figureAltText.txt"
-
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](man/figures/example_ST.png)
 
 ## Structured comments
 

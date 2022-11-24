@@ -25,12 +25,12 @@ remotes::install_github(repo = "lydialucchesi/smallsets")
 
 ## Quick start example
 
-<span style="color:#FF6633">**Copy, paste, and run the snippet of code to create your first Smallset Timeline!**</span>
+**Copy, paste, and run the snippet of code to create your first Smallset Timeline!**
 
 The following section shows how to select snapshot points and provide captions with structured comments in the preprocessing script.
 
 *See `?Smallset_Timeline` for options to customise the appearance of your Smallset Timeline.*
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 library(smallsets)
 set.seed(145)
 
@@ -41,6 +41,8 @@ Smallset_Timeline(
   code = system.file("preprocess_data.R", package = "smallsets")
   )
 ```
+
+![](man/figures/example_ST.png)
 
 ```{r, eval = TRUE}
 
