@@ -127,12 +127,12 @@ Smallset_Timeline <- function(data,
   if (!lang %in% c("R", "py")) {
     stop(
       "Preprocessing code must be in R or Python.
-      Filename extension should be included
-      (e.g., 'my_code.R' or 'my_code.py')."
+      Include filename extension (e.g., 'my_code.R' 
+      or 'my_code.py')."
     )
   }
   
-  # Make sure data is of class data frame
+  # Check data class and set to data frame
   if (class(data)[1] == "data.table") {
     print("Converting data object from a
           data table to a data frame.")
@@ -148,7 +148,7 @@ Smallset_Timeline <- function(data,
          data frame, data table, or tibble.")
   }
   
-  # Fill in any sizing, spacing, and labelling parameters not specified
+  # Fill in any parameters not specified
   sizing <- set_sizing(sizing = sizing)
   spacing <- set_spacing(spacing = spacing)
   labelling <- set_labelling(labelling = labelling)
@@ -208,7 +208,7 @@ Smallset_Timeline <- function(data,
     )
   }
   
-  # Prepare the preprocessing function that takes snapshots
+  # Write preprocessing function with snapshots
   output <-
     write_smallset_code(
       code = code,
@@ -218,41 +218,41 @@ Smallset_Timeline <- function(data,
       lang = lang
     )
   
-  # Apply the preprocessing function to take snapshots
+  # Apply preprocessing function with snapshots
   if (lang == "py") {
     source_python(paste0(dir, "/smallset_code.py"))
     if (!is.null(ignoreCols)) {
-      data <- data[,!(names(data) %in% ignoreCols)]
+      data <- data[, !(names(data) %in% ignoreCols)]
     }
     smallsetList <- apply_code(data)
     for (i in 1:length(smallsetList)) {
       smallsetList[[i]] <-
-        smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
+        smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")), ]
     }
   } else {
     source(paste0(dir, "/smallset_code.R"))
     if (!is.null(ignoreCols)) {
-      data <- data[,!(names(data) %in% ignoreCols)]
+      data <- data[, !(names(data) %in% ignoreCols)]
     }
     smallsetList <- apply_code(data)
     for (i in 1:length(smallsetList)) {
       smallsetList[[i]] <-
-        smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
+        smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")), ]
     }
   }
   
-  # Print Smallset and snapshot information to console
+  # Print Smallset/snapshot information
   print(paste0("Selected Smallset rows: ", paste0(smallset, collapse = ", ")))
   print(paste0("Number of snapshots: ", as.character(length(smallsetList))))
   
-  # Find the data differences between snapshots
+  # Find data differences between snapshots
   smallsetTables <-
     find_data_changes(smallsetList = smallsetList,
                       fourCols = fourCols,
                       altText = TRUE)
   items <- seq(1, length(smallsetTables[[1]]), 1)
   
-  # Prepare the label colours
+  # Prepare snapshot label colours
   if (labelling$labelsCol == "darker") {
     colValue2 <- darken(fourCols, labelling$labelsColDif)
   } else {
@@ -262,7 +262,7 @@ Smallset_Timeline <- function(data,
     data.frame(colValue = fourCols,
                colValue2 = colValue2)
   
-  # Find which colours are present in the Timeline
+  # Find which colours are present in Timeline
   colsPresent <- c()
   for (u in 1:length(smallsetTables[[1]])) {
     uniqueCols <-
@@ -305,10 +305,10 @@ Smallset_Timeline <- function(data,
     extTables <- lapply(items, smallsetTables, FUN = extract_tables)
   }
   
-  # Find the Timeline's dimensions
+  # Find Timeline dimensions
   maxDims <- get_timeline_dimensions(extTables)
   
-  # Make the graphic for each snapshot
+  # Make each snapshot plot
   l <-
     lapply(
       items,
@@ -329,30 +329,24 @@ Smallset_Timeline <- function(data,
       FUN = plot_snapshots
     )
   
-  # Adjust plot widths if multiple Timeline rows
-  if (spacing$rows > 1) {
-    for (s in 1:length(l)) {
-      l[[s]] <- l[[s]] + xlim(c(.5, maxDims[1] + .5))
-    }
-  }
-  
-  # Assemble snapshots into a Smallset Timeline
+  # Assemble snapshots into Timeline
   patchedPlots <- ""
   for (s in 1:length(l)) {
+    # Adjust plot widths if multiple Timeline rows
+    if (spacing$rows > 1) {
+      l[[s]] <- l[[s]] + xlim(c(.5, maxDims[1] + .5))
+    }
     addPlot <- paste0("l[[", as.character(s), "]] + ")
     patchedPlots <- paste0(patchedPlots, addPlot)
   }
   
-  patchedPlots <- paste0(
-    patchedPlots,
-    "plot_layout(nrow = ",
-    as.character(spacing$rows),
-    ", guides = 'collect')"
-  )
-  
-  # Set Timeline design choices
-  fontChoice <-
+  # Add design info
+  patchedPlots <-
     paste0(
+      patchedPlots,
+      "plot_layout(nrow = ",
+      as.character(spacing$rows),
+      ", guides = 'collect')",
       " & theme(text = element_text(family = '",
       timelineFont,
       "', colour = 'black'),",
@@ -364,10 +358,7 @@ Smallset_Timeline <- function(data,
         legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))"
     )
   
-  patchedPlots <-
-    paste0(patchedPlots, fontChoice)
-  
-  # Generate alternative text for the Smallset Timeline
+  # Generate alt text for the Smallset Timeline
   generate_alt_text(
     smallsetTables = smallsetTables[[1]],
     fourCols = fourCols,
