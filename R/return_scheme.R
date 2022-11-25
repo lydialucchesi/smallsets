@@ -11,7 +11,8 @@ return_scheme <- function(colScheme = "colScheme1") {
         add = "#CDAFEE",
         delete = "#FBE4B5"
       )
-  } else if (colScheme == "colScheme2") {
+  }
+  if (colScheme == "colScheme2") {
     CS <-
       list(
         same = "#4F5353",
@@ -19,18 +20,6 @@ return_scheme <- function(colScheme = "colScheme1") {
         add = "#978878",
         delete = "#708F90"
       )
-  } else if (colScheme == "colScheme3") {
-    CS <-
-      list(
-        same = "#E3D4C3",
-        edit = "#4c4cff",
-        add = "#FEE004",
-        delete = "#FF0000"
-      )
-  } else {
-    stop(
-      "Please choose one of the available colour schemes: colScheme1, colScheme2, or colScheme3."
-    )
   }
   
   return(CS)

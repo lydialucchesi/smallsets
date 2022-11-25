@@ -1,22 +1,13 @@
 utils::globalVariables(
   c(
-    "colValue",
-    "legend",
-    "x",
-    "y",
-    "colAlp",
-    "ind",
-    "xCir",
-    "yCir",
-    "colValue2",
-    "action",
-    "datValue",
     "apply_code",
-    "V1",
-    "V2",
-    "label",
-    "n",
+    "colValue",
+    "colValue2",
+    "datValue",
+    "description",
+    "ind",
     "variable",
-    "description"
+    "x",
+    "y"
   )
 )

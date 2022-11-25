@@ -50,8 +50,8 @@ auto = NULL, and the rows will be randomly sampled from the dataset.}
 dataset to exclude from the Smallset. These columns can't be referenced in
 the data preprocessing code.}
 
-\item{colours}{Either one of the pre-built colour schemes ("colScheme1",
-"colScheme2", or "colScheme3") or a list with four hex colour codes for
+\item{colours}{Either one of the pre-built colour schemes ("colScheme1" or 
+"colScheme2") or a list with four hex colour codes for
 same, edit, add, and delete (e.g., list(same = "#E6E3DF", edit = "#FFC500",
 add = "#5BA2A6", delete = "#DDC492")).}
 
