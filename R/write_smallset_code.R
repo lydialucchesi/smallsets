@@ -12,22 +12,18 @@ write_smallset_code <-
            modelSelection = FALSE) {
     # Import preprocessing code
     if (dir != getwd()) {
-      processTXT <-
-        as.data.frame(readLines(paste0(dir, code), warn = FALSE))
-    } else {
-      processTXT <- as.data.frame(readLines(code, warn = FALSE))
+      code <- paste0(dir, code)
     }
-    colnames(processTXT) <- c("command")
-    processTXT$command <- as.character(processTXT$command)
+    script <-
+      data.frame(command = readLines(code, warn = FALSE))
     
-    commentsLines1 <-
-      row.names(processTXT)[grepl("# start smallset", processTXT$command)]
-    commentsLines2 <-
-      row.names(processTXT)[grepl("# snap", processTXT$command)]
-    commentsLines3 <-
-      row.names(processTXT)[grepl("# end smallset", processTXT$command)]
+    # Find rows with structured comments
     commentsLines <-
-      c(commentsLines1, commentsLines2, commentsLines3)
+      c(row.names(script)[grepl("# start smallset", script$command)],
+        row.names(script)[grepl("# snap", script$command)],
+        row.names(script)[grepl("# end smallset", script$command)])
+    
+    # Retrieve captions from script
     captions <-
       data.frame(
         n = seq(1, length(commentsLines)),
@@ -37,10 +33,10 @@ write_smallset_code <-
         text = NA
       )
     close <-
-      as.numeric(row.names(processTXT)[grepl("]caption", processTXT$command)])
+      as.numeric(row.names(script)[grepl("]caption", script$command)])
     
     for (c in 1:nrow(captions)) {
-      if (grepl("caption[", processTXT[captions[c, "row"], "command"], fixed = TRUE)) {
+      if (grepl("caption[", script[captions[c, "row"], "command"], fixed = TRUE)) {
         captions$caption[c] <- TRUE
         
         if (c != nrow(captions)) {
@@ -52,7 +48,7 @@ write_smallset_code <-
         }
         
         caption <-
-          processTXT[captions$row[c]:captions$stop[c], "command"]
+          script[captions$row[c]:captions$stop[c], "command"]
         caption[1] <- gsub(".*\\[", "", caption[1])
         caption[length(caption)] <-
           gsub("\\].*", "", caption[length(caption)])
@@ -68,90 +64,89 @@ write_smallset_code <-
       } else {
         captions$caption[c] <- FALSE
       }
-      
     }
     
-    processTXT <- processTXT$command
+    # Remove captions from script
+    script <- script$command
     for (c in 1:nrow(captions)) {
       if ((!is.na(captions$stop[c])) &
           (captions$row[c] != captions$stop[c])) {
         span <- captions$stop[c] - captions$row[c]
-        processTXT <-
-          processTXT[-seq(captions$row[c] + 1, captions$stop[c], 1)]
-        processTXT[captions$row[c]] <-
-          gsub(" caption\\[.*", "", processTXT[captions$row[c]])
+        script <-
+          script[-seq(captions$row[c] + 1, captions$stop[c], 1)]
+        script[captions$row[c]] <-
+          gsub(" caption\\[.*", "", script[captions$row[c]])
         captions$row <- captions$row - (span)
         captions$stop <- captions$stop - (span)
       } else {
-        processTXT[captions$row[c]] <-
-          gsub(" caption\\[.*", "", processTXT[captions$row[c]])
+        script[captions$row[c]] <-
+          gsub(" caption\\[.*", "", script[captions$row[c]])
       }
     }
     
-    processTXT <- data.frame(command = processTXT)
-    processTXT$command <- as.character(processTXT$command)
-    rStart <-
-      row.names(processTXT)[grepl("# start smallset", processTXT$command)]
-    rStartName <-
-      gsub("# start smallset ", "", processTXT[rStart, c("command")])
-    rEnd <-
-      row.names(processTXT)[grepl("# end smallset", processTXT$command)]
-    rEndName <-
-      gsub("# end smallset ", "", processTXT[rEnd, c("command")])
+    # Find structured comments after removing captions
+    script <- data.frame(command = script)
+    script$command <- as.character(script$command)
+    start <-
+      row.names(script)[grepl("# start smallset", script$command)]
+    startName <-
+      gsub("# start smallset ", "", script[start, c("command")])
+    end <-
+      row.names(script)[grepl("# end smallset", script$command)]
+    endName <-
+      gsub("# end smallset ", "", script[end, c("command")])
     
-    smallsetCode <-
-      processTXT[(as.numeric(rStart) + 1):(as.numeric(rEnd) - 1),]
-    
-    smallsetCode <- data.frame(command = smallsetCode)
-    smallsetCode$command <- as.character(smallsetCode$command)
+    # Subset to tracked preprocessing code
+    script <-
+      data.frame(command = script[(as.numeric(start) + 1):(as.numeric(end) - 1),])
     
     # Prepare Python rows2snap function
-    gen_rows2snap <- function(theDatasetName) {
-      return(
-        paste0(
-          ".loc[np.array([",
-          paste(smallset, collapse = ", "),
-          "])[np.isin(np.array([",
-          paste(smallset, collapse = ", "),
-          "]), np.array(",
-          paste(theDatasetName),
-          ".index))]].copy(deep = True))"
+    if (lang == "py") {
+      gen_rows2snap <- function(theDatasetName) {
+        return(
+          paste0(
+            ".loc[np.array([",
+            paste(smallset, collapse = ", "),
+            "])[np.isin(np.array([",
+            paste(smallset, collapse = ", "),
+            "]), np.array(",
+            paste(theDatasetName),
+            ".index))]].copy(deep = True))"
+          )
         )
-      )
+      }
     }
     
     # Insert code to take snapshots
     iterLim <-
-      nrow(smallsetCode) + nrow(subset(smallsetCode, grepl("# snap ", smallsetCode$command))) - 1
+      nrow(script) + nrow(subset(script, grepl("# snap ", script$command))) - 1
     s = 1
     if (lang == "py") {
       for (i in 1:iterLim) {
         signal <- "# snap "
-        if (grepl(signal, smallsetCode$command[i])) {
+        if (grepl(signal, script$command[i])) {
           s <- s + 1
           
           insertSnap <- c(paste0(
             "snapshots.append(",
-            as.character(gsub(
-              signal, "", smallsetCode$command[i]
-            )),
+            as.character(gsub(signal, "", script$command[i])),
             gen_rows2snap(as.character(
-              gsub(signal, "", smallsetCode$command[i])
+              gsub(signal, "", script$command[i])
             ))
           ))
           
-          smallsetCode <- c(smallsetCode[1:(i + 1), ],
-                            insertSnap,
-                            smallsetCode[(i + 2):nrow(smallsetCode), ])
+          script <- c(script[1:(i + 1), ],
+                      insertSnap,
+                      script[(i + 2):nrow(script), ])
         }
         
-        smallsetCode <- data.frame(command = smallsetCode)
-        smallsetCode$command <- as.character(smallsetCode$command)
+        script <- data.frame(command = script)
+        script$command <- as.character(script$command)
       }
     } else {
       for (i in 1:iterLim) {
         signal <- "# snap "
-        if (grepl(signal, smallsetCode$command[i])) {
+        if (grepl(signal, script$command[i])) {
           s <- s + 1
           
           insertSnap <- c(
@@ -159,74 +154,68 @@ write_smallset_code <-
               "snapshots[[",
               as.character(s),
               "]] <- ",
-              as.character(gsub(
-                signal, "", smallsetCode$command[i]
-              )),
+              as.character(gsub(signal, "", script$command[i])),
               "[(row.names(",
-              as.character(gsub(
-                signal, "", smallsetCode$command[i]
-              )),
+              as.character(gsub(signal, "", script$command[i])),
               ") %in% c(",
               paste(smallset, collapse = ", "),
               ")), ]"
             )
           )
           
-          smallsetCode <- c(smallsetCode[1:(i + 1), ],
-                            insertSnap,
-                            smallsetCode[(i + 2):nrow(smallsetCode), ])
+          script <- c(script[1:(i + 1), ],
+                      insertSnap,
+                      script[(i + 2):nrow(script), ])
         }
         
-        smallsetCode <- data.frame(command = smallsetCode)
-        smallsetCode$command <- as.character(smallsetCode$command)
+        script <- data.frame(command = script)
+        script$command <- as.character(script$command)
       }
     }
     
     # Make the preprocessing code a function
     if (lang == "py") {
       functionStart <-
-        paste0("def apply_code(", rStartName, "):")
-      smallsetCode <-
+        paste0("def apply_code(", startName, "):")
+      script <-
         c(
           "import numpy as np",
           "snapshots = []",
           functionStart,
-          paste0(
-            "snapshots.append(",
-            rStartName,
-            gen_rows2snap(rStartName)
-          ),
-          smallsetCode$command,
           paste0("snapshots.append(",
-                 rEndName,
-                 gen_rows2snap(rEndName)),
+                 startName,
+                 gen_rows2snap(startName)),
+          script$command,
+          paste0("snapshots.append(",
+                 endName,
+                 gen_rows2snap(endName)),
           "return snapshots"
         )
     } else {
       functionStart <-
-        paste0("apply_code <- function(", rStartName, ") {")
+        paste0("apply_code <- function(", startName, ") {")
       
-      smallsetCode <-
+      script <-
         c(
           "snapshots <- list()",
           functionStart,
           paste0(
             "snapshots[[1]] <- ",
-            rStartName,
+            startName,
             "[(row.names(",
-            rStartName,
+            startName,
             ") %in% c(",
             paste(smallset, collapse = ", "),
             ")), ]"
           ),
-          smallsetCode$command,
+          script$command,
           paste0(
             "snapshots[[",
             as.character(s + 1),
             "]] <- ",
-            rEndName,
+            endName,
             "[(row.names(",
-            rEndName,
+            endName,
             ") %in% c(",
             paste(smallset, collapse = ", "),
             ")), ]"
@@ -237,14 +226,12 @@ write_smallset_code <-
       
     }
     
-    
-    smallsetCode <- data.frame(command = smallsetCode)
-    smallsetCode$command <- as.character(smallsetCode$command)
+    script <- data.frame(command = as.character(script))
     
     if (lang == "py") {
-      for (i in 4:length(smallsetCode$command))
-        smallsetCode$command[i] <-
-          paste0("    ", smallsetCode$command[i])
+      for (i in 4:length(script$command))
+        script$command[i] <-
+          paste0("    ", script$command[i])
     }
     
     # Write the updated preprocessing function to the directory
@@ -253,17 +240,17 @@ write_smallset_code <-
     } else {
       fileConn <- file(paste0(dir, "/smallset_code.R"))
     }
-    writeLines(smallsetCode$command, fileConn)
+    writeLines(script$command, fileConn)
     close(fileConn)
     
-    # Determine location of any resume markers
+    # Find location of any resume markers
     snapCount <- -1
     resumeLocs <- c()
-    for (i in 1:nrow(smallsetCode)) {
-      if (grepl("snapshots", smallsetCode$command[i])) {
+    for (i in 1:nrow(script)) {
+      if (grepl("snapshots", script$command[i])) {
         snapCount <- snapCount + 1
       }
-      if (grepl("# resume ", smallsetCode$command[i])) {
+      if (grepl("# resume ", script$command[i])) {
         resumeLocs <- c(resumeLocs, snapCount)
       }
     }
