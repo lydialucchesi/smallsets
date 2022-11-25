@@ -126,21 +126,26 @@ Smallset_Timeline <- function(data,
   lang <- tools::file_ext(code)
   if (!lang %in% c("R", "py")) {
     stop(
-      "Preprocessing code must be in R or Python. Filename extension should be included (e.g., 'my_code.R' or 'my_code.py')."
+      "Preprocessing code must be in R or Python.
+      Filename extension should be included
+      (e.g., 'my_code.R' or 'my_code.py')."
     )
   }
   
   # Make sure data is of class data frame
   if (class(data)[1] == "data.table") {
-    print("Converting data object from a data table to a data frame.")
+    print("Converting data object from a
+          data table to a data frame.")
     data <- as.data.frame(data)
   }
   if (class(data)[1] == "tbl_df") {
-    print("Converting data object from class tibble to a data frame.")
+    print("Converting data object from a
+          tibble to a data frame.")
     data <- as.data.frame(data)
   }
   if (class(data) != "data.frame") {
-    stop("Data was not of class data frame, data table, or tibble.")
+    stop("Data was not of class
+         data frame, data table, or tibble.")
   }
   
   # Fill in any sizing, spacing, and labelling parameters not specified
@@ -163,11 +168,14 @@ Smallset_Timeline <- function(data,
     if (!requireNamespace("gurobi", quietly = TRUE)) {
       stop(
         "This Smallset selection method uses a gurobi optimisation model.
-        Please visit https://www.gurobi.com to obtain a gurobi license (free academic licenses are available)
-        and then install and load the gurobi R package. smallsets will then be able to run the selection model.
-        Otherwise, please visit the help documentation for information about other Smallset selection options."
+        Please visit https://www.gurobi.com to obtain a gurobi license
+        (free academic licenses are available) and then install and load
+        the gurobi R package. smallsets will then be able to run the
+        selection model. Otherwise, please visit the help documentation
+        for information about other Smallset selection options."
       )
     } else {
+      # Use an optimisation algorithm
       if (autoSelect == 1) {
         smallset <-
           run_simple_gurobi(
@@ -191,6 +199,7 @@ Smallset_Timeline <- function(data,
       }
     }
   } else {
+    # Use random sampling and/or manual selection
     smallset <- select_smallset(
       data = data,
       rowCount = rowCount,
@@ -209,7 +218,7 @@ Smallset_Timeline <- function(data,
       lang = lang
     )
   
-  # Apply the preprocessing function
+  # Apply the preprocessing function to take snapshots
   if (lang == "py") {
     source_python(paste0(dir, "/smallset_code.py"))
     if (!is.null(ignoreCols)) {
@@ -250,50 +259,34 @@ Smallset_Timeline <- function(data,
     colValue2 <- lighten(fourCols, labelling$labelsColDif)
   }
   accents <-
-    data.frame(
-      colValue = fourCols,
-      colValue2 = colValue2
-    )
+    data.frame(colValue = fourCols,
+               colValue2 = colValue2)
   
   # Find which colours are present in the Timeline
   colsPresent <- c()
   for (u in 1:length(smallsetTables[[1]])) {
-    uniqueCols <- smallsetTables[[1]][[u]]$body$styles$text$color$data
-    uniqueCols <- as.vector(as.matrix(uniqueCols))
-    uniqueCols <- unique(uniqueCols)
+    uniqueCols <-
+      unique(as.vector(t(
+        smallsetTables[[1]][[u]]$body$styles$text$color$data
+      )))
     colsPresent <- c(colsPresent, uniqueCols)
   }
   colsPresent <- unique(colsPresent)
-  fourColsP <- fourCols[fourCols %in% colsPresent]
   
   # Prepare colour legend
+  descriptions <-
+    c(
+      "Data has not changed.",
+      "Data has been edited.",
+      "Data has been added.",
+      "Data will be deleted."
+    )
   if (isTRUE(missingDataTints)) {
-    descriptions <-
-      c(
-        "Data has not changed.\nTint is missing data.",
-        "Data has been edited.\nTint is missing data.",
-        "Data has been added.\nTint is missing data.",
-        "Data will be deleted.\nTint is missing data."
-      )
-  } else {
-    descriptions <-
-      c(
-        "Data has not changed.",
-        "Data has been edited.",
-        "Data has been added.",
-        "Data will be deleted."
-      )
+    descriptions <- paste0(descriptions, "\nTint is missing data.")
   }
-  
-  legendDF <- data.frame(colValue = c(), description = c())
-  for (colItemNum in 1:length(fourCols)) {
-    if (fourCols[colItemNum] %in% colsPresent) {
-      legendAddition <-
-        data.frame(colValue = c(fourCols[colItemNum]),
-                   description = descriptions[colItemNum])
-      legendDF <- rbind(legendDF, legendAddition)
-    }
-  }
+  legendDF <-
+    data.frame(colValue = fourCols, description = descriptions)
+  legendDF <- subset(legendDF, legendDF$colValue %in% colsPresent)
   
   # Insert ghost data rows/columns
   if (isTRUE(ghostData)) {
@@ -335,24 +328,6 @@ Smallset_Timeline <- function(data,
       missingDataTints,
       FUN = plot_snapshots
     )
-  
-  # Set limits for the x-axis
-  if (spacing$rows > 1) {
-    m <- maxDims[[1]] + spacing$tablesR
-    if (!is.null(output[[2]])) {
-      m <- maxDims[[1]] + 2.51
-    }
-    for (p in 1:length(l)) {
-      l[[p]] <- l[[p]] + xlim(c(0, m))
-    }
-  }
-  
-  if ((spacing$rows == 1) & (spacing$tablesR != .5)) {
-    m <- maxDims[[1]] + spacing$tablesR
-    for (p in 1:length(l)) {
-      l[[p]] <- l[[p]] + xlim(c(0, m))
-    }
-  }
   
   # Assemble snapshots into a Smallset Timeline
   patchedPlots <- ""

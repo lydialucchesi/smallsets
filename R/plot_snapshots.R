@@ -29,14 +29,14 @@ plot_snapshots <-
       data.frame(ind = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
     
     # Assign coordinates to tile colours
-    tab1$y <- seq(nrow(tab1), 1, -1)
+    tab1$y <- seq(nrow(tab1), 1,-1)
     tab1Long <-
       suppressWarnings(cbind(tab1[ncol(tab1)], utils::stack(tab1[-ncol(tab1)])))
     tab1Long <- merge(tab1Long, xs)
     colnames(tab1Long) <- c("variable", "y", "colValue", "x")
     
     # Assign coordinates to tile data
-    tab2$y <- seq(nrow(tab2), 1, -1)
+    tab2$y <- seq(nrow(tab2), 1,-1)
     tab2Long <-
       suppressWarnings(cbind(tab2[ncol(tab2)], utils::stack(tab2[-ncol(tab2)])))
     tab2Long <- merge(tab2Long, xs)
@@ -49,60 +49,20 @@ plot_snapshots <-
     
     # Prepare lighter colour values for tiles with missing data
     if (isTRUE(missingDataTints)) {
-      missingCols <- c()
-      if (fourCols[1] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(fourCols[1], .4))
-      }
-      
-      if (fourCols[2] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(fourCols[2], .4))
-      }
-      
-      if (fourCols[3] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(fourCols[3], .4))
-      }
-      
-      if (fourCols[4] %in% legendDF$colValue) {
-        missingCols <- c(missingCols, lighten(fourCols[4], .4))
-      }
-      
       tabs$colValue <-
         ifelse(is.na(tabs$datValue),
                lighten(tabs$colValue, .4),
                tabs$colValue)
       
-      legendDF <- rbind(legendDF, data.frame(colValue = missingCols, description = ""))
-      tabs$colValue <- factor(tabs$colValue, levels = legendDF$colValue)
+      missingCols <- lighten(fourCols, .4)
+      legendDF <-
+        rbind(legendDF,
+              data.frame(colValue = missingCols, description = ""))
+      tabs$colValue <-
+        factor(tabs$colValue, levels = legendDF$colValue)
       legendDF <- subset(legendDF, description != "")
     } else {
       tabs$colValue <- factor(tabs$colValue, levels = legendDF$colValue)
-    }
-
-    
-    if (isFALSE(ghostData)) {
-      if (max(tabs$x) != maxDims[1]) {
-        empty1 <-
-          data.frame(expand.grid(
-            x = seq(max(tabs$x) + 1, maxDims[1]),
-            y = seq(1, maxDims[2])
-          ))
-      }
-      
-      if (max(tabs$y) != maxDims[2]) {
-        d <- maxDims[2] - max(tabs$y)
-        tabs$y <- tabs$y + d
-        xs$y <- xs$y + d
-        empty2 <- data.frame(expand.grid(x = seq(1, maxDims[1]),
-                                         y = seq(1, min(tabs$y) - 1)))
-      }
-      
-      empty <- data.frame()
-      if (exists("empty1")) {
-        empty <- rbind(empty, empty1)
-      }
-      if (exists("empty2")) {
-        empty <- rbind(empty, empty2)
-      }
     }
     
     # Rotate column names
@@ -122,7 +82,8 @@ plot_snapshots <-
     for (v in as.character(unique(tabs$variable))) {
       uniCols <-
         as.character(unique(subset(tabs, variable == v)$colValue))
-      uniCols <- uniCols[!is.na(uniCols) & (uniCols %in% unique(legendDF$colValue))]
+      uniCols <-
+        uniCols[!is.na(uniCols) & (uniCols %in% unique(legendDF$colValue))]
       if (length(uniCols) > 0) {
         if (sum(length(uniCols) == 1 &
                 uniCols == accents$colValue[3]) == 1) {
@@ -141,7 +102,7 @@ plot_snapshots <-
     xs <- merge(xs, colNameCols)
     
     # Create snapshot plot
-    abstractSmallset <- ggplot() +
+    snapshot <- ggplot() +
       geom_tile(
         data = tabs,
         aes(x = x, y = y, fill = colValue),
@@ -196,18 +157,16 @@ plot_snapshots <-
       scale_colour_identity()
     
     # Print data in Smallset snapshots
-    tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
-    
-    # Truncate long data values
-    if (isTRUE(printedData) & !is.null(truncateData)) {
-      tabs$datValue <-
-        ifelse(nchar(tabs$datValue) > truncateData,
-               paste0(substr(tabs$datValue, 1, truncateData), "..."),
-               tabs$datValue)
-    }
-    
     if (isTRUE(printedData)) {
-      abstractSmallset <- abstractSmallset +
+      tabs$datValue <- ifelse(is.na(tabs$datValue), "", tabs$datValue)
+      # First truncate data if necessary
+      if (!is.null(truncateData)) {
+        tabs$datValue <-
+          ifelse(nchar(tabs$datValue) > truncateData,
+                 paste0(substr(tabs$datValue, 1, truncateData), "..."),
+                 tabs$datValue)
+      }
+      snapshot <- snapshot +
         geom_text(
           data = tabs,
           aes(
@@ -221,77 +180,66 @@ plot_snapshots <-
         )
     }
     
-    # Add invisible tiles to keep visible tiles equal in size (if ghostData = F)
+    # Add invisible tiles to maintain equal tile size
     if (isFALSE(ghostData)) {
-      if (nrow(empty) > 0) {
-        abstractSmallset <- abstractSmallset +
-          geom_tile(
-            data = empty,
-            aes(x = x, y = y),
-            fill = NA,
-            colour = NA,
-            size = sizing$tiles
-          )
+      if (max(tabs$x) != maxDims[1]) {
+        empty1 <-
+          data.frame(expand.grid(x = seq(max(tabs$x) + 1, maxDims[1]),
+                                 y = seq(1, maxDims[2])))
       }
-    }
-    
-    # Add snapshot caption to the plot
-    smallsetCaption <- output[[1]]$text[itemNum]
-    
-    if ((spacing$rows > 1) | (isFALSE(ghostData))) {
-      captionInfo <-
-        data.frame(
-          x = c((maxDims[1] + spacing$tablesR) / 2),
-          y = c(-.25),
-          smallsetCaption = c(smallsetCaption)
+      
+      if (max(tabs$y) != maxDims[2]) {
+        d <- maxDims[2] - max(tabs$y)
+        tabs$y <- tabs$y + d
+        xs$y <- xs$y + d
+        empty2 <- data.frame(expand.grid(x = seq(1, maxDims[1]),
+                                         y = seq(1, min(tabs$y) - 1)))
+      }
+      
+      empty <- data.frame()
+      if (exists("empty1")) {
+        empty <- rbind(empty, empty1)
+      }
+      if (exists("empty2")) {
+        empty <- rbind(empty, empty2)
+      }
+      
+      snapshot <- snapshot +
+        geom_tile(
+          data = empty,
+          aes(x = x, y = y),
+          fill = NA,
+          colour = NA,
+          size = sizing$tiles
         )
-    } else if ((spacing$rows == 1) & (spacing$tablesR != .5)) {
-      captionInfo <-
-        data.frame(
-          x = c((ncol(tab2) + spacing$tablesR) / 2),
-          y = c(-.25),
-          smallsetCaption = c(smallsetCaption)
-        )
-    } else {
-      captionInfo <-
-        data.frame(
-          x = c((ncol(tab2)) / 2),
-          y = c(-.25),
-          smallsetCaption = c(smallsetCaption)
-        )
+      
     }
     
-    if (itemNum %in% output[[2]]) {
-      captionInfo$x <- captionInfo$x + 1.25
-    }
+    # Retrieve snapshot caption
+    snapshotCaption <- output[[1]]$text[itemNum]
+    snapshotCaption[is.na(snapshotCaption)] <- ""
     
-    if (is.na(captionInfo$smallsetCaption)) {
-      captionInfo$smallsetCaption <-
-        as.character(captionInfo$smallsetCaption)
-      captionInfo$smallsetCaption[1] <- ""
-    }
-    
-    abstractWithCaption <- abstractSmallset +
+    # Add caption to the snapshot plot
+    snapshot <- snapshot +
       geom_textbox(
-        data = captionInfo,
-        aes(x = x,
-            y = y,
-            label = smallsetCaption),
-        width = grid::unit(.95, "npc"),
+        aes(x = .5,
+            y = -.25,
+            label = snapshotCaption),
+        width = grid::unit(.9, "npc"),
+        box.padding = unit(0, "cm"),
         family = timelineFont,
+        hjust = c(0),
         vjust = c(1),
-        hjust = c(.5),
-        valign = c(.5),
-        halign = c(0),
         size = sizing$captions,
         box.colour = NA,
         colour = "black"
       ) +
-      ylim(c(spacing$captionB * (-1), maxDims[2] + spacing$columnsT))
+      ylim(c(spacing$captionB * (-1), maxDims[2] + spacing$columnsT)) + 
+      xlim(c(.5, maxDims[1] + .5))
     
     # Add a resume marker (a vertical line between two snapshots)
     if (itemNum %in% output[[2]]) {
-      abstractWithCaption <- abstractWithCaption +
+      snapshot <- snapshot +
         geom_segment(
           aes(
             x = (maxDims[1] + 2),
@@ -304,6 +252,6 @@ plot_snapshots <-
         )
     }
     
-    return(abstractWithCaption)
+    return(snapshot)
     
   }
