@@ -234,8 +234,7 @@ plot_snapshots <-
         box.colour = NA,
         colour = "black"
       ) +
-      ylim(c(spacing$captionB * (-1), maxDims[2] + spacing$columnsT)) + 
-      xlim(c(.5, maxDims[1] + .5))
+      ylim(c(spacing$captionB * (-1), maxDims[2] + spacing$columnsT))
     
     # Add a resume marker (a vertical line between two snapshots)
     if (itemNum %in% output[[2]]) {
