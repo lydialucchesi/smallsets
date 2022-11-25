@@ -96,11 +96,12 @@ write_smallset_code <-
     endName <-
       gsub("# end smallset ", "", script[end, c("command")])
     
-    # Subset to tracked preprocessing code
+    # Subset to preprocessing code
     script <-
       data.frame(command = script[(as.numeric(start) + 1):(as.numeric(end) - 1),])
     
-    # Prepare Python rows2snap function
+    # Prepare function needed for python scripts
+    # Avoids error if calling a removed row
     if (lang == "py") {
       gen_rows2snap <- function(theDatasetName) {
         return(
@@ -173,7 +174,7 @@ write_smallset_code <-
       }
     }
     
-    # Make the preprocessing code a function
+    # Turn it into a function
     if (lang == "py") {
       functionStart <-
         paste0("def apply_code(", startName, "):")
@@ -228,13 +229,14 @@ write_smallset_code <-
     
     script <- data.frame(command = as.character(script))
     
+    # Add python tabs
     if (lang == "py") {
       for (i in 4:length(script$command))
         script$command[i] <-
           paste0("    ", script$command[i])
     }
     
-    # Write the updated preprocessing function to the directory
+    # Write preprocessing function to working directory
     if (lang == "py") {
       fileConn <- file(paste0(dir, "/smallset_code.py"))
     } else {
@@ -243,7 +245,7 @@ write_smallset_code <-
     writeLines(script$command, fileConn)
     close(fileConn)
     
-    # Find location of any resume markers
+    # Find location of resume markers
     snapCount <- -1
     resumeLocs <- c()
     for (i in 1:nrow(script)) {
