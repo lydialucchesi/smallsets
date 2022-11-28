@@ -4,12 +4,12 @@
 
 add_ghost_data <-
   function(itemNum, ghostDF1, ghostDF2, smallsetTables) {
-    
-    # Extract colour and data tables
-    tab1 <- as.data.frame(smallsetTables[[1]][[itemNum]]$body$styles$text$color$data)
+    # Retrieve colour and data tables
+    tabs <- retrieve_tables(itemNum = itemNum, 
+                            smallsetTables = smallsetTables)
+    tab1 <- tabs[[1]]
     tab1[] <- lapply(tab1, as.character)
-
-    tab2 <- as.data.frame(smallsetTables[[1]][[itemNum]]$body$dataset)
+    tab2 <- tabs[[2]]
     tab2[] <- lapply(tab2, as.character)
     
     # Insert ghost rows in colour data frame

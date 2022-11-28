@@ -4,10 +4,10 @@
 
 set_labelling <- function(labelling) {
   if (is.null(labelling$labelsCol)) {
-    labelling$labelsCol = "darker"
+    labelling$labelsCol <- "darker"
   }
   if (is.null(labelling$labelsColDif)) {
-    labelling$labelsColDif = .5
+    labelling$labelsColDif <- .5
   }
   return(labelling)
 }

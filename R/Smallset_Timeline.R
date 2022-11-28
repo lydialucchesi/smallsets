@@ -207,10 +207,11 @@ Smallset_Timeline <- function(data,
     smallset <- select_smallset(
       data = data,
       rowCount = rowCount,
-      rowNums = rowNums,
-      ignoreCols = ignoreCols
+      rowNums = rowNums
     )
   }
+  # Print Smallset row selection information
+  print(paste0("Selected Smallset rows: ", paste0(smallset, collapse = ", ")))
   
   # Write preprocessing function with snapshots
   output <-
@@ -245,10 +246,6 @@ Smallset_Timeline <- function(data,
     }
   }
   file.remove(paste0("smallsetsPKG_code.", lang))
-  
-  # Print Smallset/snapshot information
-  print(paste0("Selected Smallset rows: ", paste0(smallset, collapse = ", ")))
-  print(paste0("Number of snapshots: ", as.character(length(smallsetList))))
   
   # Find data differences between snapshots
   smallsetTables <-

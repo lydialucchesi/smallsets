@@ -4,19 +4,19 @@
 
 set_spacing <- function(spacing) {
   if (is.null(spacing$captionB)) {
-    spacing$captionB = 3
+    spacing$captionB <- 3
   }
   if (is.null(spacing$columnsT)) {
-    spacing$columnsT = 1
+    spacing$columnsT <- 1
   }
   if (is.null(spacing$tablesR)) {
-    spacing$tablesR = .5
+    spacing$tablesR <- .5
   }
   if (is.null(spacing$rows)) {
-    spacing$rows = 1
+    spacing$rows <- 1
   }
   if (is.null(spacing$columnsDeg)) {
-    spacing$columnsDeg = 0
+    spacing$columnsDeg <- 0
   }
   return(spacing)
 }

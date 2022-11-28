@@ -2,11 +2,11 @@
 % Please edit documentation in R/return_scheme.R
 \name{return_scheme}
 \alias{return_scheme}
-\title{Return selected colour scheme}
+\title{Return scheme}
 \usage{
 return_scheme(colScheme = "colScheme1")
 }
 \description{
-Returns the colours in a pre-built scheme.
+Returns the colours in a pre-built colour scheme.
 }
 \keyword{internal}

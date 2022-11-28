@@ -4,25 +4,25 @@
 
 set_sizing <- function(sizing) {
   if (is.null(sizing$columns)) {
-    sizing$columns = 3
+    sizing$columns <- 3
   }
   if (is.null(sizing$tiles)) {
-    sizing$tiles = .1
+    sizing$tiles <- .1
   }
   if (is.null(sizing$captions)) {
-    sizing$captions = 3
+    sizing$captions <- 3
   }
   if (is.null(sizing$data)) {
-    sizing$data = 2.5
+    sizing$data <- 2.5
   }
   if (is.null(sizing$legendText)) {
-    sizing$legendText = 10
+    sizing$legendText <- 10
   }
   if (is.null(sizing$legendIcons)) {
-    sizing$legendIcons = 1
+    sizing$legendIcons <- 1
   }
   if (is.null(sizing$resume)) {
-    sizing$resume = .25
+    sizing$resume <- .25
   }
   return(sizing)
 }

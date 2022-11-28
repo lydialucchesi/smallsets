@@ -44,10 +44,6 @@ Smallset_Timeline(
 
 ![](man/figures/example_ST.png)
 
-```{r, eval = TRUE}
-
-```
-
 ## Structured comments
 
 The Smallset Timeline above is based on the R preprocessing script below. Prior to building the Timeline with `Smallset_Timeline()`, a series of structured comments were added to the preprocessing script, informing `smallsets` what to do.
