@@ -47,6 +47,33 @@ plot_snapshots <-
     
     xs$y <- rep(max(tabs$y) + 1, nrow(xs))
     
+    # Create empty (invisible) tiles and adjust y coordinates
+    if (isFALSE(ghostData)) {
+      
+      empty <- data.frame(x = as.numeric(), y = as.numeric())
+      
+      if (max(tabs$x) != maxDims[1]) {
+        empty1 <-
+          data.frame(expand.grid(x = seq(max(tabs$x) + 1, maxDims[1]),
+                                 y = seq(1, maxDims[2])))
+      }
+      
+      if (max(tabs$y) != maxDims[2]) {
+        d <- maxDims[2] - max(tabs$y)
+        tabs$y <- tabs$y + d
+        xs$y <- xs$y + d
+        empty2 <- data.frame(expand.grid(x = seq(1, maxDims[1]),
+                                         y = seq(1, min(tabs$y) - 1)))
+      }
+      
+      if (exists("empty1")) {
+        empty <- rbind(empty, empty1)
+      }
+      if (exists("empty2")) {
+        empty <- rbind(empty, empty2)
+      }
+    }
+    
     # Prepare lighter colour values for tiles with missing data
     if (isTRUE(missingDataTints)) {
       tabs$colValue <-
@@ -98,7 +125,6 @@ plot_snapshots <-
         colNameCols[colNameCols$ind == v, c("col")] <- "#FFFFFF"
       }
     }
-    
     xs <- merge(xs, colNameCols)
     
     # Create snapshot plot
@@ -130,6 +156,7 @@ plot_snapshots <-
         hjust = hjustVal,
         vjust = vjustVal
       ) +
+      scale_colour_identity() + 
       coord_equal() +
       theme(
         axis.line = element_blank(),
@@ -153,8 +180,7 @@ plot_snapshots <-
           size = sizing$legendText,
           colour = "black"
         )
-      ) +
-      scale_colour_identity()
+      )
     
     # Print data in Smallset snapshots
     if (isTRUE(printedData)) {
@@ -180,30 +206,8 @@ plot_snapshots <-
         )
     }
     
-    # Add invisible tiles to maintain equal tile size
+    # Add empty tiles to maintain equal tile size across snapshots
     if (isFALSE(ghostData)) {
-      if (max(tabs$x) != maxDims[1]) {
-        empty1 <-
-          data.frame(expand.grid(x = seq(max(tabs$x) + 1, maxDims[1]),
-                                 y = seq(1, maxDims[2])))
-      }
-      
-      if (max(tabs$y) != maxDims[2]) {
-        d <- maxDims[2] - max(tabs$y)
-        tabs$y <- tabs$y + d
-        xs$y <- xs$y + d
-        empty2 <- data.frame(expand.grid(x = seq(1, maxDims[1]),
-                                         y = seq(1, min(tabs$y) - 1)))
-      }
-      
-      empty <- data.frame()
-      if (exists("empty1")) {
-        empty <- rbind(empty, empty1)
-      }
-      if (exists("empty2")) {
-        empty <- rbind(empty, empty2)
-      }
-      
       snapshot <- snapshot +
         geom_tile(
           data = empty,
@@ -212,7 +216,6 @@ plot_snapshots <-
           colour = NA,
           size = sizing$tiles
         )
-      
     }
     
     # Retrieve snapshot caption

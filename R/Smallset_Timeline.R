@@ -302,7 +302,7 @@ Smallset_Timeline <- function(data,
     extTables <-
       lapply(items, ghostDF1, ghostDF2, smallsetTables, FUN = add_ghost_data)
   } else {
-    extTables <- lapply(items, smallsetTables, FUN = extract_tables)
+    extTables <- lapply(items, smallsetTables, FUN = retrieve_tables)
   }
   
   # Find Timeline dimensions
