@@ -1,4 +1,4 @@
-#' Select smallset
+#' Select Smallset
 #' @description Selects the rows included in the Smallset.
 #' @keywords internal
 

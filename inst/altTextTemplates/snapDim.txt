@@ -1,1 +1,1 @@
-Snapshot <%= i %> is <%= nrow(smallsetTables[[i]]$body$dataset) %> rows by <%= ncol(smallsetTables[[i]]$body$dataset) %> columns.
+Snapshot <%= i %> is <%= nrow(tables[[i]]$body$dataset) %> rows by <%= ncol(tables[[i]]$body$dataset) %> columns.

@@ -2,10 +2,10 @@
 % Please edit documentation in R/generate_alt_text.R
 \name{generate_alt_text}
 \alias{generate_alt_text}
-\title{Generate Alt Text}
+\title{Generate alt text}
 \usage{
 generate_alt_text(
-  smallsetTables,
+  tables,
   fourCols,
   legendDF,
   altTextInfo,

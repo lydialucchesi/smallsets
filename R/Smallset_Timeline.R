@@ -363,7 +363,7 @@ Smallset_Timeline <- function(data,
   # Generate alt text for the Smallset Timeline
   if (isTRUE(altText)) {
     generate_alt_text(
-      smallsetTables = smallsetTables[[1]],
+      tables = smallsetTables[[1]],
       fourCols = fourCols,
       legendDF = legendDF,
       altTextInfo = smallsetTables[[2]],

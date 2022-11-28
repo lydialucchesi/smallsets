@@ -2,7 +2,7 @@
 % Please edit documentation in R/select_smallset.R
 \name{select_smallset}
 \alias{select_smallset}
-\title{Select smallset}
+\title{Select Smallset}
 \usage{
 select_smallset(data, rowCount = 6, rowNums = NULL)
 }
