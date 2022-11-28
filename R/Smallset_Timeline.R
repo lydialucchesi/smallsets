@@ -224,7 +224,7 @@ Smallset_Timeline <- function(data,
   
   # Apply preprocessing function with snapshots
   if (lang == "py") {
-    source_python(paste0(dir, "/smallset_code.py"))
+    source_python(paste0(dir, "/smallsetsPKG_CODE.py"))
     if (!is.null(ignoreCols)) {
       data <- data[, !(names(data) %in% ignoreCols)]
     }
@@ -234,7 +234,7 @@ Smallset_Timeline <- function(data,
         smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")), ]
     }
   } else {
-    source(paste0(dir, "/smallset_code.R"))
+    source(paste0(dir, "/smallsetsPKG_CODE.R"))
     if (!is.null(ignoreCols)) {
       data <- data[, !(names(data) %in% ignoreCols)]
     }
@@ -244,6 +244,7 @@ Smallset_Timeline <- function(data,
         smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")), ]
     }
   }
+  file.remove(paste0("smallsetsPKG_code.", lang))
   
   # Print Smallset/snapshot information
   print(paste0("Selected Smallset rows: ", paste0(smallset, collapse = ", ")))

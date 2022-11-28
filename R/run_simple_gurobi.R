@@ -25,11 +25,12 @@ run_simple_gurobi <-
       )
     
     if (lang == "py") {
-      source_python(paste0(dir, "/smallset_code.py"))
+      source_python(paste0(dir, "/smallsetsPKG_CODE.py"))
     } else {
-      source(paste0(dir, "/smallset_code.R"))
+      source(paste0(dir, "/smallsetsPKG_CODE.R"))
     }
     smallsetList <- apply_code(data)
+    file.remove(paste0("smallsetsPKG_code.", lang))
     
     # Generate coverage indicator matrix
     scores <-

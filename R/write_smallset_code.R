@@ -238,9 +238,9 @@ write_smallset_code <-
     
     # Write preprocessing function to working directory
     if (lang == "py") {
-      fileConn <- file(paste0(dir, "/smallset_code.py"))
+      fileConn <- file(paste0(dir, "/smallsetsPKG_CODE.py"))
     } else {
-      fileConn <- file(paste0(dir, "/smallset_code.R"))
+      fileConn <- file(paste0(dir, "/smallsetsPKG_CODE.R"))
     }
     writeLines(script$command, fileConn)
     close(fileConn)

@@ -1,7 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README.Rmd
-^smallset_code.R
+^smallsetsPKG_CODE.R
 ^mycaptions.Rmd
 ^captionTemplate.Rmd
 ^smallset-features
