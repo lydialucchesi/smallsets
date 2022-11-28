@@ -311,7 +311,7 @@ Smallset_Timeline <- function(data,
   }
   
   # Find Timeline dimensions
-  maxDims <- get_timeline_dimensions(extTables)
+  maxDims <- retrieve_dimensions(extTables)
   
   # Make each snapshot plot
   l <-

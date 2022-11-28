@@ -1,8 +1,8 @@
-#' Get timeline dimensions
-#' @description Finds the maximum and minimum number of rows and columns in the Smallset Timeline.
+#' Retrieve dimensions
+#' @description Retrieves the maximum and minimum number of rows and columns in the Smallset Timeline.
 #' @keywords internal
 
-get_timeline_dimensions <- function(tabs) {
+retrieve_dimensions <- function(tabs) {
   rows <- numeric()
   cols <- numeric()
   for (i in 1:length(tabs)) {
