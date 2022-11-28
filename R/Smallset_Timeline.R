@@ -25,6 +25,9 @@
 #'  "colScheme2") or a list with four hex colour codes for
 #'  same, edit, add, and delete (e.g., list(same = "#E6E3DF", edit = "#FFC500",
 #'  add = "#5BA2A6", delete = "#DDC492")).
+#'@param altText TRUE or FALSE. TRUE generates alternative text (alt text)
+#'for the Smallset Timeline and writes it to a text file (figureAltText.txt) 
+#'in the working directory.
 #'@param printedData TRUE or FALSE. TRUE prints data values in the Smallset
 #'  snapshots.
 #'@param truncateData Integer specifying width of data value in each table cell
@@ -91,6 +94,7 @@ Smallset_Timeline <- function(data,
                               autoSelect = NULL,
                               ignoreCols = NULL,
                               colours = "colScheme1",
+                              altText = FALSE,
                               printedData = FALSE,
                               truncateData = NULL,
                               ghostData = TRUE,
@@ -359,15 +363,18 @@ Smallset_Timeline <- function(data,
     )
   
   # Generate alt text for the Smallset Timeline
-  generate_alt_text(
-    smallsetTables = smallsetTables[[1]],
-    fourCols = fourCols,
-    legendDF = legendDF,
-    altTextInfo = smallsetTables[[2]],
-    l = l,
-    printedData = printedData,
-    ghostData = ghostData
-  )
+  if (isTRUE(altText)) {
+    generate_alt_text(
+      smallsetTables = smallsetTables[[1]],
+      fourCols = fourCols,
+      legendDF = legendDF,
+      altTextInfo = smallsetTables[[2]],
+      l = l,
+      printedData = printedData,
+      ghostData = ghostData
+    )
+  }
+
   
   o <- eval(parse(text = patchedPlots))
   oldClass(o) <- c("SmallsetTimeline", class(o))
