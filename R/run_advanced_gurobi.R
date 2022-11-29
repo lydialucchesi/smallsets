@@ -11,18 +11,10 @@ run_advanced_gurobi <-
            lang,
            fourCols) {
     # Take snapshots of dataset at snapshot points
-    fullCheck <- select_smallset(data = data, rowCount = nrow(data))
+    fullCheck <- select_smallset(data, nrow(data))
+    notNeeded <- write_smallset_code(code, dir, fullCheck, lang)
     
-    notNeeded <-
-      write_smallset_code(
-        code = code,
-        dir = dir,
-        ignoreCols = NULL,
-        smallset = fullCheck,
-        lang = lang,
-        modelSelection = TRUE
-      )
-    
+    # Run function to take snapshots
     if (lang == "py") {
       source_python(paste0(dir, "/smallsetsPKG_CODE.py"))
     } else {
@@ -32,13 +24,11 @@ run_advanced_gurobi <-
     file.remove(paste0("smallsetsPKG_code.", lang))
     
     # Generate coverage indicator matrix
-    scores <-
-      prepare_score_sheet(smallsetList = smallsetList, fourCols = fourCols)
+    scores <- prepare_score_sheet(smallsetList, fourCols)
     scores <- scores[, colSums(scores != 0) > 0]
     
     # Generate visual appearance matrix
-    colours <-
-      prepare_colour_sheet(smallsetList = smallsetList, fourCols = fourCols)
+    colours <- prepare_colour_sheet(smallsetList, fourCols)
     
     # From visual appearance matrix,
     # generate distance matrix with hamming distance
@@ -51,8 +41,8 @@ run_advanced_gurobi <-
       )
     for (i1 in 1:nrow(data)) {
       for (i2 in 1:nrow(data)) {
-        di <- as.vector(colours[i1,])
-        dj <- as.vector(colours[i2,])
+        di <- as.vector(colours[i1, ])
+        dj <- as.vector(colours[i2, ])
         counter <- 0
         for (j in 1:ncol(colours)) {
           if (isFALSE(di[j] == dj[j])) {
@@ -65,7 +55,7 @@ run_advanced_gurobi <-
     }
     
     # Run coverage+variety optimisation model
-    scoresT <- t(as.matrix(scores[, ]))
+    scoresT <- t(as.matrix(scores[,]))
     krow = t(rep(1, nrow(scores)))
     
     model <- list()

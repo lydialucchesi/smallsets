@@ -4,7 +4,7 @@
 \alias{find_data_changes}
 \title{Find data changes}
 \usage{
-find_data_changes(smallsetList, fourCols, altText = FALSE)
+find_data_changes(smallsetList, fourCols, altText)
 }
 \description{
 Finds data edits, additions, and deletions between snapshots.

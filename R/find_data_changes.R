@@ -4,7 +4,7 @@
 
 find_data_changes <- function(smallsetList,
                               fourCols,
-                              altText = FALSE
+                              altText
                               ) {
   tables <- list()
   
@@ -140,6 +140,6 @@ find_data_changes <- function(smallsetList,
   if (isTRUE(altText)) {
     return(list(tables, altTextInfo))
   } else {
-    return(tables)
+    return(list(tables))
   }
 }

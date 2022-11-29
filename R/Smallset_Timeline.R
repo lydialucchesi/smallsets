@@ -21,12 +21,12 @@
 #'@param ignoreCols Character vector of column names. Indicates columns from the
 #'  dataset to exclude from the Smallset. These columns can't be referenced in
 #'  the data preprocessing code.
-#'@param colours Either one of the pre-built colour schemes ("colScheme1" or 
+#'@param colours Either one of the pre-built colour schemes ("colScheme1" or
 #'  "colScheme2") or a list with four hex colour codes for
 #'  same, edit, add, and delete (e.g., list(same = "#E6E3DF", edit = "#FFC500",
 #'  add = "#5BA2A6", delete = "#DDC492")).
 #'@param altText TRUE or FALSE. TRUE generates alternative text (alt text)
-#'for the Smallset Timeline and writes it to a text file (figureAltText.txt) 
+#'for the Smallset Timeline and writes it to a text file (figureAltText.txt)
 #'in the working directory.
 #'@param printedData TRUE or FALSE. TRUE prints data values in the Smallset
 #'  snapshots.
@@ -83,7 +83,7 @@
 #'   code = system.file("preprocess_data.R", package = "smallsets")
 #')
 #'
-#'@import "patchwork"
+#'@import "patchwork" "reticulate"
 #'@export
 
 Smallset_Timeline <- function(data,
@@ -131,7 +131,7 @@ Smallset_Timeline <- function(data,
   if (!lang %in% c("R", "py")) {
     stop(
       "Preprocessing code must be in R or Python.
-      Include filename extension (e.g., 'my_code.R' 
+      Include filename extension (e.g., 'my_code.R'
       or 'my_code.py')."
     )
   }
@@ -153,14 +153,14 @@ Smallset_Timeline <- function(data,
   }
   
   # Fill in any parameters not specified
-  sizing <- set_sizing(sizing = sizing)
-  spacing <- set_spacing(spacing = spacing)
-  labelling <- set_labelling(labelling = labelling)
+  sizing <- set_sizing(sizing)
+  spacing <- set_spacing(spacing)
+  labelling <- set_labelling(labelling)
   
   # Get four tile colours ready
   colClass <- class(colours)
   if (colClass == "character") {
-    fourCols <- unlist(return_scheme(colScheme = colours),
+    fourCols <- unlist(return_scheme(colours),
                        use.names = FALSE)
   } else {
     fourCols <- unlist(colours,
@@ -182,76 +182,43 @@ Smallset_Timeline <- function(data,
       # Use an optimisation algorithm
       if (autoSelect == 1) {
         smallset <-
-          run_simple_gurobi(
-            data = data,
-            code = code,
-            dir = dir,
-            rowCount = rowCount,
-            lang = lang,
-            fourCols = fourCols
-          )
+          run_simple_gurobi(data, code, dir, rowCount, lang, fourCols)
       } else {
         smallset <-
-          run_advanced_gurobi(
-            data = data,
-            code = code,
-            dir = dir,
-            rowCount = rowCount,
-            lang = lang,
-            fourCols = fourCols
-          )
+          run_advanced_gurobi(data, code, dir, rowCount, lang, fourCols)
       }
     }
   } else {
     # Use random sampling and/or manual selection
-    smallset <- select_smallset(
-      data = data,
-      rowCount = rowCount,
-      rowNums = rowNums
-    )
+    smallset <- select_smallset(data, rowCount, rowNums)
   }
   # Print Smallset row selection information
-  print(paste0("Selected Smallset rows: ", paste0(smallset, collapse = ", ")))
+  print(paste0("Smallset rows: ",
+               paste0(smallset, collapse = ", ")))
   
   # Write preprocessing function with snapshots
-  output <-
-    write_smallset_code(
-      code = code,
-      dir = dir,
-      ignoreCols = ignoreCols,
-      smallset = smallset,
-      lang = lang
-    )
+  output <- write_smallset_code(code, dir, smallset, lang)
   
-  # Apply preprocessing function with snapshots
+  # Subset data to columns of interest
+  if (!is.null(ignoreCols)) {
+    data <- data[,!(names(data) %in% ignoreCols)]
+  }
+  
+  # Run function to take snapshots
   if (lang == "py") {
     source_python(paste0(dir, "/smallsetsPKG_CODE.py"))
-    if (!is.null(ignoreCols)) {
-      data <- data[, !(names(data) %in% ignoreCols)]
-    }
-    smallsetList <- apply_code(data)
-    for (i in 1:length(smallsetList)) {
-      smallsetList[[i]] <-
-        smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")), ]
-    }
   } else {
     source(paste0(dir, "/smallsetsPKG_CODE.R"))
-    if (!is.null(ignoreCols)) {
-      data <- data[, !(names(data) %in% ignoreCols)]
-    }
-    smallsetList <- apply_code(data)
-    for (i in 1:length(smallsetList)) {
-      smallsetList[[i]] <-
-        smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")), ]
-    }
+  }
+  smallsetList <- apply_code(data)
+  for (i in 1:length(smallsetList)) {
+    smallsetList[[i]] <-
+      smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
   }
   file.remove(paste0("smallsetsPKG_code.", lang))
   
   # Find data differences between snapshots
-  smallsetTables <-
-    find_data_changes(smallsetList = smallsetList,
-                      fourCols = fourCols,
-                      altText = TRUE)
+  smallsetTables <- find_data_changes(smallsetList, fourCols, altText)
   items <- seq(1, length(smallsetTables[[1]]), 1)
   
   # Prepare snapshot label colours
@@ -266,12 +233,10 @@ Smallset_Timeline <- function(data,
   
   # Find which colours are present in Timeline
   colsPresent <- c()
-  for (u in 1:length(smallsetTables[[1]])) {
-    uniqueCols <-
-      unique(as.vector(t(
-        smallsetTables[[1]][[u]]$body$styles$text$color$data
-      )))
-    colsPresent <- c(colsPresent, uniqueCols)
+  tables <- lapply(items, smallsetTables, FUN = retrieve_tables)
+  for (t in 1:length(tables)) {
+    colsPresent <-
+      c(colsPresent, unique(as.vector(t(tables[[t]][[1]]))))
   }
   colsPresent <- unique(colsPresent)
   
@@ -292,19 +257,22 @@ Smallset_Timeline <- function(data,
   
   # Insert ghost data rows/columns
   if (isTRUE(ghostData)) {
-    ghostDF1 <-
-      as.data.frame(smallsetTables[[1]][[1]]$body$styles$text$color$data)
+    ghostDFs <- retrieve_tables(1, smallsetTables)
+    ghostDF1 <- ghostDFs[[1]]
     ghostDF1[] <- "#FFFFFF"
-    
-    ghostDF2 <- as.data.frame(smallsetTables[[1]][[1]]$body$dataset)
+    ghostDF2 <- ghostDFs[[2]]
     ghostDF2[] <- ""
-    
     row.names(ghostDF1) <- row.names(ghostDF2)
     
-    extTables <-
-      lapply(items, ghostDF1, ghostDF2, smallsetTables, FUN = add_ghost_data)
+    extTables <- lapply(items,
+                        ghostDF1,
+                        ghostDF2,
+                        smallsetTables,
+                        FUN = add_ghost_data)
   } else {
-    extTables <- lapply(items, smallsetTables, FUN = retrieve_tables)
+    extTables <- lapply(items,
+                        smallsetTables,
+                        FUN = retrieve_tables)
   }
   
   # Find Timeline dimensions
@@ -314,23 +282,22 @@ Smallset_Timeline <- function(data,
   l <-
     lapply(
       items,
-      extTables,
-      smallsetTables,
-      output,
-      fourCols,
-      printedData,
-      ghostData,
-      sizing,
-      spacing,
-      truncateData,
-      maxDims,
-      timelineFont,
       accents,
+      extTables,
+      fourCols,
+      ghostData,
       legendDF,
+      maxDims,
       missingDataTints,
+      output,
+      printedData,
+      sizing,
+      smallsetTables,
+      spacing,
+      timelineFont,
+      truncateData,
       FUN = plot_snapshots
     )
-  
   # Assemble snapshots into Timeline
   patchedPlots <- ""
   for (s in 1:length(l)) {
@@ -362,17 +329,15 @@ Smallset_Timeline <- function(data,
   
   # Generate alt text for the Smallset Timeline
   if (isTRUE(altText)) {
-    generate_alt_text(
-      tables = smallsetTables[[1]],
-      fourCols = fourCols,
-      legendDF = legendDF,
-      altTextInfo = smallsetTables[[2]],
-      l = l,
-      printedData = printedData,
-      ghostData = ghostData
-    )
+    generate_alt_text(smallsetTables[[1]],
+                      fourCols,
+                      legendDF,
+                      smallsetTables[[2]],
+                      l,
+                      printedData,
+                      ghostData)
   }
-
+  
   
   o <- eval(parse(text = patchedPlots))
   oldClass(o) <- c("SmallsetTimeline", class(o))

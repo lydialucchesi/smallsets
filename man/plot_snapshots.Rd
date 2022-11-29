@@ -6,20 +6,20 @@
 \usage{
 plot_snapshots(
   itemNum,
-  extTables,
-  smallsetTables,
-  output,
-  fourCols,
-  printedData,
-  ghostData,
-  sizing,
-  spacing,
-  truncateData,
-  maxDims,
-  timelineFont,
   accents,
+  extTables,
+  fourCols,
+  ghostData,
   legendDF,
-  missingDataTints
+  maxDims,
+  missingDataTints,
+  output,
+  printedData,
+  sizing,
+  smallsetTables,
+  spacing,
+  timelineFont,
+  truncateData
 )
 }
 \description{

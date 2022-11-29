@@ -11,18 +11,10 @@ run_simple_gurobi <-
            lang,
            fourCols) {
     # Take snapshots of dataset at snapshot points
-    fullCheck <- select_smallset(data = data, rowCount = nrow(data))
+    fullCheck <- select_smallset(data, nrow(data))
+    notNeeded <- write_smallset_code(code, dir, fullCheck, lang)
     
-    notNeeded <-
-      write_smallset_code(
-        code = code,
-        dir = dir,
-        ignoreCols = NULL,
-        smallset = fullCheck,
-        lang = lang,
-        modelSelection = TRUE
-      )
-    
+    # Run function to take snapshots
     if (lang == "py") {
       source_python(paste0(dir, "/smallsetsPKG_CODE.py"))
     } else {
@@ -32,8 +24,7 @@ run_simple_gurobi <-
     file.remove(paste0("smallsetsPKG_code.", lang))
     
     # Generate coverage indicator matrix
-    scores <-
-      prepare_score_sheet(smallsetList = smallsetList, fourCols = fourCols)
+    scores <- prepare_score_sheet(smallsetList, fourCols)
     scores <- scores[, colSums(scores != 0) > 0]
     
     # Run coverage+variety optimisation model

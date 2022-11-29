@@ -5,11 +5,8 @@
 write_smallset_code <-
   function(code,
            dir,
-           ignoreCols,
-           keepCols,
            smallset,
-           lang,
-           modelSelection = FALSE) {
+           lang) {
     # Import preprocessing code
     if (dir != getwd()) {
       code <- paste0(dir, code)

@@ -41,15 +41,11 @@ prepare_colour_sheet <- function(smallsetList,
   colours <- last
   colours[,] <- fourCols[1]
   
-  tables <- find_data_changes(
-    smallsetList = smallsetList,
-    fourCols = fourCols,
-    altText = FALSE
-  )
+  tables <- find_data_changes(smallsetList, fourCols, FALSE)
   
-  for (t in 1:length(tables)) {
-    t_colours <- as.data.frame(tables[[t]]$body$styles$text$color$data)
-    rownames(t_colours) <- rownames(tables[[t]]$body$dataset)
+  for (t in 1:length(tables[[1]])) {
+    t_colours <- as.data.frame(tables[[1]][[t]]$body$styles$text$color$data)
+    rownames(t_colours) <- rownames(tables[[1]][[t]]$body$dataset)
     
     for (i in rownames(t_colours)) {
       for (j in colnames(t_colours)) {
