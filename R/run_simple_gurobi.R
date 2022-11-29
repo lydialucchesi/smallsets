@@ -12,7 +12,7 @@ run_simple_gurobi <-
            fourCols) {
     # Take snapshots of dataset at snapshot points
     notNeeded <- write_smallset_code(code, dir, c("allROWS"), lang)
-    
+
     # Run function to take snapshots
     if (lang == "py") {
       source_python(paste0(dir, "/smallsetsPKG_CODE.py"))

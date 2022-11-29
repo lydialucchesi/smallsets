@@ -19,6 +19,16 @@ plot_snapshots <-
            spacing,
            timelineFont,
            truncateData) {
+    # Initialise variables
+    colValue <- NULL
+    colValue2 <- NULL
+    datValue <- NULL
+    description <- NULL
+    ind <- NULL
+    variable <- NULL
+    x <- NULL
+    y <- NULL
+    
     # Retrieve colour and data information for a snapshot
     tab1 <- extTables[[itemNum]][[1]]
     tab1[] <- lapply(tab1, as.character)

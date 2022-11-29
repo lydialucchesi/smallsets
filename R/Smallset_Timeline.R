@@ -210,6 +210,7 @@ Smallset_Timeline <- function(data,
   } else {
     source(paste0(dir, "/smallsetsPKG_CODE.R"))
   }
+  # Source function
   smallsetList <- apply_code(data)
   for (i in 1:length(smallsetList)) {
     smallsetList[[i]] <-
