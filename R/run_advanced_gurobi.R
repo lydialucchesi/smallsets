@@ -11,8 +11,7 @@ run_advanced_gurobi <-
            lang,
            fourCols) {
     # Take snapshots of dataset at snapshot points
-    fullCheck <- select_smallset(data, nrow(data))
-    notNeeded <- write_smallset_code(code, dir, fullCheck, lang)
+    notNeeded <- write_smallset_code(code, dir, c("allROWS"), lang)
     
     # Run function to take snapshots
     if (lang == "py") {

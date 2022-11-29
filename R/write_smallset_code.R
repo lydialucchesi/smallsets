@@ -125,13 +125,21 @@ write_smallset_code <-
         if (grepl(signal, script$command[i])) {
           s <- s + 1
           
-          insertSnap <- c(paste0(
-            "snapshots.append(",
-            as.character(gsub(signal, "", script$command[i])),
-            gen_rows2snap(as.character(
-              gsub(signal, "", script$command[i])
+          if ("allROWS" %in% smallset) {
+            insertSnap <- c(paste0("snapshots.append(",
+                                   as.character(
+                                     gsub(signal, "", script$command[i])
+                                   ),
+                                   "[:])"))
+          } else {
+            insertSnap <- c(paste0(
+              "snapshots.append(",
+              as.character(gsub(signal, "", script$command[i])),
+              gen_rows2snap(as.character(
+                gsub(signal, "", script$command[i])
+              ))
             ))
-          ))
+          }
           
           script <- c(script[1:(i + 1), ],
                       insertSnap,
@@ -147,19 +155,29 @@ write_smallset_code <-
         if (grepl(signal, script$command[i])) {
           s <- s + 1
           
-          insertSnap <- c(
-            paste0(
+          if ("allROWS" %in% smallset) {
+            insertSnap <- c(paste0(
               "snapshots[[",
               as.character(s),
               "]] <- ",
               as.character(gsub(signal, "", script$command[i])),
-              "[(row.names(",
-              as.character(gsub(signal, "", script$command[i])),
-              ") %in% c(",
-              paste(smallset, collapse = ", "),
-              ")), ]"
+              "[,]"
+            ))
+          } else {
+            insertSnap <- c(
+              paste0(
+                "snapshots[[",
+                as.character(s),
+                "]] <- ",
+                as.character(gsub(signal, "", script$command[i])),
+                "[(row.names(",
+                as.character(gsub(signal, "", script$command[i])),
+                ") %in% c(",
+                paste(smallset, collapse = ", "),
+                ")), ]"
+              )
             )
-          )
+          }
           
           script <- c(script[1:(i + 1), ],
                       insertSnap,
@@ -175,53 +193,91 @@ write_smallset_code <-
     if (lang == "py") {
       functionStart <-
         paste0("def apply_code(", startName, "):")
-      script <-
-        c(
-          "import numpy as np",
-          "snapshots = []",
-          functionStart,
-          paste0("snapshots.append(",
-                 startName,
-                 gen_rows2snap(startName)),
-          script$command,
-          paste0("snapshots.append(",
-                 endName,
-                 gen_rows2snap(endName)),
-          "return snapshots"
-        )
+      if ("allROWS" %in% smallset) {
+        script <-
+          c(
+            "import numpy as np",
+            "snapshots = []",
+            functionStart,
+            paste0("snapshots.append(",
+                   startName,
+                   "[:])"),
+            script$command,
+            paste0("snapshots.append(",
+                   endName,
+                   "[:])"),
+            "return snapshots"
+          )
+      } else {
+        script <-
+          c(
+            "import numpy as np",
+            "snapshots = []",
+            functionStart,
+            paste0(
+              "snapshots.append(",
+              startName,
+              gen_rows2snap(startName)
+            ),
+            script$command,
+            paste0("snapshots.append(",
+                   endName,
+                   gen_rows2snap(endName)),
+            "return snapshots"
+          )
+      }
+      
     } else {
       functionStart <-
         paste0("apply_code <- function(", startName, ") {")
       
-      script <-
-        c(
-          "snapshots <- list()",
-          functionStart,
-          paste0(
-            "snapshots[[1]] <- ",
-            startName,
-            "[(row.names(",
-            startName,
-            ") %in% c(",
-            paste(smallset, collapse = ", "),
-            ")), ]"
-          ),
-          script$command,
-          paste0(
-            "snapshots[[",
-            as.character(s + 1),
-            "]] <- ",
-            endName,
-            "[(row.names(",
-            endName,
-            ") %in% c(",
-            paste(smallset, collapse = ", "),
-            ")), ]"
-          ),
-          "return(snapshots)",
-          "}"
-        )
-      
+      if ("allROWS" %in% smallset) {
+        script <-
+          c(
+            "snapshots <- list()",
+            functionStart,
+            paste0("snapshots[[1]] <- ",
+                   startName,
+                   "[,]"),
+            script$command,
+            paste0("snapshots[[",
+                   as.character(s + 1),
+                   "]] <- ",
+                   endName,
+                   "[,]"),
+            "return(snapshots)",
+            "}"
+          )
+      } else {
+        script <-
+          c(
+            "snapshots <- list()",
+            functionStart,
+            paste0(
+              "snapshots[[1]] <- ",
+              startName,
+              "[(row.names(",
+              startName,
+              ") %in% c(",
+              paste(smallset, collapse = ", "),
+              ")), ]"
+            ),
+            script$command,
+            paste0(
+              "snapshots[[",
+              as.character(s + 1),
+              "]] <- ",
+              endName,
+              "[(row.names(",
+              endName,
+              ") %in% c(",
+              paste(smallset, collapse = ", "),
+              ")), ]"
+            ),
+            "return(snapshots)",
+            "}"
+          )
+      }
     }
     
     script <- data.frame(command = as.character(script))
