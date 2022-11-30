@@ -11,16 +11,16 @@ run_advanced_gurobi <-
            lang,
            fourCols) {
     # Take snapshots of dataset at snapshot points
-    notNeeded <- write_smallset_code(code, dir, c("allROWS"), lang)
+    output <- write_smallset_code(code, dir, c("allROWS"), lang)
     
     # Run function to take snapshots
+    apply_code <- NULL
     if (lang == "py") {
-      source_python(paste0(dir, "/smallsetsPKG_CODE.py"))
+      source_python(output[[3]])
     } else {
-      source(paste0(dir, "/smallsetsPKG_CODE.R"))
+      source(output[[3]], local = TRUE)
     }
     smallsetList <- apply_code(data)
-    file.remove(paste0("smallsetsPKG_code.", lang))
     
     # Generate coverage indicator matrix
     scores <- prepare_score_sheet(smallsetList, fourCols)

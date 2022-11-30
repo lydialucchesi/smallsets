@@ -205,10 +205,11 @@ Smallset_Timeline <- function(data,
   }
   
   # Run function to take snapshots
+  apply_code <- NULL
   if (lang == "py") {
-    source_python(paste0(dir, "/smallsetsPKG_CODE.py"))
+    source_python(output[[3]])
   } else {
-    source(paste0(dir, "/smallsetsPKG_CODE.R"))
+    source(output[[3]], local = TRUE)
   }
   # Source function
   smallsetList <- apply_code(data)
@@ -216,7 +217,6 @@ Smallset_Timeline <- function(data,
     smallsetList[[i]] <-
       smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
   }
-  file.remove(paste0("smallsetsPKG_code.", lang))
   
   # Find data differences between snapshots
   smallsetTables <- find_data_changes(smallsetList, fourCols, altText)

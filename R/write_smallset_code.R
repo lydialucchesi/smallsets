@@ -279,7 +279,7 @@ write_smallset_code <-
           )
       }
     }
-    
+
     script <- data.frame(command = as.character(script))
     
     # Add python tabs
@@ -289,11 +289,12 @@ write_smallset_code <-
           paste0("    ", script$command[i])
     }
     
-    # Write preprocessing function to working directory
+    # Write preprocessing function to temporary directory
+    tf <- tempfile(pattern = "smallsets", fileext = paste0(".", lang))
     if (lang == "py") {
-      fileConn <- file(paste0(dir, "/smallsetsPKG_CODE.py"))
+      fileConn <- file(tf)
     } else {
-      fileConn <- file(paste0(dir, "/smallsetsPKG_CODE.R"))
+      fileConn <- file(tf)
     }
     writeLines(script$command, fileConn)
     close(fileConn)
@@ -310,5 +311,5 @@ write_smallset_code <-
       }
     }
     
-    return(list(captions[, c("n", "text")], resumeLocs))
+    return(list(captions[, c("n", "text")], resumeLocs, tf))
   }
