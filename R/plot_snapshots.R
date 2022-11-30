@@ -1,7 +1,7 @@
 #' Plot the snapshots
 #' @description Transforms a table snapshot into a plot snapshot.
 #' @keywords internal
-#' @import "colorspace" "ggfittext" "ggforce" "ggplot2" "ggtext"
+#' @import "colorspace" "ggplot2" "ggtext"
 
 plot_snapshots <-
   function(itemNum,

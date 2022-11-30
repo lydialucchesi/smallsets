@@ -3,8 +3,6 @@
 export(Smallset_Timeline)
 import("colorspace")
 import("flextable")
-import("ggfittext")
-import("ggforce")
 import("ggplot2")
 import("ggtext")
 import("patchwork")

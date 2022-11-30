@@ -15,11 +15,8 @@ Depends:
 Imports:
     colorspace,
     flextable,
-    ggfittext,
-    ggforce,
     ggplot2,
     ggtext,
-    gplots,
     patchwork,
     plotrix,
     reticulate,
