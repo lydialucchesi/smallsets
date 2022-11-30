@@ -1,1 +1,0 @@
-Data edits are represented with the colour <%= editColour %>.

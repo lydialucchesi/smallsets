@@ -1,1 +1,0 @@
-<%= as.character(nrow(altTextInfo$adjData)) %> table cell is <%= editColour %>.

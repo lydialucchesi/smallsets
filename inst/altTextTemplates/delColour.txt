@@ -1,1 +1,0 @@
-Data deletions are represented with the colour <%= delColour %>.

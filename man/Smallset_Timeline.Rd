@@ -57,8 +57,7 @@ same, edit, add, and delete (e.g., list(same = "#E6E3DF", edit = "#FFC500",
 add = "#5BA2A6", delete = "#DDC492")).}
 
 \item{altText}{TRUE or FALSE. TRUE generates alternative text (alt text)
-for the Smallset Timeline and writes it to a text file (figureAltText.txt)
-in the working directory.}
+for the Smallset Timeline and prints it to the console.}
 
 \item{printedData}{TRUE or FALSE. TRUE prints data values in the Smallset
 snapshots.}

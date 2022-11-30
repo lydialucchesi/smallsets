@@ -8,7 +8,7 @@ generate_alt_text(
   tables,
   fourCols,
   legendDF,
-  altTextInfo,
+  atInfo,
   l,
   printedData,
   ghostData

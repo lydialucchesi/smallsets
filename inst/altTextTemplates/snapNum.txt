@@ -1,1 +1,0 @@
-The Smallset Timeline contains <%= length(tables) %> Smallset snapshots.

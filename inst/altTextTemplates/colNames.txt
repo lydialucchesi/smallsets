@@ -1,7 +1,0 @@
-The columns, in order from left to right, are: <%= if (length(colnames(tables[[1]]$body$dataset)) == 2) {
-  paste(colnames(tables[[1]]$body$dataset)[1], "and", colnames(tables[[1]]$body$dataset)[2])
-} else {
-  colnames(tables[[1]]$body$dataset)[1:length(colnames(tables[[1]]$body$dataset)) - 1] <- paste0(colnames(tables[[1]]$body$dataset)[1:length(colnames(tables[[1]]$body$dataset)) - 1], ",")
-  colnames(tables[[1]]$body$dataset)[length(colnames(tables[[1]]$body$dataset))] <- paste0("and ", colnames(tables[[1]]$body$dataset)[length(colnames(tables[[1]]$body$dataset))])
-  cat(colnames(tables[[1]]$body$dataset))
-} %>.

@@ -1,1 +1,0 @@
-<%= as.character(length(altTextInfo$rowsAdd)) %> row is <%= addColour %>.
