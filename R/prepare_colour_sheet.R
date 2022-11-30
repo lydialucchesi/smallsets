@@ -1,7 +1,6 @@
 #' Prepare colour sheet
 #' @description Generates a visual appearance matrix for automated Smallset selection (autoSelect = 2).
 #' @keywords internal
-#' @import "flextable" "tibble"
 
 prepare_colour_sheet <- function(smallsetList,
                                  fourCols) {
@@ -18,10 +17,10 @@ prepare_colour_sheet <- function(smallsetList,
     if (!c %in% colnames(last)) {
       origCols <- colnames(first)
       place <- which(origCols == c) - 1
-      last <-
-        add_column(.data = last,
-                   addingCol = NA,
-                   .after = place)
+      addingCol <- rep(NA, nrow(last))
+      last <- data.frame(cbind(last[, seq(1, place)],
+                               addingCol,
+                               last[, seq((place + 1), ncol(last))]))
       names(last)[names(last) == 'addingCol'] <- c
     }
   }
@@ -31,20 +30,21 @@ prepare_colour_sheet <- function(smallsetList,
       origRows <- rownames(first)
       place <- which(origRows == r) - 1
       rownameslist <- append(rownames(last), r, after = place)
-      last <-
-        add_row(.data = last,
-                .after = place)
+      last <- rbind(last[1:place,],
+                    rep(NA, ncol(last)),
+                    last[(place + 1):nrow(last),])
       rownames(last) <- rownameslist
     }
   }
   
   colours <- last
-  colours[,] <- fourCols[1]
+  colours[, ] <- fourCols[1]
   
   tables <- find_data_changes(smallsetList, fourCols, FALSE)
   
   for (t in 1:length(tables[[1]])) {
-    t_colours <- as.data.frame(tables[[1]][[t]]$body$styles$text$color$data)
+    t_colours <-
+      as.data.frame(tables[[1]][[t]]$body$styles$text$color$data)
     rownames(t_colours) <- rownames(tables[[1]][[t]]$body$dataset)
     
     for (i in rownames(t_colours)) {
