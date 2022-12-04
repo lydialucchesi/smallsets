@@ -18,9 +18,16 @@ prepare_colour_sheet <- function(smallsetList,
       origCols <- colnames(first)
       place <- which(origCols == c) - 1
       addingCol <- rep(NA, nrow(last))
-      last <- data.frame(cbind(last[, seq(1, place)],
-                               addingCol,
-                               last[, seq((place + 1), ncol(last))]))
+      
+      if (place == ncol(last)) {
+        last <- data.frame(cbind(last[, seq(1, place)],
+                                 addingCol))
+      } else {
+        last <- data.frame(cbind(last[, seq(1, place)],
+                                 addingCol,
+                                 last[, seq((place + 1), ncol(last))]))
+      }
+      
       names(last)[names(last) == 'addingCol'] <- c
     }
   }
@@ -30,22 +37,30 @@ prepare_colour_sheet <- function(smallsetList,
       origRows <- rownames(first)
       place <- which(origRows == r) - 1
       rownameslist <- append(rownames(last), r, after = place)
-      last <- rbind(last[1:place,],
-                    rep(NA, ncol(last)),
-                    last[(place + 1):nrow(last),])
+      
+      if (place == nrow(last)) {
+        last <- rbind(last[1:place, ],
+                      rep(NA, ncol(last)))
+      } else {
+        last <- rbind(last[1:place, ],
+                      rep(NA, ncol(last)),
+                      last[(place + 1):nrow(last), ])
+      }
+      
       rownames(last) <- rownameslist
     }
   }
   
   colours <- last
-  colours[, ] <- fourCols[1]
+  colours[,] <- fourCols[1]
   
   tables <- find_data_changes(smallsetList, fourCols, FALSE)
+  tables <-
+    lapply(seq(1:length(tables[[1]])), tables, FUN = retrieve_tables)
   
-  for (t in 1:length(tables[[1]])) {
-    t_colours <-
-      as.data.frame(tables[[1]][[t]]$body$styles$text$color$data)
-    rownames(t_colours) <- rownames(tables[[1]][[t]]$body$dataset)
+  for (t in 1:length(tables)) {
+    t_colours <- tables[[t]][[1]]
+    rownames(t_colours) <- rownames(tables[[t]][[2]])
     
     for (i in rownames(t_colours)) {
       for (j in colnames(t_colours)) {
