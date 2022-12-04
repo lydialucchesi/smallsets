@@ -19,7 +19,10 @@ prepare_colour_sheet <- function(smallsetList,
       place <- which(origCols == c) - 1
       addingCol <- rep(NA, nrow(last))
       
-      if (place == ncol(last)) {
+      if (place == 0) {
+        last <- data.frame(cbind(addingCol,
+                                 last[, seq((place + 1), ncol(last))]))
+      } else if (place == ncol(last)) {
         last <- data.frame(cbind(last[, seq(1, place)],
                                  addingCol))
       } else {
@@ -38,13 +41,16 @@ prepare_colour_sheet <- function(smallsetList,
       place <- which(origRows == r) - 1
       rownameslist <- append(rownames(last), r, after = place)
       
-      if (place == nrow(last)) {
-        last <- rbind(last[1:place, ],
+      if (place == 0) {
+        last <- rbind(rep(NA, ncol(last)),
+                      last[(place + 1):nrow(last),])
+      } else if (place == nrow(last)) {
+        last <- rbind(last[1:place,],
                       rep(NA, ncol(last)))
       } else {
-        last <- rbind(last[1:place, ],
+        last <- rbind(last[1:place,],
                       rep(NA, ncol(last)),
-                      last[(place + 1):nrow(last), ])
+                      last[(place + 1):nrow(last),])
       }
       
       rownames(last) <- rownameslist
