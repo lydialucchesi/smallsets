@@ -21,6 +21,7 @@ run_simple_gurobi <-
       source(output[[3]], local = TRUE)
     }
     smallsetList <- apply_code(data)
+    unlink(output[[3]])
     
     # Generate coverage indicator matrix
     scores <- prepare_score_sheet(smallsetList, fourCols)

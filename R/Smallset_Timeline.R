@@ -215,6 +215,8 @@ Smallset_Timeline <- function(data,
     smallsetList[[i]] <-
       smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
   }
+  # Delete temp file
+  unlink(output[[3]])
   
   # Find data differences between snapshots
   smallsetTables <- find_data_changes(smallsetList, fourCols, altText)
