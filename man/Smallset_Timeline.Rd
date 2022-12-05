@@ -34,10 +34,10 @@ should be included (e.g., "my_code.R" or "my_code.py").}
 \item{dir}{File path to the data preprocessing code. Default is the working
 directory.}
 
-\item{rowCount}{Integer between 5-15 (number rows in the Smallset).}
+\item{rowCount}{Integer between 5-15 for number of rows in the Smallset.}
 
-\item{rowNums}{Numeric vector of row numbers. Indicates particular rows from
-the data set to be included in the Smallset.}
+\item{rowNums}{Numeric vector indicating particular rows from the dataset 
+to include in the Smallset.}
 
 \item{autoSelect}{1, 2, or NULL (default). 1 = select Smallset rows using the
 coverage optimisation model. 2 = select Smallset rows using the
@@ -45,31 +45,30 @@ coverage+variety optimisation model (can take a long time to run). These
 optimisation problems are solved using Gurobi. Please visit
 https://www.gurobi.com to obtain a gurobi license (free academic licenses
 are available) in order to use these selection methods. Otherwise, leave
-auto = NULL, and the rows will be randomly sampled from the dataset.}
+autoSelect = NULL, and the rows will be randomly sampled from the dataset.}
 
-\item{ignoreCols}{Character vector of column names. Indicates columns from the
-dataset to exclude from the Smallset. These columns can't be referenced in
-the data preprocessing code.}
+\item{ignoreCols}{Character vector of column names indicating which to exclude 
+from the Smallset. These columns can't be referenced in the data preprocessing code.}
 
 \item{colours}{Either one of the pre-built colour schemes ("colScheme1" or
 "colScheme2") or a list with four hex colour codes for
 same, edit, add, and delete (e.g., list(same = "#E6E3DF", edit = "#FFC500",
 add = "#5BA2A6", delete = "#DDC492")).}
 
-\item{altText}{TRUE or FALSE. TRUE generates alternative text (alt text)
+\item{altText}{A logical. TRUE generates alternative text (alt text)
 for the Smallset Timeline and prints it to the console.}
 
-\item{printedData}{TRUE or FALSE. TRUE prints data values in the Smallset
+\item{printedData}{A logical. TRUE prints data values in the Smallset
 snapshots.}
 
-\item{truncateData}{Integer specifying width of data value in each table cell
-(results in width + "..."). Default is NULL, where entire data value is
-printed.}
+\item{truncateData}{Integer specifying the number of characters to print for each
+data value (results in characters + "..."). Default is NULL, where entire data 
+value is printed.}
 
-\item{ghostData}{TRUE or FALSE. TRUE includes blank spaces where data have
+\item{ghostData}{A logical. TRUE includes blank spaces where data have
 been removed.}
 
-\item{missingDataTints}{TRUE or FALSE. TRUE plots a lighter colour value to
+\item{missingDataTints}{A logical. TRUE plots a lighter colour value to
 signal a missing data value.}
 
 \item{timelineFont}{Any font you have installed in R. Default is "sans".}
@@ -92,10 +91,7 @@ should be lighter or darker than the tile colours (labelsCol). Second
 specification is a value between 0 and 1 for how much lighter or darker it
 should be (labelsColDif). Example 1: list(labelsCol = "darker", labelsColDif
 = 1) means labels are black. Example 2: list(labelsCol = "lighter",
-labelsColDif = 1) means labels are white. Example 3: list(labelsCol =
-"lighter", labelsColDif = 0) means labels are same colour as tile colours.
-Example 4: list(labelsCol = "lighter", labelsColDif = .5) means labels are
-midpoint between white and tile colours. Default is list(labelsCol =
+labelsColDif = 1) means labels are white. Default is list(labelsCol =
 "darker", labelsColDif = .5), which is midpoint between tile colours and
 black.}
 }
@@ -109,7 +105,7 @@ This is the command for creating a Smallset Timeline to visualise
 \details{
 Prior to running this command, you will need to add structured
  comments to your R or Python data preprocessing script, providing snapshot
- points and captions. \itemize{ \item{`# start smallset mydata` - start
+ points and captions. \itemize{\item{`# start smallset mydata` - start
  tracking code and take the first data snapshot, where "mydata" is the name
  of your data object} \item{`# snap mydata` - take a data snapshot after the
  next line of code} \item{`# end smallset mydata` - stop tracking code and
@@ -118,13 +114,10 @@ Prior to running this command, you will need to add structured
  above}}
 }
 \examples{
-set.seed(107)
-
-data(mydata)
+set.seed(145)
 
 Smallset_Timeline(
   data = mydata,
   code = system.file("preprocess_data.R", package = "smallsets")
 )
-
 }

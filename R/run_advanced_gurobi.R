@@ -1,6 +1,5 @@
 #' Run advanced gurobi
 #' @description Runs the coverage+variety optimisation problem.
-#' @import "reticulate"
 #' @keywords internal
 
 run_advanced_gurobi <-
@@ -16,7 +15,7 @@ run_advanced_gurobi <-
     # Run function to take snapshots
     apply_code <- NULL
     if (lang == "py") {
-      source_python(output[[3]])
+      reticulate::source_python(output[[3]])
     } else {
       source(output[[3]], local = TRUE)
     }

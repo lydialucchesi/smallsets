@@ -1,7 +1,6 @@
 #' Prepare score sheet
-#' @description Generates a coverage indicator matrix for automated Smallset selection (autoSelect = 1 or 2).
+#' @description Generates a coverage indicator matrix for automated Smallset selection.
 #' @keywords internal
-#' @import "flextable"
 
 prepare_score_sheet <-
   function(smallsetList,

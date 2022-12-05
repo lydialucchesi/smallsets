@@ -1,7 +1,6 @@
 #' Generate alt text
 #' @description Produces alternative text (alt text) for the Smallset Timeline figure.
 #' @keywords internal
-#' @importFrom plotrix color.id
 
 generate_alt_text <-
   function(tables,
@@ -19,15 +18,15 @@ generate_alt_text <-
     
     # Write about colour legend
     if (sum(grepl("Data has been edited.", legendDF)) == 1) {
-      colourEdit <- sapply(fourCols[2], color.id)[1]
+      colourEdit <- sapply(fourCols[2], plotrix::color.id)[1]
       at <- c(at, write_colourEdit(colourEdit))
     }
     if (sum(grepl("Data has been added.", legendDF)) == 1) {
-      colourAdd <- sapply(fourCols[3], color.id)[1]
+      colourAdd <- sapply(fourCols[3], plotrix::color.id)[1]
       at <- c(at, write_colourAdd(colourAdd))
     }
     if (sum(grepl("Data will be deleted.", legendDF)) == 1) {
-      colourDelete <- sapply(fourCols[4], color.id)[1]
+      colourDelete <- sapply(fourCols[4], plotrix::color.id)[1]
       at <- c(at, write_colourDelete(colourDelete))
     }
     

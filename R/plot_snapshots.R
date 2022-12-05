@@ -1,7 +1,7 @@
 #' Plot the snapshots
 #' @description Transforms a table snapshot into a plot snapshot.
+#' @import ggplot2 ggtext
 #' @keywords internal
-#' @import "colorspace" "ggplot2" "ggtext"
 
 plot_snapshots <-
   function(itemNum,
@@ -88,10 +88,10 @@ plot_snapshots <-
     if (isTRUE(missingDataTints)) {
       tabs$colValue <-
         ifelse(is.na(tabs$datValue),
-               lighten(tabs$colValue, .4),
+               colorspace::lighten(tabs$colValue, .4),
                tabs$colValue)
       
-      missingCols <- lighten(fourCols, .4)
+      missingCols <- colorspace::lighten(fourCols, .4)
       legendDF <-
         rbind(legendDF,
               data.frame(colValue = missingCols, description = ""))

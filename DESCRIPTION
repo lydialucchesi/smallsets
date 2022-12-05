@@ -1,14 +1,15 @@
 Package: smallsets
-Title: A Tool for Making Smallset Timelines
+Title: Smallset Timelines to Visualise Data Preprocessing Decisions
 Version: 0.0.1.9000
-Authors@R: c(person(given = c("Lydia", "R."), family = "Lucchesi", role = c("aut", "cre"), email = "Lydia.Lucchesi@anu.edu.au"),
+Authors@R: c(person(given = c("Lydia", "R."), family = "Lucchesi", role = c("aut", "cre"), email = "Lydia.Lucchesi@anu.edu.au", comment = c(ORCID = "0000-0002-1901-4301")),
              person(given = c("Petra", "M."), family = "Kuhnert", role = "ths"),
              person(given = c("Jenny", "L."), family = "Davis", role = "ths"),
              person(given = "Lexing", family = "Xie", role = "ths"))
 Description: The package creates Smallset Timelines for R or Python data preprocessing scripts.
+URL: <https://github.com/lydialucchesi/smallsets>
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
+LazyData: TRUE
 RoxygenNote: 7.1.1
 Depends:
     R (>= 3.5.0)

@@ -42,8 +42,6 @@ your Smallset Timeline.*
 library(smallsets)
 set.seed(145)
 
-data(mydata)
-
 Smallset_Timeline(
   data = mydata,
   code = system.file("preprocess_data.R", package = "smallsets")

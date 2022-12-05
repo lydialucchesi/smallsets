@@ -1,5 +1,5 @@
 #' Prepare colour sheet
-#' @description Generates a visual appearance matrix for automated Smallset selection (autoSelect = 2).
+#' @description Generates a visual appearance matrix for automated Smallset selection.
 #' @keywords internal
 
 prepare_colour_sheet <- function(smallsetList,
