@@ -10,3 +10,6 @@
 ^altTextTemplates
 ^README_files
 ^\.Rmd$
+^\.github$
+^CONTRIBUTING\.md$
+^CODE_OF_CONDUCT\.md$
