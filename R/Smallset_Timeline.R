@@ -20,11 +20,10 @@
 #'  autoSelect = NULL, and the rows will be randomly sampled from the dataset.
 #'@param ignoreCols Character vector of column names indicating which to exclude 
 #' from the Smallset. These columns can't be referenced in the data preprocessing code.
-#'@param colours Either one of three pre-built colour schemes (1, 2, or 3 - all are 
-#' colourblind friendly and 3 is black and white printer friendly) or a list with 
-#' four hex colour codes for
-#'  same, edit, add, and delete (e.g., list(same = "#E6E3DF", edit = "#FFC500",
-#'  add = "#5BA2A6", delete = "#DDC492")).
+#'@param colours Either 1, 2, or 3 for one of the pre-built colour schemes (all are 
+#' colourblind friendly and 3 is black/white printer friendly) or a list with 
+#' four hex colour codes for same, edit, add, and delete (e.g., list(same = "#E6E3DF", 
+#' edit = "#FFC500", add = "#5BA2A6", delete = "#DDC492")).
 #'@param altText A logical. TRUE generates alternative text (alt text)
 #' for the Smallset Timeline and prints it to the console.
 #'@param printedData A logical. TRUE prints data values in the Smallset
