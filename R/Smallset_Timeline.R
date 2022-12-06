@@ -128,19 +128,20 @@ Smallset_Timeline <- function(data,
     )
   }
   
-  # Check data class and set to data frame
-  if (class(data)[1] == "data.table") {
+  if(inherits(data, "data.table")){
     print("Converting data object from a
           data table to a data frame.")
     data <- as.data.frame(data)
   }
-  if (class(data)[1] == "tbl_df") {
-    print("Converting data object from a
+  else 
+    if(inherits(data, "tbl_df")){ 
+       print("Converting data object from a
           tibble to a data frame.")
-    data <- as.data.frame(data)
-  }
-  if (class(data) != "data.frame") {
-    stop("Data was not of class
+       data <- as.data.frame(data)
+    }
+  else 
+    if(!inherits(data, "data.frame")){
+       stop("Data was not of class
          data frame, data table, or tibble.")
   }
   
@@ -331,7 +332,7 @@ Smallset_Timeline <- function(data,
                       printedData,
                       ghostData)
   }
-  
+
   o <- eval(parse(text = patchedPlots))
   oldClass(o) <- c("SmallsetTimeline", class(o))
   return(o)
