@@ -4,7 +4,7 @@
 \alias{return_scheme}
 \title{Return scheme}
 \usage{
-return_scheme(colScheme = "colScheme1")
+return_scheme(colScheme = 1)
 }
 \description{
 Returns the colours in a pre-built colour scheme.
