@@ -7,7 +7,7 @@ Authors@R: c(person(given = c("Lydia", "R."), family = "Lucchesi", role = c("aut
              person(given = "Lexing", family = "Xie", role = "ths"))
 Description: The package creates Smallset Timelines for R or Python data preprocessing scripts.
 URL: <https://github.com/lydialucchesi/smallsets>
-License: GPL-3
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: TRUE
 RoxygenNote: 7.1.1
