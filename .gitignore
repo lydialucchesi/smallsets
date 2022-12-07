@@ -5,9 +5,4 @@
 *.html
 *.utf8.md
 *.knit.md
-smallset-features.pdf
-smallset features.Rmd
-captionTemplate.Rmd
-smallsetsPKG_CODE.R
-figureAltText.txt
 .DS_Store
