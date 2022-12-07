@@ -7,6 +7,6 @@
 prepare_colour_sheet(smallsetList, fourCols)
 }
 \description{
-Generates a visual appearance matrix for automated Smallset selection.
+Prepares the visual appearance matrix for automated Smallset selection.
 }
 \keyword{internal}

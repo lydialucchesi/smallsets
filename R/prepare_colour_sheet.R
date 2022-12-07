@@ -1,5 +1,5 @@
 #' Prepare colour sheet
-#' @description Generates a visual appearance matrix for automated Smallset selection.
+#' @description Prepares the visual appearance matrix for automated Smallset selection.
 #' @keywords internal
 
 prepare_colour_sheet <- function(smallsetList,
@@ -10,9 +10,11 @@ prepare_colour_sheet <- function(smallsetList,
   last <- smallsetList[[length(smallsetList)]]
   last[] <- lapply(last, as.character)
   
+  # Find data deletions
   colsDrop <- setdiff(colnames(first), colnames(last))
   rowsDrop <- setdiff(rownames(first), rownames(last))
   
+  # Add dropped columns to final data frame
   for (c in colsDrop) {
     if (!c %in% colnames(last)) {
       origCols <- colnames(first)
@@ -35,6 +37,7 @@ prepare_colour_sheet <- function(smallsetList,
     }
   }
   
+  # Add dropped rows to final data frame
   for (r in rowsDrop) {
     if (!r %in% rownames(last)) {
       origRows <- rownames(first)
@@ -60,10 +63,12 @@ prepare_colour_sheet <- function(smallsetList,
   colours <- last
   colours[,] <- fourCols[1]
   
+  # Find data changes between snapshots
   tables <- find_data_changes(smallsetList, fourCols, FALSE)
   tables <-
     lapply(seq(1:length(tables[[1]])), tables, FUN = retrieve_tables)
   
+  # Update colours in visual appearance matrix
   for (t in 1:length(tables)) {
     t_colours <- tables[[t]][[1]]
     rownames(t_colours) <- rownames(tables[[t]][[2]])

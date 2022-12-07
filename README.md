@@ -1,8 +1,6 @@
 Smallset Timelines with `smallsets`
 ================
 
-## Introduction
-
 Welcome to the `smallsets` software repository 👋. This is the companion
 repository for the paper [**Smallset Timelines: A Visual Representation
 of Data Preprocessing
@@ -21,7 +19,7 @@ and share your preprocessing decisions in a practical manner.
 building a Smallset Timeline, please email Lydia at
 <Lydia.Lucchesi@anu.edu.au>.*
 
-## Installation in R
+## Installation
 
 ``` r
 remotes::install_github(repo = "lydialucchesi/smallsets")
@@ -82,20 +80,16 @@ mydata$C9 <- mydata$C3 + mydata$C4
 # C9, by summing C3 and C4.]caption
 ```
 
-## `smallsets` citation
+## Citing `smallsets`
 
 Please cite the Smallset Timeline paper if you use the `smallsets`
 software.
-
-##### ACM Reference
 
 Lydia R. Lucchesi, Petra M. Kuhnert, Jenny L. Davis, and Lexing Xie.
 2022. Smallset Timelines: A Visual Representation of Data Preprocessing
 Decisions. In 2022 ACM Conference on Fairness, Accountability, and
 Transparency (FAccT ’22). Association for Computing Machinery, New York,
 NY, USA, 1136–1153. <https://doi.org/10.1145/3531146.3533175>
-
-##### Bibtex
 
     @inproceedings{smallsets2022, 
     author = {Lucchesi, Lydia R. and Kuhnert, Petra M. and Davis, Jenny L. and Xie, Lexing}, 
