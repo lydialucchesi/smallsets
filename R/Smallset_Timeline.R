@@ -128,22 +128,22 @@ Smallset_Timeline <- function(data,
     )
   }
   
-  if(inherits(data, "data.table")){
+  if (inherits(data, "data.table")) {
     print("Converting data object from a
           data table to a data frame.")
     data <- as.data.frame(data)
   }
-  else 
-    if(inherits(data, "tbl_df")){ 
-       print("Converting data object from a
+  else
+    if (inherits(data, "tbl_df")) {
+      print("Converting data object from a
           tibble to a data frame.")
-       data <- as.data.frame(data)
+      data <- as.data.frame(data)
     }
-  else 
-    if(!inherits(data, "data.frame")){
-       stop("Data was not of class
+  else
+    if (!inherits(data, "data.frame")) {
+      stop("Data was not of class
          data frame, data table, or tibble.")
-  }
+    }
   
   # Fill in any parameters not specified
   sizing <- set_sizing(sizing)
@@ -151,12 +151,11 @@ Smallset_Timeline <- function(data,
   labelling <- set_labelling(labelling)
   
   # Get four tile colours ready
-  colClass <- class(colours)
-  if (colClass != "list") {
-    fourCols <- unlist(return_scheme(colours),
+  if (inherits(colours, "list")) {
+    fourCols <- unlist(colours,
                        use.names = FALSE)
   } else {
-    fourCols <- unlist(colours,
+    fourCols <- unlist(return_scheme(colours),
                        use.names = FALSE)
   }
   
