@@ -104,10 +104,10 @@ Creates a Smallset Timeline to visualise data preprocessing decisions.
 \details{
 Prior to running this command, you will need to add structured
  comments to your R or Python data preprocessing script, providing snapshot
- points and captions. \itemize{\item{`# start smallset mydata` - start
+ points and captions. \itemize{\item{`# smallsets start mydata` - start
  tracking code and take the first data snapshot, where "mydata" is the name
- of your data object} \item{`# snap mydata` - take a data snapshot after the
- next line of code} \item{`# end smallset mydata` - stop tracking code and
+ of your data object} \item{`# smallsets snap mydata` - take a data snapshot after the
+ next line of code} \item{`# smallsets end mydata` - stop tracking code and
  take the last data snapshot} \item{Snapshot captions are added between
  caption brackets, `caption[...]caption`, at the end of the comments listed
  above}}

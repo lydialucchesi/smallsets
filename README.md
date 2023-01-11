@@ -48,7 +48,7 @@ Smallset_Timeline(
 
     ## [1] "Smallset rows: 2, 47, 54, 64, 75, 92"
 
-<img src="README_files/figure-gfm/unnamed-chunk-2-1.png" width="672" />
+<img src="README_files/quick-start-example-1.png" width="672" />
 
 ## Structured comments
 
