@@ -4,7 +4,7 @@
 
 set_spacing <- function(spacing) {
   if (is.null(spacing$captionB)) {
-    spacing$captionB <- 3
+    spacing$captionB <- 2
   }
   if (is.null(spacing$columnsT)) {
     spacing$columnsT <- 1

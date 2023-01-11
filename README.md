@@ -46,7 +46,9 @@ Smallset_Timeline(
   )
 ```
 
-![](man/figures/example_ST.png)
+    ## [1] "Smallset rows: 2, 47, 54, 64, 75, 92"
+
+<img src="README_files/figure-gfm/unnamed-chunk-2-1.png" width="672" />
 
 ## Structured comments
 
@@ -55,28 +57,28 @@ below. Prior to building the Timeline with `Smallset_Timeline()`, a
 series of structured comments were added to the preprocessing script,
 informing `smallsets` what to do.
 
--   `# start smallset` + `data name` (e.g., “mydata”) = start tracking
+-   `# smallsets start` + `data name` (e.g., “mydata”) = start tracking
     code and take the first data snapshot
--   `# snap` + `data name` = take a data snapshot after the next line of
-    code
--   `# end smallset`+ `data name` = stop tracking code and take the last
-    data snapshot
+-   `# smallsets snap` + `data name` = take a data snapshot after the
+    next line of code
+-   `# smallsets end`+ `data name` = stop tracking code and take the
+    last data snapshot
 -   `caption[...]caption` = add this caption to the snapshot
 
 ``` r
-# start smallset mydata caption[Remove rows where C2 
+# smallsets start mydata caption[Remove rows where C2 
 # is FALSE.]caption
 mydata <- mydata[mydata$C2 == TRUE,]
 
 mydata$C6[is.na(mydata$C6)] <- mean(mydata$C6, na.rm = TRUE)
-# snap mydata caption[Replace missing values in C6 and 
+# smallsets snap mydata caption[Replace missing values in C6 and
 # C8 with column means. Drop C7 because there are too many 
 # missing values.]caption
 mydata$C8[is.na(mydata$C8)] <- mean(mydata$C8, na.rm = TRUE)
 mydata$C7 <- NULL
 
 mydata$C9 <- mydata$C3 + mydata$C4
-# end smallset mydata caption[Create a new column, 
+# smallsets end mydata caption[Create a new column,
 # C9, by summing C3 and C4.]caption
 ```
 

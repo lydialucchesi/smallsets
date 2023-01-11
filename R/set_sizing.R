@@ -4,13 +4,13 @@
 
 set_sizing <- function(sizing) {
   if (is.null(sizing$columns)) {
-    sizing$columns <- 3
+    sizing$columns <- 2.5
   }
   if (is.null(sizing$tiles)) {
-    sizing$tiles <- .1
+    sizing$tiles <- .2
   }
   if (is.null(sizing$captions)) {
-    sizing$captions <- 3
+    sizing$captions <- 2.5
   }
   if (is.null(sizing$data)) {
     sizing$data <- 2.5

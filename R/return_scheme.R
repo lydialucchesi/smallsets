@@ -6,10 +6,10 @@ return_scheme <- function(colScheme = 1) {
   if (colScheme == 1) {
     CS <-
       list(
-        same = "#D3D2CC",
-        edit = "#C9D5F5",
+        same = "#E6E4DF",
+        edit = "#B4D5F5",
         add = "#CDAFEE",
-        delete = "#FBE4B5"
+        delete = "#FBE49D"
       )
   } else if (colScheme == 2) {
     CS <-

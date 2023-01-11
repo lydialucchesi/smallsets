@@ -19,9 +19,9 @@ Smallset_Timeline(
   ghostData = TRUE,
   missingDataTints = FALSE,
   timelineFont = "sans",
-  sizing = list(columns = 3, captions = 3, tiles = 0.1, data = 2.5, legendText = 10,
-    legendIcons = 1, resume = 0.25),
-  spacing = list(captionB = 3, columnsT = 1, tablesR = 0.5, rows = 1, columnsDeg = 0),
+  sizing = list(columns = 2.5, captions = 2.5, tiles = 0.2, data = 2.5, legendText =
+    10, legendIcons = 1, resume = 0.25),
+  spacing = list(captionB = 2, columnsT = 1, tablesR = 0.5, rows = 1, columnsDeg = 0),
   labelling = list(labelsCol = "darker", labelsColDif = 0.5)
 )
 }
@@ -76,13 +76,13 @@ signal a missing data value.}
 \item{sizing}{List of size specifications: column names (columns), caption
 text (captions), tile size, (tiles), printed data (data), legend text
 (legendText), legend icons (legendIcons), and resume markers (resume). List
-of defaults: list(columns = 3, captions = 3, tiles = .1, data = 2.5,
+of defaults: list(columns = 2.5, captions = 2.5, tiles = .2, data = 2.5,
 legendText = 10, legendIcons = 1, resume = .25).}
 
 \item{spacing}{List of spacing specifications: space below captions
 (captionB), space above columns (columnsT), space to the right of Smallset
 tables (tablesR), number of Timeline rows (rows), and degree rotation of
-column names (columnsDeg). List of defaults: list(captionB = 3, columnsT =
+column names (columnsDeg). List of defaults: list(captionB = 2, columnsT =
 1, tablesR = .5, rows = 1, columnsDeg = 0).}
 
 \item{labelling}{List of colour specifications for labelling, which includes
@@ -99,8 +99,7 @@ black.}
 A plot.
 }
 \description{
-This is the command for creating a Smallset Timeline to visualise
- data preprocessing decisions.
+Creates a Smallset Timeline to visualise data preprocessing decisions.
 }
 \details{
 Prior to running this command, you will need to add structured

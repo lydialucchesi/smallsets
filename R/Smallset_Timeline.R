@@ -1,7 +1,6 @@
 #'Smallset Timeline
 #'
-#'@description This is the command for creating a Smallset Timeline to visualise
-#'  data preprocessing decisions.
+#'@description Creates a Smallset Timeline to visualise data preprocessing decisions.
 #'
 #'@param data The dataset that is being preprocessed.
 #'@param code The R or Python data preprocessing script. Filename extension
@@ -39,12 +38,12 @@
 #'@param sizing List of size specifications: column names (columns), caption
 #'  text (captions), tile size, (tiles), printed data (data), legend text
 #'  (legendText), legend icons (legendIcons), and resume markers (resume). List
-#'  of defaults: list(columns = 3, captions = 3, tiles = .1, data = 2.5,
+#'  of defaults: list(columns = 2.5, captions = 2.5, tiles = .2, data = 2.5,
 #'  legendText = 10, legendIcons = 1, resume = .25).
 #'@param spacing List of spacing specifications: space below captions
 #'  (captionB), space above columns (columnsT), space to the right of Smallset
 #'  tables (tablesR), number of Timeline rows (rows), and degree rotation of
-#'  column names (columnsDeg). List of defaults: list(captionB = 3, columnsT =
+#'  column names (columnsDeg). List of defaults: list(captionB = 2, columnsT =
 #'  1, tablesR = .5, rows = 1, columnsDeg = 0).
 #'@param labelling List of colour specifications for labelling, which includes
 #'  column names and printed data. First specification is whether the labels
@@ -93,16 +92,16 @@ Smallset_Timeline <- function(data,
                               missingDataTints = FALSE,
                               timelineFont = "sans",
                               sizing = list(
-                                columns = 3,
-                                captions = 3,
-                                tiles = .1,
+                                columns = 2.5,
+                                captions = 2.5,
+                                tiles = .2,
                                 data = 2.5,
                                 legendText = 10,
                                 legendIcons = 1,
                                 resume = .25
                               ),
                               spacing = list(
-                                captionB = 3,
+                                captionB = 2,
                                 columnsT = 1,
                                 tablesR = .5,
                                 rows = 1,

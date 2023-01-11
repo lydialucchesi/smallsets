@@ -16,9 +16,9 @@ write_smallset_code <-
     
     # Find rows with structured comments
     commentsLines <-
-      c(row.names(script)[grepl("# start smallset", script$command)],
-        row.names(script)[grepl("# snap", script$command)],
-        row.names(script)[grepl("# end smallset", script$command)])
+      c(row.names(script)[grepl("# smallsets start", script$command)],
+        row.names(script)[grepl("# smallsets snap", script$command)],
+        row.names(script)[grepl("# smallsets end", script$command)])
     
     # Retrieve captions from script
     captions <-
@@ -85,13 +85,13 @@ write_smallset_code <-
     script <- data.frame(command = script)
     script$command <- as.character(script$command)
     start <-
-      row.names(script)[grepl("# start smallset", script$command)]
+      row.names(script)[grepl("# smallsets start", script$command)]
     startName <-
-      gsub("# start smallset ", "", script[start, c("command")])
+      gsub("# smallsets start ", "", script[start, c("command")])
     end <-
-      row.names(script)[grepl("# end smallset", script$command)]
+      row.names(script)[grepl("# smallsets end", script$command)]
     endName <-
-      gsub("# end smallset ", "", script[end, c("command")])
+      gsub("# smallsets end ", "", script[end, c("command")])
     
     # Subset to preprocessing code
     script <-
@@ -117,11 +117,11 @@ write_smallset_code <-
     
     # Insert code to take snapshots
     iterLim <-
-      nrow(script) + nrow(subset(script, grepl("# snap ", script$command))) - 1
+      nrow(script) + nrow(subset(script, grepl("# smallsets snap ", script$command))) - 1
     s = 1
     if (lang == "py") {
       for (i in 1:iterLim) {
-        signal <- "# snap "
+        signal <- "# smallsets snap "
         if (grepl(signal, script$command[i])) {
           s <- s + 1
           
@@ -151,7 +151,7 @@ write_smallset_code <-
       }
     } else {
       for (i in 1:iterLim) {
-        signal <- "# snap "
+        signal <- "# smallsets snap "
         if (grepl(signal, script$command[i])) {
           s <- s + 1
           
@@ -306,7 +306,7 @@ write_smallset_code <-
       if (grepl("snapshots", script$command[i])) {
         snapCount <- snapCount + 1
       }
-      if (grepl("# resume ", script$command[i])) {
+      if (grepl("# smallsets resume ", script$command[i])) {
         resumeLocs <- c(resumeLocs, snapCount)
       }
     }
