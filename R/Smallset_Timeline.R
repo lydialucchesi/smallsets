@@ -8,6 +8,8 @@
 #'@param dir File path to the data preprocessing code. Default is the working
 #'  directory.
 #'@param rowCount Integer between 5-15 for number of rows in the Smallset.
+#'@param rowReturn A logical. TRUE prints, to the console, the row numbers 
+#' of the rows selected for the Smallset.
 #'@param rowNums Numeric vector indicating particular rows from the dataset 
 #' to include in the Smallset.
 #'@param autoSelect 1, 2, or NULL (default). 1 = select Smallset rows using the
@@ -81,6 +83,7 @@ Smallset_Timeline <- function(data,
                               code,
                               dir = getwd(),
                               rowCount = 6,
+                              rowReturn = FALSE,
                               rowNums = NULL,
                               autoSelect = NULL,
                               ignoreCols = NULL,
@@ -183,9 +186,11 @@ Smallset_Timeline <- function(data,
     # Use random sampling and/or manual selection
     smallset <- select_smallset(data, rowCount, rowNums)
   }
-  print(paste0("Smallset rows: ",
-               paste0(smallset, collapse = ", ")))
-  
+  if (isTRUE(rowReturn)) {
+    print(paste0("Smallset rows: ",
+                 paste0(smallset, collapse = ", ")))
+  }
+
   # Write preprocessing function with snapshots
   output <- write_smallset_code(code, dir, smallset, lang)
   

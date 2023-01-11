@@ -9,6 +9,7 @@ Smallset_Timeline(
   code,
   dir = getwd(),
   rowCount = 6,
+  rowReturn = FALSE,
   rowNums = NULL,
   autoSelect = NULL,
   ignoreCols = NULL,
@@ -35,6 +36,9 @@ should be included (e.g., "my_code.R" or "my_code.py").}
 directory.}
 
 \item{rowCount}{Integer between 5-15 for number of rows in the Smallset.}
+
+\item{rowReturn}{A logical. TRUE prints, to the console, the row numbers 
+of the rows selected for the Smallset.}
 
 \item{rowNums}{Numeric vector indicating particular rows from the dataset 
 to include in the Smallset.}

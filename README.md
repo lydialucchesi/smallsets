@@ -46,8 +46,6 @@ Smallset_Timeline(
   )
 ```
 
-    ## [1] "Smallset rows: 2, 47, 54, 64, 75, 92"
-
 <img src="README_files/quick-start-example-1.png" width="672" />
 
 ## Structured comments
@@ -61,7 +59,7 @@ informing `smallsets` what to do.
     code and take the first data snapshot
 -   `# smallsets snap` + `data name` = take a data snapshot after the
     next line of code
--   `# smallsets end`+ `data name` = stop tracking code and take the
+-   `# smallsets end` + `data name` = stop tracking code and take the
     last data snapshot
 -   `caption[...]caption` = add this caption to the snapshot
 
