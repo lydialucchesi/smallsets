@@ -4,7 +4,7 @@
 \alias{run_simple_gurobi}
 \title{Run simple gurobi}
 \usage{
-run_simple_gurobi(data, code, dir, rowCount, lang, fourCols)
+run_simple_gurobi(data, code, rowCount, lang, fourCols)
 }
 \description{
 Runs the coverage optimisation problem.

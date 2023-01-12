@@ -5,12 +5,11 @@
 run_advanced_gurobi <-
   function(data,
            code,
-           dir,
            rowCount,
            lang,
            fourCols) {
     # Take snapshots of dataset at snapshot points
-    output <- write_smallset_code(code, dir, c("allROWS"), lang)
+    output <- write_smallset_code(code, c("allROWS"), lang)
     
     # Run function to take snapshots
     apply_code <- NULL

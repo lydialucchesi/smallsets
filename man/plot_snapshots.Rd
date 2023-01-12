@@ -18,7 +18,7 @@ plot_snapshots(
   sizing,
   smallsetTables,
   spacing,
-  timelineFont,
+  font,
   truncateData
 )
 }

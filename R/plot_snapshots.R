@@ -17,7 +17,7 @@ plot_snapshots <-
            sizing,
            smallsetTables,
            spacing,
-           timelineFont,
+           font,
            truncateData) {
     # Initialise variables
     colValue <- NULL
@@ -160,7 +160,7 @@ plot_snapshots <-
           label = ind,
           colour = col
         ),
-        family = timelineFont,
+        family = font,
         size = sizing$columns,
         angle = angleVal,
         hjust = hjustVal,
@@ -186,7 +186,7 @@ plot_snapshots <-
           unit = 'cm'
         ),
         text = element_text(
-          family = timelineFont,
+          family = font,
           size = sizing$legendText,
           colour = "black"
         )
@@ -211,7 +211,7 @@ plot_snapshots <-
             label = datValue,
             colour = colValue2
           ),
-          family = timelineFont,
+          family = font,
           size = sizing$data
         )
     }
@@ -240,7 +240,7 @@ plot_snapshots <-
             label = snapshotCaption),
         width = grid::unit(.9, "npc"),
         box.padding = unit(0, "cm"),
-        family = timelineFont,
+        family = font,
         hjust = c(0),
         vjust = c(1),
         size = sizing$captions,

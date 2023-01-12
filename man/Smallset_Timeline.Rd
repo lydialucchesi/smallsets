@@ -7,11 +7,10 @@
 Smallset_Timeline(
   data,
   code,
-  dir = getwd(),
-  rowCount = 6,
+  rowCount = 5,
+  rowSelect = NULL,
   rowReturn = FALSE,
   rowNums = NULL,
-  autoSelect = NULL,
   ignoreCols = NULL,
   colours = 1,
   altText = FALSE,
@@ -19,7 +18,7 @@ Smallset_Timeline(
   truncateData = NULL,
   ghostData = TRUE,
   missingDataTints = FALSE,
-  timelineFont = "sans",
+  font = "sans",
   sizing = list(columns = 2.5, captions = 2.5, tiles = 0.2, data = 2.5, legendText =
     10, legendIcons = 1, resume = 0.25),
   spacing = list(captionB = 2, columnsT = 1, tablesR = 0.5, rows = 1, columnsDeg = 0),
@@ -27,29 +26,26 @@ Smallset_Timeline(
 )
 }
 \arguments{
-\item{data}{The dataset that is being preprocessed.}
+\item{data}{Dataset that is being preprocessed.}
 
-\item{code}{The R or Python data preprocessing script. Filename extension
-should be included (e.g., "my_code.R" or "my_code.py").}
+\item{code}{R or Python data preprocessing script. Include the filename extension 
+(e.g., "my_code.R" or "my_code.py"). If the script is not located in the working 
+directory, include the file path.}
 
-\item{dir}{File path to the data preprocessing code. Default is the working
-directory.}
+\item{rowCount}{Integer between 5-15 for number of Smallset rows.}
 
-\item{rowCount}{Integer between 5-15 for number of rows in the Smallset.}
+\item{rowSelect}{NULL, 1, or 2. When NULL, Smallset rows are randomly sampled.
+When 1, Smallset rows are selected using the coverage optimisation model. 
+When 2, Smallset rows are selected using the coverage + variety optimisation model, 
+which has a long run time for large datasets. Options 1 and 2 use the
+Gurobi solver and require a Gurobi license. Please visit https://www.gurobi.com to obtain 
+a license (free academic licenses are available).}
 
 \item{rowReturn}{A logical. TRUE prints, to the console, the row numbers 
 of the rows selected for the Smallset.}
 
 \item{rowNums}{Numeric vector indicating particular rows from the dataset 
 to include in the Smallset.}
-
-\item{autoSelect}{1, 2, or NULL (default). 1 = select Smallset rows using the
-coverage optimisation model. 2 = select Smallset rows using the
-coverage+variety optimisation model (can take a long time to run). These
-optimisation problems are solved using Gurobi. Please visit
-https://www.gurobi.com to obtain a gurobi license (free academic licenses
-are available) in order to use these selection methods. Otherwise, leave
-autoSelect = NULL, and the rows will be randomly sampled from the dataset.}
 
 \item{ignoreCols}{Character vector of column names indicating which to exclude 
 from the Smallset. These columns can't be referenced in the data preprocessing code.}
@@ -75,7 +71,7 @@ been removed.}
 \item{missingDataTints}{A logical. TRUE plots a lighter colour value to
 signal a missing data value.}
 
-\item{timelineFont}{Any font you have installed in R. Default is "sans".}
+\item{font}{Any font you have installed in R. Default is "sans".}
 
 \item{sizing}{List of size specifications: column names (columns), caption
 text (captions), tile size, (tiles), printed data (data), legend text

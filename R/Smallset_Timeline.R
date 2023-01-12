@@ -2,23 +2,21 @@
 #'
 #'@description Creates a Smallset Timeline to visualise data preprocessing decisions.
 #'
-#'@param data The dataset that is being preprocessed.
-#'@param code The R or Python data preprocessing script. Filename extension
-#'  should be included (e.g., "my_code.R" or "my_code.py").
-#'@param dir File path to the data preprocessing code. Default is the working
-#'  directory.
-#'@param rowCount Integer between 5-15 for number of rows in the Smallset.
+#'@param data Dataset that is being preprocessed.
+#'@param code R or Python data preprocessing script. Include the filename extension 
+#'  (e.g., "my_code.R" or "my_code.py"). If the script is not located in the working 
+#'  directory, include the file path.
+#'@param rowCount Integer between 5-15 for number of Smallset rows.
+#'@param rowSelect NULL, 1, or 2. When NULL, Smallset rows are randomly sampled.
+#'  When 1, Smallset rows are selected using the coverage optimisation model. 
+#'  When 2, Smallset rows are selected using the coverage + variety optimisation model, 
+#'  which has a long run time for large datasets. Options 1 and 2 use the
+#'  Gurobi solver and require a Gurobi license. Please visit https://www.gurobi.com to obtain 
+#'  a license (free academic licenses are available).
 #'@param rowReturn A logical. TRUE prints, to the console, the row numbers 
 #' of the rows selected for the Smallset.
 #'@param rowNums Numeric vector indicating particular rows from the dataset 
 #' to include in the Smallset.
-#'@param autoSelect 1, 2, or NULL (default). 1 = select Smallset rows using the
-#'  coverage optimisation model. 2 = select Smallset rows using the
-#'  coverage+variety optimisation model (can take a long time to run). These
-#'  optimisation problems are solved using Gurobi. Please visit
-#'  https://www.gurobi.com to obtain a gurobi license (free academic licenses
-#'  are available) in order to use these selection methods. Otherwise, leave
-#'  autoSelect = NULL, and the rows will be randomly sampled from the dataset.
 #'@param ignoreCols Character vector of column names indicating which to exclude 
 #' from the Smallset. These columns can't be referenced in the data preprocessing code.
 #'@param colours Either 1, 2, or 3 for one of the pre-built colour schemes (all are 
@@ -36,7 +34,7 @@
 #'  been removed.
 #'@param missingDataTints A logical. TRUE plots a lighter colour value to
 #'  signal a missing data value.
-#'@param timelineFont Any font you have installed in R. Default is "sans".
+#'@param font Any font you have installed in R. Default is "sans".
 #'@param sizing List of size specifications: column names (columns), caption
 #'  text (captions), tile size, (tiles), printed data (data), legend text
 #'  (legendText), legend icons (legendIcons), and resume markers (resume). List
@@ -81,11 +79,10 @@
 
 Smallset_Timeline <- function(data,
                               code,
-                              dir = getwd(),
-                              rowCount = 6,
+                              rowCount = 5,
+                              rowSelect = NULL,
                               rowReturn = FALSE,
                               rowNums = NULL,
-                              autoSelect = NULL,
                               ignoreCols = NULL,
                               colours = 1,
                               altText = FALSE,
@@ -93,7 +90,7 @@ Smallset_Timeline <- function(data,
                               truncateData = NULL,
                               ghostData = TRUE,
                               missingDataTints = FALSE,
-                              timelineFont = "sans",
+                              font = "sans",
                               sizing = list(
                                 columns = 2.5,
                                 captions = 2.5,
@@ -147,6 +144,11 @@ Smallset_Timeline <- function(data,
          data frame, data table, or tibble.")
     }
   
+  # Check Smallset size
+  if (rowCount < 5 | rowCount > 15) {
+    stop("Please choose a rowCount between 5-15.")
+  }
+  
   # Fill in any parameters not specified
   sizing <- set_sizing(sizing)
   spacing <- set_spacing(spacing)
@@ -162,7 +164,7 @@ Smallset_Timeline <- function(data,
   }
   
   # Select the Smallset rows
-  if (!is.null(autoSelect)) {
+  if (!is.null(rowSelect)) {
     if (!requireNamespace("gurobi", quietly = TRUE)) {
       stop(
         "This Smallset selection method uses a gurobi optimisation model.
@@ -174,12 +176,12 @@ Smallset_Timeline <- function(data,
       )
     } else {
       # Use an optimisation algorithm
-      if (autoSelect == 1) {
+      if (rowSelect == 1) {
         smallset <-
-          run_simple_gurobi(data, code, dir, rowCount, lang, fourCols)
+          run_simple_gurobi(data, code, rowCount, lang, fourCols)
       } else {
         smallset <-
-          run_advanced_gurobi(data, code, dir, rowCount, lang, fourCols)
+          run_advanced_gurobi(data, code, rowCount, lang, fourCols)
       }
     }
   } else {
@@ -192,7 +194,7 @@ Smallset_Timeline <- function(data,
   }
 
   # Write preprocessing function with snapshots
-  output <- write_smallset_code(code, dir, smallset, lang)
+  output <- write_smallset_code(code, smallset, lang)
   
   # Subset data to columns of interest
   if (!is.null(ignoreCols)) {
@@ -292,7 +294,7 @@ Smallset_Timeline <- function(data,
       sizing,
       smallsetTables,
       spacing,
-      timelineFont,
+      font,
       truncateData,
       FUN = plot_snapshots
     )
@@ -315,7 +317,7 @@ Smallset_Timeline <- function(data,
       as.character(spacing$rows),
       ", guides = 'collect')",
       " & theme(text = element_text(family = '",
-      timelineFont,
+      font,
       "', colour = 'black'),",
       "legend.key.size = unit(",
       sizing[["legendIcons"]],

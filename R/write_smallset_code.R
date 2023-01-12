@@ -4,15 +4,10 @@
 
 write_smallset_code <-
   function(code,
-           dir,
            smallset,
            lang) {
     # Import preprocessing code
-    if (dir != getwd()) {
-      code <- paste0(dir, code)
-    }
-    script <-
-      data.frame(command = readLines(code, warn = FALSE))
+    script <- data.frame(command = readLines(code, warn = FALSE))
     
     # Find rows with structured comments
     commentsLines <-

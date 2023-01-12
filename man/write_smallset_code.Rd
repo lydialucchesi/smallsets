@@ -4,7 +4,7 @@
 \alias{write_smallset_code}
 \title{Write Smallset code}
 \usage{
-write_smallset_code(code, dir, smallset, lang)
+write_smallset_code(code, smallset, lang)
 }
 \description{
 Turns the preprocessing code into a function that takes snapshots.
