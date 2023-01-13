@@ -34,9 +34,9 @@ directory, include the file path.}
 
 \item{rowCount}{Integer between 5-15 for number of Smallset rows.}
 
-\item{rowSelect}{NULL, 1, or 2. When NULL, Smallset rows are randomly sampled.
-When 1, Smallset rows are selected using the coverage optimisation model. 
-When 2, Smallset rows are selected using the coverage + variety optimisation model, 
+\item{rowSelect}{NULL, 1, or 2. If NULL, Smallset rows are randomly sampled.
+If 1, Smallset rows are selected using the coverage optimisation model. 
+If 2, Smallset rows are selected using the coverage + variety optimisation model, 
 which has a long run time for large datasets. Options 1 and 2 use the
 Gurobi solver and require a Gurobi license. Please visit https://www.gurobi.com to obtain 
 a license (free academic licenses are available).}

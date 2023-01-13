@@ -33,8 +33,8 @@ Timeline!**
 The following section shows how to select snapshot points and provide
 captions with structured comments in the preprocessing script.
 
-*See `?Smallset_Timeline` for options to customise the appearance of
-your Smallset Timeline.*
+*See `?Smallset_Timeline` for options to customise your Smallset
+Timeline.*
 
 ``` r
 library(smallsets)
