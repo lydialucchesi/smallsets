@@ -19,10 +19,9 @@ Smallset_Timeline(
   ghostData = TRUE,
   missingDataTints = FALSE,
   font = "sans",
-  sizing = list(columns = 2.5, captions = 2.5, tiles = 0.2, data = 2.5, legendText =
-    10, legendIcons = 1, resume = 0.25),
-  spacing = list(captionB = 2, columnsT = 1, tablesR = 0.5, rows = 1, columnsDeg = 0),
-  labelling = list(labelsCol = "darker", labelsColDif = 0.5)
+  sizing = sets_sizing(),
+  spacing = sets_spacing(),
+  labelling = sets_labelling()
 )
 }
 \arguments{
@@ -73,27 +72,11 @@ signal a missing data value.}
 
 \item{font}{Any font you have installed in R. Default is "sans".}
 
-\item{sizing}{List of size specifications: column names (columns), caption
-text (captions), tile size, (tiles), printed data (data), legend text
-(legendText), legend icons (legendIcons), and resume markers (resume). List
-of defaults: list(columns = 2.5, captions = 2.5, tiles = .2, data = 2.5,
-legendText = 10, legendIcons = 1, resume = .25).}
+\item{sizing}{\link{sets_sizing} for size specifications.}
 
-\item{spacing}{List of spacing specifications: space below captions
-(captionB), space above columns (columnsT), space to the right of Smallset
-tables (tablesR), number of Timeline rows (rows), and degree rotation of
-column names (columnsDeg). List of defaults: list(captionB = 2, columnsT =
-1, tablesR = .5, rows = 1, columnsDeg = 0).}
+\item{spacing}{\link{sets_spacing} for space specifications.}
 
-\item{labelling}{List of colour specifications for labelling, which includes
-column names and printed data. First specification is whether the labels
-should be lighter or darker than the tile colours (labelsCol). Second
-specification is a value between 0 and 1 for how much lighter or darker it
-should be (labelsColDif). Example 1: list(labelsCol = "darker", labelsColDif
-= 1) means labels are black. Example 2: list(labelsCol = "lighter",
-labelsColDif = 1) means labels are white. Default is list(labelsCol =
-"darker", labelsColDif = .5), which is midpoint between tile colours and
-black.}
+\item{labelling}{\link{sets_labelling} for label specifications.}
 }
 \value{
 A plot.

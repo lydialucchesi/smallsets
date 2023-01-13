@@ -103,8 +103,8 @@ plot_snapshots <-
     }
     
     # Rotate column names
-    if (spacing$columnsDeg != 0) {
-      angleVal <- spacing$columnsDeg
+    if (spacing$degree != 0) {
+      angleVal <- spacing$degree
       hjustVal <- 0
       vjustVal <- 1
     } else {
@@ -187,7 +187,7 @@ plot_snapshots <-
         ),
         text = element_text(
           family = font,
-          size = sizing$legendText,
+          size = sizing$legend,
           colour = "black"
         )
       )
@@ -247,7 +247,7 @@ plot_snapshots <-
         box.colour = NA,
         colour = "black"
       ) +
-      ylim(c(spacing$captionB * (-1), maxDims[2] + spacing$columnsT))
+      ylim(c(spacing$captions * (-1), maxDims[2] + spacing$columnT))
     
     # Add a resume marker (a vertical line between two snapshots)
     if (itemNum %in% output[[2]]) {
