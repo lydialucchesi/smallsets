@@ -266,10 +266,8 @@ Smallset_Timeline <- function(data,
   # Assemble snapshots into Timeline
   patchedPlots <- ""
   for (s in 1:length(l)) {
-    # Adjust plot widths if multiple Timeline rows
-    if (spacing$rows > 1) {
-      l[[s]] <- l[[s]] + xlim(c(.5, maxDims[1] + .5))
-    }
+    # Add space to right of snapshot
+    l[[s]] <- l[[s]] + xlim(c(.5, maxDims[1] + spacing$right))
     addPlot <- paste0("l[[", as.character(s), "]] + ")
     patchedPlots <- paste0(patchedPlots, addPlot)
   }

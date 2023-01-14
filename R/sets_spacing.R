@@ -1,10 +1,10 @@
 #' Sets spacing
 #' @description Sets spacing parameters for the Smallset Timeline.
 #' @param captions Positive numeric value for amount of caption space below snapshots.
-#' @param columnT Positive numeric value for amount of column name space.
+#' @param header Positive numeric value for amount of column name space.
 #' @param degree Integer between 0-90 (degrees) to rotate column names.
+#' @param right Positive numeric value (>=.5) for amount of space to the right of each snapshot.
 #' @param rows Integer for number of Timeline rows.
-#' @param tableR Positive numeric value for amount of space between snapshots.
 #'
 #' @examples sets_spacing(captions = 6, degree = 45, rows = 2)
 #'
@@ -12,9 +12,9 @@
 
 sets_spacing <- function(captions = NULL,
                          degree = NULL,
-                         columnT = NULL,
-                         rows = NULL,
-                         tableR = NULL) {
+                         header = NULL,
+                         right = NULL,
+                         rows = NULL) {
   spacing <- list()
   
   if (is.null(captions)) {
@@ -29,22 +29,26 @@ sets_spacing <- function(captions = NULL,
     spacing$degree <- degree
   }
   
-  if (is.null(columnT)) {
-    spacing$columnT <- 1
+  if (is.null(header)) {
+    spacing$header <- 1
   } else {
-    spacing$columnT <- columnT
+    spacing$header <- header
+  }
+  
+  if (is.null(right)) {
+    spacing$right <- .5
+  } else {
+    if (right < .5) {
+      spacing$right <- .5
+    } else {
+      spacing$right <- right
+    }
   }
   
   if (is.null(rows)) {
     spacing$rows <- 1
   } else {
     spacing$rows <- rows
-  }
-  
-  if (is.null(tableR)) {
-    spacing$tableR <- .5
-  } else {
-    spacing$tableR <- tableR
   }
   
   return(spacing)

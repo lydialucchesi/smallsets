@@ -7,9 +7,9 @@
 sets_spacing(
   captions = NULL,
   degree = NULL,
-  columnT = NULL,
-  rows = NULL,
-  tableR = NULL
+  header = NULL,
+  right = NULL,
+  rows = NULL
 )
 }
 \arguments{
@@ -17,11 +17,11 @@ sets_spacing(
 
 \item{degree}{Integer between 0-90 (degrees) to rotate column names.}
 
-\item{columnT}{Positive numeric value for amount of column name space.}
+\item{header}{Positive numeric value for amount of column name space.}
+
+\item{right}{Positive numeric value (>=.5) for amount of space to the right of each snapshot.}
 
 \item{rows}{Integer for number of Timeline rows.}
-
-\item{tableR}{Positive numeric value for amount of space between snapshots.}
 }
 \description{
 Sets spacing parameters for the Smallset Timeline.
