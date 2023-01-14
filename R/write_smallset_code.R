@@ -13,6 +13,7 @@ write_smallset_code <-
     commentsLines <-
       c(row.names(script)[grepl("# smallsets start", script$command)],
         row.names(script)[grepl("# smallsets snap", script$command)],
+        row.names(script)[grepl("# smallsets resume", script$command)],
         row.names(script)[grepl("# smallsets end", script$command)])
     
     # Retrieve captions from script

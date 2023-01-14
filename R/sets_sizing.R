@@ -51,7 +51,7 @@ sets_sizing <- function(captions = NULL,
   }
   
   if (is.null(resume)) {
-    sizing$resume <- .25
+    sizing$resume <- 1
   } else {
     sizing$resume <- resume
   }

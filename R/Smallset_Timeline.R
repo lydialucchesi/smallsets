@@ -102,17 +102,15 @@ Smallset_Timeline <- function(data,
           data table to a data frame.")
     data <- as.data.frame(data)
   }
-  else
-    if (inherits(data, "tbl_df")) {
+  if (inherits(data, "tbl_df")) {
       print("Converting data object from a
           tibble to a data frame.")
       data <- as.data.frame(data)
-    }
-  else
-    if (!inherits(data, "data.frame")) {
+  }
+  if (!inherits(data, "data.frame")) {
       stop("Data was not of class
          data frame, data table, or tibble.")
-    }
+  }
   
   # Check Smallset size
   if (rowCount < 5 | rowCount > 15) {
@@ -243,7 +241,7 @@ Smallset_Timeline <- function(data,
   # Find Timeline dimensions
   maxDims <- retrieve_dimensions(extTables)
   
-  # Make each snapshot plot
+  # Make snapshot and resume marker plots
   l <-
     lapply(
       items,
@@ -261,14 +259,42 @@ Smallset_Timeline <- function(data,
       spacing,
       font,
       truncateData,
-      FUN = plot_snapshots
+      FUN = build_plot
     )
-  # Assemble snapshots into Timeline
+  
+  # Expand list of plots
+  plots <- list()
+  p <- 1
+  for (i in 1:length(l)) {
+    if (length(l[[i]]) == 2) {
+      plots[[p]] <- l[[i]][[1]]
+      p <- p + 1
+      plots[[p]] <- l[[i]][[2]]
+      p <- p + 1
+    } else {
+      plots[[p]] <- l[[i]]
+      p <- p + 1
+    }
+  }
+  
+  # Finalise the plots with captions and standard dimensions
+  items <- 1:length(plots)
+  l <-
+    lapply(
+      items,
+      plots,
+      output,
+      maxDims,
+      font,
+      sizing,
+      spacing,
+      FUN = finalise_plot
+    )
+  
+  # Assemble plots into Timeline
   patchedPlots <- ""
-  for (s in 1:length(l)) {
-    # Add space to right of snapshot
-    l[[s]] <- l[[s]] + xlim(c(.5, maxDims[1] + spacing$right))
-    addPlot <- paste0("l[[", as.character(s), "]] + ")
+  for (p in 1:length(l)) {
+    addPlot <- paste0("l[[", as.character(p), "]] + ")
     patchedPlots <- paste0(patchedPlots, addPlot)
   }
   

@@ -1,9 +1,9 @@
-#' Plot the snapshots
-#' @description Transforms a table snapshot into a plot snapshot.
-#' @import ggplot2 ggtext
+#' Build plot
+#' @description Builds snapshot and resume marker plots.
+#' @import ggplot2
 #' @keywords internal
 
-plot_snapshots <-
+build_plot <-
   function(itemNum,
            accents,
            extTables,
@@ -39,14 +39,14 @@ plot_snapshots <-
       data.frame(ind = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
     
     # Assign coordinates to tile colours
-    tab1$y <- seq(nrow(tab1), 1,-1)
+    tab1$y <- seq(nrow(tab1), 1, -1)
     tab1Long <-
       suppressWarnings(cbind(tab1[ncol(tab1)], utils::stack(tab1[-ncol(tab1)])))
     tab1Long <- merge(tab1Long, xs)
     colnames(tab1Long) <- c("variable", "y", "colValue", "x")
     
     # Assign coordinates to tile data
-    tab2$y <- seq(nrow(tab2), 1,-1)
+    tab2$y <- seq(nrow(tab2), 1, -1)
     tab2Long <-
       suppressWarnings(cbind(tab2[ncol(tab2)], utils::stack(tab2[-ncol(tab2)])))
     tab2Long <- merge(tab2Long, xs)
@@ -59,13 +59,14 @@ plot_snapshots <-
     
     # Create empty (invisible) tiles and adjust y coordinates
     if (isFALSE(ghostData)) {
-      
       empty <- data.frame(x = as.numeric(), y = as.numeric())
       
       if (max(tabs$x) != maxDims[1]) {
         empty1 <-
-          data.frame(expand.grid(x = seq(max(tabs$x) + 1, maxDims[1]),
-                                 y = seq(1, maxDims[2])))
+          data.frame(expand.grid(
+            x = seq(max(tabs$x) + 1, maxDims[1]),
+            y = seq(1, maxDims[2])
+          ))
       }
       
       if (max(tabs$y) != maxDims[2]) {
@@ -120,7 +121,8 @@ plot_snapshots <-
       uniCols <-
         as.character(unique(subset(tabs, variable == v)$colValue))
       uniCols <-
-        uniCols[!is.na(uniCols) & (uniCols %in% unique(legendDF$colValue))]
+        uniCols[!is.na(uniCols) &
+                  (uniCols %in% unique(legendDF$colValue))]
       if (length(uniCols) > 0) {
         if (sum(length(uniCols) == 1 &
                 uniCols == accents$colValue[3]) == 1) {
@@ -166,7 +168,7 @@ plot_snapshots <-
         hjust = hjustVal,
         vjust = vjustVal
       ) +
-      scale_colour_identity() + 
+      scale_colour_identity() +
       coord_equal() +
       theme(
         axis.line = element_blank(),
@@ -228,42 +230,27 @@ plot_snapshots <-
         )
     }
     
-    # Retrieve snapshot caption
-    snapshotCaption <- output[[1]]$text[itemNum]
-    snapshotCaption[is.na(snapshotCaption)] <- ""
-    
-    # Add caption to the snapshot plot
-    snapshot <- snapshot +
-      geom_textbox(
-        aes(x = .5,
-            y = -.25,
-            label = snapshotCaption),
-        width = grid::unit(.9, "npc"),
-        box.padding = unit(0, "cm"),
-        family = font,
-        hjust = c(0),
-        vjust = c(1),
-        size = sizing$captions,
-        box.colour = NA,
-        colour = "black"
-      ) +
-      ylim(c(spacing$captions * (-1), maxDims[2] + spacing$header))
-    
     # Add a resume marker (a vertical line between two snapshots)
     if (itemNum %in% output[[2]]) {
-      snapshot <- snapshot +
+      resume <- ggplot() +
         geom_segment(
           aes(
-            x = (maxDims[1] + 2),
-            xend = (maxDims[1] + 2),
+            x = ((maxDims[1] + .5) / 2),
+            xend = ((maxDims[1] + .5) / 2),
             y = .5,
-            yend = maxDims[2] + .5
+            yend = (maxDims[2] + .5)
           ),
-          colour = as.character(fourCols[1]),
+          colour = accents$colValue2[1],
           size = sizing$resume
-        )
+        ) +
+        coord_equal() +
+        theme_void()
     }
     
-    return(snapshot)
+    if (itemNum %in% output[[2]]) {
+      return(list(snapshot, resume))
+    } else {
+      return(snapshot)
+    }
     
   }

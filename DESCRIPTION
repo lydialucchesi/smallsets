@@ -20,7 +20,6 @@ Imports:
     ggtext,
     patchwork,
     plotrix,
-    reticulate,
-    testthat
+    reticulate
 Suggests: 
     gurobi
