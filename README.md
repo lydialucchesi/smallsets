@@ -46,7 +46,7 @@ Smallset_Timeline(
   )
 ```
 
-<img src="README_files/quick-start-example-1.png" width="672" />
+<img src="man/figures/quick-start-example-1.png" width="672" />
 
 ## Structured comments
 

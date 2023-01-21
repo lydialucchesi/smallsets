@@ -1,5 +1,5 @@
 Package: smallsets
-Title: Create Smallset Timelines to Visualise Data Preprocessing Decisions
+Title: Smallset Timeline Builder
 Version: 0.0.1.9000
 Authors@R: c(person(given = c("Lydia", "R."), family = "Lucchesi", role = c("aut", "cre"), email = "Lydia.Lucchesi@anu.edu.au", comment = c(ORCID = "0000-0002-1901-4301")),
              person(given = c("Petra", "M."), family = "Kuhnert", role = "ths"),
