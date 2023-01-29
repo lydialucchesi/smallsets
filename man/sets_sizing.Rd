@@ -33,5 +33,10 @@ sets_sizing(
 Sets sizing parameters for the Smallset Timeline.
 }
 \examples{
-sets_sizing(captions = 2, columns = 2)
+# increase size of caption text
+Smallset_Timeline(
+   data = s_data,
+   code = system.file("s_data_preprocess.R", package = "smallsets"),
+   sizing = sets_sizing(captions = 3.5)
+)
 }

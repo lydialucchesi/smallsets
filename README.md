@@ -1,82 +1,59 @@
 Smallset Timelines with `smallsets`
 ================
 
-Welcome to the `smallsets` software repository 👋. This is the companion
-repository for the paper [**Smallset Timelines: A Visual Representation
-of Data Preprocessing
+Do you use R or Python to preprocess datasets for analyses? `smallsets`
+is an R package that transforms your R/Python preprocessing script into
+a Smallset Timeline, so that you can document and share your
+preprocessing decisions in a practical manner.
+
+A full description of the Smallset Timeline can be found in the paper
+[**Smallset Timelines: A Visual Representation of Data Preprocessing
 Decisions**](https://dl.acm.org/doi/abs/10.1145/3531146.3533175) in the
 proceedings of ACM FAccT ’22. A short ([3
 min](https://www.youtube.com/watch?v=_fpn02h3IUo)) and long ([15
 min](https://www.youtube.com/watch?v=I_ksOv6rj1Y)) YouTube video provide
 an introduction to the project.
 
-**Do you use R or Python to preprocess datasets for analyses?**
-`smallsets` is an R package that transforms your R or Python
-preprocessing script into a Smallset Timeline, so that you can document
-and share your preprocessing decisions in a practical manner.
-
-*If you have questions about using `smallsets` or would like help
+If you have questions about using `smallsets` or would like help
 building a Smallset Timeline, please email Lydia at
-<Lydia.Lucchesi@anu.edu.au>.*
-
-## Installation
-
-``` r
-remotes::install_github(repo = "lydialucchesi/smallsets")
-```
+<Lydia.Lucchesi@anu.edu.au>.
 
 ## Quick start example
 
-**Copy, paste, and run the snippet of code to create your first Smallset
-Timeline!**
-
-The following section shows how to select snapshot points and provide
-captions with structured comments in the preprocessing script.
-
-*See `?Smallset_Timeline` for options to customise your Smallset
-Timeline.*
+After installing smallsets, run the snippet of code to build your first
+Smallset Timeline!
 
 ``` r
 library(smallsets)
+
 set.seed(145)
 
-Smallset_Timeline(
-  data = mydata,
-  code = system.file("preprocess_data.R", package = "smallsets")
-  )
+Smallset_Timeline(data = s_data,
+                  code = system.file("s_data_preprocess.R", package = "smallsets"))
 ```
 
 <img src="man/figures/quick-start-example-1.png" width="672" />
 
 ## Structured comments
 
-The Smallset Timeline above is based on the R preprocessing script
-below. Prior to building the Timeline with `Smallset_Timeline()`, a
-series of structured comments were added to the preprocessing script,
-informing `smallsets` what to do.
-
--   `# smallsets start` + `data name` (e.g., “mydata”) = start tracking
-    code and take the first data snapshot
--   `# smallsets snap` + `data name` = take a data snapshot after the
-    next line of code
--   `# smallsets end` + `data name` = stop tracking code and take the
-    last data snapshot
--   `caption[...]caption` = add this caption to the snapshot
+The Smallset Timeline above is based on the R preprocessing script below
+(s_data_preprocess.R). Structured comments were added to it, informing
+`smallsets` what to do.
 
 ``` r
-# smallsets start mydata caption[Remove rows where C2 
+# smallsets start s_data caption[Remove rows where C2
 # is FALSE.]caption
-mydata <- mydata[mydata$C2 == TRUE,]
+s_data <- s_data[s_data$C2 == TRUE, ]
 
-mydata$C6[is.na(mydata$C6)] <- mean(mydata$C6, na.rm = TRUE)
-# smallsets snap mydata caption[Replace missing values in C6 and
-# C8 with column means. Drop C7 because there are too many 
+s_data$C6[is.na(s_data$C6)] <- mean(s_data$C6, na.rm = TRUE)
+# smallsets snap s_data caption[Replace missing values in C6 and
+# C8 with column means. Drop C7 because there are too many
 # missing values.]caption
-mydata$C8[is.na(mydata$C8)] <- mean(mydata$C8, na.rm = TRUE)
-mydata$C7 <- NULL
+s_data$C8[is.na(s_data$C8)] <- mean(s_data$C8, na.rm = TRUE)
+s_data$C7 <- NULL
 
-mydata$C9 <- mydata$C3 + mydata$C4
-# smallsets end mydata caption[Create a new column,
+s_data$C9 <- s_data$C3 + s_data$C4
+# smallsets end s_data caption[Create a new column,
 # C9, by summing C3 and C4.]caption
 ```
 

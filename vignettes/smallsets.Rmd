@@ -1,0 +1,251 @@
+---
+title: "smallsets User Guide"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 4
+vignette: >
+  %\VignetteIndexEntry{smallsets User Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{css, echo=FALSE}
+.view-only {
+  border: 2px solid lightblue;
+}
+```
+
+## Smallset Timelines
+
+In this vignette, we explain how to use smallsets to build Smallset Timelines. A Smallset Timeline (or Timeline) is a simple visualisation of data preprocessing decisions. More information on Timelines can be found in the Smallset Timeline paper and on YouTube.
+
+* [ACM FAccT paper about Smallset Timelines](https://dl.acm.org/doi/abs/10.1145/3531146.3533175)
+* [3-minute YouTube video](https://www.youtube.com/watch?v=_fpn02h3IUo)
+* [15-minute YouTube video](https://www.youtube.com/watch?v=I_ksOv6rj1Y)
+
+## Code block legend
+Blocks without a border contain code to run.
+```{r, eval=FALSE}
+# run this code
+```
+
+Blocks with a blue border contain example preprocessing code not meant to be run.
+```{r, eval=FALSE, class.source="view-only"}
+# don't run this code
+```
+
+## Example dataset{#example}
+
+In this vignette, we use the synthetic dataset s_data, which is included in smallsets. See `?s_data` for more information.
+
+```{r}
+library(smallsets)
+
+head(s_data)
+```
+
+## The basics{#basics}
+Each Smallset Timeline is constructed from your dataset and R/Python data preprocessing script. Scripts must contain a series of [smallsets comments](#comments) with snapshot instructions. Your unprocessed dataset (`data`) and commented preprocessing script (`code`) are the only required inputs to `Smallset_Timeline`. 
+
+The script s_data_preprocess.R is included in smallsets as an example and needs to be called with `system.file`. Generally, though, you will pass a character string to `code` (e.g., "my_code.R" or "/.../.../my_code.R").
+
+**Important notes**
+
+* Your dataset must be tabular.
+* Your preprocessing code must be contained in a single script.
+* Visualisations of data merges, collapses, and switches between the long/wide format are not supported, as smallsets tracks rows by their row names (which are overwritten during these transformations).
+
+```{r, fig.width=7, fig.height=3, fig.retina=2, fig.align='center'}
+library(smallsets)
+
+set.seed(145)
+
+Smallset_Timeline(data = s_data, 
+                  code = system.file("s_data_preprocess.R", package = "smallsets"))
+```
+
+### Structured comments{#comments}
+
+Below is the R preprocessing script for s_data (s_data_preprocess.R). It contains several smallsets comments. All comments follow the same formula.
+
+**hash + smallsets + instruction + name of data object + caption[...]caption**
+
+There are four instructions available.
+
+1. start
+3. end
+3. snap
+4. resume
+
+In your script, *start* and *stop* instructions must be provided. A snapshot is always taken directly after the *start* instruction and immediately before the *end* instruction. The *snap* instruction results in a snapshot being taken after the subsequent line of code. The *resume* instruction is discussed in the section on [resume markers](#resume).
+
+The name of the data object can change throughout the script. The snapshot is taken of the object specified in the comment.
+
+<br />
+**s_data_preprocess.R**
+```{r, code = readLines(system.file("s_data_preprocess.R", package = "smallsets")), eval=FALSE, class.source="view-only"}
+```
+
+### Python example
+Python scripts can be passed to the R command `Smallset_Timeline`.
+```{r, eval=FALSE}
+Smallset_Timeline(data = s_data, 
+                  code = system.file("s_data_preprocess.py", package = "smallsets"))
+```
+
+Below is the script s_data_preprocess.py, which does the same thing as s_data_preprocess.R. The smallsets commenting system is the same in Python.
+
+<br />
+**s_data_preprocess.py**
+```{python, code = readLines(system.file("s_data_preprocess.py", package = "smallsets")), eval=FALSE, class.source="view-only"}
+```
+
+## Smallset selection{#selection}
+
+There are two Smallset decisions to make: how many rows (`rowCount`) and how to select them (`rowSelect`).
+
+If `rowSelect = NULL` (the default setting), rows are selected through a simple random sample. The following code would randomly sample seven rows for the Smallset.
+
+```{r, fig.keep="none"}
+Smallset_Timeline(data = s_data, 
+                  code = system.file("s_data_preprocess.R", package = "smallsets"), 
+                  rowCount = 7, rowSelect = NULL)
+```
+
+To use the other two selection methods, which are optimisation problems, you will need a Gurobi license as they rely on the Gurobi solver (version 9.1.2). A license can be obtained from https://www.gurobi.com. Free academic licenses are available.
+
+If `rowSelect = 1`, the *coverage* problem is used to select rows. For each snapshot, it finds at least one example of a data change, if there is one. You can return the solution to the console with `rowReturn = TRUE`.
+
+```{r, eval=FALSE, fig.keep="none"}
+Smallset_Timeline(data = s_data, 
+                  code = system.file("s_data_preprocess.R", package = "smallsets"), 
+                  rowCount = 5, rowSelect = 1, rowReturn = TRUE)
+```
+
+```{r, echo=FALSE, fig.keep="none"}
+Smallset_Timeline(data = s_data, 
+                  code = system.file("s_data_preprocess.R", package = "smallsets"),
+                  rowNums = c(27, 42, 95, 96, 99),
+                  rowReturn = T)
+```
+
+After the optimisation problem is solved once, the solution can be passed to `rowNums` to avoid having to re-solve it with each run of `Smallset_Timeline`.
+
+```{r, fig.width = 7, fig.height = 3, fig.align='center'}
+Smallset_Timeline(data = s_data, 
+                  code = system.file("s_data_preprocess.R", package = "smallsets"), 
+                  rowCount = 5, rowNums = c(27, 42, 95, 96, 99))
+```
+
+Here, the *coverage* solution misses a data edit example in the second snapshot, motivating use of the other selection method (`rowSelect = 2`): the *coverage + variety* optimisation problem, which looks for rows affected by the preprocessing steps differently. **The drawback of `rowSelect = 2` is runtime for large datasets.** One potential workaround to long runtimes is building a Timeline from a sample of the dataset. However, this should be done with caution.
+
+```{r, eval=FALSE}
+Smallset_Timeline(data = s_data, 
+                  code = system.file("s_data_preprocess.R", package = "smallsets"), 
+                  rowSelect = 2, rowReturn = T)
+```
+
+```{r, echo=FALSE, fig.width = 7, fig.height = 3, fig.align='center'}
+Smallset_Timeline(data = s_data,
+                  code = system.file("s_data_preprocess.R", package = "smallsets"),
+                  rowNums = c(3, 32, 80, 97, 99),
+                  rowReturn = T)
+```
+
+## Timeline customisation{#customisation}
+
+There are built-in options to customise a Timeline. The examples in this section highlight some of them. See `?Smallset_Timeline` for a full list of options.
+
+<br />
+**Example 1**
+
+```{r, fig.width = 7, fig.height = 4, fig.align='center'}
+set.seed(145)
+
+Smallset_Timeline(
+  data = s_data,
+  code = system.file("s_data_preprocess.R", package = "smallsets"),
+  colours = list(
+    same = "#E6E3DF",
+    edit = "#FFC500",
+    add = "#5BA2A6",
+    delete = "#DDC492"
+  ),
+  printedData = TRUE,
+  truncateData = 4,
+  ghostData = FALSE,
+  font = "Palatino",
+  sizing = sets_sizing(data = 1.5),
+  labelling = sets_labelling(labelCol = "darker", labelColDif = 1)
+)
+```
+
+<br />
+**Example 2**
+
+```{r, fig.width = 5, fig.height = 6, fig.align='center'}
+set.seed(145)
+
+Smallset_Timeline(
+  data = s_data,
+  code = system.file("s_data_preprocess.R", package = "smallsets"),
+  colours = 3,
+  ghostData = TRUE,
+  missingDataTints = TRUE,
+  font = "Arial Rounded MT Bold",
+  spacing = sets_spacing(
+    captions = 2,
+    rows = 2,
+    degree = 45,
+    header = 1
+  ),
+  sizing = sets_sizing(
+    legend = 7
+    )
+)
+```
+
+## Alt text{#alttext}
+
+You can retrieve alternative text (alt text) for your Smallset Timeline. When `altText = TRUE`, a draft of alt text is printed to the console. It can be copied from the console, revised for readability, and included with the figure.
+
+```{r, fig.keep="none"}
+set.seed(145)
+
+Smallset_Timeline(data = s_data, 
+                  code = system.file("s_data_preprocess.R", package = "smallsets"), 
+                  altText = TRUE)
+```
+
+## Resume markers{#resume}
+
+A resume marker is a vertical line between snapshots signalling that preprocessing stopped to run an analysis and then resumed to facilitate a new/revised analysis. It is added to a Timeline with a *resume* instruction in a structured comment.
+
+In this example, we resume data preprocessing to transform C9 into a categorical variable.
+
+<br />
+**s_data_preprocess_resume.R**
+```{r, code = readLines(system.file("s_data_preprocess_resume.R", package = "smallsets")), eval=FALSE, class.source="view-only"}
+```
+
+
+```{r, fig.width = 7, fig.height = 2, fig.align='center', fig.retina = 2}
+set.seed(145)
+
+Smallset_Timeline(data = s_data, 
+                  code = system.file("s_data_preprocess_resume.R", package = "smallsets"), 
+                  sizing = sets_sizing(
+                    columns = 1.8,
+                    captions = 1.8,
+                    legend = 7,
+                    icons = .8
+                    ),
+                  spacing = sets_spacing(
+                    captions = 3,
+                    degree = 60,
+                    header = 3.5,
+                    right = 2
+                    )
+                  )
+```

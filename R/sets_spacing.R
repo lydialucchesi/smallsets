@@ -6,7 +6,13 @@
 #' @param right Positive numeric value (>=.5) for amount of space to the right of each snapshot.
 #' @param rows Integer for number of Timeline rows.
 #'
-#' @examples sets_spacing(captions = 6, degree = 45, rows = 2)
+#' @examples
+#' # increase space for captions and rotate column names
+#' Smallset_Timeline(
+#'    data = s_data,
+#'    code = system.file("s_data_preprocess.R", package = "smallsets"),
+#'    spacing = sets_spacing(captions = 5, degree = 45)
+#' )
 #'
 #'@export
 

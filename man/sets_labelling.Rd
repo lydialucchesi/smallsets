@@ -7,7 +7,7 @@
 sets_labelling(labelCol = NULL, labelColDif = NULL)
 }
 \arguments{
-\item{labelCol}{"lighter" or "darker" for column names
+\item{labelCol}{"lighter" or "darker" for colour of column names
 and printed data, in comparison to tile colours.}
 
 \item{labelColDif}{Value between 0-1 determining how much lighter or
@@ -18,12 +18,17 @@ Sets labelling parameters for the Smallset Timeline.
 }
 \examples{
 # labels are black
-sets_labelling(labelCol = "darker", labelColDif = 1)
+Smallset_Timeline(
+  data = s_data,
+  code = system.file("s_data_preprocess.R", package = "smallsets"),
+  labelling = sets_labelling(labelCol = "darker", labelColDif = 1)
+)
 
-# labels are white
-sets_labelling(labelCol = "lighter", labelColDif = 1)
-
-# midpoint between tile colours and black
-sets_labelling(labelCol = "darker", labelColDif = .5)
+# labels are midpoint between tile colour and white
+Smallset_Timeline(
+  data = s_data,
+  code = system.file("s_data_preprocess.R", package = "smallsets"),
+  labelling = sets_labelling(labelCol = "lighter", labelColDif = .5)
+)
 
 }

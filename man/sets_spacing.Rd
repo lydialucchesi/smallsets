@@ -27,6 +27,11 @@ sets_spacing(
 Sets spacing parameters for the Smallset Timeline.
 }
 \examples{
-sets_spacing(captions = 6, degree = 45, rows = 2)
+# increase space for captions and rotate column names
+Smallset_Timeline(
+   data = s_data,
+   code = system.file("s_data_preprocess.R", package = "smallsets"),
+   spacing = sets_spacing(captions = 5, degree = 45)
+)
 
 }

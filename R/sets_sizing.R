@@ -8,7 +8,13 @@
 #' @param resume Positive numeric value for resume marker size.
 #' @param tiles Positive numeric value for Smallset tile size.
 #'
-#' @examples sets_sizing(captions = 2, columns = 2)
+#' @examples
+#' # increase size of caption text
+#' Smallset_Timeline(
+#'    data = s_data,
+#'    code = system.file("s_data_preprocess.R", package = "smallsets"),
+#'    sizing = sets_sizing(captions = 3.5)
+#' )
 #' @export
 
 sets_sizing <- function(captions = NULL,

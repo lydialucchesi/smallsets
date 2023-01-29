@@ -1,6 +1,6 @@
 #'Smallset Timeline
 #'
-#'@description Creates a Smallset Timeline to visualise data preprocessing decisions.
+#'@description Builds a Smallset Timeline to visualise data preprocessing decisions.
 #'
 #'@param data Dataset that is being preprocessed.
 #'@param code R or Python data preprocessing script. Include the filename extension 
@@ -39,15 +39,9 @@
 #'@param spacing \link{sets_spacing} for space specifications.
 #'@param labelling \link{sets_labelling} for label specifications.
 #'
-#'@details Prior to running this command, you will need to add structured
-#'  comments to your R or Python data preprocessing script, providing snapshot
-#'  points and captions. \itemize{\item{`# smallsets start mydata` - start
-#'  tracking code and take the first data snapshot, where "mydata" is the name
-#'  of your data object} \item{`# smallsets snap mydata` - take a data snapshot after the
-#'  next line of code} \item{`# smallsets end mydata` - stop tracking code and
-#'  take the last data snapshot} \item{Snapshot captions are added between
-#'  caption brackets, `caption[...]caption`, at the end of the comments listed
-#'  above}}
+#'@details Prior to running this command, structured comments with 
+#'  snapshot instructions must be added to the preprocessing script. 
+#'  See \code{vignette("smallsets")}.
 #'
 #'@return A plot.
 #'
@@ -55,8 +49,8 @@
 #'set.seed(145)
 #'
 #'Smallset_Timeline(
-#'   data = mydata,
-#'   code = system.file("preprocess_data.R", package = "smallsets")
+#'   data = s_data,
+#'   code = system.file("s_data_preprocess.R", package = "smallsets")
 #')
 #'@import patchwork
 #'@export
