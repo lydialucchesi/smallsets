@@ -7,6 +7,6 @@
 retrieve_tables(itemNum, smallsetTables)
 }
 \description{
-Retrieves data and colour information from the flextable objects.
+Retrieves data and colour information from the snapshot tables.
 }
 \keyword{internal}

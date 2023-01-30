@@ -16,6 +16,7 @@ Description: Data practitioners regularly use the 'R' and 'Python' programming l
 URL: https://github.com/lydialucchesi/smallsets
 License: GPL (>= 3)
 Encoding: UTF-8
+Language: en-AU
 LazyData: TRUE
 RoxygenNote: 7.2.3
 Depends:

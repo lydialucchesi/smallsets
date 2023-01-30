@@ -23,3 +23,12 @@ test_that("example works",
               code = system.file("s_data_preprocess.R", package = "smallsets")
             ))
           })
+
+test_that("ignoring C3 returns error",
+          {
+            expect_error(Smallset_Timeline(
+              data = s_data,
+              code = system.file("s_data_preprocess.R", package = "smallsets"),
+              ignoreCols = c("C3")
+            ))
+          })

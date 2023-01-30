@@ -1,5 +1,5 @@
 #' Retrieve snapshot tables
-#' @description Retrieves data and colour information from the flextable objects.
+#' @description Retrieves data and colour information from the snapshot tables.
 #' @keywords internal
 
 retrieve_tables <- function(itemNum, smallsetTables) {

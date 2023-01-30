@@ -138,7 +138,7 @@ Smallset_Timeline(data = s_data,
                   rowCount = 5, rowNums = c(27, 42, 95, 96, 99))
 ```
 
-Here, the *coverage* solution misses a data edit example in the second snapshot, motivating use of the other selection method (`rowSelect = 2`): the *coverage + variety* optimisation problem, which looks for rows affected by the preprocessing steps differently. **The drawback of `rowSelect = 2` is runtime for large datasets.** One potential workaround to long runtimes is building a Timeline from a sample of the dataset. However, this should be done with caution.
+Here, the *coverage* solution misses a data edit example in the second snapshot, motivating use of the other selection method (`rowSelect = 2`): the *coverage + variety* optimisation problem, which looks for rows affected by the preprocessing steps differently. **The drawback of `rowSelect = 2` is runtime for large datasets.** One potential workaround to a long runtime is building a Timeline from a sample of the dataset. However, this should be done with caution.
 
 ```{r, eval=FALSE}
 Smallset_Timeline(data = s_data, 
