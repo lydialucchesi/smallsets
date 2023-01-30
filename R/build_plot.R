@@ -145,7 +145,7 @@ build_plot <-
         data = tabs,
         aes(x = x, y = y, fill = colValue),
         colour = "white",
-        size = sizing$tiles
+        linewidth = sizing$tiles
       ) +
       scale_fill_identity(
         "",
@@ -226,7 +226,7 @@ build_plot <-
           aes(x = x, y = y),
           fill = NA,
           colour = NA,
-          size = sizing$tiles
+          linewidth = sizing$tiles
         )
     }
     

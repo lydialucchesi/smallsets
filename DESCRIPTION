@@ -1,23 +1,23 @@
 Package: smallsets
-Title: Smallset Timeline Builder
+Title: The Smallset Timeline Builder
 Version: 0.0.1.9000
 Authors@R: c(person(given = c("Lydia", "R."), family = "Lucchesi", role = c("aut", "cre"), 
     email = "Lydia.Lucchesi@anu.edu.au", comment = c(ORCID = "0000-0002-1901-4301")), 
     person(given = c("Petra", "M."), family = "Kuhnert", role = "ths"), 
     person(given = c("Jenny", "L."), family = "Davis", role = "ths"), 
     person(given = "Lexing", family = "Xie", role = "ths"))
-Description: Data practitioners regularly use the R and Python programming languages to prepare 
-    data for analyses. Thus, they encode data preprocessing decisions in R and Python scripts. 
-    The smallsets software subsequently decodes these decisions into a  Smallset Timeline, a 
+Description: Data practitioners regularly use the 'R' and 'Python' programming languages to prepare 
+    data for analyses. Thus, they encode data preprocessing decisions in 'R' and 'Python' scripts. 
+    The 'smallsets' software subsequently decodes these decisions into a  Smallset Timeline, a 
     visualisation proposed in Lucchesi et al. (2022) <doi:10.1145/3531146.3533175>. A Smallset 
-    Timeline is a series of small data snapshots of different preprocessing steps. The smallsets 
-    R package builds this figure from a user's dataset and R/Python preprocessing script, which 
+    Timeline is a series of small data snapshots of different preprocessing steps. The 'smallsets' 
+    package builds this figure from a user's dataset and 'R'/'Python' preprocessing script, which 
     contains structured comments with snapshot instructions.
-URL: <https://github.com/lydialucchesi/smallsets>
+URL: https://github.com/lydialucchesi/smallsets
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: TRUE
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Depends:
     R (>= 3.5.0)
 Imports:
@@ -31,5 +31,7 @@ Imports:
 Suggests: 
     gurobi,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
+Config/testthat/edition: 3
