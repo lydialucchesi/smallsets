@@ -7,6 +7,6 @@
 return_scheme(colScheme = 1)
 }
 \description{
-Returns the colours in a pre-built colour scheme.
+Returns the colours in a colour scheme.
 }
 \keyword{internal}

@@ -1,5 +1,5 @@
 #' Return scheme
-#' @description Returns the colours in a pre-built colour scheme.
+#' @description Returns the colours in a colour scheme.
 #' @keywords internal
 
 return_scheme <- function(colScheme = 1) {
