@@ -7,13 +7,11 @@ Do you use R or Python to preprocess datasets for analyses? `smallsets` is an R 
 
 A full description of the Smallset Timeline can be found in the paper [**Smallset Timelines: A Visual Representation of Data Preprocessing Decisions**](https://dl.acm.org/doi/abs/10.1145/3531146.3533175) in the proceedings of ACM FAccT '22. A short ([3 min](https://www.youtube.com/watch?v=_fpn02h3IUo)) and long ([15 min](https://www.youtube.com/watch?v=I_ksOv6rj1Y)) YouTube video provide an introduction to the project.
 
-If you have questions about using `smallsets` or would like help building a Smallset Timeline, please email Lydia at Lydia.Lucchesi@anu.edu.au.
-
 ## Quick start example
 
-After installing smallsets, run the snippet of code to build your first Smallset Timeline!
+After installing and loading smallsets, run the snippet of code to build your first Smallset Timeline!
 
-```{r quick-start-example, eval=TRUE, fig.height = 3, fig.retina=2, fig.path="man/figures/"}
+```{r quick-start-example, eval=FALSE}
 library(smallsets)
 
 set.seed(145)
@@ -21,6 +19,8 @@ set.seed(145)
 Smallset_Timeline(data = s_data,
                   code = system.file("s_data_preprocess.R", package = "smallsets"))
 ```
+
+![](man/figures/quick-start-example-1.png)
 
 ## Structured comments
 

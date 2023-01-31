@@ -14,14 +14,10 @@ min](https://www.youtube.com/watch?v=_fpn02h3IUo)) and long ([15
 min](https://www.youtube.com/watch?v=I_ksOv6rj1Y)) YouTube video provide
 an introduction to the project.
 
-If you have questions about using `smallsets` or would like help
-building a Smallset Timeline, please email Lydia at
-<Lydia.Lucchesi@anu.edu.au>.
-
 ## Quick start example
 
-After installing smallsets, run the snippet of code to build your first
-Smallset Timeline!
+After installing and loading smallsets, run the snippet of code to build
+your first Smallset Timeline!
 
 ``` r
 library(smallsets)
@@ -32,7 +28,7 @@ Smallset_Timeline(data = s_data,
                   code = system.file("s_data_preprocess.R", package = "smallsets"))
 ```
 
-<img src="man/figures/quick-start-example-1.png" width="672" />
+![](man/figures/quick-start-example-1.png)
 
 ## Structured comments
 
