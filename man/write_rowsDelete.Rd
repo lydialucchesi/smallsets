@@ -7,6 +7,6 @@
 write_rowsDelete(rowsDelete, colourDelete)
 }
 \description{
-Writes about row deletions
+Writes about row deletions.
 }
 \keyword{internal}

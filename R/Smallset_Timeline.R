@@ -55,7 +55,7 @@
 #'   data = s_data,
 #'   code = system.file("s_data_preprocess.R", package = "smallsets")
 #' )
-#' 
+#'
 #' @import patchwork
 #' @export
 

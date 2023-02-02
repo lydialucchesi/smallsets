@@ -1,5 +1,5 @@
 #' Generate alt text
-#' @description Produces alternative text (alt text) for the Smallset Timeline figure.
+#' @description Generates alternative text (alt text) for the Smallset Timeline.
 #' @keywords internal
 
 generate_alt_text <-

@@ -16,16 +16,15 @@ an introduction to the project.
 
 ## Quick start example
 
-After installing smallsets, run the snippet of code to build your first
-Smallset Timeline!
+After installing `smallsets`, run the snippet of code to build your
+first Smallset Timeline!
 
 ``` r
 library(smallsets)
 
 set.seed(145)
 
-Smallset_Timeline(data = s_data,
-                  code = system.file("s_data_preprocess.R", package = "smallsets"))
+Smallset_Timeline(data = s_data, code = system.file("s_data_preprocess.R", package = "smallsets"))
 ```
 
 ![](man/figures/quick-start-example-1.png)

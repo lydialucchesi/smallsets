@@ -7,6 +7,7 @@
 retrieve_dimensions(tabs)
 }
 \description{
-Retrieves the maximum and minimum number of rows and columns in the Smallset Timeline.
+Retrieves the maximum and minimum number of rows and columns in
+  the Smallset Timeline.
 }
 \keyword{internal}

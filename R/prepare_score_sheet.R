@@ -1,5 +1,6 @@
 #' Prepare score sheet
-#' @description Prepares the coverage indicator matrix for automated Smallset selection.
+#' @description Prepares the coverage indicator matrix for automated Smallset
+#'   selection.
 #' @keywords internal
 
 prepare_score_sheet <-

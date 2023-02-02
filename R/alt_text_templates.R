@@ -29,7 +29,7 @@ write_colourEdit <- function(colourEdit) {
 }
 
 #' Write column additions
-#' @description Writes about columns additions.
+#' @description Writes about column additions.
 #' @keywords internal
 write_columnsAdd <- function(columnsAdd, colourAdd) {
   if (length(columnsAdd) == 1) {
@@ -103,7 +103,7 @@ write_columnNames <- function(columnNames) {
 }
 
 #' Write column deletions
-#' @description Writes about the column deletions.
+#' @description Writes about column deletions.
 #' @keywords internal
 write_columnsDelete <- function(columnsDelete, colourDelete) {
   if (length(columnsDelete) == 1) {
@@ -135,7 +135,7 @@ write_columnsDelete <- function(columnsDelete, colourDelete) {
 }
 
 #' Write row deletions
-#' @description Writes about row deletions
+#' @description Writes about row deletions.
 #' @keywords internal
 write_rowsDelete <- function(rowsDelete, colourDelete) {
   if (length(rowsDelete) == 1) {

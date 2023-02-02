@@ -7,6 +7,6 @@
 write_columnsAdd(columnsAdd, colourAdd)
 }
 \description{
-Writes about columns additions.
+Writes about column additions.
 }
 \keyword{internal}

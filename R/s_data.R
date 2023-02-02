@@ -13,6 +13,6 @@
 #'   \item{C7}{continuous}
 #'   \item{C8}{continuous}
 #' }
-#' @examples 
+#' @examples
 #' str(s_data)
 "s_data"

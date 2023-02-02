@@ -7,6 +7,7 @@
 prepare_score_sheet(smallsetList, fourCols)
 }
 \description{
-Prepares the coverage indicator matrix for automated Smallset selection.
+Prepares the coverage indicator matrix for automated Smallset
+  selection.
 }
 \keyword{internal}

@@ -7,6 +7,6 @@
 write_columnsDelete(columnsDelete, colourDelete)
 }
 \description{
-Writes about the column deletions.
+Writes about column deletions.
 }
 \keyword{internal}
