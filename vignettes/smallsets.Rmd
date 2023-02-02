@@ -39,7 +39,7 @@ Blocks with a blue border contain example preprocessing code not meant to be run
 
 In this vignette, we use the synthetic dataset s_data, which is included in smallsets. See `?s_data` for more information.
 
-```{r}
+```{r, comment=''}
 library(smallsets)
 
 head(s_data)
@@ -113,7 +113,7 @@ Smallset_Timeline(data = s_data,
                   rowCount = 7, rowSelect = NULL)
 ```
 
-To use the other two selection methods, which are optimisation problems, you will need a Gurobi license as they rely on the Gurobi solver (version 9.1.2). A license can be obtained from https://www.gurobi.com. Free academic licenses are available.
+To use the other two selection methods, which are optimisation problems proposed [here](https://dl.acm.org/doi/epdf/10.1145/3531146.3533175#section.5), you will need a [Gurobi license](https://www.gurobi.com/solutions/licensing/) as they rely on the [Gurobi solver](https://www.gurobi.com/solutions/gurobi-optimizer/) (v9.1.2). Free academic licenses are available.
 
 If `rowSelect = 1`, the *coverage* problem is used to select rows. For each snapshot, it finds at least one example of a data change, if there is one. You can return the solution to the console with `rowReturn = TRUE`.
 
@@ -123,7 +123,7 @@ Smallset_Timeline(data = s_data,
                   rowCount = 5, rowSelect = 1, rowReturn = TRUE)
 ```
 
-```{r, echo=FALSE, fig.keep="none"}
+```{r, echo=FALSE, fig.keep="none", comment=''}
 Smallset_Timeline(data = s_data, 
                   code = system.file("s_data_preprocess.R", package = "smallsets"),
                   rowNums = c(27, 42, 95, 96, 99),
@@ -146,7 +146,7 @@ Smallset_Timeline(data = s_data,
                   rowSelect = 2, rowReturn = T)
 ```
 
-```{r, echo=FALSE, fig.width = 7, fig.height = 3, fig.align='center'}
+```{r, echo=FALSE, fig.width = 7, fig.height = 3, fig.align='center', comment=''}
 Smallset_Timeline(data = s_data,
                   code = system.file("s_data_preprocess.R", package = "smallsets"),
                   rowNums = c(3, 32, 80, 97, 99),
@@ -210,7 +210,7 @@ Smallset_Timeline(
 
 You can retrieve alternative text (alt text) for your Smallset Timeline. When `altText = TRUE`, a draft of alt text is printed to the console. It can be copied from the console, revised for readability, and included with the figure.
 
-```{r, fig.keep="none"}
+```{r, fig.keep="none", comment=''}
 set.seed(145)
 
 Smallset_Timeline(data = s_data, 

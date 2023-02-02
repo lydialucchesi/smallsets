@@ -1,10 +1,18 @@
 #' Sets spacing
+#'
 #' @description Sets spacing parameters for the Smallset Timeline.
-#' @param captions Positive numeric value for amount of caption space below snapshots.
+#'
+#' @param captions Positive numeric value for amount of caption space below
+#'   snapshots.
 #' @param header Positive numeric value for amount of column name space.
 #' @param degree Integer between 0-90 (degrees) to rotate column names.
-#' @param right Positive numeric value (>=.5) for amount of space to the right of each snapshot.
+#' @param right Positive numeric value (>=.5) for amount of space to the right
+#'   of each snapshot.
 #' @param rows Integer for number of Timeline rows.
+#'
+#' @details Passed to \code{spacing} in \link{Smallset_Timeline}.
+#'
+#' @return Returns a list with five elements (the spacing parameters).
 #'
 #' @examples
 #' # increase space for captions and rotate column names
@@ -14,7 +22,7 @@
 #'    spacing = sets_spacing(captions = 5, degree = 45)
 #' )
 #'
-#'@export
+#' @export
 
 sets_spacing <- function(captions = NULL,
                          degree = NULL,

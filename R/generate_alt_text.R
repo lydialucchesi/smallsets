@@ -88,6 +88,6 @@ generate_alt_text <-
       }
     }
     
-    print(paste0(at, collapse = " "))
+    cat(paste0(at, collapse = " "))
     
   }

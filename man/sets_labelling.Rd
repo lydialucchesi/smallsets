@@ -7,14 +7,19 @@
 sets_labelling(labelCol = NULL, labelColDif = NULL)
 }
 \arguments{
-\item{labelCol}{"lighter" or "darker" for colour of column names
-and printed data, in comparison to tile colours.}
+\item{labelCol}{"lighter" or "darker" for colour of column names and printed
+data, in comparison to tile colours.}
 
-\item{labelColDif}{Value between 0-1 determining how much lighter or
-darker.}
+\item{labelColDif}{Value between 0-1 determining how much lighter or darker.}
+}
+\value{
+Returns a list with two elements (the labelling parameters).
 }
 \description{
 Sets labelling parameters for the Smallset Timeline.
+}
+\details{
+Passed to \code{labelling} in \link{Smallset_Timeline}.
 }
 \examples{
 # labels are black

@@ -13,18 +13,26 @@ sets_spacing(
 )
 }
 \arguments{
-\item{captions}{Positive numeric value for amount of caption space below snapshots.}
+\item{captions}{Positive numeric value for amount of caption space below
+snapshots.}
 
 \item{degree}{Integer between 0-90 (degrees) to rotate column names.}
 
 \item{header}{Positive numeric value for amount of column name space.}
 
-\item{right}{Positive numeric value (>=.5) for amount of space to the right of each snapshot.}
+\item{right}{Positive numeric value (>=.5) for amount of space to the right
+of each snapshot.}
 
 \item{rows}{Integer for number of Timeline rows.}
 }
+\value{
+Returns a list with five elements (the spacing parameters).
+}
 \description{
 Sets spacing parameters for the Smallset Timeline.
+}
+\details{
+Passed to \code{spacing} in \link{Smallset_Timeline}.
 }
 \examples{
 # increase space for captions and rotate column names

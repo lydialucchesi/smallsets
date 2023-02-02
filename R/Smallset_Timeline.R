@@ -1,60 +1,63 @@
-#'Smallset Timeline
+#' Smallset Timeline
 #'
-#'@description Builds a Smallset Timeline to visualise data preprocessing decisions.
+#' @description Builds a Smallset Timeline to visualise data preprocessing
+#'   decisions.
 #'
-#'@param data Dataset that is being preprocessed.
-#'@param code R or Python data preprocessing script. Include the filename extension 
-#'  (e.g., "my_code.R" or "my_code.py"). If the script is not in the working 
-#'  directory, include the file path.
-#'@param rowCount Integer between 5-15 for number of Smallset rows.
-#'@param rowSelect NULL, 1, or 2. If NULL, Smallset rows are randomly sampled.
-#'  If 1, Smallset rows are selected using the coverage optimisation model. 
-#'  If 2, Smallset rows are selected using the coverage + variety optimisation model, 
-#'  which has a long run time for large datasets. Options 1 and 2 use the
-#'  Gurobi solver (v9.1.2) and require a Gurobi license. Please 
-#'  visit https://www.gurobi.com to obtain a license (free academic 
-#'  licenses are available).
-#'@param rowReturn A logical. TRUE prints, to the console, the row numbers 
-#' of the rows selected for the Smallset.
-#'@param rowNums Numeric vector indicating particular rows from the dataset 
-#' to include in the Smallset.
-#'@param ignoreCols Character vector of column names indicating which to exclude 
-#' from the Smallset. These columns can't be referenced in the data preprocessing code.
-#'@param colours Either 1, 2, or 3 for one of the pre-built colour schemes (all are 
-#' colour-blind-friendly and 3 is black/white printer friendly) or a list with 
-#' four hex colour codes for same, edit, add, and delete (e.g., list(same = "#E6E3DF", 
-#' edit = "#FFC500", add = "#5BA2A6", delete = "#DDC492")).
-#'@param altText A logical. TRUE generates alternative text (alt text)
-#' for the Smallset Timeline and prints it to the console.
-#'@param printedData A logical. TRUE prints data values in the Smallset
-#'  snapshots.
-#'@param truncateData Integer for the number of characters in each
-#'  printed data value. Results in characters plus an ellipsis.
-#'@param ghostData A logical. TRUE includes empty tiles where data have
-#'  been removed.
-#'@param missingDataTints A logical. TRUE plots a lighter colour value for
-#' a missing data value.
-#'@param font Any font you have installed in R. Default is sans.
-#'@param sizing \link{sets_sizing} for size specifications.
-#'@param spacing \link{sets_spacing} for space specifications.
-#'@param labelling \link{sets_labelling} for label specifications.
+#' @param data Dataset that is being preprocessed.
+#' @param code R or Python data preprocessing script. Include the filename
+#'   extension (e.g., "my_code.R" or "my_code.py"). If the script is not in the
+#'   working directory, include the file path.
+#' @param rowCount Integer between 5-15 for number of Smallset rows.
+#' @param rowSelect NULL, 1, or 2. If NULL, Smallset rows are randomly sampled.
+#'   If 1, Smallset rows are selected using the coverage optimisation model. If
+#'   2, Smallset rows are selected using the coverage + variety optimisation
+#'   model, which has a long run time for large datasets. Options 1 and 2 use
+#'   the Gurobi solver (v9.1.2) and require a Gurobi license. Please visit
+#'   https://www.gurobi.com to obtain a license (free academic licenses are
+#'   available).
+#' @param rowReturn A logical. TRUE prints, to the console, the row numbers of
+#'   the rows selected for the Smallset.
+#' @param rowNums Numeric vector indicating particular rows from the dataset to
+#'   include in the Smallset.
+#' @param ignoreCols Character vector of column names indicating which to
+#'   exclude from the Smallset. These columns cannot be referenced in the data
+#'   preprocessing code.
+#' @param colours Either 1, 2, or 3 for one of the pre-built colour schemes (all
+#'   are colour-blind-friendly and 3 is black/white-printer-friendly) or a list
+#'   with four hex colour codes for same, edit, add, and delete (e.g., list(same
+#'   = "#E6E3DF", edit = "#FFC500", add = "#5BA2A6", delete = "#DDC492")).
+#' @param altText A logical. TRUE generates alternative text (alt text) for the
+#'   Smallset Timeline and prints it to the console.
+#' @param printedData A logical. TRUE prints data values in the Smallset
+#'   snapshots.
+#' @param truncateData Integer for the number of characters in each printed data
+#'   value. Results in characters plus an ellipsis.
+#' @param ghostData A logical. TRUE includes empty tiles where data have been
+#'   removed.
+#' @param missingDataTints A logical. TRUE plots a lighter colour value for a
+#'   missing data value.
+#' @param font Any font installed in R. Default is sans.
+#' @param sizing \link{sets_sizing} for size specifications.
+#' @param spacing \link{sets_spacing} for space specifications.
+#' @param labelling \link{sets_labelling} for label specifications.
 #'
-#'@details Prior to running this command, structured comments with 
-#'  snapshot instructions must be added to the preprocessing script
-#'  passed to \code{code}. 
-#'  See \code{vignette("smallsets")}.
+#' @details Prior to running this command, structured comments with snapshot
+#'   instructions must be added to the preprocessing script passed to
+#'   \code{code}. See \code{vignette("smallsets")}.
 #'
-#'@return A plot.
+#' @return Returns a Smallset Timeline object, which is a plot consisting of
+#'   `ggplot` objects assembled with `patchwork`.
 #'
-#'@examples
-#'set.seed(145)
+#' @examples
+#' set.seed(145)
 #'
-#'Smallset_Timeline(
+#' Smallset_Timeline(
 #'   data = s_data,
 #'   code = system.file("s_data_preprocess.R", package = "smallsets")
-#')
-#'@import patchwork
-#'@export
+#' )
+#' 
+#' @import patchwork
+#' @export
 
 Smallset_Timeline <- function(data,
                               code,
@@ -76,35 +79,31 @@ Smallset_Timeline <- function(data,
                               ) {
   # Check that dataset and R/Python preprocessing code were provided
   if (missing(data)) {
-    print("Must specify a data set")
+    stop("Must specify data. See ?Smallset_Timeline.")
   }
   
   if (missing(code)) {
-    print("Must specify preprocessing code")
+    stop("Must specify code. See ?Smallset_Timeline.")
   }
   
   lang <- tools::file_ext(code)
   if (!lang %in% c("R", "py")) {
     stop(
       "Preprocessing code must be in R or Python.
-      Include filename extension (e.g., 'my_code.R'
-      or 'my_code.py')."
+       Include filename extension (e.g., 'my_code.R' or 'my_code.py')."
     )
   }
   
   if (inherits(data, "data.table")) {
-    print("Converting data object from a
-          data table to a data frame.")
+    warning("Converting data object from a data table to a data frame.")
     data <- as.data.frame(data)
   }
   if (inherits(data, "tbl_df")) {
-      print("Converting data object from a
-          tibble to a data frame.")
+      warning("Converting data object from a tibble to a data frame.")
       data <- as.data.frame(data)
   }
   if (!inherits(data, "data.frame")) {
-      stop("Data was not of class
-         data frame, data table, or tibble.")
+      stop("Data was not of class data frame, data table, or tibble.")
   }
   
   # Check Smallset size
@@ -125,12 +124,9 @@ Smallset_Timeline <- function(data,
   if (!is.null(rowSelect)) {
     if (!requireNamespace("gurobi", quietly = TRUE)) {
       stop(
-        "This Smallset selection method uses a gurobi optimisation model.
-        Please visit https://www.gurobi.com to obtain a gurobi license
-        (free academic licenses are available) and then install and load
-        the gurobi R package. smallsets will then be able to run the
-        selection model. Otherwise, please visit the help documentation
-        for information about other Smallset selection options."
+        "This Smallset selection method uses the Gurobi solver. 
+        Please visit <https://www.gurobi.com> to get a Gurobi license. 
+        Then install and load the gurobi R package. Otherwise, leave NULL."
       )
     } else {
       # Use an optimisation algorithm
@@ -147,8 +143,7 @@ Smallset_Timeline <- function(data,
     smallset <- select_smallset(data, rowCount, rowNums)
   }
   if (isTRUE(rowReturn)) {
-    print(paste0("Smallset rows: ",
-                 paste0(smallset, collapse = ", ")))
+    cat(paste0("Smallset rows: ", paste0(smallset, collapse = ", ")))
   }
 
   # Write preprocessing function with snapshots
@@ -323,7 +318,7 @@ Smallset_Timeline <- function(data,
   }
 
   o <- eval(parse(text = patchedPlots))
-  oldClass(o) <- c("SmallsetTimeline", class(o))
+  oldClass(o) <- c("Smallset Timeline", class(o))
   return(o)
   
 }

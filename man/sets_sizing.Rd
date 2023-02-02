@@ -29,8 +29,14 @@ sets_sizing(
 
 \item{tiles}{Positive numeric value for Smallset tile size.}
 }
+\value{
+Returns a list with seven elements (the sizing parameters).
+}
 \description{
 Sets sizing parameters for the Smallset Timeline.
+}
+\details{
+Passed to \code{sizing} in \link{Smallset_Timeline}.
 }
 \examples{
 # increase size of caption text
@@ -39,4 +45,5 @@ Smallset_Timeline(
    code = system.file("s_data_preprocess.R", package = "smallsets"),
    sizing = sets_sizing(captions = 3.5)
 )
+
 }

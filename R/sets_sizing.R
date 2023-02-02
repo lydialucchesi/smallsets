@@ -1,5 +1,7 @@
 #' Sets sizing
+#'
 #' @description Sets sizing parameters for the Smallset Timeline.
+#'
 #' @param captions Positive numeric value for caption text size.
 #' @param columns Positive numeric value for column name text size.
 #' @param data Positive numeric value for printed data text size.
@@ -8,6 +10,10 @@
 #' @param resume Positive numeric value for resume marker size.
 #' @param tiles Positive numeric value for Smallset tile size.
 #'
+#' @details Passed to \code{sizing} in \link{Smallset_Timeline}.
+#'
+#' @return Returns a list with seven elements (the sizing parameters).
+#'
 #' @examples
 #' # increase size of caption text
 #' Smallset_Timeline(
@@ -15,6 +21,7 @@
 #'    code = system.file("s_data_preprocess.R", package = "smallsets"),
 #'    sizing = sets_sizing(captions = 3.5)
 #' )
+#'
 #' @export
 
 sets_sizing <- function(captions = NULL,
