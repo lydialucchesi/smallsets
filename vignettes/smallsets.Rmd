@@ -56,7 +56,7 @@ The script s_data_preprocess.R is included in smallsets as an example and needs 
 * Your preprocessing code must be contained in a single script.
 * Visualisations of data merges, collapses, and switches between the long/wide format are not supported, as smallsets tracks rows by their row names (which are overwritten during these transformations).
 
-```{r, fig.width=7, fig.height=3, fig.retina=2, fig.align='center'}
+```{r, fig.width=7, fig.height=3, fig.retina=2, fig.align="center"}
 library(smallsets)
 
 set.seed(145)

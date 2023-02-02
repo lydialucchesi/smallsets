@@ -26,12 +26,12 @@ Smallset_Timeline(data = s_data,
 
 The Smallset Timeline above is based on the R preprocessing script below (s_data_preprocess.R). Structured comments were added to it, informing `smallsets` what to do.
 
-```{r, code = readLines(system.file("s_data_preprocess.R", package = "smallsets")), eval=FALSE, class.source="view-only"}
+```{r, code=readLines(system.file("s_data_preprocess.R", package="smallsets")), eval=FALSE, class.source="view-only"}
 ```
 
 ## Citing `smallsets`
 
-Please cite the Smallset Timeline paper if you use the `smallsets` software.
+If you use the `smallsets` software, please cite the Smallset Timeline paper.
 
 Lydia R. Lucchesi, Petra M. Kuhnert, Jenny L. Davis, and Lexing Xie. 2022. Smallset Timelines: A Visual Representation of Data Preprocessing Decisions. In 2022 ACM Conference on Fairness, Accountability, and Transparency (FAccT '22). Association for Computing Machinery, New York, NY, USA, 1136–1153. https://doi.org/10.1145/3531146.3533175
 

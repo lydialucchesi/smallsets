@@ -55,8 +55,8 @@ s_data$C9 <- s_data$C3 + s_data$C4
 
 ## Citing `smallsets`
 
-Please cite the Smallset Timeline paper if you use the `smallsets`
-software.
+If you use the `smallsets` software, please cite the Smallset Timeline
+paper.
 
 Lydia R. Lucchesi, Petra M. Kuhnert, Jenny L. Davis, and Lexing Xie.
 2022. Smallset Timelines: A Visual Representation of Data Preprocessing
