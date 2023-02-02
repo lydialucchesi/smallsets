@@ -113,7 +113,7 @@ Smallset_Timeline(data = s_data,
                   rowCount = 7, rowSelect = NULL)
 ```
 
-To use the other two selection methods, which are optimisation problems proposed [here](https://dl.acm.org/doi/epdf/10.1145/3531146.3533175#section.5), you will need a [Gurobi license](https://www.gurobi.com/solutions/licensing/) as they rely on the [Gurobi solver](https://www.gurobi.com/solutions/gurobi-optimizer/) (v9.1.2). Free academic licenses are available.
+To use the other two selection methods, which are optimisation problems proposed [here](https://dl.acm.org/doi/epdf/10.1145/3531146.3533175#section.5), you will need a [Gurobi license](https://www.gurobi.com/solutions/licensing/) as they rely on the [Gurobi solver](https://www.gurobi.com/solutions/gurobi-optimizer/) v9.1.2 (free academic licenses are available). Richard Schuster's ["Gurobi installation guide"](https://cran.r-project.org/web/packages/prioritizr/vignettes/gurobi_installation_guide.html) in the `prioritizr` package provides step-by-step instructions on installing Gurobi in R.
 
 If `rowSelect = 1`, the *coverage* problem is used to select rows. For each snapshot, it finds at least one example of a data change, if there is one. You can return the solution to the console with `rowReturn = TRUE`.
 

@@ -1,3 +1,26 @@
+# Response to reviewer comments for CRAN re-submission (2 Feb 2023)
+Thank you, Benjamin Altmann, for reviewing smallsets and providing comments. Below we address the review comments.
+
+#### Comment about adding `\value` to .Rd files
+We added the missing `\value` information to the help documentation for `sets_labelling()`, `sets_sizing()` and `sets_spacing()`, including the output class and what it means. We also added info to the "Details" section of these three pages, pointing back to `Smallset_Timeline()`.
+
+#### Comment about adding gurobi to Additional_repositories
+We are unable to add an URL to a source package for gurobi, as it depends on where the Gurobi software is installed on one's machine. In the smallsets vignette, we point users to Richard Schuster's [Gurobi installation guide](https://cran.r-project.org/web/packages/prioritizr/vignettes/gurobi_installation_guide.html) in the prioritizr R package, as it provides step-by-step instructions on Gurobi installation in R.
+
+#### Comment about `print()` commands
+We have removed all `print()` commands, replacing them with `warning()`/`stop()`/`cat()`, depending on which is most appropriate.
+
+### R CMD check after revisions
+Duration: 50.2s
+
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
+
+R CMD check succeeded
+
+***Thanks again for the helpful comments. Kind regards, Lydia Lucchesi***
+
+
+# First CRAN submission (31 Jan 2023)
 Dear CRAN Team,
 
 Thank you for taking the time to review our smallsets submission to CRAN. Below is a note about Gurobi and output from the R CMD check. Kind regards, Lydia Lucchesi
