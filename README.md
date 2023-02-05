@@ -14,10 +14,15 @@ min](https://www.youtube.com/watch?v=_fpn02h3IUo)) and long ([15
 min](https://www.youtube.com/watch?v=I_ksOv6rj1Y)) YouTube video provide
 an introduction to the project.
 
+## Install from CRAN
+
+``` r
+install.packages("smallsets")
+```
+
 ## Quick start example
 
-After installing `smallsets`, run the snippet of code to build your
-first Smallset Timeline!
+Run this snippet of code to build your first Smallset Timeline!
 
 ``` r
 library(smallsets)
