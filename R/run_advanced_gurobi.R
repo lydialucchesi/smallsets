@@ -39,8 +39,8 @@ run_advanced_gurobi <-
       )
     for (i1 in 1:nrow(data)) {
       for (i2 in 1:nrow(data)) {
-        di <- as.vector(colours[i1, ])
-        dj <- as.vector(colours[i2, ])
+        di <- colours[i1, ]
+        dj <- colours[i2, ]
         counter <- 0
         for (j in 1:ncol(colours)) {
           if (isFALSE(di[j] == dj[j])) {
