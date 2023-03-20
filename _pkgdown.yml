@@ -1,4 +1,14 @@
 url: https://lydialucchesi.github.io/smallsets/
+
 template:
   bootstrap: 5
 
+navbar:
+  bg: dark
+  left:
+  - text: User guide
+    href: articles/smallsets.html
+  - text: Functions and data
+    href: reference/index.html
+  - text: Package news
+    href: news/index.html
