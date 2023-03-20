@@ -10,12 +10,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{css, echo=FALSE}
-.view-only {
-  border: 2px solid lightblue;
-}
-```
-
 ## Smallset Timelines
 
 In this vignette, we explain how to use smallsets to build Smallset Timelines. A Smallset Timeline (or Timeline) is a simple visualisation of data preprocessing decisions. More information on Timelines can be found in the Smallset Timeline paper and on YouTube.
@@ -23,17 +17,6 @@ In this vignette, we explain how to use smallsets to build Smallset Timelines. A
 * [ACM FAccT paper about Smallset Timelines](https://dl.acm.org/doi/abs/10.1145/3531146.3533175)
 * [3-minute YouTube video](https://www.youtube.com/watch?v=_fpn02h3IUo)
 * [15-minute YouTube video](https://www.youtube.com/watch?v=I_ksOv6rj1Y)
-
-## Code block legend
-Blocks without a border contain code to run.
-```{r, eval=FALSE}
-# run this code
-```
-
-Blocks with a blue border contain example preprocessing code not meant to be run.
-```{r, eval=FALSE, class.source="view-only"}
-# don't run this code
-```
 
 ## Example dataset{#example}
 
@@ -56,7 +39,7 @@ The script s_data_preprocess.R is included in smallsets as an example and needs 
 * Your preprocessing code must be contained in a single script.
 * Visualisations of data merges, collapses, and switches between the long/wide format are not supported, as smallsets tracks rows by their row names (which are overwritten during these transformations).
 
-```{r, fig.width=7, fig.height=3, fig.retina=2, fig.align="center"}
+```{r timeline1, fig.width=7, fig.height=3, fig.retina=2, fig.align="center"}
 library(smallsets)
 
 set.seed(145)
@@ -83,8 +66,8 @@ In your script, *start* and *stop* instructions must be provided. A snapshot is 
 The name of the data object can change throughout the script. The snapshot is taken of the object specified in the comment.
 
 <br />
-**s_data_preprocess.R**
-```{r, code = readLines(system.file("s_data_preprocess.R", package = "smallsets")), eval=FALSE, class.source="view-only"}
+**s_data_preprocess.R** (Don't run this code block. It's an example preprocessing script.)
+```{r, code = readLines(system.file("s_data_preprocess.R", package = "smallsets")), eval=FALSE}
 ```
 
 ### Python example
@@ -97,8 +80,8 @@ Smallset_Timeline(data = s_data,
 Below is the script s_data_preprocess.py, which does the same thing as s_data_preprocess.R. The smallsets commenting system is the same in Python.
 
 <br />
-**s_data_preprocess.py**
-```{python, code = readLines(system.file("s_data_preprocess.py", package = "smallsets")), eval=FALSE, class.source="view-only"}
+**s_data_preprocess.py** (Don't run this code block. It's an example preprocessing script.)
+```{python, code = readLines(system.file("s_data_preprocess.py", package = "smallsets")), eval=FALSE}
 ```
 
 ## Smallset selection{#selection}
@@ -123,7 +106,7 @@ Smallset_Timeline(data = s_data,
                   rowCount = 5, rowSelect = 1, rowReturn = TRUE)
 ```
 
-```{r, echo=FALSE, fig.keep="none", comment=''}
+```{r, echo=FALSE, fig.keep="none"}
 Smallset_Timeline(data = s_data, 
                   code = system.file("s_data_preprocess.R", package = "smallsets"),
                   rowNums = c(27, 42, 95, 96, 99),
@@ -132,7 +115,7 @@ Smallset_Timeline(data = s_data,
 
 After the optimisation problem is solved once, the solution can be passed to `rowNums` to avoid having to re-solve it with each run of `Smallset_Timeline`.
 
-```{r, fig.width = 7, fig.height = 3, fig.align='center'}
+```{r timeline2, fig.width = 7, fig.height = 3, fig.align='center'}
 Smallset_Timeline(data = s_data, 
                   code = system.file("s_data_preprocess.R", package = "smallsets"), 
                   rowCount = 5, rowNums = c(27, 42, 95, 96, 99))
@@ -146,7 +129,7 @@ Smallset_Timeline(data = s_data,
                   rowSelect = 2, rowReturn = T)
 ```
 
-```{r, echo=FALSE, fig.width = 7, fig.height = 3, fig.align='center', comment=''}
+```{r timeline3, echo=FALSE, fig.width = 7, fig.height = 3, fig.align='center'}
 Smallset_Timeline(data = s_data,
                   code = system.file("s_data_preprocess.R", package = "smallsets"),
                   rowNums = c(3, 32, 80, 97, 99),
@@ -160,7 +143,7 @@ There are built-in options to customise a Timeline. The examples in this section
 <br />
 **Example 1**
 
-```{r, fig.width = 7, fig.height = 4, fig.align='center'}
+```{r timeline4, fig.width = 7, fig.height = 4, fig.align='center'}
 set.seed(145)
 
 Smallset_Timeline(
@@ -184,7 +167,7 @@ Smallset_Timeline(
 <br />
 **Example 2**
 
-```{r, fig.width = 5, fig.height = 6, fig.align='center'}
+```{r timeline5, fig.width = 5, fig.height = 6, fig.align='center'}
 set.seed(145)
 
 Smallset_Timeline(
@@ -225,12 +208,12 @@ A resume marker is a vertical line between snapshots signalling that preprocessi
 In this example, we resume data preprocessing to transform C9 into a categorical variable.
 
 <br />
-**s_data_preprocess_resume.R**
-```{r, code = readLines(system.file("s_data_preprocess_resume.R", package = "smallsets")), eval=FALSE, class.source="view-only"}
+**s_data_preprocess_resume.R** (Don't run this code block. It's an example preprocessing script.)
+```{r, code = readLines(system.file("s_data_preprocess_resume.R", package = "smallsets")), eval=FALSE}
 ```
 
 
-```{r, fig.width = 7, fig.height = 2, fig.align='center', fig.retina = 2}
+```{r timeline6, fig.width = 7, fig.height = 2, fig.align='center', fig.retina = 2}
 set.seed(145)
 
 Smallset_Timeline(data = s_data, 
