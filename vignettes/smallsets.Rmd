@@ -20,9 +20,9 @@ In this vignette, we explain how to use smallsets to build Smallset Timelines. A
 
 ## Example dataset{#example}
 
-In this vignette, we use the synthetic dataset s_data, which is included in smallsets. See `?s_data` for more information.
+In this vignette, we use the synthetic dataset s_data, which is included in smallsets. It contains 100 observations and 8 variables (C1-C8). See `?s_data` for more information.
 
-```{r, comment=''}
+```{r}
 library(smallsets)
 
 head(s_data)
@@ -31,13 +31,7 @@ head(s_data)
 ## The basics{#basics}
 Each Smallset Timeline is constructed from your dataset and R/Python data preprocessing script. Scripts must contain a series of [smallsets comments](#comments) with snapshot instructions. Your unprocessed dataset (`data`) and commented preprocessing script (`code`) are the only required inputs to `Smallset_Timeline`. 
 
-The script s_data_preprocess.R is included in smallsets as an example and needs to be called with `system.file`. Generally, though, you will pass a character string to `code` (e.g., "my_code.R" or "/.../.../my_code.R").
-
-**Important notes**
-
-* Your dataset must be tabular.
-* Your preprocessing code must be contained in a single script.
-* Visualisations of data merges, collapses, and switches between the long/wide format are not supported, as smallsets tracks rows by their row names (which are overwritten during these transformations).
+**Normally, you pass a character string to `code` (e.g., "my_code.R" or "/.../.../my_code.R").** However, the script s_data_preprocess.R is included in smallsets as an example and needs to be called with `system.file`.
 
 ```{r timeline1, fig.width=7, fig.height=3, fig.retina=2, fig.align="center"}
 library(smallsets)
@@ -47,6 +41,20 @@ set.seed(145)
 Smallset_Timeline(data = s_data, 
                   code = system.file("s_data_preprocess.R", package = "smallsets"))
 ```
+
+If s_data_preprocess.R was located in your working directory, the code would look like this.
+```{r, eval=FALSE}
+Smallset_Timeline(data = s_data, code = "s_data_preprocess.R")
+```
+
+### Supported workflows
+
+The smallsets package currently supports data preprocessing workflows fitting the following description.
+
+1. Your **dataset is tabular** and of class data.frame, data.table, or tibble. Objects of class data.table and tibble are immediately converted to a data.frame by smallsets.
+2. All preprocessing code is contained in **one R or Python file**. Jupyter notebooks (i.e., files with extension .ipynb) are not currently supported.
+3. The **preprocessing code does not change the row names** of the original data object as smallsets tracks rows by their names. Merges, joins, collapses, aggregations, and switches between the wide/long format generally involve writing over existing row names and are therefore generally not currently supported by smallsets. Renaming a column results in a column deletion then addition in the Timeline.
+4. All preprocessing **package dependencies are loaded** in the current R session. Information on installing Python packages with `reticulate` can be found [here](https://rstudio.github.io/reticulate/articles/python_packages.html).
 
 ### Structured comments{#comments}
 
@@ -84,6 +92,23 @@ Below is the script s_data_preprocess.py, which does the same thing as s_data_pr
 ```{python, code = readLines(system.file("s_data_preprocess.py", package = "smallsets")), eval=FALSE}
 ```
 
+### Isolate a data deletion
+
+If you'd like to isolate a data deletion in an intermediate snapshot, leave a blank line between the structured comment and the data deletion code. For example, if we want to split the middle Timeline snapshot into two snapshots, we can add another structured comment, and blank line, before the data deletion code.
+
+<br />
+**s_data_preprocess_4.R** (Don't run this code block. It's an example preprocessing script.)
+```{R, code = readLines(system.file("s_data_preprocess_4.R", package = "smallsets")), eval=FALSE}
+```
+
+```{r timeline2, fig.width=7, fig.height=3, fig.retina=2, fig.align="center"}
+set.seed(145)
+
+Smallset_Timeline(data = s_data, 
+                  code = system.file("s_data_preprocess_4.R", package = "smallsets"))
+```
+
+
 ## Smallset selection{#selection}
 
 There are two Smallset decisions to make: how many rows (`rowCount`) and how to select them (`rowSelect`).
@@ -115,7 +140,7 @@ Smallset_Timeline(data = s_data,
 
 After the optimisation problem is solved once, the solution can be passed to `rowNums` to avoid having to re-solve it with each run of `Smallset_Timeline`.
 
-```{r timeline2, fig.width = 7, fig.height = 3, fig.align='center'}
+```{r timeline3, fig.width = 7, fig.height = 3, fig.align='center'}
 Smallset_Timeline(data = s_data, 
                   code = system.file("s_data_preprocess.R", package = "smallsets"), 
                   rowCount = 5, rowNums = c(27, 42, 95, 96, 99))
@@ -129,7 +154,7 @@ Smallset_Timeline(data = s_data,
                   rowSelect = 2, rowReturn = T)
 ```
 
-```{r timeline3, echo=FALSE, fig.width = 7, fig.height = 3, fig.align='center'}
+```{r timeline4, echo=FALSE, fig.width = 7, fig.height = 3, fig.align='center'}
 Smallset_Timeline(data = s_data,
                   code = system.file("s_data_preprocess.R", package = "smallsets"),
                   rowNums = c(3, 32, 80, 97, 99),
@@ -143,7 +168,8 @@ There are built-in options to customise a Timeline. The examples in this section
 <br />
 **Example 1**
 
-```{r timeline4, fig.width = 7, fig.height = 4, fig.align='center'}
+Some differences: custom colour palette, data in the snapshots, highlighting missing data, a different font, and no ghost data.
+```{r timeline5, fig.width = 7, fig.height = 4, fig.align='center'}
 set.seed(145)
 
 Smallset_Timeline(
@@ -157,6 +183,7 @@ Smallset_Timeline(
   ),
   printedData = TRUE,
   truncateData = 4,
+  missingDataTints = TRUE,
   ghostData = FALSE,
   font = "Palatino",
   sizing = sets_sizing(data = 1.5),
@@ -167,7 +194,8 @@ Smallset_Timeline(
 <br />
 **Example 2**
 
-```{r timeline5, fig.width = 5, fig.height = 6, fig.align='center'}
+Some differences: use of a built-in colour palette, split into two rows, and rotated column names.
+```{r timeline6, fig.width = 5, fig.height = 6, fig.align='center'}
 set.seed(145)
 
 Smallset_Timeline(
@@ -213,7 +241,7 @@ In this example, we resume data preprocessing to transform C9 into a categorical
 ```
 
 
-```{r timeline6, fig.width = 7, fig.height = 2, fig.align='center', fig.retina = 2}
+```{r timeline7, fig.width = 7, fig.height = 2, fig.align='center', fig.retina = 2}
 set.seed(145)
 
 Smallset_Timeline(data = s_data, 

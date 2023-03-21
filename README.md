@@ -33,7 +33,10 @@ install.packages("smallsets")
 
 ## Quick start example
 
-Run this snippet of code to build your first Smallset Timeline!
+Run this snippet of code to build your first Smallset Timeline! It’s
+based on the synthetic dataset s_data, with 100 observations and eight
+variables (C1-C8), and the preprocessing script s_data_preprocess.R,
+discussed in the following section.
 
 ``` r
 library(smallsets)
@@ -48,9 +51,9 @@ Smallset_Timeline(data = s_data,
 
 ## Structured comments
 
-The Smallset Timeline above is based on the R preprocessing script below
-(s_data_preprocess.R). Structured comments were added to it, informing
-`smallsets` what to do.
+The Smallset Timeline above is based on the R preprocessing script
+below, s_data_preprocess.R. Structured comments were added to it,
+informing `smallsets` what to do.
 
 ``` r
 # smallsets start s_data caption[Remove rows where C2
