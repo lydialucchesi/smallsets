@@ -1,5 +1,7 @@
-smallsets: Visual Documentation for Data Preprocessing in R and Python
-================
+
+<img src="man/figures/hex_sticker.png" width="17%" style="float:right; padding:15px" style="display: block; margin: auto 0 auto auto;" />
+
+# smallsets: Visual Documentation for Data Preprocessing in R and Python
 
 <!-- badges: start -->
 

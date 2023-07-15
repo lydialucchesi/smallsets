@@ -86,7 +86,7 @@ Smallset Timelines can be built for preprocessing code in R Markdown files. If y
 ```{R, code = readLines(system.file("s_data_preprocess.Rmd", package = "smallsets")), eval=FALSE}
 ```
 
-To see the compiled report, run the following code. It will write a PDF titled *s_data_preprocess.pdf* to your working directory.
+To see the compiled report, run the following code. It will write a PDF titled s_data_preprocess.pdf to your working directory.
 ```{R, eval=FALSE}
 rmarkdown::render(system.file("s_data_preprocess.Rmd", package = "smallsets"),
                   output_dir = getwd())

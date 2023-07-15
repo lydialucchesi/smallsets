@@ -1,7 +1,12 @@
 ---
-title: "smallsets: Visual Documentation for Data Preprocessing in R and Python"
 output: github_document
 ---
+
+```{r, echo=FALSE, out.width="17%", fig.align="right", out.extra='style="float:right; padding:15px"'}
+knitr::include_graphics("man/figures/hex_sticker.png")
+```
+
+# smallsets: Visual Documentation for Data Preprocessing in R and Python
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/smallsets)](https://CRAN.R-project.org/package=smallsets)
