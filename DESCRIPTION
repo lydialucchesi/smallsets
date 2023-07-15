@@ -22,16 +22,17 @@ RoxygenNote: 7.2.3
 Depends:
     R (>= 3.5.0)
 Imports:
+    callr,
     colorspace,
     flextable,
     ggplot2,
     ggtext,
+    knitr,
     patchwork,
     plotrix,
-    reticulate
+    reticulate,
 Suggests: 
     gurobi,
-    knitr,
     rmarkdown,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr

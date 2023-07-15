@@ -27,9 +27,9 @@ Smallset_Timeline(
 \arguments{
 \item{data}{Dataset that is being preprocessed.}
 
-\item{code}{R or Python data preprocessing script. Include the filename
-extension (e.g., "my_code.R" or "my_code.py"). If the script is not in the
-working directory, include the file path.}
+\item{code}{R, R Markdown, or Python data preprocessing script. Include the
+filename extension (e.g., "my_code.R", "my_code.Rmd", or "my_code.py"). If
+the script is not in the working directory, include the file path.}
 
 \item{rowCount}{Integer between 5-15 for number of Smallset rows.}
 

@@ -4,9 +4,9 @@
 #'   decisions.
 #'
 #' @param data Dataset that is being preprocessed.
-#' @param code R or Python data preprocessing script. Include the filename
-#'   extension (e.g., "my_code.R" or "my_code.py"). If the script is not in the
-#'   working directory, include the file path.
+#' @param code R, R Markdown, or Python data preprocessing script. Include the
+#'   filename extension (e.g., "my_code.R", "my_code.Rmd", or "my_code.py"). If
+#'   the script is not in the working directory, include the file path.
 #' @param rowCount Integer between 5-15 for number of Smallset rows.
 #' @param rowSelect NULL, 1, or 2. If NULL, Smallset rows are randomly sampled.
 #'   If 1, Smallset rows are selected using the coverage optimisation model. If
@@ -56,7 +56,7 @@
 #'   code = system.file("s_data_preprocess.R", package = "smallsets")
 #' )
 #'
-#' @import patchwork
+#' @import patchwork knitr callr
 #' @export
 
 Smallset_Timeline <- function(data,
@@ -87,11 +87,29 @@ Smallset_Timeline <- function(data,
   }
   
   lang <- tools::file_ext(code)
-  if (!lang %in% c("R", "py")) {
+  if (!lang %in% c("R", "Rmd", "py")) {
     stop(
-      "Preprocessing code must be in R or Python.
-       Include filename extension (e.g., 'my_code.R' or 'my_code.py')."
+      "Preprocessing code must be in an .R, .Rmd, or .py file.
+       Include filename extension (e.g., 'my_code.R', 'my_code.Rmd', 'my_code.py')."
     )
+  }
+  
+  rmdSwitch <- NULL
+  if (lang == "Rmd") {
+    rmdSwitch <- TRUE
+    rFile <- tempfile(pattern = "rmd2R", fileext = ".R")
+    writeRmd2R <- callr::r(
+      function(code, rFile)
+        knitr::purl(
+          input = code,
+          output = rFile,
+          quiet = TRUE,
+          documentation = 0
+        ),
+      args = list(code, rFile)
+    )
+    code <- rFile
+    lang <- "R"
   }
   
   if (inherits(data, "data.table")) {
@@ -317,6 +335,10 @@ Smallset_Timeline <- function(data,
                       ghostData)
   }
 
+  if (isTRUE(rmdSwitch)) {
+    unlink(code)
+  }
+  
   o <- eval(parse(text = patchedPlots))
   oldClass(o) <- c("Smallset Timeline", class(o))
   return(o)

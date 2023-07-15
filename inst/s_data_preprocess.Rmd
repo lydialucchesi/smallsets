@@ -1,0 +1,59 @@
+---
+title: "My data analysis"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+options(knitr.kable.NA = "")
+```
+
+# Load packages and data
+
+I load my dataset, `s_data`, which is located in the `smallsets` package.
+
+```{r data}
+library(smallsets)
+library(knitr)
+
+head(s_data) |> kable(booktabs = TRUE)
+```
+
+```{r timeline, eval = TRUE, echo = FALSE}
+set.seed(145)
+
+myTimeline <- Smallset_Timeline(data = s_data,
+                  code = system.file("s_data_preprocess.Rmd", package = "smallsets"))
+```
+                  
+# Preprocessing
+
+I need to preprocess the dataset before I can build a model.
+
+```{r preprocess}
+# smallsets start s_data caption[Remove rows where C2 is FALSE.]caption
+s_data <- s_data[s_data$C2 == TRUE,]
+
+s_data$C6[is.na(s_data$C6)] <- mean(s_data$C6, na.rm = TRUE)
+# smallsets snap s_data caption[Replace missing values in C6 and C8 with column
+# means. Drop C7 because there are too many missing values.]caption
+s_data$C8[is.na(s_data$C8)] <- mean(s_data$C8, na.rm = TRUE)
+s_data$C7 <- NULL
+
+s_data$C9 <- s_data$C3 + s_data$C4
+# smallsets end s_data caption[Create a new column, C9, by summing C3 and
+# C4.]caption
+```
+
+Below is a Smallset Timeline, visualising my preprocessing decisions executed above.
+
+```{r print, echo = FALSE, fig.align = "center"}
+myTimeline
+```
+
+# Modelling
+
+I build a model.
+
+```{r model}
+# code to build a model...
+```

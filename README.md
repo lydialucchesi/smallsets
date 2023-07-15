@@ -1,4 +1,4 @@
-Smallset Timelines with `smallsets`
+smallsets: Visual Documentation for Data Preprocessing in R and Python
 ================
 
 <!-- badges: start -->
@@ -7,23 +7,27 @@ Smallset Timelines with `smallsets`
 status](https://www.r-pkg.org/badges/version/smallsets)](https://CRAN.R-project.org/package=smallsets)
 <!-- badges: end -->
 
-Do you use R or Python to preprocess datasets for analyses? `smallsets`
-is an R package (<https://cran.r-project.org/web/packages/smallsets>)
-that transforms your R or Python data preprocessing script into a
-Smallset Timeline, so that you can document and share your preprocessing
-decisions in a practical manner.
+**`smallsets` website:
+[lydialucchesi.github.io/smallsets/](https://lydialucchesi.github.io/smallsets/)**
 
-A full description of the Smallset Timeline can be found in the paper
-[**Smallset Timelines: A Visual Representation of Data Preprocessing
+Do you use R or Python to preprocess datasets for analyses? `smallsets`
+is an R package (<https://CRAN.R-project.org/package=smallsets>) that
+transforms the preprocessing code in your R, R Markdown, or Python
+script into a Smallset Timeline, a simple visualisation of preprocessing
+decisions. A full description of the Smallset Timeline can be found in
+the paper [**Smallset Timelines: A Visual Representation of Data
+Preprocessing
 Decisions**](https://dl.acm.org/doi/abs/10.1145/3531146.3533175) in the
 proceedings of ACM FAccT ’22. A short ([3
 min](https://www.youtube.com/watch?v=_fpn02h3IUo)) and long ([15
 min](https://www.youtube.com/watch?v=I_ksOv6rj1Y)) YouTube video provide
 an introduction to the project.
 
-If you have questions about using `smallsets` or would like help
-building a Smallset Timeline, please email Lydia at
-<Lydia.Lucchesi@anu.edu.au>.
+The `smallsets` user guide is available
+[here](https://lydialucchesi.github.io/smallsets/articles/smallsets.html)
+and in the package in `vignette("smallsets")`. If you have questions or
+would like help building a Smallset Timeline, please email Lydia at
+<lydia.lucchesi@anu.edu.au>.
 
 ## Install from CRAN
 
@@ -56,20 +60,18 @@ below, s_data_preprocess.R. Structured comments were added to it,
 informing `smallsets` what to do.
 
 ``` r
-# smallsets start s_data caption[Remove rows where C2
-# is FALSE.]caption
-s_data <- s_data[s_data$C2 == TRUE, ]
+# smallsets start s_data caption[Remove rows where C2 is FALSE.]caption
+s_data <- s_data[s_data$C2 == TRUE,]
 
 s_data$C6[is.na(s_data$C6)] <- mean(s_data$C6, na.rm = TRUE)
-# smallsets snap s_data caption[Replace missing values in C6 and
-# C8 with column means. Drop C7 because there are too many
-# missing values.]caption
+# smallsets snap s_data caption[Replace missing values in C6 and C8 with column
+# means. Drop C7 because there are too many missing values.]caption
 s_data$C8[is.na(s_data$C8)] <- mean(s_data$C8, na.rm = TRUE)
 s_data$C7 <- NULL
 
 s_data$C9 <- s_data$C3 + s_data$C4
-# smallsets end s_data caption[Create a new column,
-# C9, by summing C3 and C4.]caption
+# smallsets end s_data caption[Create a new column, C9, by summing C3 and
+# C4.]caption
 ```
 
 ## Citing `smallsets`

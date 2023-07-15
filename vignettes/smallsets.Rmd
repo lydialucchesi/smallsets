@@ -29,7 +29,7 @@ head(s_data)
 ```
 
 ## The basics{#basics}
-Each Smallset Timeline is constructed from your dataset and R/Python data preprocessing script. Scripts must contain a series of [smallsets comments](#comments) with snapshot instructions. Your unprocessed dataset (`data`) and commented preprocessing script (`code`) are the only required inputs to `Smallset_Timeline`. 
+Each Smallset Timeline is constructed from your dataset and R/R Markdown/Python data preprocessing script. Scripts must contain a series of [smallsets comments](#comments) with snapshot instructions. Your unprocessed dataset (`data`) and commented preprocessing script (`code`) are the only required inputs to `Smallset_Timeline`. 
 
 **Normally, you pass a character string to `code` (e.g., "my_code.R" or "/.../.../my_code.R").** However, the script s_data_preprocess.R is included in smallsets as an example and needs to be called with `system.file`.
 
@@ -52,7 +52,7 @@ Smallset_Timeline(data = s_data, code = "s_data_preprocess.R")
 The smallsets package currently supports data preprocessing workflows fitting the following description.
 
 1. Your **dataset is tabular** and of class data.frame, data.table, or tibble. Objects of class data.table and tibble are immediately converted to a data.frame by smallsets.
-2. All preprocessing code is contained in **one R or Python file**. Jupyter notebooks (i.e., files with extension .ipynb) are not currently supported.
+2. All preprocessing code is contained in **one R, R Markdown, or Python file**. Jupyter notebooks (i.e., files with extension .ipynb) are not currently supported.
 3. The **preprocessing code does not change the row names** of the original data object as smallsets tracks rows by their names. Merges, joins, collapses, aggregations, and switches between the wide/long format generally involve writing over existing row names and are therefore generally not currently supported by smallsets. Renaming a column results in a column deletion then addition in the Timeline.
 4. All preprocessing **package dependencies are loaded** in the current R session. Information on installing Python packages with `reticulate` can be found [here](https://rstudio.github.io/reticulate/articles/python_packages.html).
 
@@ -77,6 +77,21 @@ The name of the data object can change throughout the script. The snapshot is ta
 **s_data_preprocess.R** (Don't run this code block. It's an example preprocessing script.)
 ```{r, code = readLines(system.file("s_data_preprocess.R", package = "smallsets")), eval=FALSE}
 ```
+
+### R Markdown example
+Smallset Timelines can be built for preprocessing code in R Markdown files. If you choose to include the Smallset Timeline as a figure within the R Markdown report itself, it works best to build the Smallset Timeline before the preprocessing code is executed, so that you don't have to reload your (un-preprocessed) data later to build the Smallset Timeline. You assign the Smallset Timeline figure to an object, hiding that code with `echo=FALSE`. You can then plot it anywhere in the report. See the example below.
+
+<br />
+**s_data_preprocess.Rmd** (Don't run this code block. It's an example script.)
+```{R, code = readLines(system.file("s_data_preprocess.Rmd", package = "smallsets")), eval=FALSE}
+```
+
+To see the compiled report, run the following code. It will write a PDF titled *s_data_preprocess.pdf* to your working directory.
+```{R, eval=FALSE}
+rmarkdown::render(system.file("s_data_preprocess.Rmd", package = "smallsets"),
+                  output_dir = getwd())
+```
+
 
 ### Python example
 Python scripts can be passed to the R command `Smallset_Timeline`.
