@@ -11,5 +11,9 @@ navbar:
     href: articles/smallsets.html
   - text: Functions and data
     href: reference/index.html
+  - text: Cheatsheet
+    href: https://lydialucchesi.github.io/smallsets_cheatsheet/smallsets_cheatsheet.pdf
+  - text: Smallset Timelines
+    href: https://dl.acm.org/doi/pdf/10.1145/3531146.3533175
   - text: Package news
     href: news/index.html

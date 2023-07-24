@@ -1,5 +1,7 @@
 
-<img src="man/figures/hex_sticker.png" width="17%" style="float:right; padding:15px" style="display: block; margin: auto 0 auto auto;" />
+<br/>
+
+<img src="man/figures/hex_sticker.png" width="17%" style="float: right;" style="display: block; padding= 1%" />
 
 # smallsets: Visual Documentation for Data Preprocessing in R and Python
 
@@ -7,30 +9,14 @@
 status](https://www.r-pkg.org/badges/version/smallsets)](https://CRAN.R-project.org/package=smallsets)
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/smallsets)
 
-**`smallsets` website:
-[lydialucchesi.github.io/smallsets/](https://lydialucchesi.github.io/smallsets/)**
-
 Do you use R or Python to preprocess datasets for analyses? `smallsets`
-is an R package (<https://CRAN.R-project.org/package=smallsets>) that
-transforms the preprocessing code in your R, R Markdown, or Python
+is an R package that transforms the preprocessing code in your R, R Markdown, or Python
 script into a Smallset Timeline, a simple visualisation of preprocessing
 decisions. A full description of the Smallset Timeline can be found in
-the paper [**Smallset Timelines: A Visual Representation of Data
-Preprocessing
-Decisions**](https://dl.acm.org/doi/abs/10.1145/3531146.3533175) in the
-proceedings of ACM FAccT ’22. A short ([3
-min](https://www.youtube.com/watch?v=_fpn02h3IUo)) and long ([15
-min](https://www.youtube.com/watch?v=I_ksOv6rj1Y)) YouTube video provide
-an introduction to the project.
+the paper [**Smallset Timelines: A Visual Representation of Data Preprocessing
+Decisions**](https://dl.acm.org/doi/abs/10.1145/3531146.3533175) in the proceedings of ACM FAccT ’22. A short ([3 min](https://www.youtube.com/watch?v=_fpn02h3IUo)) and long ([15 min](https://www.youtube.com/watch?v=I_ksOv6rj1Y)) YouTube video provide an introduction to the project.
 
-The `smallsets` user guide is available
-[here](https://lydialucchesi.github.io/smallsets/articles/smallsets.html)
-and in the package in `vignette("smallsets")`. If you have questions or
-would like help building a Smallset Timeline, please [email
-Lydia](mailto:lydia.lucchesi@anu.edu.au).
-
-**[Download the smallsets cheatsheet (1-page
-PDF)](https://lydialucchesi.github.io/smallsets_cheatsheet/smallsets_cheatsheet.pdf)**
+If you have questions or would like help building a Smallset Timeline, please [email Lydia](mailto:lydia.lucchesi@anu.edu.au).
 
 ## Install from CRAN
 
