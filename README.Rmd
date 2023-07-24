@@ -17,7 +17,9 @@ Do you use R or Python to preprocess datasets for analyses? `smallsets` is an R 
 
 The `smallsets` user guide is available [here](https://lydialucchesi.github.io/smallsets/articles/smallsets.html) and in the package in `vignette("smallsets")`. If you have questions or would like help building a Smallset Timeline, please email Lydia at lydia.lucchesi@anu.edu.au.
 
-**[Download the smallsets cheatsheet (1-page PDF)](https://github.com/lydialucchesi/smallsets/blob/main/man/figures/smallsets_cheatsheet.pdf)**
+```{r, echo = FALSE}
+xfun::embed_file('man/figures/smallsets_cheatsheet.pdf', text = "Download smallsets cheatsheet (1-page PDF)")
+```
 
 ## Install from CRAN
 
