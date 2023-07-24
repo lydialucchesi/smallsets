@@ -2,7 +2,7 @@ url: https://lydialucchesi.github.io/smallsets/
 
 template:
   bootstrap: 5
-  bootswatch: sandstone
+  bootswatch: zephyr
 
 navbar:
   bg: dark

@@ -3,11 +3,9 @@
 
 # smallsets: Visual Documentation for Data Preprocessing in R and Python
 
-<!-- badges: start -->
-
 [![CRAN
 status](https://www.r-pkg.org/badges/version/smallsets)](https://CRAN.R-project.org/package=smallsets)
-<!-- badges: end -->
+![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/smallsets)
 
 **`smallsets` website:
 [lydialucchesi.github.io/smallsets/](https://lydialucchesi.github.io/smallsets/)**
@@ -30,6 +28,9 @@ The `smallsets` user guide is available
 and in the package in `vignette("smallsets")`. If you have questions or
 would like help building a Smallset Timeline, please email Lydia at
 <lydia.lucchesi@anu.edu.au>.
+
+**[Download the smallsets cheatsheet (1-page
+PDF)](https://github.com/lydialucchesi/smallsets/blob/main/man/figures/smallsets_cheatsheet.pdf)**
 
 ## Install from CRAN
 
