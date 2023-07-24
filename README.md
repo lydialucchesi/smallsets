@@ -29,8 +29,15 @@ and in the package in `vignette("smallsets")`. If you have questions or
 would like help building a Smallset Timeline, please email Lydia at
 <lydia.lucchesi@anu.edu.au>.
 
-**[Download the smallsets cheatsheet (1-page
-PDF)](https://github.com/lydialucchesi/smallsets/blob/main/man/figures/smallsets_cheatsheet.pdf)**
+<span style="background-color: #FFFFFF; padding: 5px;">   </span>
+
+<span
+style="background-color: #E3F2FD; padding: 15px; border-radius: 5px;">**[Download
+the smallsets cheatsheet (1-page
+PDF)](https://lydialucchesi.github.io/smallsets_cheatsheet/smallsets_cheatsheet.pdf)**
+</span>
+
+<span style="background-color: #FFFFFF; padding: 5px;">   </span>
 
 ## Install from CRAN
 
