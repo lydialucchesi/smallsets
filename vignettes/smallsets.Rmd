@@ -69,7 +69,7 @@ There are four instructions available.
 3. snap
 4. resume
 
-In your script, *start* and *stop* instructions must be provided. A snapshot is always taken directly after the *start* instruction and immediately before the *end* instruction. The *snap* instruction results in a snapshot being taken after the subsequent line of code. The *resume* instruction is discussed in the section on [resume markers](#resume).
+In your script, *start* and *end* instructions must be provided. A snapshot is always taken directly after the *start* instruction and immediately before the *end* instruction. The *snap* instruction results in a snapshot being taken after the subsequent line of code. The *resume* instruction is discussed in the section on [resume markers](#resume).
 
 The name of the data object can change throughout the script. The snapshot is taken of the object specified in the comment.
 
