@@ -195,15 +195,15 @@ block. It’s an example preprocessing script.)</p>
 <code class="sourceCode R"><span><span class="co"># smallsets start s_data caption[Remove rows where C2 is FALSE.]caption</span></span>
 <span><span class="va">s_data</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">[</span><span class="va">s_data</span><span class="op">$</span><span class="va">C2</span> <span class="op">==</span> <span class="cn">TRUE</span>,<span class="op">]</span></span>
 <span></span>
+<span><span class="co"># smallsets snap 7 s_data caption[Replace missing values in C6 and C8 with </span></span>
+<span><span class="co"># column means. Drop C7 because there are too many missing values.]caption</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co"># smallsets snap s_data caption[Replace missing values in C6 and C8 with column</span></span>
-<span><span class="co"># means. Drop C7 because there are too many missing values.]caption</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C7</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span></span>
-<span><span class="va">s_data</span><span class="op">$</span><span class="va">C9</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C3</span> <span class="op">+</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C4</span></span>
 <span><span class="co"># smallsets end s_data caption[Create a new column, C9, by summing C3 and</span></span>
-<span><span class="co"># C4.]caption</span></span></code></pre></div>
+<span><span class="co"># C4.]caption</span></span>
+<span><span class="va">s_data</span><span class="op">$</span><span class="va">C9</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C3</span> <span class="op">+</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C4</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="r-markdown-example">R Markdown example<a class="anchor" aria-label="anchor" href="#r-markdown-example"></a>
@@ -253,15 +253,15 @@ block. It’s an example script.)</p>
 <span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="at"># smallsets start s_data caption[Remove rows where C2 is FALSE.]caption</span></span>
 <span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="at">s_data &lt;- s_data[s_data$C2 == TRUE,]</span></span>
 <span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="at">s_data$C6[is.na(s_data$C6)] &lt;- mean(s_data$C6, na.rm = TRUE)</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="at"># smallsets snap s_data caption[Replace missing values in C6 and C8 with column</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="at"># means. Drop C7 because there are too many missing values.]caption</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="at"># smallsets snap +2 s_data caption[Replace missing values in C6 and C8 with column</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="at"># means. Drop C7 because there are too many missing values.]caption</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="at">s_data$C6[is.na(s_data$C6)] &lt;- mean(s_data$C6, na.rm = TRUE)</span></span>
 <span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="at">s_data$C8[is.na(s_data$C8)] &lt;- mean(s_data$C8, na.rm = TRUE)</span></span>
 <span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="at">s_data$C7 &lt;- NULL</span></span>
 <span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="at">s_data$C9 &lt;- s_data$C3 + s_data$C4</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="at"># smallsets end s_data caption[Create a new column, C9, by summing C3 and</span></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="at"># C4.]caption</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="at"># smallsets end s_data caption[Create a new column, C9, by summing C3 and</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="at"># C4.]caption</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="at">s_data$C9 &lt;- s_data$C3 + s_data$C4</span></span>
 <span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
 <span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>Below is a Smallset Timeline, visualising my preprocessing decisions executed above.</span>
@@ -300,16 +300,16 @@ block. It’s an example preprocessing script.)</p>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># is FALSE.]caption</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>s_data <span class="op">=</span> s_data[s_data[<span class="st">"C2"</span>] <span class="op">==</span> <span class="va">True</span>]</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>s_data[<span class="st">"C6"</span>].fillna(value <span class="op">=</span> s_data[<span class="st">"C6"</span>].mean(), inplace <span class="op">=</span> <span class="va">True</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># smallsets snap s_data caption[Replace missing values in C6 and</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># C8 with column means. Drop C7 because there are too many</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># missing values.]caption</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># smallsets snap 9 s_data caption[Replace missing values in C6 and</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># C8 with column means. Drop C7 because there are too many</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># missing values.]caption</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>s_data[<span class="st">"C6"</span>].fillna(value <span class="op">=</span> s_data[<span class="st">"C6"</span>].mean(), inplace <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>s_data[<span class="st">"C8"</span>].fillna(value <span class="op">=</span> s_data[<span class="st">"C8"</span>].mean(), inplace <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>s_data <span class="op">=</span> s_data.drop(columns <span class="op">=</span> [<span class="st">"C7"</span>])</span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>s_data[<span class="st">"C9"</span>] <span class="op">=</span> s_data[<span class="st">"C3"</span>] <span class="op">+</span> s_data[<span class="st">"C4"</span>]</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># smallsets end s_data caption[Create a new column,</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># C9, by summing C3 and C4.]caption</span></span></code></pre></div>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># smallsets end s_data caption[Create a new column,</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># C9, by summing C3 and C4.]caption</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>s_data[<span class="st">"C9"</span>] <span class="op">=</span> s_data[<span class="st">"C3"</span>] <span class="op">+</span> s_data[<span class="st">"C4"</span>]</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="isolate-a-data-deletion">Isolate a data deletion<a class="anchor" aria-label="anchor" href="#isolate-a-data-deletion"></a>
@@ -326,18 +326,19 @@ block. It’s an example preprocessing script.)</p>
 <span><span class="co"># is FALSE.]caption</span></span>
 <span><span class="va">s_data</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">[</span><span class="va">s_data</span><span class="op">$</span><span class="va">C2</span> <span class="op">==</span> <span class="cn">TRUE</span>, <span class="op">]</span></span>
 <span></span>
-<span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co"># smallsets snap s_data caption[Replace missing values in C6 and</span></span>
+<span><span class="co"># smallsets snap 8 s_data caption[Replace missing values in C6 and</span></span>
 <span><span class="co"># C8 with column means.]caption</span></span>
+<span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># smallsets snap s_data caption[Drop C7 because there are too many</span></span>
 <span><span class="co"># missing values.]caption</span></span>
 <span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C7</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span></span>
-<span><span class="va">s_data</span><span class="op">$</span><span class="va">C9</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C3</span> <span class="op">+</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C4</span></span>
 <span><span class="co"># smallsets end s_data caption[Create a new column,</span></span>
-<span><span class="co"># C9, by summing C3 and C4.]caption</span></span></code></pre></div>
+<span><span class="co"># C9, by summing C3 and C4.]caption</span></span>
+<span><span class="va">s_data</span><span class="op">$</span><span class="va">C9</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C3</span> <span class="op">+</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C4</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">145</span><span class="op">)</span></span>
 <span></span>
@@ -467,7 +468,7 @@ readability, and included with the figure.</p>
 <span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>, </span>
 <span>                  altText <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code>The Smallset Timeline contains 3 Smallset snapshots. Data edits are represented with the colour slategray2. Data additions are represented with the colour plum. Data deletions are represented with the colour navajowhite. Snapshot 1 is 5 rows by 8 columns. The columns, in order from left to right, are: C1, C2, C3, C4, C5, C6, C7, and C8. 1 row is navajowhite. The caption is quote Remove rows where C2 is FALSE. unquote. Snapshot 2 is 4 rows by 8 columns. Column C7 is navajowhite. 3 cells are slategray2. The caption is quote Replace missing values in C6 and C8 with column means. Drop C7 because there are too many missing values. unquote. Snapshot 3 is 4 rows by 8 columns. Column C9 is plum. The caption is quote Create a new column, C9, by summing C3 and C4. unquote.</code></pre>
+<pre><code>The Smallset Timeline contains 3 Smallset snapshots. Data edits are represented with the colour slategray2. Data additions are represented with the colour plum. Data deletions are represented with the colour navajowhite. Snapshot 1 is 5 rows by 8 columns. The columns, in order from left to right, are: C1, C2, C3, C4, C5, C6, C7, and C8. 1 row is navajowhite. The caption is quote Remove rows where C2 is FALSE. unquote. Snapshot 2 is 4 rows by 8 columns. Column C7 is navajowhite. 3 cells are slategray2. The caption is quote Replace missing values in C6 and C8 with  column means. Drop C7 because there are too many missing values. unquote. Snapshot 3 is 4 rows by 8 columns. Column C9 is plum. The caption is quote Create a new column, C9, by summing C3 and C4. unquote.</code></pre>
 </div>
 <div class="section level2">
 <h2 id="resume">Resume markers<a class="anchor" aria-label="anchor" href="#resume"></a>
@@ -485,10 +486,10 @@ code block. It’s an example preprocessing script.)</p>
 <span><span class="co"># is FALSE.]caption</span></span>
 <span><span class="va">s_data</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">[</span><span class="va">s_data</span><span class="op">$</span><span class="va">C2</span> <span class="op">==</span> <span class="cn">TRUE</span>,<span class="op">]</span></span>
 <span></span>
-<span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co"># smallsets snap s_data caption[Replace missing values in C6 and</span></span>
+<span><span class="co"># smallsets snap 9 s_data caption[Replace missing values in C6 and</span></span>
 <span><span class="co"># C8 with column means. Drop C7 because there are too many</span></span>
 <span><span class="co"># missing values.]caption</span></span>
+<span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C7</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span></span>
@@ -498,15 +499,16 @@ code block. It’s an example preprocessing script.)</p>
 <span></span>
 <span><span class="co"># smallsets resume s_data caption[Ran the analysis </span></span>
 <span><span class="co"># and decided to make a change.]caption</span></span>
+<span></span>
+<span><span class="co"># smallsets end 27 s_data caption[Create a new categorical </span></span>
+<span><span class="co"># column, C10, based on C9 terciles.]caption</span></span>
 <span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C9</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">3</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C10</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">s_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span></span>
 <span>  <span class="va">C9</span>,</span>
 <span>  <span class="va">t</span>,</span>
 <span>  include.lowest <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Med"</span>, <span class="st">"High"</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># smallsets end s_data caption[Create a new categorical </span></span>
-<span><span class="co"># column, C10, based on C9 terciles.]caption</span></span></code></pre></div>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">145</span><span class="op">)</span></span>
 <span></span>
