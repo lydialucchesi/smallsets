@@ -49,16 +49,16 @@ below, s_data_preprocess.R. Structured comments were added to it,
 informing `smallsets` what to do.
 
 ``` r
-# smallsets start s_data caption[Remove rows where C2 is FALSE.]caption
+# smallsets snap s_data caption[Remove rows where C2 is FALSE.]caption
 s_data <- s_data[s_data$C2 == TRUE,]
 
-# smallsets snap 7 s_data caption[Replace missing values in C6 and C8 with 
+# smallsets snap +2 s_data caption[Replace missing values in C6 and C8 with 
 # column means. Drop C7 because there are too many missing values.]caption
 s_data$C6[is.na(s_data$C6)] <- mean(s_data$C6, na.rm = TRUE)
 s_data$C8[is.na(s_data$C8)] <- mean(s_data$C8, na.rm = TRUE)
 s_data$C7 <- NULL
 
-# smallsets end s_data caption[Create a new column, C9, by summing C3 and
+# smallsets snap +1 s_data caption[Create a new column, C9, by summing C3 and
 # C4.]caption
 s_data$C9 <- s_data$C3 + s_data$C4
 ```

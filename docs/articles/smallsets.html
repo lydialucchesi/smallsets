@@ -179,25 +179,9 @@ in the current R session. Information on installing Python packages with
 <p>To make a Smallset Timeline with smallsets, add structured comments
 with snapshot instructions to your preprocessing script. All smallsets
 comments follow the same formula.</p>
-<p><font size="4"> <strong><span style="color: red;">#</span> + <span style="color: red;">smallsets</span> + <span style="color: red;"><em>instruction</em></span> + <span style="color: red;"><em>place</em></span> + <span style="color: red;"><em>name of data object</em></span> + <span style="color: red;">caption[…]caption</span></strong> </font></p>
+<p><font size="4"> <strong># smallsets snap + <span style="color: red;"><em>place</em></span> + <span style="color: red;"><em>name of data object</em></span> + caption[<span style="color: red;"><em>text</em></span>]caption</strong> </font></p>
 <p><strong>Example:</strong>
 <code># smallsets snap +4 mydata caption[I removed rows because they contained implausible values.]caption</code></p>
-<div class="section level4">
-<h4 id="instruction">
-<span style="color: red;">instruction</span><a class="anchor" aria-label="anchor" href="#instruction"></a>
-</h4>
-<p>There are four instructions available.</p>
-<ol style="list-style-type: decimal">
-<li>start</li>
-<li>end</li>
-<li>snap</li>
-<li>resume</li>
-</ol>
-<p>In your script, <em>start</em> and <em>end</em> instructions must be
-provided. The <em>snap</em> instruction is for taking intermediate
-snapshots. The <em>resume</em> instruction is discussed in the section
-on <a href="#resume">resume markers</a>.</p>
-</div>
 <div class="section level4">
 <h4 id="place">
 <span style="color: red;">place</span><a class="anchor" aria-label="anchor" href="#place"></a>
@@ -210,8 +194,8 @@ code.</li>
 <li>Use a plus sign and a number to specify how many lines of code later
 to take the snapshot, e.g., +2 means take the snapshot two lines of code
 later.</li>
-<li>Don’t specify anything, and a snapshot will be taken after the
-subsequent line of code.</li>
+<li>Don’t specify anything, and a snapshot will be taken directly after
+the structured comment (i.e., before the next line of code).</li>
 </ol>
 </div>
 <div class="section level4">
@@ -221,6 +205,12 @@ subsequent line of code.</li>
 <p>The name of the data object can change throughout the script. The
 snapshot is taken of the object specified in the comment.</p>
 </div>
+<div class="section level4">
+<h4 id="text">
+<span style="color: red;">text</span><a class="anchor" aria-label="anchor" href="#text"></a>
+</h4>
+<p>This is the snapshot caption describing the preprocessing step.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="example-r-script">Example R script<a class="anchor" aria-label="anchor" href="#example-r-script"></a>
@@ -228,16 +218,16 @@ snapshot is taken of the object specified in the comment.</p>
 <p><strong>s_data_preprocess.R</strong> (Don’t run this code block. It’s
 an example preprocessing script.)</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># smallsets start s_data caption[Remove rows where C2 is FALSE.]caption</span></span>
+<code class="sourceCode R"><span><span class="co"># smallsets snap s_data caption[Remove rows where C2 is FALSE.]caption</span></span>
 <span><span class="va">s_data</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">[</span><span class="va">s_data</span><span class="op">$</span><span class="va">C2</span> <span class="op">==</span> <span class="cn">TRUE</span>,<span class="op">]</span></span>
 <span></span>
-<span><span class="co"># smallsets snap 7 s_data caption[Replace missing values in C6 and C8 with </span></span>
+<span><span class="co"># smallsets snap +2 s_data caption[Replace missing values in C6 and C8 with </span></span>
 <span><span class="co"># column means. Drop C7 because there are too many missing values.]caption</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C7</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span></span>
-<span><span class="co"># smallsets end s_data caption[Create a new column, C9, by summing C3 and</span></span>
+<span><span class="co"># smallsets snap +1 s_data caption[Create a new column, C9, by summing C3 and</span></span>
 <span><span class="co"># C4.]caption</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C9</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C3</span> <span class="op">+</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C4</span></span></code></pre></div>
 </div>
@@ -286,7 +276,7 @@ It’s an example script.)</p>
 <span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>I need to preprocess the dataset before I can build a model.</span>
 <span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at">{r preprocess}</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="at"># smallsets start s_data caption[Remove rows where C2 is FALSE.]caption</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="at"># smallsets snap s_data caption[Remove rows where C2 is FALSE.]caption</span></span>
 <span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="at">s_data &lt;- s_data[s_data$C2 == TRUE,]</span></span>
 <span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="at"># smallsets snap +2 s_data caption[Replace missing values in C6 and C8 with column</span></span>
@@ -295,7 +285,7 @@ It’s an example script.)</p>
 <span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="at">s_data$C8[is.na(s_data$C8)] &lt;- mean(s_data$C8, na.rm = TRUE)</span></span>
 <span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="at">s_data$C7 &lt;- NULL</span></span>
 <span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="at"># smallsets end s_data caption[Create a new column, C9, by summing C3 and</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="at"># smallsets snap +1 s_data caption[Create a new column, C9, by summing C3 and</span></span>
 <span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="at"># C4.]caption</span></span>
 <span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="at">s_data$C9 &lt;- s_data$C3 + s_data$C4</span></span>
 <span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
@@ -332,7 +322,7 @@ as s_data_preprocess.R. The smallsets commenting system is the same in
 Python.</p>
 <p><strong>s_data_preprocess.py</strong> (Don’t run this code block.
 It’s an example preprocessing script.)</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># smallsets start s_data caption[Remove rows where C2</span></span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># smallsets snap s_data caption[Remove rows where C2</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># is FALSE.]caption</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>s_data <span class="op">=</span> s_data[s_data[<span class="st">"C2"</span>] <span class="op">==</span> <span class="va">True</span>]</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -343,44 +333,9 @@ It’s an example preprocessing script.)</p>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>s_data[<span class="st">"C8"</span>].fillna(value <span class="op">=</span> s_data[<span class="st">"C8"</span>].mean(), inplace <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>s_data <span class="op">=</span> s_data.drop(columns <span class="op">=</span> [<span class="st">"C7"</span>])</span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># smallsets end s_data caption[Create a new column,</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># smallsets snap +1 s_data caption[Create a new column,</span></span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># C9, by summing C3 and C4.]caption</span></span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>s_data[<span class="st">"C9"</span>] <span class="op">=</span> s_data[<span class="st">"C3"</span>] <span class="op">+</span> s_data[<span class="st">"C4"</span>]</span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="isolate-a-data-deletion">Isolate a data deletion<a class="anchor" aria-label="anchor" href="#isolate-a-data-deletion"></a>
-</h2>
-<p>If you’d like to isolate a data deletion in an intermediate snapshot,
-leave a blank line between the structured comment and the data deletion
-code. For example, if we want to split the middle Timeline snapshot into
-two snapshots, we can add another structured comment, and blank line,
-before the data deletion code.</p>
-<p><strong>s_data_preprocess_4.R</strong> (Don’t run this code block.
-It’s an example preprocessing script.)</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># smallsets start s_data caption[Remove rows where C2</span></span>
-<span><span class="co"># is FALSE.]caption</span></span>
-<span><span class="va">s_data</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">[</span><span class="va">s_data</span><span class="op">$</span><span class="va">C2</span> <span class="op">==</span> <span class="cn">TRUE</span>, <span class="op">]</span></span>
-<span></span>
-<span><span class="co"># smallsets snap 8 s_data caption[Replace missing values in C6 and</span></span>
-<span><span class="co"># C8 with column means.]caption</span></span>
-<span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># smallsets snap s_data caption[Drop C7 because there are too many</span></span>
-<span><span class="co"># missing values.]caption</span></span>
-<span></span>
-<span><span class="va">s_data</span><span class="op">$</span><span class="va">C7</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
-<span></span>
-<span><span class="co"># smallsets end s_data caption[Create a new column,</span></span>
-<span><span class="co"># C9, by summing C3 and C4.]caption</span></span>
-<span><span class="va">s_data</span><span class="op">$</span><span class="va">C9</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C3</span> <span class="op">+</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C4</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">145</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
-<span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess_4.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="smallsets_files/figure-html/timeline2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="selection">Smallset selection<a class="anchor" aria-label="anchor" href="#selection"></a>
@@ -391,7 +346,7 @@ It’s an example preprocessing script.)</p>
 <p>If <code>rowSelect = NULL</code> (the default setting), rows are
 selected through a simple random sample. The following code would
 randomly sample seven rows for the Smallset.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>, </span>
 <span>                  rowCount <span class="op">=</span> <span class="fl">7</span>, rowSelect <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
@@ -407,7 +362,7 @@ step-by-step instructions on installing Gurobi in R.</p>
 to select rows. For each snapshot, it finds at least one example of a
 data change, if there is one. You can return the solution to the console
 with <code>rowReturn = TRUE</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>, </span>
 <span>                  rowCount <span class="op">=</span> <span class="fl">5</span>, rowSelect <span class="op">=</span> <span class="fl">1</span>, rowReturn <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -415,7 +370,7 @@ with <code>rowReturn = TRUE</code>.</p>
 <p>After the optimisation problem is solved once, the solution can be
 passed to <code>rowNums</code> to avoid having to re-solve it with each
 run of <code>Smallset_Timeline</code>.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>, </span>
 <span>                  rowCount <span class="op">=</span> <span class="fl">5</span>, rowNums <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">27</span>, <span class="fl">42</span>, <span class="fl">95</span>, <span class="fl">96</span>, <span class="fl">99</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -428,7 +383,7 @@ steps differently. <strong>The drawback of <code>rowSelect = 2</code> is
 runtime for large datasets.</strong> One potential workaround to a long
 runtime is building a Timeline from a sample of the dataset. However,
 this should be done with caution.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>, </span>
 <span>                  rowSelect <span class="op">=</span> <span class="fl">2</span>, rowReturn <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
@@ -444,7 +399,7 @@ for a full list of options.</p>
 <p><strong>Example 1</strong></p>
 <p>Some differences: custom colour palette, data in the snapshots,
 highlighting missing data, a different font, and no ghost data.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">145</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span></span>
@@ -468,7 +423,7 @@ highlighting missing data, a different font, and no ghost data.</p>
 <p><strong>Example 2</strong></p>
 <p>Some differences: use of a built-in colour palette, split into two
 rows, and rotated column names.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">145</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span></span>
@@ -497,7 +452,7 @@ rows, and rotated column names.</p>
 Timeline. When <code>altText = TRUE</code>, a draft of alt text is
 printed to the console. It can be copied from the console, revised for
 readability, and included with the figure.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">145</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
@@ -516,8 +471,8 @@ instruction in a structured comment.</p>
 categorical variable.</p>
 <p><strong>s_data_preprocess_resume.R</strong> (Don’t run this code
 block. It’s an example preprocessing script.)</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># smallsets start s_data caption[Remove rows where C2</span></span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># smallsets snap s_data caption[Remove rows where C2</span></span>
 <span><span class="co"># is FALSE.]caption</span></span>
 <span><span class="va">s_data</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">[</span><span class="va">s_data</span><span class="op">$</span><span class="va">C2</span> <span class="op">==</span> <span class="cn">TRUE</span>,<span class="op">]</span></span>
 <span></span>
@@ -528,14 +483,14 @@ block. It’s an example preprocessing script.)</p>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C7</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span></span>
-<span><span class="co"># smallsets snap s_data caption[Create a new column,</span></span>
+<span><span class="co"># smallsets snap +1 s_data caption[Create a new column,</span></span>
 <span><span class="co"># C9, by summing C3 and C4.]caption</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C9</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C3</span> <span class="op">+</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C4</span></span>
 <span></span>
 <span><span class="co"># smallsets resume s_data caption[Ran the analysis </span></span>
 <span><span class="co"># and decided to make a change.]caption</span></span>
 <span></span>
-<span><span class="co"># smallsets end 27 s_data caption[Create a new categorical </span></span>
+<span><span class="co"># smallsets snap 27 s_data caption[Create a new categorical </span></span>
 <span><span class="co"># column, C10, based on C9 terciles.]caption</span></span>
 <span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C9</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">3</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C10</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">s_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span></span>
@@ -544,7 +499,7 @@ block. It’s an example preprocessing script.)</p>
 <span>  include.lowest <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Med"</span>, <span class="st">"High"</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">145</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>

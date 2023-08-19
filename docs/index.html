@@ -113,16 +113,16 @@
 </h2>
 <p>The Smallset Timeline above is based on the R preprocessing script below, s_data_preprocess.R. Structured comments were added to it, informing <code>smallsets</code> what to do.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># smallsets start s_data caption[Remove rows where C2 is FALSE.]caption</span></span>
+<code class="sourceCode R"><span><span class="co"># smallsets snap s_data caption[Remove rows where C2 is FALSE.]caption</span></span>
 <span><span class="va">s_data</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">[</span><span class="va">s_data</span><span class="op">$</span><span class="va">C2</span> <span class="op">==</span> <span class="cn">TRUE</span>,<span class="op">]</span></span>
 <span></span>
-<span><span class="co"># smallsets snap 7 s_data caption[Replace missing values in C6 and C8 with </span></span>
+<span><span class="co"># smallsets snap +2 s_data caption[Replace missing values in C6 and C8 with </span></span>
 <span><span class="co"># column means. Drop C7 because there are too many missing values.]caption</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C6</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s_data</span><span class="op">$</span><span class="va">C8</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C7</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span></span>
-<span><span class="co"># smallsets end s_data caption[Create a new column, C9, by summing C3 and</span></span>
+<span><span class="co"># smallsets snap +1 s_data caption[Create a new column, C9, by summing C3 and</span></span>
 <span><span class="co"># C4.]caption</span></span>
 <span><span class="va">s_data</span><span class="op">$</span><span class="va">C9</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C3</span> <span class="op">+</span> <span class="va">s_data</span><span class="op">$</span><span class="va">C4</span></span></code></pre></div>
 </div>

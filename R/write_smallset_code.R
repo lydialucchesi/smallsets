@@ -12,15 +12,14 @@ write_smallset_code <-
     
     # Find rows with structured comments
     lines <-
-      c(row.names(script)[grepl("# smallsets start", script$command)],
-        row.names(script)[grepl("# smallsets snap", script$command)],
-        row.names(script)[grepl("# smallsets resume", script$command)],
-        row.names(script)[grepl("# smallsets end", script$command)])
+      c(row.names(script)[grepl("# smallsets snap", script$command)],
+        row.names(script)[grepl("# smallsets resume", script$command)])
+    lines <- sort(as.integer(lines))
     
     # Find the type of each comment
     type <- NULL
     types <-
-      data.frame(command = script[row.names(script) %in% lines, ], type = NA)
+      data.frame(command = script[row.names(script) %in% lines,], type = NA)
     for (i in 1:nrow(types)) {
       types$type[i] <-
         strsplit(types$command[i], " ")[[1]][3]
@@ -71,108 +70,43 @@ write_smallset_code <-
     
     # Find start, snap, and end instructions
     captions$type <- types$type
-    captions_sub <- subset(captions, type != "resume")
+    captions_sub <- subset(captions, type == "snap")
     
     script$row_nums <- row.names(script)
     
-    # Get snap args for start instruction
-    start_args <-
-      gsub("# smallsets start ", "", script[grepl("# smallsets start", script$command), c("command")])
-    start_args <- gsub(" caption\\[.*", "", start_args)
-    start_args <- strsplit(start_args, " ")
-    start_loc <-
-      data.frame(
-        loc = as.character(rep(NA, length(start_args))),
-        name = as.character(rep(NA, length(start_args))),
-        row_nums = row.names(script)[grepl("# smallsets start", script$command)],
-        stops = captions_sub$stop[1]
-      )
-    if (length(start_args[[1]]) > 1) {
-      start_loc$loc <- start_args[[1]][1]
-      start_loc$name <- start_args[[1]][2]
-    } else {
-      start_loc$loc <- "+1"
-      start_loc$name <- start_args[[1]][1]
-    }
-    start_loc$add <- grepl("+", start_loc$loc, fixed = TRUE)
-    if (isTRUE(start_loc$add[1])) {
-      start_loc$loc <-
-        as.integer(start_loc$stops) + as.integer(start_loc$loc)
-    }
-    start_loc$type <- "start"
-    
-    # Get snap args for end instruction
-    end_args <-
-      gsub("# smallsets end ", "", script[grepl("# smallsets end", script$command), c("command")])
-    end_args <- gsub(" caption\\[.*", "", end_args)
-    end_args <- strsplit(end_args, " ")
-    end_loc <-
-      data.frame(
-        loc = as.character(rep(NA, length(end_args))),
-        name = as.character(rep(NA, length(end_args))),
-        row_nums = row.names(script)[grepl("# smallsets end", script$command)],
-        stops = captions_sub$stop[nrow(captions)]
-      )
-    if (length(end_args[[1]]) > 1) {
-      end_loc$loc <- end_args[[1]][1]
-      end_loc$name <- end_args[[1]][2]
-    } else {
-      end_loc$loc <- "+1"
-      end_loc$name <- end_args[[1]][1]
-    }
-    end_loc$add <- grepl("+", end_loc$loc, fixed = TRUE)
-    if (isTRUE(end_loc$add[1])) {
-      end_loc$loc <- as.integer(end_loc$stops) + as.integer(end_loc$loc)
-    }
-    end_loc$type <- "end"
-    
-    # Get snap args for intermediate snap instruction
+    # Get snap args
     snap_args <- gsub("# smallsets snap ", "",
                       script[row.names(script)[grepl("# smallsets snap", script$command)],
                              c("command")])
     snap_args <- gsub(" caption\\[.*", "", snap_args)
     snap_args <- strsplit(snap_args, " ")
-    if (nrow(captions_sub) > 2) {
-      stops <- captions_sub$stop[2:(1 + length(snap_args))]
-    } else {
-      stops <- as.character(rep(NA, length(snap_args)))
-    }
-    snap_locs <-
+    locs <-
       data.frame(
         loc = as.character(rep(NA, length(snap_args))),
         name = as.character(rep(NA, length(snap_args))),
         row_nums = row.names(script)[grepl("# smallsets snap", script$command)],
-        stops = stops
+        stops = captions_sub$stop
       )
-    if (length(snap_args) > 0) {
-      for (i in 1:length(snap_args)) {
-        if (length(snap_args[[i]]) > 1) {
-          snap_locs$loc[i] <- snap_args[[i]][1]
-          snap_locs$name[i] <- snap_args[[i]][2]
-        } else {
-          snap_locs$loc[i] <- "+1"
-          snap_locs$name[i] <- snap_args[[i]][1]
-        }
+    for (i in 1:length(snap_args)) {
+      if (length(snap_args[[i]]) > 1) {
+        locs$loc[i] <- snap_args[[i]][1]
+        locs$name[i] <- snap_args[[i]][2]
+      } else {
+        locs$loc[i] <- "+0"
+        locs$name[i] <- snap_args[[i]][1]
       }
     }
-    snap_locs$add <- grepl("+", snap_locs$loc, fixed = TRUE)
-    for (r in 1:nrow(snap_locs)) {
-      if (isTRUE(snap_locs$add[r])) {
-        snap_locs$loc[r] <-
-          as.integer(snap_locs$stops[r]) + as.integer(snap_locs$loc[r])
+    locs$add <- grepl("+", locs$loc, fixed = TRUE)
+    for (r in 1:nrow(locs)) {
+      if (isTRUE(locs$add[r])) {
+        locs$loc[r] <-
+          as.integer(locs$stops[r]) + as.integer(locs$loc[r])
       }
     }
-    if (length(snap_args) > 0) {
-      snap_locs$type <- "snap"
-    }
-    
-    # Merge snap location info for the different instruction types
-    locs <-
-      as.data.frame(rbind(start_loc, snap_locs, end_loc))[, c("loc", "name", "type")]
     locs$loc <- as.integer(locs$loc)
     
     # Subset to preprocessing code
-    script <- script[locs$loc[1]:locs$loc[nrow(locs)], ]
+    script <- script[locs$loc[1]:locs$loc[nrow(locs)],]
     script$row_nums <- NULL
     first <- as.integer(row.names(script)[1])
     
@@ -195,74 +129,75 @@ write_smallset_code <-
     }
     
     # Insert intermediate snapshots
-    if (length(snap_args) > 0) {
-      for (s in 2:(nrow(locs) - 1)) {
-        
-        # For Python script
-        if (lang == "py") {
+    for (s in 1:nrow(locs)) {
+      # For Python script
+      if (lang == "py") {
+        # For Smallset selection
+        if ("allROWS" %in% smallset) {
+          insertSnap <-
+            c(paste0("snapshots.append(", as.character(locs$name[s])), "[:])")
           
-          # For Smallset selection
-          if ("allROWS" %in% smallset) {
-            insertSnap <-
-              c(paste0("snapshots.append(", as.character(locs$name[s])), "[:])")
-            
           # For building the figure
-          } else {
-            insertSnap <- c(paste0(
-              "snapshots.append(",
-              as.character(locs$name[s]),
-              gen_rows2snap(as.character(locs$name[s]))
-            ))
-          }
-          
-          commands <-
-            c(script[row.names(script) %in% (first:locs$loc[s]), "command"],
-              insertSnap,
-              script[row.names(script) %in% (locs$loc[s] + 1):max(as.integer(row.names(script))), "command"])
-          script <- data.frame(command = commands)
-          row.names(script) <- first:(first + nrow(script) - 1)
-          locs$loc <-
-            ifelse(row.names(locs) > s, locs$loc + 1, locs$loc)
-          
-        # For R script
         } else {
+          insertSnap <- c(paste0(
+            "snapshots.append(",
+            as.character(locs$name[s]),
+            gen_rows2snap(as.character(locs$name[s]))
+          ))
+        }
+        
+        commands <-
+          c(script[row.names(script) %in% (first:locs$loc[s]), "command"],
+            insertSnap,
+            script[row.names(script) %in% (locs$loc[s] + 1):max(as.integer(row.names(script))), "command"])
+        script <- data.frame(command = commands)
+        row.names(script) <- first:(first + nrow(script) - 1)
+        locs$loc <-
+          ifelse(row.names(locs) > s, locs$loc + 1, locs$loc)
+        
+        # For R script
+      } else {
+        # For Smallset selection
+        if ("allROWS" %in% smallset) {
+          insertSnap <- c(paste0(
+            "snapshots[[",
+            as.character(s),
+            "]] <- ",
+            locs$name[s],
+            "[,]"
+          ))
           
-          # For Smallset selection
-          if ("allROWS" %in% smallset) {
-            insertSnap <- c(paste0(
+          # For building the figure
+        } else {
+          insertSnap <- c(
+            paste0(
               "snapshots[[",
               as.character(s),
               "]] <- ",
               locs$name[s],
-              "[,]"
-            ))
-            
-          # For building the figure
-          } else {
-            insertSnap <- c(
-              paste0(
-                "snapshots[[",
-                as.character(s),
-                "]] <- ",
-                locs$name[s],
-                "[(row.names(",
-                locs$name[s],
-                ") %in% c(",
-                paste(smallset, collapse = ", "),
-                ")), ]"
-              )
+              "[(row.names(",
+              locs$name[s],
+              ") %in% c(",
+              paste(smallset, collapse = ", "),
+              ")), ]"
             )
-          }
-          
+          )
+        }
+        
+        if (locs$loc[s] != max(as.integer(row.names(script)))) {
           commands <-
             c(script[row.names(script) %in% (first:locs$loc[s]), "command"],
               insertSnap,
               script[row.names(script) %in% (locs$loc[s] + 1):max(as.integer(row.names(script))), "command"])
-          script <- data.frame(command = commands)
-          row.names(script) <- first:(first + nrow(script) - 1)
-          locs$loc <-
-            ifelse(row.names(locs) > s, locs$loc + 1, locs$loc)
+        } else {
+          commands <-
+            c(script[row.names(script) %in% (first:locs$loc[s]), "command"], insertSnap)
         }
+        
+        script <- data.frame(command = commands)
+        row.names(script) <- first:(first + nrow(script) - 1)
+        locs$loc <-
+          ifelse(row.names(locs) > s, locs$loc + 1, locs$loc)
       }
     }
     
@@ -280,39 +215,23 @@ write_smallset_code <-
             "import numpy as np",
             "snapshots = []",
             functionStart,
-            paste0("snapshots.append(",
-                   locs$name[1],
-                   "[:])"),
             script$command,
-            paste0("snapshots.append(",
-                   locs$name[nrow(locs)],
-                   "[:])"),
             "return snapshots"
           )
-      
-      # For building the figure
+        
+        # For building the figure
       } else {
         script <-
           c(
             "import numpy as np",
             "snapshots = []",
             functionStart,
-            paste0(
-              "snapshots.append(",
-              locs$name[1],
-              gen_rows2snap(locs$name[1])
-            ),
             script$command,
-            paste0(
-              "snapshots.append(",
-              locs$name[nrow(locs)],
-              gen_rows2snap(locs$name[nrow(locs)])
-            ),
             "return snapshots"
           )
       }
       
-    # For R script
+      # For R script
     } else {
       functionStart <-
         paste0("apply_code <- function(", locs$name[1], ") {")
@@ -320,54 +239,20 @@ write_smallset_code <-
       # For Smallset selection
       if ("allROWS" %in% smallset) {
         script <-
-          c(
-            "snapshots <- list()",
+          c("snapshots <- list()",
             functionStart,
-            paste0("snapshots[[1]] <- ",
-                   locs$name[1],
-                   "[,]"),
             script$command,
-            paste0(
-              "snapshots[[",
-              as.character(nrow(locs)),
-              "]] <- ",
-              locs$name[nrow(locs)],
-              "[,]"
-            ),
             "return(snapshots)",
-            "}"
-          )
+            "}")
         
-      # For building the figure
+        # For building the figure
       } else {
         script <-
-          c(
-            "snapshots <- list()",
+          c("snapshots <- list()",
             functionStart,
-            paste0(
-              "snapshots[[1]] <- ",
-              locs$name[1],
-              "[(row.names(",
-              locs$name[1],
-              ") %in% c(",
-              paste(smallset, collapse = ", "),
-              ")), ]"
-            ),
             script$command,
-            paste0(
-              "snapshots[[",
-              nrow(locs),
-              "]] <- ",
-              locs$name[nrow(locs)],
-              "[(row.names(",
-              locs$name[nrow(locs)],
-              ") %in% c(",
-              paste(smallset, collapse = ", "),
-              ")), ]"
-            ),
             "return(snapshots)",
-            "}"
-          )
+            "}")
       }
     }
     

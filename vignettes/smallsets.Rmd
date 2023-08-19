@@ -67,20 +67,10 @@ The smallsets package currently supports data preprocessing workflows fitting th
 To make a Smallset Timeline with smallsets, add structured comments with snapshot instructions to your preprocessing script. All smallsets comments follow the same formula.
 
 <font size="4"> 
-**<span style="color: red;">#</span> + <span style="color: red;">smallsets</span> + <span style="color: red;">*instruction*</span> + <span style="color: red;">*place*</span> + <span style="color: red;">*name of data object*</span> + <span style="color: red;">caption[...]caption</span>**
+**# smallsets snap + <span style="color: red;">*place*</span> + <span style="color: red;">*name of data object*</span> + caption[<span style="color: red;">*text*</span>]caption**
 </font>
 
 **Example:** ```# smallsets snap +4 mydata caption[I removed rows because they contained implausible values.]caption```
-
-#### <span style="color: red;">instruction</span>
-There are four instructions available.
-
-1. start
-3. end
-3. snap
-4. resume
-
-In your script, *start* and *end* instructions must be provided. The *snap* instruction is for taking intermediate snapshots. The *resume* instruction is discussed in the section on [resume markers](#resume).
 
 #### <span style="color: red;">place</span>
 
@@ -88,10 +78,13 @@ There are three options for this argument.
 
 1. Specify the line of code that you would like the snapshot to be taken after, e.g., 17 means take the snapshot after the 17th line of code.
 2. Use a plus sign and a number to specify how many lines of code later to take the snapshot, e.g., +2 means take the snapshot two lines of code later.
-3. Don't specify anything, and a snapshot will be taken after the subsequent line of code.
+3. Don't specify anything, and a snapshot will be taken directly after the structured comment (i.e., before the next line of code).
 
 #### <span style="color: red;">name of data object</span>
 The name of the data object can change throughout the script. The snapshot is taken of the object specified in the comment.
+
+#### <span style="color: red;">text</span>
+This is the snapshot caption describing the preprocessing step.
 
 ## Example R script
 **s_data_preprocess.R** (Don't run this code block. It's an example preprocessing script.)
@@ -123,22 +116,6 @@ Below is the script s_data_preprocess.py, which does the same thing as s_data_pr
 **s_data_preprocess.py** (Don't run this code block. It's an example preprocessing script.)
 ```{python, code = readLines(system.file("s_data_preprocess.py", package = "smallsets")), eval=FALSE}
 ```
-
-## Isolate a data deletion
-
-If you'd like to isolate a data deletion in an intermediate snapshot, leave a blank line between the structured comment and the data deletion code. For example, if we want to split the middle Timeline snapshot into two snapshots, we can add another structured comment, and blank line, before the data deletion code.
-
-**s_data_preprocess_4.R** (Don't run this code block. It's an example preprocessing script.)
-```{R, code = readLines(system.file("s_data_preprocess_4.R", package = "smallsets")), eval=FALSE}
-```
-
-```{r timeline2, fig.width=7, fig.height=3, fig.retina=2, fig.align="center"}
-set.seed(145)
-
-Smallset_Timeline(data = s_data, 
-                  code = system.file("s_data_preprocess_4.R", package = "smallsets"))
-```
-
 
 ## Smallset selection{#selection}
 
