@@ -3,7 +3,7 @@ title: "smallsets User Guide"
 output: 
   rmarkdown::html_vignette:
     toc: true
-    toc_depth: 5
+    toc_depth: 4
 vignette: >
   %\VignetteIndexEntry{smallsets User Guide}
   %\VignetteEngine{knitr::rmarkdown}
@@ -28,10 +28,9 @@ library(smallsets)
 head(s_data)
 ```
 
-## The basics{#basics}
-Each Smallset Timeline is constructed from your dataset and R/R Markdown/Python data preprocessing script. Scripts must contain a series of [smallsets comments](#comments) with snapshot instructions. Your unprocessed dataset (`data`) and commented preprocessing script (`code`) are the only required inputs to `Smallset_Timeline`. 
+## Quick start example
 
-**Normally, you pass a character string to `code` (e.g., "my_code.R" or "/.../.../my_code.R").** However, the script s_data_preprocess.R is included in smallsets as an example and needs to be called with `system.file`.
+Run this block of code to build a Smallset Timeline. In RStudio, the figure will appear in the plots pane.
 
 ```{r timeline1, fig.width=7, fig.height=3, fig.retina=2, fig.align="center"}
 library(smallsets)
@@ -42,12 +41,19 @@ Smallset_Timeline(data = s_data,
                   code = system.file("s_data_preprocess.R", package = "smallsets"))
 ```
 
+**Normally, you pass a character string to `code` (e.g., "my_code.R" or "/.../.../my_code.R").** However, the script s_data_preprocess.R is included in smallsets as an example and needs to be called with `system.file`.
+
+## The basics
+
+Each Smallset Timeline is constructed from your dataset and R/R Markdown/Python data preprocessing script. Scripts must contain a series of [smallsets comments](#comments) with snapshot instructions. Your unprocessed dataset (`data`) and commented preprocessing script (`code`) are the only required inputs to `Smallset_Timeline`. 
+
 If s_data_preprocess.R was located in your working directory, the code would look like this.
+
 ```{r, eval=FALSE}
 Smallset_Timeline(data = s_data, code = "s_data_preprocess.R")
 ```
 
-### Supported workflows
+## Supported workflows
 
 The smallsets package currently supports data preprocessing workflows fitting the following description.
 
@@ -56,12 +62,17 @@ The smallsets package currently supports data preprocessing workflows fitting th
 3. The **preprocessing code does not change the row names** of the original data object as smallsets tracks rows by their names. Merges, joins, collapses, aggregations, and switches between the wide/long format generally involve writing over existing row names and are therefore generally not currently supported by smallsets. Renaming a column results in a column deletion then addition in the Timeline.
 4. All preprocessing **package dependencies are loaded** in the current R session. Information on installing Python packages with `reticulate` can be found [here](https://rstudio.github.io/reticulate/articles/python_packages.html).
 
-### Structured comments{#comments}
+## Structured comments{#comments}
 
-Below is the R preprocessing script for s_data (s_data_preprocess.R). It contains several smallsets comments. All comments follow the same formula.
+To make a Smallset Timeline with smallsets, add structured comments with snapshot instructions to your preprocessing script. All smallsets comments follow the same formula.
 
-**hash + smallsets + instruction + name of data object + caption[...]caption**
+<font size="4"> 
+**<span style="color: red;">#</span> + <span style="color: red;">smallsets</span> + <span style="color: red;">*instruction*</span> + <span style="color: red;">*place*</span> + <span style="color: red;">*name of data object*</span> + <span style="color: red;">caption[...]caption</span>**
+</font>
 
+**Example:** ```# smallsets snap +4 mydata caption[I removed rows because they contained implausible values.]caption```
+
+#### <span style="color: red;">instruction</span>
 There are four instructions available.
 
 1. start
@@ -69,19 +80,27 @@ There are four instructions available.
 3. snap
 4. resume
 
-In your script, *start* and *end* instructions must be provided. A snapshot is always taken directly after the *start* instruction and immediately before the *end* instruction. The *snap* instruction results in a snapshot being taken after the subsequent line of code. The *resume* instruction is discussed in the section on [resume markers](#resume).
+In your script, *start* and *end* instructions must be provided. The *snap* instruction is for taking intermediate snapshots. The *resume* instruction is discussed in the section on [resume markers](#resume).
 
+#### <span style="color: red;">place</span>
+
+There are three options for this argument.
+
+1. Specify the line of code that you would like the snapshot to be taken after, e.g., 17 means take the snapshot after the 17th line of code.
+2. Use a plus sign and a number to specify how many lines of code later to take the snapshot, e.g., +2 means take the snapshot two lines of code later.
+3. Don't specify anything, and a snapshot will be taken after the subsequent line of code.
+
+#### <span style="color: red;">name of data object</span>
 The name of the data object can change throughout the script. The snapshot is taken of the object specified in the comment.
 
-<br />
+## Example R script
 **s_data_preprocess.R** (Don't run this code block. It's an example preprocessing script.)
 ```{r, code = readLines(system.file("s_data_preprocess.R", package = "smallsets")), eval=FALSE}
 ```
 
-### R Markdown example
+## R Markdown example
 Smallset Timelines can be built for preprocessing code in R Markdown files. If you choose to include the Smallset Timeline as a figure within the R Markdown report itself, it works best to build the Smallset Timeline before the preprocessing code is executed, so that you don't have to reload your (un-preprocessed) data later to build the Smallset Timeline. You assign the Smallset Timeline figure to an object, hiding that code with `echo=FALSE`. You can then plot it anywhere in the report. See the example below.
 
-<br />
 **s_data_preprocess.Rmd** (Don't run this code block. It's an example script.)
 ```{R, code = readLines(system.file("s_data_preprocess.Rmd", package = "smallsets")), eval=FALSE}
 ```
@@ -92,8 +111,7 @@ rmarkdown::render(system.file("s_data_preprocess.Rmd", package = "smallsets"),
                   output_dir = getwd())
 ```
 
-
-### Python example
+## Python example
 Python scripts can be passed to the R command `Smallset_Timeline`.
 ```{r, eval=FALSE}
 Smallset_Timeline(data = s_data, 
@@ -102,16 +120,14 @@ Smallset_Timeline(data = s_data,
 
 Below is the script s_data_preprocess.py, which does the same thing as s_data_preprocess.R. The smallsets commenting system is the same in Python.
 
-<br />
 **s_data_preprocess.py** (Don't run this code block. It's an example preprocessing script.)
 ```{python, code = readLines(system.file("s_data_preprocess.py", package = "smallsets")), eval=FALSE}
 ```
 
-### Isolate a data deletion
+## Isolate a data deletion
 
 If you'd like to isolate a data deletion in an intermediate snapshot, leave a blank line between the structured comment and the data deletion code. For example, if we want to split the middle Timeline snapshot into two snapshots, we can add another structured comment, and blank line, before the data deletion code.
 
-<br />
 **s_data_preprocess_4.R** (Don't run this code block. It's an example preprocessing script.)
 ```{R, code = readLines(system.file("s_data_preprocess_4.R", package = "smallsets")), eval=FALSE}
 ```
@@ -180,7 +196,6 @@ Smallset_Timeline(data = s_data,
 
 There are built-in options to customise a Timeline. The examples in this section highlight some of them. See `?Smallset_Timeline` for a full list of options.
 
-<br />
 **Example 1**
 
 Some differences: custom colour palette, data in the snapshots, highlighting missing data, a different font, and no ghost data.
@@ -206,7 +221,6 @@ Smallset_Timeline(
 )
 ```
 
-<br />
 **Example 2**
 
 Some differences: use of a built-in colour palette, split into two rows, and rotated column names.
@@ -250,7 +264,6 @@ A resume marker is a vertical line between snapshots signalling that preprocessi
 
 In this example, we resume data preprocessing to transform C9 into a categorical variable.
 
-<br />
 **s_data_preprocess_resume.R** (Don't run this code block. It's an example preprocessing script.)
 ```{r, code = readLines(system.file("s_data_preprocess_resume.R", package = "smallsets")), eval=FALSE}
 ```
