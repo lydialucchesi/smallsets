@@ -1,8 +1,3 @@
-
-<br/>
-
-<img src="man/figures/hex_sticker.png" width="17%" style="float: right;" style="display: block; padding= 1%" />
-
 # smallsets: Visual Documentation for Data Preprocessing in R and Python
 
 [![CRAN

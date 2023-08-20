@@ -64,13 +64,15 @@ The smallsets package currently supports data preprocessing workflows fitting th
 
 ## Structured comments{#comments}
 
-To make a Smallset Timeline with smallsets, add structured comments with snapshot instructions to your preprocessing script. All smallsets comments follow the same formula.
+To make a Smallset Timeline with smallsets, you need to add structured comments with snapshot instructions to your preprocessing script. All smallsets comments follow the same formula.
 
 <font size="4"> 
 **# smallsets snap + <span style="color: red;">*place*</span> + <span style="color: red;">*name of data object*</span> + caption[<span style="color: red;">*text*</span>]caption**
 </font>
 
-**Example:** ```# smallsets snap +4 mydata caption[I removed rows because they contained implausible values.]caption```
+**Ex:** ```# smallsets snap +4 mydata caption[I removed rows that had implausible values.]caption```
+
+The [following section](#Rexample) includes an example R preprocessing script with smallsets structured comments.
 
 #### <span style="color: red;">place</span>
 
@@ -86,9 +88,20 @@ The name of the data object can change throughout the script. The snapshot is ta
 #### <span style="color: red;">text</span>
 This is the snapshot caption describing the preprocessing step.
 
-## Example R script
+## Example R script {#Rexample}
+
+This is the example R preprocessing script. It demonstrates how to add smallsets structured comments to a preprocessing script. Based on these comment *place* arguments (empty, ```+2```, and ```+1```), snapshots will be taken after line 1, line 7, and line 12.
+
 **s_data_preprocess.R** (Don't run this code block. It's an example preprocessing script.)
-```{r, code = readLines(system.file("s_data_preprocess.R", package = "smallsets")), eval=FALSE}
+```{r, code = readLines(system.file("s_data_preprocess.R", package = "smallsets")), eval=FALSE, attr.source='.numberLines'}
+```
+
+### Alternative comment placement
+
+Alternatively, you could place smallsets comments as a block above the preprocessing code, and specify in the *place* argument the line of code after which you would like each snapshot to be taken. This comment set-up produces the same Smallset Timeline as the comment set-up in the R script above.
+
+**s_data_preprocess_block.R** (Don't run this code block. It's an example preprocessing script.)
+```{r, code = readLines(system.file("s_data_preprocess_block.R", package = "smallsets")), eval=FALSE, attr.source='.numberLines'}
 ```
 
 ## R Markdown example
@@ -119,7 +132,7 @@ Below is the script s_data_preprocess.py, which does the same thing as s_data_pr
 
 ## Smallset selection{#selection}
 
-There are two Smallset decisions to make: how many rows (`rowCount`) and how to select them (`rowSelect`).
+A Smallset is a small set of rows (5-15) from the original dataset containing instances of data preprocessing changes. For Smallset selection, there are two decisions to make: 1) how many rows (`rowCount`) and 2) which automated selection method to use (`rowSelect`).
 
 If `rowSelect = NULL` (the default setting), rows are selected through a simple random sample. The following code would randomly sample seven rows for the Smallset.
 
@@ -148,7 +161,7 @@ Smallset_Timeline(data = s_data,
 
 After the optimisation problem is solved once, the solution can be passed to `rowNums` to avoid having to re-solve it with each run of `Smallset_Timeline`.
 
-```{r timeline3, fig.width = 7, fig.height = 3, fig.align='center'}
+```{r timeline3, fig.width = 7, fig.height = 3, fig.retina = 2, fig.align='center'}
 Smallset_Timeline(data = s_data, 
                   code = system.file("s_data_preprocess.R", package = "smallsets"), 
                   rowCount = 5, rowNums = c(27, 42, 95, 96, 99))
@@ -162,7 +175,7 @@ Smallset_Timeline(data = s_data,
                   rowSelect = 2, rowReturn = T)
 ```
 
-```{r timeline4, echo=FALSE, fig.width = 7, fig.height = 3, fig.align='center'}
+```{r timeline4, echo=FALSE, fig.width = 7, fig.height = 3, fig.retina = 2, fig.align='center'}
 Smallset_Timeline(data = s_data,
                   code = system.file("s_data_preprocess.R", package = "smallsets"),
                   rowNums = c(3, 32, 80, 97, 99),
@@ -176,7 +189,7 @@ There are built-in options to customise a Timeline. The examples in this section
 **Example 1**
 
 Some differences: custom colour palette, data in the snapshots, highlighting missing data, a different font, and no ghost data.
-```{r timeline5, fig.width = 7, fig.height = 4, fig.align='center'}
+```{r timeline5, fig.width = 7, fig.height = 4, fig.retina = 2, fig.align='center'}
 set.seed(145)
 
 Smallset_Timeline(
@@ -200,13 +213,13 @@ Smallset_Timeline(
 
 **Example 2**
 
-Some differences: use of a built-in colour palette, split into two rows, and rotated column names.
-```{r timeline6, fig.width = 5, fig.height = 6, fig.align='center'}
+Some differences: four snapshots, use of a built-in colour palette, split into two rows, and rotated column names.
+```{r timeline6, fig.width = 5, fig.height = 6, fig.retina = 2, fig.align='center'}
 set.seed(145)
 
 Smallset_Timeline(
   data = s_data,
-  code = system.file("s_data_preprocess.R", package = "smallsets"),
+  code = system.file("s_data_preprocess_4.R", package = "smallsets"),
   colours = 3,
   ghostData = TRUE,
   missingDataTints = TRUE,
