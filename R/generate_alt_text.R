@@ -17,16 +17,16 @@ generate_alt_text <-
     at <- c(at, write_snapshots(tables))
     
     # Write about colour legend
-    if (sum(grepl("Data has been edited.", legendDF)) == 1) {
-      colourEdit <- sapply(fourCols[2], plotrix::color.id)[1]
+    if (sum(grepl("Edit   ", legendDF)) == 1) {
+      colourEdit <- sapply(fourCols[4], plotrix::color.id)[1]
       at <- c(at, write_colourEdit(colourEdit))
     }
-    if (sum(grepl("Data has been added.", legendDF)) == 1) {
-      colourAdd <- sapply(fourCols[3], plotrix::color.id)[1]
+    if (sum(grepl("Add   ", legendDF)) == 1) {
+      colourAdd <- sapply(fourCols[2], plotrix::color.id)[1]
       at <- c(at, write_colourAdd(colourAdd))
     }
-    if (sum(grepl("Data will be deleted.", legendDF)) == 1) {
-      colourDelete <- sapply(fourCols[4], plotrix::color.id)[1]
+    if (sum(grepl("Delete   ", legendDF)) == 1) {
+      colourDelete <- sapply(fourCols[3], plotrix::color.id)[1]
       at <- c(at, write_colourDelete(colourDelete))
     }
     

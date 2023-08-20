@@ -4,7 +4,7 @@ snapshot2 <- data.frame(C1 = c(1, 1), C2 = c(4, 5), C3 = c(7, 8), C4 = c(10, 11)
 smallsetList <- list()
 smallsetList[[1]] <- snapshot1
 smallsetList[[2]] <- snapshot2
-fourCols <- c("#E6E4DF", "#B4D5F5", "#CDAFEE", "#FBE49D")
+fourCols <- c("#E6E4DF", "#CDAFEE", "#FBE49D",  "#B4D5F5")
 altText = FALSE
 
 dataChanges <- find_data_changes(smallsetList, fourCols, altText)

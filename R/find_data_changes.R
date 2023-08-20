@@ -37,13 +37,13 @@ find_data_changes <- function(smallsetList,
     # Compare rows
     rowsDrop <- setdiff(rownames(lprior), rownames(lcurrent))
     if (length(rowsDrop) > 0) {
-      tprior <- flextable::color(tprior, color = fourCols[4], i = rowsDrop)
+      tprior <- flextable::color(tprior, color = fourCols[3], i = rowsDrop)
     }
     
     rowsAdd <- setdiff(rownames(lcurrent), rownames(lprior))
     if (length(rowsAdd) > 0) {
       tcurrent <-
-        flextable::color(tcurrent, color = fourCols[3], i = rowsAdd)
+        flextable::color(tcurrent, color = fourCols[2], i = rowsAdd)
     }
     
     # Compare columns
@@ -51,7 +51,7 @@ find_data_changes <- function(smallsetList,
     if (length(colsDrop) > 0) {
       tprior <-
         flextable::color(tprior,
-                         color = fourCols[4],
+                         color = fourCols[3],
                          j = colsDrop,
                          part = "all")
     }
@@ -60,7 +60,7 @@ find_data_changes <- function(smallsetList,
     if (length(colsAdd) > 0) {
       tcurrent <-
         flextable::color(tcurrent,
-                         color = fourCols[3],
+                         color = fourCols[2],
                          j = colsAdd,
                          part = "all")
     }
@@ -110,7 +110,7 @@ find_data_changes <- function(smallsetList,
         for (v in 1:nrow(adjData)) {
           tcurrent <- flextable::color(
             tcurrent,
-            color = fourCols[2],
+            color = fourCols[4],
             i = adjData$nmbr[v],
             j = adjData$c[v]
           )

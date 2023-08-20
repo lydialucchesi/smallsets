@@ -214,14 +214,14 @@ Smallset_Timeline <- function(data,
   # Prepare colour legend
   descriptions <-
     c(
-      "Data has not changed.",
-      "Data has been edited.",
-      "Data has been added.",
-      "Data will be deleted."
+      "Keep   ",
+      "Add   ",
+      "Delete   ",
+      "Edit   "
     )
-  if (isTRUE(missingDataTints)) {
-    descriptions <- paste0(descriptions, "\nTint is missing data.")
-  }
+  # if (isTRUE(missingDataTints)) {
+  #   descriptions <- paste0(descriptions, "\nTint is missing data.")
+  # }
   legendDF <-
     data.frame(colValue = fourCols, description = descriptions)
   legendDF <- subset(legendDF, legendDF$colValue %in% colsPresent)
@@ -318,10 +318,10 @@ Smallset_Timeline <- function(data,
       "', colour = 'black'),",
       "legend.key.size = unit(",
       sizing[["icons"]],
-      ", 'line'),
-        legend.position = 'bottom',
-        legend.title = element_blank(),
-        legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))"
+      ", 'line'), 
+      legend.position = 'bottom', 
+      legend.title = element_blank(),
+      legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))"
     )
   
   # Generate alt text for the Timeline
