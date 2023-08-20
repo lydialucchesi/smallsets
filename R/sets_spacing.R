@@ -32,7 +32,7 @@ sets_spacing <- function(captions = NULL,
   spacing <- list()
   
   if (is.null(captions)) {
-    spacing$captions <- 3
+    spacing$captions <- 2.5
   } else {
     spacing$captions <- captions
   }

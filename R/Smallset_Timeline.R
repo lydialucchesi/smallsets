@@ -24,8 +24,8 @@
 #'   preprocessing code.
 #' @param colours Either 1, 2, or 3 for one of the pre-built colour schemes (all
 #'   are colour-blind-friendly and 3 is black/white-printer-friendly) or a list
-#'   with four hex colour codes for same, edit, add, and delete (e.g., list(same
-#'   = "#E6E3DF", edit = "#FFC500", add = "#5BA2A6", delete = "#DDC492")).
+#'   with four hex colour codes for keep, edit, add, and delete (e.g., list(keep
+#'   = "#E6E3DF", add = "#5BA2A6", delete = "#DDC492", edit = "#FFC500")).
 #' @param altText A logical. TRUE generates alternative text (alt text) for the
 #'   Smallset Timeline and prints it to the console.
 #' @param printedData A logical. TRUE prints data values in the Smallset
@@ -131,8 +131,17 @@ Smallset_Timeline <- function(data,
   
   # Get four tile colours ready
   if (inherits(colours, "list")) {
-    fourCols <- unlist(colours,
-                       use.names = FALSE)
+    k <- colours$keep
+    a <- colours$add
+    d <- colours$delete
+    e <- colours$edit
+    if (length(c(k, a, d, e)) != 4) {
+      stop("When specifying custom colours, 
+      must specify four colours for 
+      keep, add, delete, and edit. 
+      See ?Smallset_Timeline.")
+    }
+    fourCols <- c(k, a, d, e)
   } else {
     fourCols <- unlist(return_scheme(colours),
                        use.names = FALSE)

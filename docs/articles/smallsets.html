@@ -129,7 +129,7 @@ figure will appear in the plots pane.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="smallsets_files/figure-html/timeline1-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smallsets_files/figure-html/timeline1-1.png" width="768" style="display: block; margin: auto;"></p>
 <p><strong>Normally, you pass a character string to <code>code</code>
 (e.g., “my_code.R” or “/…/…/my_code.R”).</strong> However, the script
 s_data_preprocess.R is included in smallsets as an example and needs to
@@ -409,7 +409,7 @@ run of <code>Smallset_Timeline</code>.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>, </span>
 <span>                  rowCount <span class="op">=</span> <span class="fl">5</span>, rowNums <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">27</span>, <span class="fl">42</span>, <span class="fl">95</span>, <span class="fl">96</span>, <span class="fl">99</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="smallsets_files/figure-html/timeline3-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smallsets_files/figure-html/timeline3-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>Here, the <em>coverage</em> solution misses a data edit example in
 the second snapshot, motivating use of the other selection method
 (<code>rowSelect = 2</code>): the <em>coverage + variety</em>
@@ -423,7 +423,7 @@ this should be done with caution.</p>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>, </span>
 <span>                  rowSelect <span class="op">=</span> <span class="fl">2</span>, rowReturn <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Smallset rows: 3, 32, 80, 97, 99</span></span></code></pre>
-<p><img src="smallsets_files/figure-html/timeline4-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smallsets_files/figure-html/timeline4-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="customisation">Timeline customisation<a class="anchor" aria-label="anchor" href="#customisation"></a>
@@ -433,7 +433,8 @@ this section highlight some of them. See <code><a href="../reference/Smallset_Ti
 for a full list of options.</p>
 <p><strong>Example 1</strong></p>
 <p>Some differences: custom colour palette, data in the snapshots,
-highlighting missing data, a different font, and no ghost data.</p>
+highlighting missing data, a different font, no ghost data, and altered
+sizing, spacing, and labelling.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">145</span><span class="op">)</span></span>
 <span></span>
@@ -441,20 +442,21 @@ highlighting missing data, a different font, and no ghost data.</p>
 <span>  data <span class="op">=</span> <span class="va">s_data</span>,</span>
 <span>  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>,</span>
 <span>  colours <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    same <span class="op">=</span> <span class="st">"#E6E3DF"</span>,</span>
-<span>    edit <span class="op">=</span> <span class="st">"#FFC500"</span>,</span>
+<span>    keep <span class="op">=</span> <span class="st">"#E6E3DF"</span>,</span>
 <span>    add <span class="op">=</span> <span class="st">"#5BA2A6"</span>,</span>
-<span>    delete <span class="op">=</span> <span class="st">"#DDC492"</span></span>
+<span>    delete <span class="op">=</span> <span class="st">"#FF4040"</span>,</span>
+<span>    edit <span class="op">=</span> <span class="st">"#FFC500"</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  printedData <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  truncateData <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  missingDataTints <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ghostData <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  font <span class="op">=</span> <span class="st">"Palatino"</span>,</span>
-<span>  sizing <span class="op">=</span> <span class="fu"><a href="../reference/sets_sizing.html">sets_sizing</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span>,</span>
-<span>  labelling <span class="op">=</span> <span class="fu"><a href="../reference/sets_labelling.html">sets_labelling</a></span><span class="op">(</span>labelCol <span class="op">=</span> <span class="st">"darker"</span>, labelColDif <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  sizing <span class="op">=</span> <span class="fu"><a href="../reference/sets_sizing.html">sets_sizing</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fl">2</span>, captions <span class="op">=</span> <span class="fl">3.5</span>, columns <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span>,</span>
+<span>  labelling <span class="op">=</span> <span class="fu"><a href="../reference/sets_labelling.html">sets_labelling</a></span><span class="op">(</span>labelCol <span class="op">=</span> <span class="st">"darker"</span>, labelColDif <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  spacing <span class="op">=</span> <span class="fu"><a href="../reference/sets_spacing.html">sets_spacing</a></span><span class="op">(</span>captions <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="smallsets_files/figure-html/timeline5-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smallsets_files/figure-html/timeline5-1.png" width="768" style="display: block; margin: auto;"></p>
 <p><strong>Example 2</strong></p>
 <p>Some differences: four snapshots, use of a built-in colour palette,
 split into two rows, and rotated column names.</p>

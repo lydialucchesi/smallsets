@@ -32,7 +32,7 @@ head(s_data)
 
 Run this block of code to build a Smallset Timeline. In RStudio, the figure will appear in the plots pane.
 
-```{r timeline1, fig.width=7, fig.height=3, fig.retina=2, fig.align="center"}
+```{r timeline1, fig.width=8, fig.height=3, fig.retina=2, fig.align="center"}
 library(smallsets)
 
 set.seed(145)
@@ -161,7 +161,7 @@ Smallset_Timeline(data = s_data,
 
 After the optimisation problem is solved once, the solution can be passed to `rowNums` to avoid having to re-solve it with each run of `Smallset_Timeline`.
 
-```{r timeline3, fig.width = 7, fig.height = 3, fig.retina = 2, fig.align='center'}
+```{r timeline3, fig.width=8, fig.height = 3, fig.retina = 2, fig.align='center'}
 Smallset_Timeline(data = s_data, 
                   code = system.file("s_data_preprocess.R", package = "smallsets"), 
                   rowCount = 5, rowNums = c(27, 42, 95, 96, 99))
@@ -175,7 +175,7 @@ Smallset_Timeline(data = s_data,
                   rowSelect = 2, rowReturn = T)
 ```
 
-```{r timeline4, echo=FALSE, fig.width = 7, fig.height = 3, fig.retina = 2, fig.align='center'}
+```{r timeline4, echo=FALSE, fig.width=8, fig.height = 3, fig.retina = 2, fig.align='center'}
 Smallset_Timeline(data = s_data,
                   code = system.file("s_data_preprocess.R", package = "smallsets"),
                   rowNums = c(3, 32, 80, 97, 99),
@@ -188,26 +188,27 @@ There are built-in options to customise a Timeline. The examples in this section
 
 **Example 1**
 
-Some differences: custom colour palette, data in the snapshots, highlighting missing data, a different font, and no ghost data.
-```{r timeline5, fig.width = 7, fig.height = 4, fig.retina = 2, fig.align='center'}
+Some differences: custom colour palette, data in the snapshots, highlighting missing data, a different font, no ghost data, and altered sizing, spacing, and labelling.
+```{r timeline5, fig.width=8, fig.height = 4, fig.retina = 2, fig.align='center'}
 set.seed(145)
 
 Smallset_Timeline(
   data = s_data,
   code = system.file("s_data_preprocess.R", package = "smallsets"),
   colours = list(
-    same = "#E6E3DF",
-    edit = "#FFC500",
+    keep = "#E6E3DF",
     add = "#5BA2A6",
-    delete = "#DDC492"
+    delete = "#FF4040",
+    edit = "#FFC500"
   ),
   printedData = TRUE,
   truncateData = 4,
   missingDataTints = TRUE,
   ghostData = FALSE,
   font = "Palatino",
-  sizing = sets_sizing(data = 1.5),
-  labelling = sets_labelling(labelCol = "darker", labelColDif = 1)
+  sizing = sets_sizing(data = 2, captions = 3.5, columns = 3.5),
+  labelling = sets_labelling(labelCol = "darker", labelColDif = 1),
+  spacing = sets_spacing(captions = 3)
 )
 ```
 

@@ -34,19 +34,19 @@ sets_sizing <- function(captions = NULL,
   sizing <- list()
   
   if (is.null(captions)) {
-    sizing$captions <- 2.5
+    sizing$captions <- 3
   } else {
     sizing$captions <- captions
   }
   
   if (is.null(columns)) {
-    sizing$columns <- 2.5
+    sizing$columns <- 3
   } else {
     sizing$columns <- columns
   }
   
   if (is.null(data)) {
-    sizing$data <- 2.5
+    sizing$data <- 2
   } else {
     sizing$data <- data
   }

@@ -53,8 +53,8 @@ preprocessing code.}
 
 \item{colours}{Either 1, 2, or 3 for one of the pre-built colour schemes (all
 are colour-blind-friendly and 3 is black/white-printer-friendly) or a list
-with four hex colour codes for same, edit, add, and delete (e.g., list(same
-= "#E6E3DF", edit = "#FFC500", add = "#5BA2A6", delete = "#DDC492")).}
+with four hex colour codes for keep, edit, add, and delete (e.g., list(keep
+= "#E6E3DF", add = "#5BA2A6", delete = "#DDC492", edit = "#FFC500")).}
 
 \item{altText}{A logical. TRUE generates alternative text (alt text) for the
 Smallset Timeline and prints it to the console.}
