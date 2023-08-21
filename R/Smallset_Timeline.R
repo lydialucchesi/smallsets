@@ -228,9 +228,6 @@ Smallset_Timeline <- function(data,
       "Delete   ",
       "Edit   "
     )
-  # if (isTRUE(missingDataTints)) {
-  #   descriptions <- paste0(descriptions, "\nTint is missing data.")
-  # }
   legendDF <-
     data.frame(colValue = fourCols, description = descriptions)
   legendDF <- subset(legendDF, legendDF$colValue %in% colsPresent)
