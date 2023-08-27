@@ -92,6 +92,17 @@ Smallset_Timeline <- function(data,
     stop("Must specify code. See ?Smallset_Timeline.")
   }
   
+  # Check for v1.0.0 commenting system
+  comment_check <- readLines(code)
+  check1 <- sum(grepl("# smallsets start", comment_check))
+  check2 <- sum(grepl("# smallsets end", comment_check))
+  if (check1 > 0 | check2 > 0) {
+    stop("Old smallsets structured comments detected! 
+    The structured comments were updated in v2.0.0 
+    of smallsets. See the vignette or online user 
+    guide for instructions on the new format.")
+  }
+  
   lang <- tools::file_ext(code)
   if (!lang %in% c("R", "Rmd", "py", "ipynb")) {
     stop(
