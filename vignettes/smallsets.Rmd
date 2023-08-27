@@ -145,6 +145,24 @@ Smallset_Timeline(data = s_data,
 
 The example Jupyter Notebook can be viewed [here](https://github.com/lydialucchesi/smallsets/blob/main/inst/s_data_preprocess.ipynb).
 
+### Run smallsets in a Jupyter Notebook
+
+If you want to execute smallsets in a Jupyter Notebook, you can do so using [Rmagic](https://rpy2.github.io/doc/latest/html/interactive.html#rmagic).
+
+After starting Rmagic, run smallsets in a `%%R` magic cell.
+
+```{python, eval=FALSE}
+%load_ext rpy2.ipython
+```
+
+```{python, eval=FALSE}
+%%R -w 1000 -h 500 -r 100
+
+library("smallsets")
+
+Smallset_Timeline(data = s_data, code = "s_data_preprocess.ipynb")
+```
+
 ## Smallset selection {#Smallset_selection}
 
 A Smallset is a small set of rows (5-15) from the original dataset containing instances of data preprocessing changes. For Smallset selection, there are two decisions to make: 1) how many rows (`rowCount`) and 2) which automated selection method to use (`rowSelect`).
