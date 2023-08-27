@@ -19,3 +19,4 @@
 ^docs$
 ^pkgdown$
 ^index\.md$
+^inst/.ipynb_checkpoints

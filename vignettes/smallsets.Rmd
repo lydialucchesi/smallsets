@@ -10,7 +10,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## Smallset Timelines
+## Smallset Timelines {#Smallset_Timelines}
 
 In this vignette, we explain how to use smallsets to build Smallset Timelines. A Smallset Timeline (or Timeline) is a simple visualisation of data preprocessing decisions. More information on Timelines can be found in the Smallset Timeline paper and on YouTube.
 
@@ -18,7 +18,7 @@ In this vignette, we explain how to use smallsets to build Smallset Timelines. A
 * [3-minute YouTube video](https://www.youtube.com/watch?v=_fpn02h3IUo)
 * [15-minute YouTube video](https://www.youtube.com/watch?v=I_ksOv6rj1Y)
 
-## Example dataset{#example}
+## Example dataset {#Example_dataset}
 
 In this vignette, we use the synthetic dataset s_data, which is included in smallsets. It contains 100 observations and 8 variables (C1-C8). See `?s_data` for more information.
 
@@ -28,7 +28,7 @@ library(smallsets)
 head(s_data)
 ```
 
-## Quick start example
+## Quick start example {#Quick_start_example}
 
 Run this block of code to build a Smallset Timeline. In RStudio, the figure will appear in the plots pane.
 
@@ -43,9 +43,9 @@ Smallset_Timeline(data = s_data,
 
 **Normally, you pass a character string to `code` (e.g., "my_code.R" or "/.../.../my_code.R").** However, the script s_data_preprocess.R is included in smallsets as an example and needs to be called with `system.file`.
 
-## The basics
+## The basics {#The_basics}
 
-Each Smallset Timeline is constructed from your dataset and R/R Markdown/Python data preprocessing script. Scripts must contain a series of [smallsets comments](#comments) with snapshot instructions. Your unprocessed dataset (`data`) and commented preprocessing script (`code`) are the only required inputs to `Smallset_Timeline`. 
+Each Smallset Timeline is constructed from your dataset and R/R Markdown/Python/Jupyter Notebook data preprocessing script. Scripts must contain a series of [smallsets comments](#comments) with snapshot instructions. Your unprocessed dataset (`data`) and commented preprocessing script (`code`) are the only required inputs to `Smallset_Timeline`. 
 
 If s_data_preprocess.R was located in your working directory, the code would look like this.
 
@@ -53,16 +53,16 @@ If s_data_preprocess.R was located in your working directory, the code would loo
 Smallset_Timeline(data = s_data, code = "s_data_preprocess.R")
 ```
 
-## Supported workflows
+## Supported workflows {#Supported_workflows}
 
 The smallsets package currently supports data preprocessing workflows fitting the following description.
 
 1. Your **dataset is tabular** and of class data.frame, data.table, or tibble. Objects of class data.table and tibble are immediately converted to a data.frame by smallsets.
-2. All preprocessing code is contained in **one R, R Markdown, or Python file**. Jupyter notebooks (i.e., files with extension .ipynb) are not currently supported.
+2. All preprocessing code is contained in **one R, R Markdown, Python, or Jupyter Notebook file**.
 3. The **preprocessing code does not change the row names** of the original data object as smallsets tracks rows by their names. Merges, joins, collapses, aggregations, and switches between the wide/long format generally involve writing over existing row names and are therefore generally not currently supported by smallsets. Renaming a column results in a column deletion then addition in the Timeline.
 4. All preprocessing **package dependencies are loaded** in the current R session. Information on installing Python packages with `reticulate` can be found [here](https://rstudio.github.io/reticulate/articles/python_packages.html).
 
-## Structured comments{#comments}
+## Structured comments {#Structured_comments}
 
 To make a Smallset Timeline with smallsets, you need to add structured comments with snapshot instructions to your preprocessing script. All smallsets comments follow the same formula.
 
@@ -72,7 +72,7 @@ To make a Smallset Timeline with smallsets, you need to add structured comments 
 
 **Ex:** ```# smallsets snap +4 mydata caption[I removed rows that had implausible values.]caption```
 
-The [following section](#Rexample) includes an example R preprocessing script with smallsets structured comments.
+The [following section](#R_example) includes an example R preprocessing script with smallsets structured comments.
 
 #### <span style="color: red;">place</span>
 
@@ -88,7 +88,7 @@ The name of the data object can change throughout the script. The snapshot is ta
 #### <span style="color: red;">text</span>
 This is the snapshot caption describing the preprocessing step.
 
-## Example R script {#Rexample}
+## R example {#R_example}
 
 This is the example R preprocessing script. It demonstrates how to add smallsets structured comments to a preprocessing script. Based on these comment *place* arguments (empty, ```+2```, and ```+1```), snapshots will be taken after line 1, line 7, and line 12.
 
@@ -104,20 +104,24 @@ Alternatively, you could place smallsets comments as a block above the preproces
 ```{r, code = readLines(system.file("s_data_preprocess_block.R", package = "smallsets")), eval=FALSE, attr.source='.numberLines'}
 ```
 
-## R Markdown example
-Smallset Timelines can be built for preprocessing code in R Markdown files. If you choose to include the Smallset Timeline as a figure within the R Markdown report itself, it works best to build the Smallset Timeline before the preprocessing code is executed, so that you don't have to reload your (un-preprocessed) data later to build the Smallset Timeline. You assign the Smallset Timeline figure to an object, hiding that code with `echo=FALSE`. You can then plot it anywhere in the report. See the example below.
+## R Markdown example {#R_Markdown_example}
+Smallset Timelines can be built for preprocessing code in R Markdown files. If you choose to include the Smallset Timeline as a figure within the R Markdown report itself, it works best to build the Smallset Timeline before the preprocessing code is executed, so that you don't have to reload your (un-preprocessed) data later to build the Smallset Timeline. You assign the Smallset Timeline figure to an object and hide that code with `echo=FALSE`. You can then plot that object anywhere in the report.
 
-**s_data_preprocess.Rmd** (Don't run this code block. It's an example script.)
-```{R, code = readLines(system.file("s_data_preprocess.Rmd", package = "smallsets")), eval=FALSE}
+```{R, eval=FALSE}
+Smallset_Timeline(data = s_data, 
+                  code = system.file("s_data_preprocess.Rmd", package = "smallsets"))
 ```
 
-To see the compiled report, run the following code. It will write a PDF titled s_data_preprocess.pdf to your working directory.
+To see the compiled R Markdown report, which includes a Smallset Timeline figure, run the following code. It will write a PDF titled s_data_preprocess.pdf to your working directory.
+
 ```{R, eval=FALSE}
 rmarkdown::render(system.file("s_data_preprocess.Rmd", package = "smallsets"),
                   output_dir = getwd())
 ```
 
-## Python example
+The example R Markdown file can be viewed [here](https://github.com/lydialucchesi/smallsets/blob/main/inst/s_data_preprocess.Rmd).
+ 
+## Python example {#Python_example}
 Python scripts can be passed to the R command `Smallset_Timeline`.
 ```{r, eval=FALSE}
 Smallset_Timeline(data = s_data, 
@@ -130,7 +134,18 @@ Below is the script s_data_preprocess.py, which does the same thing as s_data_pr
 ```{python, code = readLines(system.file("s_data_preprocess.py", package = "smallsets")), eval=FALSE}
 ```
 
-## Smallset selection{#selection}
+## Jupyter Notebook example {#Jupyter_Notebook_example}
+
+Jupyter Notebooks can be passed to the R command `Smallset_Timeline`.
+
+```{r, eval=FALSE}
+Smallset_Timeline(data = s_data, 
+                  code = system.file("s_data_preprocess.ipynb", package = "smallsets"))
+```
+
+The example Jupyter Notebook can be viewed [here](https://github.com/lydialucchesi/smallsets/blob/main/inst/s_data_preprocess.ipynb).
+
+## Smallset selection {#Smallset_selection}
 
 A Smallset is a small set of rows (5-15) from the original dataset containing instances of data preprocessing changes. For Smallset selection, there are two decisions to make: 1) how many rows (`rowCount`) and 2) which automated selection method to use (`rowSelect`).
 
@@ -182,7 +197,7 @@ Smallset_Timeline(data = s_data,
                   rowReturn = T)
 ```
 
-## Timeline customisation{#customisation}
+## Timeline customisation {#Timeline_customisation}
 
 There are built-in options to customise a Timeline. The examples in this section highlight some of them. See `?Smallset_Timeline` for a full list of options.
 
@@ -237,7 +252,7 @@ Smallset_Timeline(
 )
 ```
 
-## Alt text{#alttext}
+## Alternative text (alt text) {#Alt_text}
 
 You can retrieve alternative text (alt text) for your Smallset Timeline. When `altText = TRUE`, a draft of alt text is printed to the console. It can be copied from the console, revised for readability, and included with the figure.
 
@@ -249,7 +264,7 @@ Smallset_Timeline(data = s_data,
                   altText = TRUE)
 ```
 
-## Resume markers{#resume}
+## Resume markers {#Resume_markers}
 
 A resume marker is a vertical line between snapshots signalling that preprocessing stopped to run an analysis and then resumed to facilitate a new/revised analysis. It is added to a Timeline with a *resume* instruction in a structured comment.
 

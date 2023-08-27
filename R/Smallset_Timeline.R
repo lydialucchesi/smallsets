@@ -4,9 +4,10 @@
 #'   decisions.
 #'
 #' @param data Dataset that is being preprocessed.
-#' @param code R, R Markdown, or Python data preprocessing script. Include the
-#'   filename extension (e.g., "my_code.R", "my_code.Rmd", or "my_code.py"). If
-#'   the script is not in the working directory, include the file path.
+#' @param code R, R Markdown, Python, or Jupyter Notebook data preprocessing script. 
+#'   Include the filename extension (e.g., "my_code.R", "my_code.Rmd", 
+#'   "my_code.py", or "my_code.ipynb"). 
+#'   If the script is not in the working directory, include the full file path.
 #' @param rowCount Integer between 5-15 for number of Smallset rows.
 #' @param rowSelect NULL, 1, or 2. If NULL, Smallset rows are randomly sampled.
 #'   If 1, Smallset rows are selected using the coverage optimisation model. If
@@ -43,7 +44,9 @@
 #'
 #' @details Prior to running this command, structured comments with snapshot
 #'   instructions must be added to the preprocessing script passed to
-#'   \code{code}. See \code{vignette("smallsets")}.
+#'   \code{code}. See section titled "Structured comments" in 
+#'   \code{vignette("smallsets")} or in the 
+#'   \href{https://lydialucchesi.github.io/smallsets/articles/smallsets.html#comments}{online user guide}.
 #'
 #' @return Returns a Smallset Timeline object, which is a plot consisting of
 #'   `ggplot` objects assembled with `patchwork`.
@@ -56,7 +59,10 @@
 #'   code = system.file("s_data_preprocess.R", package = "smallsets")
 #' )
 #'
-#' @import patchwork knitr callr
+#' @import patchwork 
+#' @importFrom callr r
+#' @importFrom knitr purl
+#' @importFrom rmarkdown convert_ipynb
 #' @export
 
 Smallset_Timeline <- function(data,
@@ -87,29 +93,67 @@ Smallset_Timeline <- function(data,
   }
   
   lang <- tools::file_ext(code)
-  if (!lang %in% c("R", "Rmd", "py")) {
+  if (!lang %in% c("R", "Rmd", "py", "ipynb")) {
     stop(
-      "Preprocessing code must be in an .R, .Rmd, or .py file.
-       Include filename extension (e.g., 'my_code.R', 'my_code.Rmd', 'my_code.py')."
+      "Preprocessing code must be in an R, Rmd, py, or, ipynb file.
+       Include filename extension (e.g., 'my_code.R', 'my_code.Rmd',
+      'my_code.py', or 'my_code.ipynb')."
     )
   }
   
   rmdSwitch <- NULL
-  if (lang == "Rmd") {
+  # Convert Rmd / ipynb to R / Python
+  if (lang == "Rmd" | lang == "ipynb") {
     rmdSwitch <- TRUE
-    rFile <- tempfile(pattern = "rmd2R", fileext = ".R")
-    writeRmd2R <- callr::r(
-      function(code, rFile)
+    lang <- ifelse(lang == "Rmd", "R", "py")
+    
+    # First convert ipynb to Rmd
+    if (lang == "py") {
+      ipynb2Rmd <-
+        tempfile(pattern = "ipynb2Rmd", fileext = paste0(".Rmd"))
+      rmarkdown::convert_ipynb(paste0(getwd(), "/", code), output = ipynb2Rmd)
+      code <- ipynb2Rmd
+    }
+    
+    # Convert Rmd file to R or Python file
+    converted_file <-
+      tempfile(pattern = "rmd2R", fileext = paste0(".", lang))
+    writeRmd2 <- callr::r(
+      function(code, converted_file)
         knitr::purl(
           input = code,
-          output = rFile,
+          output = converted_file,
           quiet = TRUE,
           documentation = 0
         ),
-      args = list(code, rFile)
+      args = list(code, converted_file)
     )
-    code <- rFile
-    lang <- "R"
+    
+    # Extra formatting tasks if Python
+    if (lang == "py") {
+      
+      # Remove double hash for comments
+      with_comments <- readLines(converted_file)
+      without_comments <- gsub("^.{0,3}", "", with_comments)
+      
+      # Remove extra line added after each non-empty line
+      for (i in 1:length(without_comments)) {
+        if (without_comments[i] != "") {
+            without_comments <- without_comments[-(i + 1)]
+        }
+        if (i == length(without_comments)) {
+          break
+        }
+      }
+      
+      converted_file <-
+        tempfile(pattern = "ipynb2py", fileext = paste0(".py"))
+      fileConn <- file(converted_file)
+      writeLines(without_comments, fileConn)
+      close(fileConn)
+    }
+    
+    code <- converted_file
   }
   
   if (inherits(data, "data.table")) {
@@ -341,8 +385,14 @@ Smallset_Timeline <- function(data,
                       ghostData)
   }
 
+  # Delete tempfiles from file conversion
   if (isTRUE(rmdSwitch)) {
-    unlink(code)
+    if (lang == "py") {
+      unlink(ipynb2Rmd)
+      unlink(converted_file)
+    } else {
+      unlink(code)
+    }
   }
   
   o <- eval(parse(text = patchedPlots))

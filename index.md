@@ -5,9 +5,7 @@ status](https://www.r-pkg.org/badges/version/smallsets)](https://CRAN.R-project.
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/smallsets)
 
 Do you use R or Python to preprocess datasets for analyses? `smallsets`
-is an R package that transforms the preprocessing code in your R, R Markdown, or Python
-script into a Smallset Timeline, a simple visualisation of preprocessing
-decisions. A full description of the Smallset Timeline can be found in
+is an R package that transforms the preprocessing code in your R, R Markdown, Python, or Jupyter Notebook file into a Smallset Timeline. A Smallset Timeline is a static, compact visualisation composed of small data snapshots of different preprocessing steps. A full description of the Smallset Timeline can be found in
 the paper [**Smallset Timelines: A Visual Representation of Data Preprocessing
 Decisions**](https://dl.acm.org/doi/abs/10.1145/3531146.3533175) in the proceedings of ACM FAccT ’22. A short ([3 min](https://www.youtube.com/watch?v=_fpn02h3IUo)) and long ([15 min](https://www.youtube.com/watch?v=I_ksOv6rj1Y)) YouTube video provide an introduction to the project.
 

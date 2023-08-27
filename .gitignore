@@ -6,3 +6,4 @@
 *.knit.md
 .DS_Store
 inst/doc
+inst/.ipynb_checkpoints

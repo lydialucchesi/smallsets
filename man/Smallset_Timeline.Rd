@@ -27,9 +27,10 @@ Smallset_Timeline(
 \arguments{
 \item{data}{Dataset that is being preprocessed.}
 
-\item{code}{R, R Markdown, or Python data preprocessing script. Include the
-filename extension (e.g., "my_code.R", "my_code.Rmd", or "my_code.py"). If
-the script is not in the working directory, include the file path.}
+\item{code}{R, R Markdown, Python, or Jupyter Notebook data preprocessing script. 
+Include the filename extension (e.g., "my_code.R", "my_code.Rmd", 
+"my_code.py", or "my_code.ipynb"). 
+If the script is not in the working directory, include the full file path.}
 
 \item{rowCount}{Integer between 5-15 for number of Smallset rows.}
 
@@ -90,7 +91,9 @@ Builds a Smallset Timeline to visualise data preprocessing
 \details{
 Prior to running this command, structured comments with snapshot
   instructions must be added to the preprocessing script passed to
-  \code{code}. See \code{vignette("smallsets")}.
+  \code{code}. See section titled "Structured comments" in 
+  \code{vignette("smallsets")} or in the 
+  \href{https://lydialucchesi.github.io/smallsets/articles/smallsets.html#comments}{online user guide}.
 }
 \examples{
 set.seed(145)
