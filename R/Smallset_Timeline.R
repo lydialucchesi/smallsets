@@ -49,7 +49,7 @@
 #'   instructions must be added to the preprocessing script passed to
 #'   \code{code}. See section titled "Structured comments" in 
 #'   \code{vignette("smallsets")} or in the 
-#'   \href{https://lydialucchesi.github.io/smallsets/articles/smallsets.html#comments}{online user guide}.
+#'   \href{https://lydialucchesi.github.io/smallsets/articles/smallsets.html#Structured_comments}{online user guide}.
 #'
 #' @return Returns a Smallset Timeline object, which is a plot consisting of
 #'   `ggplot` objects assembled with `patchwork`.

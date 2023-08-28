@@ -105,6 +105,7 @@ Alternatively, you could place smallsets comments as a block above the preproces
 ```
 
 ## R Markdown example {#R_Markdown_example}
+
 Smallset Timelines can be built for preprocessing code in R Markdown files. If you choose to include the Smallset Timeline as a figure within the R Markdown report itself, it works best to build the Smallset Timeline before the preprocessing code is executed, so that you don't have to reload your (un-preprocessed) data later to build the Smallset Timeline. You assign the Smallset Timeline figure to an object and hide that code with `echo=FALSE`. You can then plot that object anywhere in the report.
 
 ```{R, eval=FALSE}
@@ -122,6 +123,7 @@ rmarkdown::render(system.file("s_data_preprocess.Rmd", package = "smallsets"),
 The example R Markdown file can be viewed [here](https://github.com/lydialucchesi/smallsets/blob/main/inst/s_data_preprocess.Rmd).
  
 ## Python example {#Python_example}
+
 Python scripts can be passed to the R command `Smallset_Timeline`.
 ```{r, eval=FALSE}
 Smallset_Timeline(data = s_data, 

@@ -98,7 +98,7 @@ Prior to running this command, structured comments with snapshot
   instructions must be added to the preprocessing script passed to
   \code{code}. See section titled "Structured comments" in 
   \code{vignette("smallsets")} or in the 
-  \href{https://lydialucchesi.github.io/smallsets/articles/smallsets.html#comments}{online user guide}.
+  \href{https://lydialucchesi.github.io/smallsets/articles/smallsets.html#Structured_comments}{online user guide}.
 }
 \examples{
 set.seed(145)
