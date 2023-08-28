@@ -2,13 +2,18 @@
 #'
 #' @description Sets spacing parameters for the Smallset Timeline.
 #'
-#' @param captions Positive numeric value for amount of caption space below
-#'   snapshots.
+#' @param captions Positive numeric value for amount of caption space. 
+#'   When alignment is horizontal, refers to the space below snapshots. 
+#'   When alignment is vertical, refers to the space to the right of 
+#'   the snapshots. 
 #' @param header Positive numeric value for amount of column name space.
 #' @param degree Integer between 0-90 (degrees) to rotate column names.
 #' @param right Positive numeric value (>=.5) for amount of space to the right
 #'   of each snapshot.
-#' @param rows Integer for number of Timeline rows.
+#' @param rows Integer for number of Timeline rows 
+#'   (applicable when the alignment is horizontal).
+#' @param columns Integer for number of Timeline columns 
+#'   (applicable when the alignment is vertical).
 #'
 #' @details Passed to \code{spacing} in \link{Smallset_Timeline}.
 #'
@@ -28,7 +33,8 @@ sets_spacing <- function(captions = NULL,
                          degree = NULL,
                          header = NULL,
                          right = NULL,
-                         rows = NULL) {
+                         rows = NULL,
+                         columns = NULL) {
   spacing <- list()
   
   if (is.null(captions)) {
@@ -63,6 +69,12 @@ sets_spacing <- function(captions = NULL,
     spacing$rows <- 1
   } else {
     spacing$rows <- rows
+  }
+  
+  if (is.null(columns)) {
+    spacing$columns <- 1
+  } else {
+    spacing$columns <- columns
   }
   
   return(spacing)

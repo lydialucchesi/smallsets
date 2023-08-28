@@ -77,6 +77,7 @@
 <span>  truncateData <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ghostData <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  missingDataTints <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  align <span class="op">=</span> <span class="st">"horizontal"</span>,</span>
 <span>  font <span class="op">=</span> <span class="st">"sans"</span>,</span>
 <span>  sizing <span class="op">=</span> <span class="fu"><a href="sets_sizing.html">sets_sizing</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  spacing <span class="op">=</span> <span class="fu"><a href="sets_spacing.html">sets_spacing</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -159,8 +160,14 @@ removed.</p></dd>
 missing data value.</p></dd>
 
 
+<dt>align</dt>
+<dd><p>Either "horizontal" or "vertical". For horizontal, snapshots
+are plotted left to right. For vertical, snapshots are plotted top
+to bottom.</p></dd>
+
+
 <dt>font</dt>
-<dd><p>Any font installed in R. Default is sans.</p></dd>
+<dd><p>Any font installed in R.</p></dd>
 
 
 <dt>sizing</dt>

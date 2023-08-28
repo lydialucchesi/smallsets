@@ -18,6 +18,7 @@ Smallset_Timeline(
   truncateData = NULL,
   ghostData = TRUE,
   missingDataTints = FALSE,
+  align = "horizontal",
   font = "sans",
   sizing = sets_sizing(),
   spacing = sets_spacing(),
@@ -72,7 +73,11 @@ removed.}
 \item{missingDataTints}{A logical. TRUE plots a lighter colour value for a
 missing data value.}
 
-\item{font}{Any font installed in R. Default is sans.}
+\item{align}{Either "horizontal" or "vertical". For horizontal, snapshots
+are plotted left to right. For vertical, snapshots are plotted top
+to bottom.}
+
+\item{font}{Any font installed in R.}
 
 \item{sizing}{\link{sets_sizing} for size specifications.}
 

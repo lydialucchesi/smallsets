@@ -221,7 +221,7 @@ There are built-in options to customise a Timeline. The examples in this section
 
 **Example 1**
 
-Some differences: custom colour palette, data in the snapshots, highlighting missing data, a different font, no ghost data, and altered sizing, spacing, and labelling.
+Differences: custom colour palette, data in the snapshots, highlighting missing data, a different font, no ghost data, and altered sizing/spacing/labelling.
 ```{r timeline5, fig.width=8, fig.height = 4, fig.retina = 2, fig.align='center'}
 set.seed(145)
 
@@ -247,8 +247,22 @@ Smallset_Timeline(
 
 **Example 2**
 
-Some differences: four snapshots, use of a built-in colour palette, split into two rows, and rotated column names.
-```{r timeline6, fig.width = 5, fig.height = 6, fig.retina = 2, fig.align='center'}
+Differences: vertical alignment.
+```{r timeline6, fig.width=5, fig.height = 5, fig.retina = 2, fig.align='center'}
+set.seed(145)
+
+Smallset_Timeline(
+  data = s_data,
+  code = system.file("s_data_preprocess.R", package = "smallsets"),
+  align = "vertical",
+  spacing = sets_spacing(captions = 8)
+)
+```
+
+**Example 3**
+
+Differences: four snapshots, use of the third built-in colour palette, split into two rows, and rotated column names.
+```{r timeline7, fig.width = 5, fig.height = 6, fig.retina = 2, fig.align='center'}
 set.seed(145)
 
 Smallset_Timeline(
@@ -293,7 +307,7 @@ In this example, we resume data preprocessing to transform C9 into a categorical
 ```
 
 
-```{r timeline7, fig.width = 7, fig.height = 2, fig.align='center', fig.retina = 2}
+```{r timeline8, fig.width = 7, fig.height = 2, fig.align='center', fig.retina = 2}
 set.seed(145)
 
 Smallset_Timeline(data = s_data, 

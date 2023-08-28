@@ -37,7 +37,10 @@
 #'   removed.
 #' @param missingDataTints A logical. TRUE plots a lighter colour value for a
 #'   missing data value.
-#' @param font Any font installed in R. Default is sans.
+#' @param align Either "horizontal" or "vertical". For horizontal, snapshots
+#'  are plotted left to right. For vertical, snapshots are plotted top
+#'  to bottom.
+#' @param font Any font installed in R.
 #' @param sizing \link{sets_sizing} for size specifications.
 #' @param spacing \link{sets_spacing} for space specifications.
 #' @param labelling \link{sets_labelling} for label specifications.
@@ -78,6 +81,7 @@ Smallset_Timeline <- function(data,
                               truncateData = NULL,
                               ghostData = TRUE,
                               missingDataTints = FALSE,
+                              align = "horizontal",
                               font = "sans",
                               sizing = sets_sizing(),
                               spacing = sets_spacing(),
@@ -354,6 +358,7 @@ Smallset_Timeline <- function(data,
       plots,
       output,
       maxDims,
+      align,
       font,
       sizing,
       spacing,
@@ -361,29 +366,56 @@ Smallset_Timeline <- function(data,
     )
   
   # Assemble plots into Timeline
-  patchedPlots <- ""
-  for (p in 1:length(l)) {
-    addPlot <- paste0("l[[", as.character(p), "]] + ")
-    patchedPlots <- paste0(patchedPlots, addPlot)
-  }
-  
-  # Add design info
-  patchedPlots <-
-    paste0(
-      patchedPlots,
-      "plot_layout(nrow = ",
-      as.character(spacing$rows),
-      ", guides = 'collect')",
-      " & theme(text = element_text(family = '",
-      font,
-      "', colour = 'black'),",
-      "legend.key.size = unit(",
-      sizing[["icons"]],
-      ", 'line'), 
+  if (align == "vertical") {
+    patchedPlots <- ""
+    for (p in 1:length(l)) {
+      addPlot <- paste0("l[[", as.character(p), "]] / ")
+      patchedPlots <- paste0(patchedPlots, addPlot)
+    }
+    
+    # Add design info
+    patchedPlots <-
+      paste0(
+        patchedPlots,
+        "plot_layout(ncol = ",
+        as.character(spacing$columns),
+        ", byrow = FALSE",
+        ", guides = 'collect')",
+        " & theme(text = element_text(family = '",
+        font,
+        "', colour = 'black'),",
+        "legend.key.size = unit(",
+        sizing[["icons"]],
+        ", 'line'), 
+      legend.position = 'bottom', 
+      legend.title = element_blank(),
+      legend.margin=margin(t=20, r=0, b=0, l=0, unit='pt'))"
+      )
+  } else {
+    patchedPlots <- ""
+    for (p in 1:length(l)) {
+      addPlot <- paste0("l[[", as.character(p), "]] + ")
+      patchedPlots <- paste0(patchedPlots, addPlot)
+    }
+    
+    # Add design info
+    patchedPlots <-
+      paste0(
+        patchedPlots,
+        "plot_layout(nrow = ",
+        as.character(spacing$rows),
+        ", guides = 'collect')",
+        " & theme(text = element_text(family = '",
+        font,
+        "', colour = 'black'),",
+        "legend.key.size = unit(",
+        sizing[["icons"]],
+        ", 'line'), 
       legend.position = 'bottom', 
       legend.title = element_blank(),
       legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))"
-    )
+      )
+  }
   
   # Generate alt text for the Timeline
   if (isTRUE(altText)) {

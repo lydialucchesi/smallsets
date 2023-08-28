@@ -4,7 +4,7 @@
 \alias{finalise_plot}
 \title{Finalise plot}
 \usage{
-finalise_plot(itemNum, plots, output, maxDims, font, sizing, spacing)
+finalise_plot(itemNum, plots, output, maxDims, align, font, sizing, spacing)
 }
 \description{
 Adds captions and standard dimensions to the plots.

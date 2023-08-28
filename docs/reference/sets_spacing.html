@@ -65,15 +65,18 @@
 <span>  degree <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  header <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  right <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  rows <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  rows <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  columns <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>captions</dt>
-<dd><p>Positive numeric value for amount of caption space below
-snapshots.</p></dd>
+<dd><p>Positive numeric value for amount of caption space. 
+When alignment is horizontal, refers to the space below snapshots. 
+When alignment is vertical, refers to the space to the right of 
+the snapshots.</p></dd>
 
 
 <dt>degree</dt>
@@ -90,7 +93,13 @@ of each snapshot.</p></dd>
 
 
 <dt>rows</dt>
-<dd><p>Integer for number of Timeline rows.</p></dd>
+<dd><p>Integer for number of Timeline rows 
+(applicable when the alignment is horizontal).</p></dd>
+
+
+<dt>columns</dt>
+<dd><p>Integer for number of Timeline columns 
+(applicable when the alignment is vertical).</p></dd>
 
 </dl></div>
     <div class="section level2">

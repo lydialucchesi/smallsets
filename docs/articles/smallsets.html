@@ -399,7 +399,7 @@ this should be done with caution.</p>
 this section highlight some of them. See <code><a href="../reference/Smallset_Timeline.html">?Smallset_Timeline</a></code>
 for a full list of options.</p>
 <p><strong>Example 1</strong></p>
-<p>Some differences: custom colour palette, data in the snapshots,
+<p>Differences: custom colour palette, data in the snapshots,
 highlighting missing data, a different font, no ghost data, and altered
 sizing, spacing, and labelling.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -425,9 +425,21 @@ sizing, spacing, and labelling.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="smallsets_files/figure-html/timeline5-1.png" width="768" style="display: block; margin: auto;"></p>
 <p><strong>Example 2</strong></p>
-<p>Some differences: four snapshots, use of a built-in colour palette,
-split into two rows, and rotated column names.</p>
+<p>Differences: vertical alignment.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">145</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">s_data</span>,</span>
+<span>  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>,</span>
+<span>  align <span class="op">=</span> <span class="st">"vertical"</span>,</span>
+<span>  spacing <span class="op">=</span> <span class="fu"><a href="../reference/sets_spacing.html">sets_spacing</a></span><span class="op">(</span>captions <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="smallsets_files/figure-html/timeline6-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><strong>Example 3</strong></p>
+<p>Differences: four snapshots, use of the third built-in colour
+palette, split into two rows, and rotated column names.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">145</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span></span>
@@ -447,7 +459,7 @@ split into two rows, and rotated column names.</p>
 <span>    legend <span class="op">=</span> <span class="fl">7</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="smallsets_files/figure-html/timeline6-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="smallsets_files/figure-html/timeline7-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="Alt_text">Alternative text (alt text)<a class="anchor" aria-label="anchor" href="#Alt_text"></a>
@@ -456,7 +468,7 @@ split into two rows, and rotated column names.</p>
 Timeline. When <code>altText = TRUE</code>, a draft of alt text is
 printed to the console. It can be copied from the console, revised for
 readability, and included with the figure.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">145</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
@@ -475,7 +487,7 @@ instruction in a structured comment.</p>
 categorical variable.</p>
 <p><strong>s_data_preprocess_resume.R</strong> (Don’t run this code
 block. It’s an example preprocessing script.)</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># smallsets snap s_data caption[Remove rows where C2</span></span>
 <span><span class="co"># is FALSE.]caption</span></span>
 <span><span class="va">s_data</span> <span class="op">&lt;-</span> <span class="va">s_data</span><span class="op">[</span><span class="va">s_data</span><span class="op">$</span><span class="va">C2</span> <span class="op">==</span> <span class="cn">TRUE</span>,<span class="op">]</span></span>
@@ -503,7 +515,7 @@ block. It’s an example preprocessing script.)</p>
 <span>  include.lowest <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Med"</span>, <span class="st">"High"</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">145</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
@@ -521,7 +533,7 @@ block. It’s an example preprocessing script.)</p>
 <span>                    right <span class="op">=</span> <span class="fl">2</span></span>
 <span>                    <span class="op">)</span></span>
 <span>                  <span class="op">)</span></span></code></pre></div>
-<p><img src="smallsets_files/figure-html/timeline7-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="smallsets_files/figure-html/timeline8-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
