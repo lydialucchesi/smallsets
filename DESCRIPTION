@@ -1,6 +1,6 @@
 Package: smallsets
 Title: The Smallset Timeline Builder
-Version: 1.0.0
+Version: 2.0.0
 Authors@R: c(person(given = "Lydia R.", family = "Lucchesi", role = c("aut", "cre"), 
     email = "Lydia.Lucchesi@anu.edu.au", comment = c(ORCID = "0000-0002-1901-4301")), 
     person(given = "Petra M.", family = "Kuhnert", role = "ths"), 
@@ -14,7 +14,7 @@ Description: Data practitioners regularly use the 'R' and 'Python' programming l
     Timeline is a series of small data snapshots of different preprocessing steps. The 'smallsets'
     package builds this figure from a user's dataset and 'R'/'Python' preprocessing script, which
     contains structured comments with snapshot instructions.
-URL: https://github.com/lydialucchesi/smallsets
+URL: https://lydialucchesi.github.io/smallsets/, https://github.com/lydialucchesi/smallsets
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: TRUE

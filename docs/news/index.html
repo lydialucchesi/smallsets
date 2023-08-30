@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">smallsets</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +53,21 @@
       <small>Source: <a href="https://github.com/lydialucchesi/smallsets/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.0.0" id="smallsets-200">smallsets 2.0.0<a class="anchor" aria-label="anchor" href="#smallsets-200"></a></h2>
+<div class="section level4">
+<h4 id="cran-submission-2-0-0">CRAN submission<a class="anchor" aria-label="anchor" href="#cran-submission-2-0-0"></a></h4>
+<p>31 August 2023</p>
+<p>CRAN submission. New features and updates:</p>
+<ul><li>smallsets now builds Smallset Timelines for preprocessing code in R Markdown and Jupyter Notebook files. Example Rmd and ipynb files have been added to the package.</li>
+<li>The format of structured comments has changed. There are no longer start and end instructions. Instead all snapshot comments use the snap instruction but with a place argument as well. <strong>This change will break existing smallsets code/uses.</strong>
+</li>
+<li>Smallset Timelines can now be vertically aligned, meaning snapshots are plotted from top to bottom (instead of left to right) and captions are located to the right of snapshots (instead of below). There is a new “align” argument in Smallset_Timeline().</li>
+<li>The Smallset Timeline colour legend labels have been simplified.</li>
+<li>A bug (introduced with the release of R 4.2.0 and changes to as.vector()) in the second optimisation Smallset selection problem is fixed.</li>
+<li>All documentation–including the help pages, vignette, pkgdown website, and README page–has been updated to reflect these package changes.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="smallsets-100">smallsets 1.0.0<a class="anchor" aria-label="anchor" href="#smallsets-100"></a></h2><p class="text-muted">CRAN release: 2023-02-03</p>
 <div class="section level4">
