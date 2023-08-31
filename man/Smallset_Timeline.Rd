@@ -53,10 +53,11 @@ include in the Smallset.}
 exclude from the Smallset. These columns cannot be referenced in the data
 preprocessing code.}
 
-\item{colours}{Either 1, 2, or 3 for one of the pre-built colour schemes (all
-are colour-blind-friendly and 3 is black/white-printer-friendly) or a list
-with four hex colour codes for keep, edit, add, and delete (e.g., list(keep
-= "#E6E3DF", add = "#5BA2A6", delete = "#DDC492", edit = "#FFC500")).}
+\item{colours}{Either 1, 2, or 3 for one of the built-in colour schemes (all
+are colourblind-friendly and 2 works on a grey scale, i.e., it's printer-friendly) or a list
+with four hex colour codes for added, deleted, edited, and unchanged 
+(e.g., list(added = "#5BA2A6", deleted = "#DDC492", edited = "#FFC500", unchanged
+= "#E6E3DF")).}
 
 \item{altText}{A logical. TRUE generates alternative text (alt text) for the
 Smallset Timeline and prints it to the console.}

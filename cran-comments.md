@@ -2,14 +2,16 @@
 
 Dear CRAN Team,
 
-Thank you for taking the time to review this smallsets (v2.0.0) submission to CRAN. smallsets (v1.0.0) was first published on CRAN on 3 February 2023. Since then, several new features have been added and changes made, including a breaking change. These updates are described in the NEWS.md file. Below is the output from the R CMD check. Kind regards, Lydia Lucchesi
+Thank you for taking the time to review this smallsets 2.0.0 submission to CRAN. The first smallsets CRAN release (1.0.0) was on 3 February 2023. Since then, several new features have been added and changes made, including a breaking change. These updates are described in the NEWS.md file. The R CMD check succeeded in 50.8s without any errors/warnings/notes. Kind regards, Lydia Lucchesi
 
 ### R CMD check
-Duration: 1m 4s
+Duration: 50.8s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
 R CMD check succeeded
+
+
 
 
 # Response to reviewer comments for CRAN re-submission (2 Feb 2023)

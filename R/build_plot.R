@@ -125,13 +125,13 @@ build_plot <-
                   (uniCols %in% unique(legendDF$colValue))]
       if (length(uniCols) > 0) {
         if (sum(length(uniCols) == 1 &
-                uniCols == accents$colValue[2]) == 1) {
-          colNameCols[colNameCols$ind == v, c("col")] <- accents$colValue2[2]
-        } else if (sum(length(uniCols) == 1 &
-                       uniCols == accents$colValue[3]) == 1) {
-          colNameCols[colNameCols$ind == v, c("col")] <- accents$colValue2[3]
-        } else {
+                uniCols == accents$colValue[1]) == 1) {
           colNameCols[colNameCols$ind == v, c("col")] <- accents$colValue2[1]
+        } else if (sum(length(uniCols) == 1 &
+                       uniCols == accents$colValue[2]) == 1) {
+          colNameCols[colNameCols$ind == v, c("col")] <- accents$colValue2[2]
+        } else {
+          colNameCols[colNameCols$ind == v, c("col")] <- accents$colValue2[4]
         }
       } else {
         colNameCols[colNameCols$ind == v, c("col")] <- "#FFFFFF"
@@ -240,7 +240,7 @@ build_plot <-
             y = .5,
             yend = (maxDims[2] + .5)
           ),
-          colour = accents$colValue2[1],
+          colour = accents$colValue2[4],
           size = sizing$resume
         ) +
         coord_equal() +
