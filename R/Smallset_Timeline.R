@@ -63,10 +63,9 @@
 #'   code = system.file("s_data_preprocess.R", package = "smallsets")
 #' )
 #'
-#' @import patchwork 
+#' @import patchwork rmarkdown
 #' @importFrom callr r
 #' @importFrom knitr purl
-#' @importFrom rmarkdown convert_ipynb
 #' @export
 
 Smallset_Timeline <- function(data,

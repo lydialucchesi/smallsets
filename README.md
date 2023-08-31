@@ -18,8 +18,8 @@ static, compact visualisation composed of small data snapshots of
 different preprocessing steps. A full description of the Smallset
 Timeline can be found in the paper [**Smallset Timelines: A Visual
 Representation of Data Preprocessing
-Decisions**](https://dl.acm.org/doi/abs/10.1145/3531146.3533175) in the
-proceedings of ACM FAccT ’22. A short ([3
+Decisions**](https://doi.org/10.1145/3531146.3533175) in the proceedings
+of ACM FAccT ’22. A short ([3
 min](https://www.youtube.com/watch?v=_fpn02h3IUo)) and long ([15
 min](https://www.youtube.com/watch?v=I_ksOv6rj1Y)) YouTube video provide
 an introduction to the project.
