@@ -138,6 +138,10 @@ build_plot <-
       }
     }
     xs <- merge(xs, colNameCols)
+
+    if (angleVal > 0 & angleVal <= 90) {
+      xs$x <- xs$x - .25
+    }
     
     # Create snapshot plot
     snapshot <- ggplot() +

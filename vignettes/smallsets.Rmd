@@ -277,9 +277,9 @@ Smallset_Timeline(
   missingDataTints = TRUE,
   font = "serif",
   spacing = sets_spacing(
-    captions = 2,
+    captions = 3,
     rows = 2,
-    degree = 45,
+    degree = 60,
     header = 1.5
   ),
   sizing = sets_sizing(
@@ -326,7 +326,7 @@ Smallset_Timeline(data = s_data,
                     ),
                   spacing = sets_spacing(
                     captions = 3,
-                    degree = 60,
+                    degree = 45,
                     header = 3.5,
                     right = 2
                     )
