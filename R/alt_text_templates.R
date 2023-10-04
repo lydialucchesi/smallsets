@@ -1,9 +1,9 @@
 #' Write add colour
 #' @description Writes about the add colour.
 #' @keywords internal
-write_colourAdd <- function(colourAdd) {
-  txt <- paste0("Data additions are represented with the colour ",
-                colourAdd,
+write_colourAdded <- function(colourAdded) {
+  txt <- paste0("Data additions are ",
+                colourAdded,
                 ".")
   return(txt)
 }
@@ -11,9 +11,9 @@ write_colourAdd <- function(colourAdd) {
 #' Write delete colour
 #' @description Writes about the delete colour.
 #' @keywords internal
-write_colourDelete <- function(colourDelete) {
-  txt <- paste0("Data deletions are represented with the colour ",
-                colourDelete,
+write_colourDeleted <- function(colourDeleted) {
+  txt <- paste0("Data deletions are ",
+                colourDeleted,
                 ".")
   return(txt)
 }
@@ -21,9 +21,19 @@ write_colourDelete <- function(colourDelete) {
 #' Write edit colour
 #' @description Writes about the edit colour.
 #' @keywords internal
-write_colourEdit <- function(colourEdit) {
-  txt <- paste0("Data edits are represented with the colour ",
-                colourEdit,
+write_colourEdited <- function(colourEdited) {
+  txt <- paste0("Data edits are ",
+                colourEdited,
+                ".")
+  return(txt)
+}
+
+#' Write unchanged colour
+#' @description Writes about the unchanged colour.
+#' @keywords internal
+write_colourUnchanged <- function(colourUnchanged) {
+  txt <- paste0("Unchanged data is ",
+                colourUnchanged,
                 ".")
   return(txt)
 }
@@ -84,7 +94,7 @@ write_rowsAdd <- function(rowsAdd, colourAdd) {
 write_columnNames <- function(columnNames) {
   if (length(columnNames) == 2) {
     txt <- paste0(
-      "The columns, in order from left to right, are: ",
+      "The columns, in order from left to right, are ",
       columnNames[1],
       " and ",
       columnNames[2],
@@ -92,7 +102,7 @@ write_columnNames <- function(columnNames) {
     )
   } else {
     txt <- paste0(
-      "The columns, in order from left to right, are: ",
+      "The columns, in order from left to right, are ",
       paste(columnNames[1:(length(columnNames) - 1)], collapse = ", "),
       ", and ",
       columnNames[length(columnNames)],
@@ -174,9 +184,9 @@ write_cellsEdit <- function(cellsEdit, colourEdit) {
 #' @description Writes about the snapshot caption.
 #' @keywords internal
 write_caption <- function(caption) {
-  txt <- paste0("The caption is quote ",
+  txt <- paste0("The caption says ",
                 caption,
-                " unquote."
+                "."
                 )
   return(txt)
 }
@@ -199,10 +209,12 @@ write_dimensions <- function(i, tables) {
 #' @description Writes about the number of snapshots.
 #' @keywords internal
 write_snapshots <- function(tables) {
-  txt <- paste0("The Smallset Timeline contains ",
-                as.character(length(tables)),
-                " Smallset snapshots."
-                )
+  txt <-
+    paste0(
+      "The Smallset Timeline, explaining how the dataset is preprocessed, consists of ",
+      as.character(length(tables)),
+      " Smallset snapshots."
+    )
   return(txt)
 }
 

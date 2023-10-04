@@ -94,10 +94,22 @@
     <loc>https://lydialucchesi.github.io/smallsets/reference/write_colourAdd.html</loc>
   </url>
   <url>
+    <loc>https://lydialucchesi.github.io/smallsets/reference/write_colourAdded.html</loc>
+  </url>
+  <url>
     <loc>https://lydialucchesi.github.io/smallsets/reference/write_colourDelete.html</loc>
   </url>
   <url>
+    <loc>https://lydialucchesi.github.io/smallsets/reference/write_colourDeleted.html</loc>
+  </url>
+  <url>
     <loc>https://lydialucchesi.github.io/smallsets/reference/write_colourEdit.html</loc>
+  </url>
+  <url>
+    <loc>https://lydialucchesi.github.io/smallsets/reference/write_colourEdited.html</loc>
+  </url>
+  <url>
+    <loc>https://lydialucchesi.github.io/smallsets/reference/write_colourUnchanged.html</loc>
   </url>
   <url>
     <loc>https://lydialucchesi.github.io/smallsets/reference/write_columnNames.html</loc>
