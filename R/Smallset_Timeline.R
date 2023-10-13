@@ -282,10 +282,10 @@ Smallset_Timeline <- function(data,
   # Prepare colour legend
   descriptions <-
     c(
-      "Added   ",
-      "Deleted   ",
-      "Edited   ",
-      "Unchanged   "
+      "Added",
+      "Deleted",
+      "Edited",
+      "Unchanged"
     )
   legendDF <-
     data.frame(colValue = fourCols, description = descriptions)
@@ -309,6 +309,48 @@ Smallset_Timeline <- function(data,
     extTables <- lapply(items,
                         smallsetTables,
                         FUN = retrieve_tables)
+  }
+  
+  # Add asterisks to legend labels
+  if (isTRUE(missingDataTints)) {
+    
+    snap <- NULL
+    m <- data.frame(row = numeric(),
+                    col = numeric(), 
+                    snap = numeric())
+    
+    for (i in 1:length(extTables)) {
+      rc <- as.data.frame(which(is.na(extTables[[i]][[2]]), arr.ind=TRUE))
+      if (nrow(rc) > 0) {
+        rc$snap <- i
+        m <- rbind(m, rc)
+        rownames(m) <- NULL
+      }
+    }
+    
+    a <- c()
+    for (i in 1:length(extTables)) {
+      mSub <- subset(m, snap == i)
+      if (nrow(mSub) > 0) {
+        for (c in 1:nrow(mSub)) {
+          colour <- extTables[[i]][[1]][mSub$row[c], mSub$col[c]]
+          a <- c(a, colour)
+        }
+      }
+    }
+    
+    a <- unique(a)
+    
+    for (i in 1:nrow(legendDF)) {
+        if (legendDF[i, "colValue"] %in% a) {
+          legendDF[i, "description"] <- paste0(legendDF[i, "description"], "*  ")
+        } else {
+          legendDF[i, "description"] <- paste0(legendDF[i, "description"], "   ")
+        }
+      }
+  } else {
+    legendDF$description <- paste0(legendDF$description, "   ")
+    a <- NULL
   }
   
   # Find Timeline dimensions
@@ -415,6 +457,17 @@ Smallset_Timeline <- function(data,
       legend.title = element_blank(),
       legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))"
       )
+  }
+  
+  # Add legend footnote 
+  if (!is.null(a) & length(a) > 0) {
+    patchedPlots <- paste0(patchedPlots, 
+                           " & plot_annotation(caption = '*A lighter value indicates a missing data value.',
+                           theme = theme(plot.caption = element_text(size = ", 
+                           sizing[["legend"]] / 1.25,
+                           ", family = '",
+                           font,
+                           "')))")
   }
   
   # Generate alt text for the Timeline
