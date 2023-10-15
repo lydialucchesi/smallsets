@@ -62,7 +62,7 @@ prepare_colour_sheet <- function(smallsetList,
   }
   
   colours <- last
-  colours[,] <- fourCols[1]
+  colours[,] <- fourCols[4]
   
   # Find data changes between snapshots
   tables <- find_data_changes(smallsetList, fourCols, FALSE)
@@ -77,7 +77,7 @@ prepare_colour_sheet <- function(smallsetList,
     for (i in rownames(t_colours)) {
       for (j in colnames(t_colours)) {
         c1 <- t_colours[i, j]
-        if (c1 != fourCols[1]) {
+        if (c1 != fourCols[4]) {
           colours[i, j] <- c1
         }
       }

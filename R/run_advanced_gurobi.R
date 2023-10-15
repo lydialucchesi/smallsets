@@ -47,8 +47,7 @@ run_advanced_gurobi <-
             counter <- counter + 1
           }
         }
-        dij <- counter / ncol(colours)
-        D[i1, i2] <- dij
+        D[i1, i2] <- counter
       }
     }
     
