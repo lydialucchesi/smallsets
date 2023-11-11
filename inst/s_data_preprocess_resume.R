@@ -13,7 +13,7 @@ s_data$C7 <- NULL
 # C9, by summing C3 and C4.]caption
 s_data$C9 <- s_data$C3 + s_data$C4
 
-# smallsets resume s_data caption[Ran the model but then 
+# smallsets resume caption[Ran the model but then 
 # decided to make another change to the dataset.]caption
 
 # smallsets snap 27 s_data caption[Created a new categorical 

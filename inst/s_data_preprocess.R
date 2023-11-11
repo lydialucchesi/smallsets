@@ -1,7 +1,7 @@
 # smallsets snap s_data caption[Remove rows where C2 is FALSE.]caption
-s_data <- s_data[s_data$C2 == TRUE,]
+s_data <- s_data[s_data$C2 == TRUE, ]
 
-# smallsets snap +2 s_data caption[Replace missing values in C6 and C8 with 
+# smallsets snap +2 s_data caption[Replace missing values in C6 and C8 with
 # column means. Drop C7 because there are too many missing values.]caption
 s_data$C6[is.na(s_data$C6)] <- mean(s_data$C6, na.rm = TRUE)
 s_data$C8[is.na(s_data$C8)] <- mean(s_data$C8, na.rm = TRUE)

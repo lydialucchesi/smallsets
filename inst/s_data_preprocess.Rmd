@@ -19,10 +19,8 @@ head(s_data) |> kable(booktabs = TRUE)
 ```
 
 ```{r timeline, eval = TRUE, echo = FALSE}
-set.seed(145)
-
-myTimeline <- Smallset_Timeline(data = s_data,
-                  code = system.file("s_data_preprocess.Rmd", package = "smallsets"))
+SmallsetTimeline <- Smallset_Timeline(data = s_data,
+                                      code = system.file("s_data_preprocess.Rmd", package = "smallsets"))
 ```
                   
 # Preprocessing
@@ -47,7 +45,7 @@ s_data$C9 <- s_data$C3 + s_data$C4
 Below is a Smallset Timeline, visualising my preprocessing decisions executed above.
 
 ```{r print, echo = FALSE, fig.align = "center"}
-myTimeline
+SmallsetTimeline
 ```
 
 # Modelling
