@@ -9,7 +9,8 @@ generate_alt_text <-
            atInfo,
            l,
            printedData,
-           ghostData) {
+           ghostData,
+           resume) {
     # Create empty vector for alt text
     at <- c()
     
@@ -52,7 +53,8 @@ generate_alt_text <-
       
       # Write about column deletions
       if (length(atInfo$colsDrop) != 0) {
-        at <- c(at, write_columnsDelete(atInfo$colsDrop, colourDeleted))
+        at <- c(at,
+                write_columnsDelete(atInfo$colsDrop, colourDeleted))
       }
       atInfo$colsDrop <- NULL
       
@@ -76,19 +78,28 @@ generate_alt_text <-
         atInfo$colsAdd <- NULL
       }
       
+      if ((i - 1) %in% resume) {
+        c <- i + 1
+      } else {
+        c <- i
+      }
       # Write the snapshot caption
       if (isFALSE(printedData) & isTRUE(ghostData)) {
-        if (layer_data(l[[i]], 3)$label != "") {
-          at <- c(at, write_caption(layer_data(l[[i]], 3)$label))
+        if (layer_data(l[[c]], 3)$label != "") {
+          at <- c(at, write_caption(layer_data(l[[c]], 3)$label))
         }
       } else if (isTRUE(printedData) & isFALSE(ghostData)) {
-        if (layer_data(l[[i]], 5)$label != "") {
+        if (layer_data(l[[c]], 5)$label != "") {
           at <- c(at, write_caption(layer_data(l[[i]], 5)$label))
         }
       } else {
-        if (layer_data(l[[i]], 4)$label != "") {
+        if (layer_data(l[[c]], 4)$label != "") {
           at <- c(at, write_caption(layer_data(l[[i]], 4)$label))
         }
+      }
+      
+      if (i %in% resume) {
+        at <- c(at, write_resumeMarker(i, layer_data(l[[i + 1]], 2)$label))
       }
     }
     

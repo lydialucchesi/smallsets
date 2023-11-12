@@ -11,7 +11,8 @@ generate_alt_text(
   atInfo,
   l,
   printedData,
-  ghostData
+  ghostData,
+  resume
 )
 }
 \description{

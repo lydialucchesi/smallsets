@@ -218,3 +218,17 @@ write_snapshots <- function(tables) {
   return(txt)
 }
 
+#' Writes resume marker
+#' @description Writes about the resume marker.
+#' @keywords internal
+write_resumeMarker <- function(i, caption) {
+  txt <-
+    paste0("Between snapshots ",
+           i,
+           " and ",
+           i + 1,
+           ", there is a resume marker that says ",
+           caption,
+           ".")
+  return(txt)
+}

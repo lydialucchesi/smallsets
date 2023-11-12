@@ -478,7 +478,8 @@ Smallset_Timeline <- function(data,
                       smallsetTables[[2]],
                       l,
                       printedData,
-                      ghostData)
+                      ghostData,
+                      output[[2]])
   }
 
   # Delete tempfiles from file conversion

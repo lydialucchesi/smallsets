@@ -7,6 +7,15 @@ test_that("alt text prints to console",
             ))
           })
 
+test_that("alt text prints to console when there is a resume marker",
+          {
+            expect_output(Smallset_Timeline(
+              data = s_data,
+              code = system.file("s_data_preprocess_resume.R", package = "smallsets"),
+              altText = TRUE
+            ))
+          })
+
 test_that("Smallset prints to console",
           {
             expect_output(Smallset_Timeline(
