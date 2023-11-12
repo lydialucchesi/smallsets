@@ -68,6 +68,5 @@ finalise_plot <- function(itemNum,
       xlim(c(.5, maxDims[1] + spacing$right))
   }
   
-  
   return(finalPlot)
 }

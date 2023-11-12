@@ -245,7 +245,7 @@ build_plot <-
             yend = (maxDims[2] + .5)
           ),
           colour = accents$colValue2[4],
-          size = sizing$resume
+          linewidth = sizing$resume
         ) +
         coord_equal() +
         theme_void()
