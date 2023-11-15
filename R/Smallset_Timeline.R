@@ -438,7 +438,7 @@ Smallset_Timeline <- function(data,
       legend.position = 'bottom',
       legend.title = ",
         title,
-        "legend.margin=margin(t=20, r=0, b=0, l=0, unit='pt'))"
+        "legend.margin=margin(t=0, r=0, b=0, l=0, unit='pt'))"
       )
   } else {
     patchedPlots <- ""
@@ -463,7 +463,7 @@ Smallset_Timeline <- function(data,
       legend.position = 'bottom',
       legend.title = ",
         title,
-        "legend.margin=margin(t=20, r=0, b=0, l=0, unit='pt'))"
+        "legend.margin=margin(t=0, r=0, b=0, l=0, unit='pt'))"
       )
   }
   

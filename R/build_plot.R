@@ -39,14 +39,14 @@ build_plot <-
       data.frame(ind = colnames(tab1), x = seq(1, length(colnames(tab1)), 1))
     
     # Assign coordinates to tile colours
-    tab1$y <- seq(nrow(tab1), 1, -1)
+    tab1$y <- seq(nrow(tab1), 1,-1)
     tab1Long <-
       suppressWarnings(cbind(tab1[ncol(tab1)], utils::stack(tab1[-ncol(tab1)])))
     tab1Long <- merge(tab1Long, xs)
     colnames(tab1Long) <- c("variable", "y", "colValue", "x")
     
     # Assign coordinates to tile data
-    tab2$y <- seq(nrow(tab2), 1, -1)
+    tab2$y <- seq(nrow(tab2), 1,-1)
     tab2Long <-
       suppressWarnings(cbind(tab2[ncol(tab2)], utils::stack(tab2[-ncol(tab2)])))
     tab2Long <- merge(tab2Long, xs)
@@ -138,7 +138,7 @@ build_plot <-
       }
     }
     xs <- merge(xs, colNameCols)
-
+    
     if (angleVal > 0 & angleVal <= 90) {
       xs$x <- xs$x - .25
     }
@@ -177,10 +177,11 @@ build_plot <-
     
     # Set legend title for missing data
     if (isTRUE(missingDataTints)) {
-      snapshot <- snapshot + 
-        guides(fill = guide_legend(title = "*A lighter value indicates a missing data value.",
-                                   title.position = "bottom")
-               ) +
+      snapshot <- snapshot +
+        guides(
+          fill = guide_legend(title = "*A lighter value indicates a missing data value.",
+                              title.position = "bottom")
+        ) +
         theme(
           axis.line = element_blank(),
           axis.text.x = element_blank(),
@@ -198,6 +199,7 @@ build_plot <-
             l = 0,
             unit = 'cm'
           ),
+          plot.margin = margin(0, 0, 0, 0, "cm"),
           text = element_text(
             family = font,
             size = sizing$legend,
@@ -205,7 +207,7 @@ build_plot <-
           )
         )
     } else {
-      snapshot <- snapshot + 
+      snapshot <- snapshot +
         theme(
           axis.line = element_blank(),
           axis.text.x = element_blank(),
@@ -223,6 +225,7 @@ build_plot <-
             l = 0,
             unit = 'cm'
           ),
+          plot.margin = margin(0, 0, 0, 0, "cm"),
           text = element_text(
             family = font,
             size = sizing$legend,
@@ -230,7 +233,7 @@ build_plot <-
           )
         )
     }
-
+    
     
     # Print data in Smallset snapshots
     if (isTRUE(printedData)) {
