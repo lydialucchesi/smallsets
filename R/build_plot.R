@@ -173,30 +173,64 @@ build_plot <-
         vjust = vjustVal
       ) +
       scale_colour_identity() +
-      coord_equal() +
-      theme(
-        axis.line = element_blank(),
-        axis.text.x = element_blank(),
-        axis.text.y = element_blank(),
-        axis.ticks = element_blank(),
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        panel.background = element_blank(),
-        legend.title = element_blank(),
-        legend.title.align = 0.5,
-        legend.margin = margin(
-          t = 0,
-          r = 0,
-          b = 0,
-          l = 0,
-          unit = 'cm'
-        ),
-        text = element_text(
-          family = font,
-          size = sizing$legend,
-          colour = "black"
+      coord_equal()
+    
+    # Set legend title for missing data
+    if (isTRUE(missingDataTints)) {
+      snapshot <- snapshot + 
+        guides(fill = guide_legend(title = "*A lighter value indicates a missing data value.",
+                                   title.position = "bottom")
+               ) +
+        theme(
+          axis.line = element_blank(),
+          axis.text.x = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          panel.background = element_blank(),
+          legend.title = element_text(size = (sizing$legend / 1.5)),
+          legend.title.align = 0.5,
+          legend.margin = margin(
+            t = 0,
+            r = 0,
+            b = 0,
+            l = 0,
+            unit = 'cm'
+          ),
+          text = element_text(
+            family = font,
+            size = sizing$legend,
+            colour = "black"
+          )
         )
-      )
+    } else {
+      snapshot <- snapshot + 
+        theme(
+          axis.line = element_blank(),
+          axis.text.x = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          panel.background = element_blank(),
+          legend.title = element_blank(),
+          legend.title.align = 0.5,
+          legend.margin = margin(
+            t = 0,
+            r = 0,
+            b = 0,
+            l = 0,
+            unit = 'cm'
+          ),
+          text = element_text(
+            family = font,
+            size = sizing$legend,
+            colour = "black"
+          )
+        )
+    }
+
     
     # Print data in Smallset snapshots
     if (isTRUE(printedData)) {

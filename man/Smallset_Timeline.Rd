@@ -13,7 +13,6 @@ Smallset_Timeline(
   rowNums = NULL,
   ignoreCols = NULL,
   colours = 1,
-  altText = FALSE,
   printedData = FALSE,
   truncateData = NULL,
   ghostData = TRUE,
@@ -22,15 +21,16 @@ Smallset_Timeline(
   font = "sans",
   sizing = sets_sizing(),
   spacing = sets_spacing(),
-  labelling = sets_labelling()
+  labelling = sets_labelling(),
+  altText = FALSE
 )
 }
 \arguments{
 \item{data}{Dataset that is being preprocessed.}
 
-\item{code}{R, R Markdown, Python, or Jupyter Notebook data preprocessing script. 
-Include the filename extension (e.g., "my_code.R", "my_code.Rmd", 
-"my_code.py", or "my_code.ipynb"). 
+\item{code}{R, R Markdown, Python, or Jupyter Notebook data preprocessing script.
+Include the filename extension (e.g., "my_code.R", "my_code.Rmd",
+"my_code.py", or "my_code.ipynb").
 If the script is not in the working directory, include the full file path.}
 
 \item{rowCount}{Integer between 5-15 for number of Smallset rows.}
@@ -55,12 +55,9 @@ preprocessing code.}
 
 \item{colours}{Either 1, 2, or 3 for one of the built-in colour schemes (all
 are colourblind-friendly and 2 works on a grey scale, i.e., it's printer-friendly) or a list
-with four hex colour codes for added, deleted, edited, and unchanged 
+with four hex colour codes for added, deleted, edited, and unchanged
 (e.g., list(added = "#5BA2A6", deleted = "#DDC492", edited = "#FFC500", unchanged
 = "#E6E3DF")).}
-
-\item{altText}{A logical. TRUE generates alternative text (alt text) for the
-Smallset Timeline and prints it to the console.}
 
 \item{printedData}{A logical. TRUE prints data values in the Smallset
 snapshots.}
@@ -85,6 +82,9 @@ to bottom.}
 \item{spacing}{\link{sets_spacing} for space specifications.}
 
 \item{labelling}{\link{sets_labelling} for label specifications.}
+
+\item{altText}{A logical. TRUE generates alternative text (alt text) for the
+Smallset Timeline and prints it to the console.}
 }
 \value{
 Returns a Smallset Timeline object, which is a plot consisting of
@@ -97,8 +97,8 @@ Builds a Smallset Timeline to visualise data preprocessing
 \details{
 Prior to running this command, structured comments with snapshot
   instructions must be added to the preprocessing script passed to
-  \code{code}. See section titled "Structured comments" in 
-  \code{vignette("smallsets")} or in the 
+  \code{code}. See section titled "Structured comments" in
+  \code{vignette("smallsets")} or in the
   \href{https://lydialucchesi.github.io/smallsets/articles/smallsets.html#Structured_comments}{online user guide}.
 }
 \examples{

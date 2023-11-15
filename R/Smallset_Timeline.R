@@ -4,9 +4,9 @@
 #'   decisions.
 #'
 #' @param data Dataset that is being preprocessed.
-#' @param code R, R Markdown, Python, or Jupyter Notebook data preprocessing script. 
-#'   Include the filename extension (e.g., "my_code.R", "my_code.Rmd", 
-#'   "my_code.py", or "my_code.ipynb"). 
+#' @param code R, R Markdown, Python, or Jupyter Notebook data preprocessing script.
+#'   Include the filename extension (e.g., "my_code.R", "my_code.Rmd",
+#'   "my_code.py", or "my_code.ipynb").
 #'   If the script is not in the working directory, include the full file path.
 #' @param rowCount Integer between 5-15 for number of Smallset rows.
 #' @param rowSelect NULL, 1, or 2. If NULL, Smallset rows are randomly sampled.
@@ -25,11 +25,9 @@
 #'   preprocessing code.
 #' @param colours Either 1, 2, or 3 for one of the built-in colour schemes (all
 #'   are colourblind-friendly and 2 works on a grey scale, i.e., it's printer-friendly) or a list
-#'   with four hex colour codes for added, deleted, edited, and unchanged 
+#'   with four hex colour codes for added, deleted, edited, and unchanged
 #'   (e.g., list(added = "#5BA2A6", deleted = "#DDC492", edited = "#FFC500", unchanged
 #'   = "#E6E3DF")).
-#' @param altText A logical. TRUE generates alternative text (alt text) for the
-#'   Smallset Timeline and prints it to the console.
 #' @param printedData A logical. TRUE prints data values in the Smallset
 #'   snapshots.
 #' @param truncateData Integer for the number of characters in each printed data
@@ -45,11 +43,13 @@
 #' @param sizing \link{sets_sizing} for size specifications.
 #' @param spacing \link{sets_spacing} for space specifications.
 #' @param labelling \link{sets_labelling} for label specifications.
+#' @param altText A logical. TRUE generates alternative text (alt text) for the
+#'  Smallset Timeline and prints it to the console.
 #'
 #' @details Prior to running this command, structured comments with snapshot
 #'   instructions must be added to the preprocessing script passed to
-#'   \code{code}. See section titled "Structured comments" in 
-#'   \code{vignette("smallsets")} or in the 
+#'   \code{code}. See section titled "Structured comments" in
+#'   \code{vignette("smallsets")} or in the
 #'   \href{https://lydialucchesi.github.io/smallsets/articles/smallsets.html#Structured_comments}{online user guide}.
 #'
 #' @return Returns a Smallset Timeline object, which is a plot consisting of
@@ -76,7 +76,6 @@ Smallset_Timeline <- function(data,
                               rowNums = NULL,
                               ignoreCols = NULL,
                               colours = 1,
-                              altText = FALSE,
                               printedData = FALSE,
                               truncateData = NULL,
                               ghostData = TRUE,
@@ -85,8 +84,8 @@ Smallset_Timeline <- function(data,
                               font = "sans",
                               sizing = sets_sizing(),
                               spacing = sets_spacing(),
-                              labelling = sets_labelling()
-                              ) {
+                              labelling = sets_labelling(),
+                              altText = FALSE) {
   # Check that dataset and R/Python preprocessing code were provided
   if (missing(data)) {
     stop("Must specify data. See ?Smallset_Timeline.")
@@ -101,10 +100,12 @@ Smallset_Timeline <- function(data,
   check1 <- sum(grepl("# smallsets start", comment_check))
   check2 <- sum(grepl("# smallsets end", comment_check))
   if (check1 > 0 | check2 > 0) {
-    stop("Old smallsets structured comments detected! 
-    The structured comments were updated in v2.0.0 
-    of smallsets. See the vignette or online user 
-    guide for instructions on the new format.")
+    stop(
+      "Old smallsets structured comments detected!
+    The structured comments were updated in v2.0.0
+    of smallsets. See the vignette or online user
+    guide for instructions on the new format."
+    )
   }
   
   lang <- tools::file_ext(code)
@@ -146,7 +147,6 @@ Smallset_Timeline <- function(data,
     
     # Extra formatting tasks if Python
     if (lang == "py") {
-      
       # Remove double hash for comments
       with_comments <- readLines(converted_file)
       without_comments <- gsub("^.{0,3}", "", with_comments)
@@ -154,7 +154,7 @@ Smallset_Timeline <- function(data,
       # Remove extra line added after each non-empty line
       for (i in 1:length(without_comments)) {
         if (without_comments[i] != "") {
-            without_comments <- without_comments[-(i + 1)]
+          without_comments <- without_comments[-(i + 1)]
         }
         if (i == length(without_comments)) {
           break
@@ -176,11 +176,11 @@ Smallset_Timeline <- function(data,
     data <- as.data.frame(data)
   }
   if (inherits(data, "tbl_df")) {
-      warning("Converting data object from a tibble to a data frame.")
-      data <- as.data.frame(data)
+    warning("Converting data object from a tibble to a data frame.")
+    data <- as.data.frame(data)
   }
   if (!inherits(data, "data.frame")) {
-      stop("Data was not of class data frame, data table, or tibble.")
+    stop("Data was not of class data frame, data table, or tibble.")
   }
   
   # Check Smallset size
@@ -195,10 +195,12 @@ Smallset_Timeline <- function(data,
     e <- colours$edited
     u <- colours$unchanged
     if (length(c(a, d, e, u)) != 4) {
-      stop("When specifying custom colours, 
-      must specify four colours for 
-      unchanged, added, deleted, and edited. 
-      See ?Smallset_Timeline.")
+      stop(
+        "When specifying custom colours,
+      must specify four colours for
+      unchanged, added, deleted, and edited.
+      See ?Smallset_Timeline."
+      )
     }
     fourCols <- c(a, d, e, u)
   } else {
@@ -210,8 +212,8 @@ Smallset_Timeline <- function(data,
   if (!is.null(rowSelect)) {
     if (!requireNamespace("gurobi", quietly = TRUE)) {
       stop(
-        "This Smallset selection method uses the Gurobi solver. 
-        Please visit <https://www.gurobi.com> to get a Gurobi license. 
+        "This Smallset selection method uses the Gurobi solver.
+        Please visit <https://www.gurobi.com> to get a Gurobi license.
         Then install and load the gurobi R package. Otherwise, leave NULL."
       )
     } else {
@@ -231,13 +233,13 @@ Smallset_Timeline <- function(data,
   if (isTRUE(rowReturn)) {
     cat(paste0("Smallset rows: ", paste0(smallset, collapse = ", ")))
   }
-
+  
   # Write preprocessing function with snapshots
   output <- write_smallset_code(code, smallset, lang)
   
   # Subset data to columns of interest
   if (!is.null(ignoreCols)) {
-    data <- data[,!(names(data) %in% ignoreCols)]
+    data <- data[, !(names(data) %in% ignoreCols)]
   }
   
   # Run function to take snapshots
@@ -251,13 +253,14 @@ Smallset_Timeline <- function(data,
   smallsetList <- apply_code(data)
   for (i in 1:length(smallsetList)) {
     smallsetList[[i]] <-
-      smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")),]
+      smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")), ]
   }
   # Delete temp file
   unlink(output[[3]])
   
   # Find data differences between snapshots
-  smallsetTables <- find_data_changes(smallsetList, fourCols, altText)
+  smallsetTables <-
+    find_data_changes(smallsetList, fourCols, altText)
   items <- seq(1, length(smallsetTables[[1]]), 1)
   
   # Prepare snapshot label colours
@@ -281,12 +284,10 @@ Smallset_Timeline <- function(data,
   
   # Prepare colour legend
   descriptions <-
-    c(
-      "Added",
+    c("Added",
       "Deleted",
       "Edited",
-      "Unchanged"
-    )
+      "Unchanged")
   legendDF <-
     data.frame(colValue = fourCols, description = descriptions)
   legendDF <- subset(legendDF, legendDF$colValue %in% colsPresent)
@@ -313,14 +314,13 @@ Smallset_Timeline <- function(data,
   
   # Add asterisks to legend labels
   if (isTRUE(missingDataTints)) {
-    
     snap <- NULL
     m <- data.frame(row = numeric(),
-                    col = numeric(), 
+                    col = numeric(),
                     snap = numeric())
     
     for (i in 1:length(extTables)) {
-      rc <- as.data.frame(which(is.na(extTables[[i]][[2]]), arr.ind=TRUE))
+      rc <- as.data.frame(which(is.na(extTables[[i]][[2]]), arr.ind = TRUE))
       if (nrow(rc) > 0) {
         rc$snap <- i
         m <- rbind(m, rc)
@@ -342,12 +342,14 @@ Smallset_Timeline <- function(data,
     a <- unique(a)
     
     for (i in 1:nrow(legendDF)) {
-        if (legendDF[i, "colValue"] %in% a) {
-          legendDF[i, "description"] <- paste0(legendDF[i, "description"], "*  ")
-        } else {
-          legendDF[i, "description"] <- paste0(legendDF[i, "description"], "   ")
-        }
+      if (legendDF[i, "colValue"] %in% a) {
+        legendDF[i, "description"] <-
+          paste0(legendDF[i, "description"], "*  ")
+      } else {
+        legendDF[i, "description"] <-
+          paste0(legendDF[i, "description"], "   ")
       }
+    }
   } else {
     legendDF$description <- paste0(legendDF$description, "   ")
     a <- NULL
@@ -395,17 +397,21 @@ Smallset_Timeline <- function(data,
   # Finalise the plots with captions and standard dimensions
   items <- 1:length(plots)
   l <-
-    lapply(
-      items,
-      plots,
-      output,
-      maxDims,
-      align,
-      font,
-      sizing,
-      spacing,
-      FUN = finalise_plot
-    )
+    lapply(items,
+           plots,
+           output,
+           maxDims,
+           align,
+           font,
+           sizing,
+           spacing,
+           FUN = finalise_plot)
+  
+  if (isTRUE(missingDataTints)) {
+    title <- "element_text(), "
+  } else {
+    title <- "element_blank(), "
+  }
   
   # Assemble plots into Timeline
   if (align == "vertical") {
@@ -428,10 +434,11 @@ Smallset_Timeline <- function(data,
         "', colour = 'black'),",
         "legend.key.size = unit(",
         sizing[["icons"]],
-        ", 'line'), 
-      legend.position = 'bottom', 
-      legend.title = element_blank(),
-      legend.margin=margin(t=20, r=0, b=0, l=0, unit='pt'))"
+        ", 'line'),
+      legend.position = 'bottom',
+      legend.title = ",
+        title,
+        "legend.margin=margin(t=20, r=0, b=0, l=0, unit='pt'))"
       )
   } else {
     patchedPlots <- ""
@@ -452,36 +459,28 @@ Smallset_Timeline <- function(data,
         "', colour = 'black'),",
         "legend.key.size = unit(",
         sizing[["icons"]],
-        ", 'line'), 
-      legend.position = 'bottom', 
-      legend.title = element_blank(),
-      legend.margin=margin(t=0, r=0, b=0, l=0, unit='cm'))"
+        ", 'line'),
+      legend.position = 'bottom',
+      legend.title = ",
+        title,
+        "legend.margin=margin(t=20, r=0, b=0, l=0, unit='pt'))"
       )
-  }
-  
-  # Add legend footnote 
-  if (!is.null(a) & length(a) > 0) {
-    patchedPlots <- paste0(patchedPlots, 
-                           " & plot_annotation(caption = '*A lighter value indicates a missing data value.',
-                           theme = theme(plot.caption = element_text(size = ", 
-                           sizing[["legend"]] / 1.25,
-                           ", family = '",
-                           font,
-                           "')))")
   }
   
   # Generate alt text for the Timeline
   if (isTRUE(altText)) {
-    generate_alt_text(smallsetTables[[1]],
-                      fourCols,
-                      legendDF,
-                      smallsetTables[[2]],
-                      l,
-                      printedData,
-                      ghostData,
-                      output[[2]])
+    generate_alt_text(
+      smallsetTables[[1]],
+      fourCols,
+      legendDF,
+      smallsetTables[[2]],
+      l,
+      printedData,
+      ghostData,
+      output[[2]]
+    )
   }
-
+  
   # Delete tempfiles from file conversion
   if (isTRUE(rmdSwitch)) {
     if (lang == "py") {

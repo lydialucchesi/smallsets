@@ -72,7 +72,6 @@
 <span>  rowNums <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ignoreCols <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  colours <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  altText <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  printedData <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  truncateData <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ghostData <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -81,7 +80,8 @@
 <span>  font <span class="op">=</span> <span class="st">"sans"</span>,</span>
 <span>  sizing <span class="op">=</span> <span class="fu"><a href="sets_sizing.html">sets_sizing</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  spacing <span class="op">=</span> <span class="fu"><a href="sets_spacing.html">sets_spacing</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  labelling <span class="op">=</span> <span class="fu"><a href="sets_labelling.html">sets_labelling</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  labelling <span class="op">=</span> <span class="fu"><a href="sets_labelling.html">sets_labelling</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  altText <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -92,9 +92,9 @@
 
 
 <dt>code</dt>
-<dd><p>R, R Markdown, Python, or Jupyter Notebook data preprocessing script. 
-Include the filename extension (e.g., "my_code.R", "my_code.Rmd", 
-"my_code.py", or "my_code.ipynb"). 
+<dd><p>R, R Markdown, Python, or Jupyter Notebook data preprocessing script.
+Include the filename extension (e.g., "my_code.R", "my_code.Rmd",
+"my_code.py", or "my_code.ipynb").
 If the script is not in the working directory, include the full file path.</p></dd>
 
 
@@ -131,14 +131,9 @@ preprocessing code.</p></dd>
 <dt>colours</dt>
 <dd><p>Either 1, 2, or 3 for one of the built-in colour schemes (all
 are colourblind-friendly and 2 works on a grey scale, i.e., it's printer-friendly) or a list
-with four hex colour codes for added, deleted, edited, and unchanged 
+with four hex colour codes for added, deleted, edited, and unchanged
 (e.g., list(added = "#5BA2A6", deleted = "#DDC492", edited = "#FFC500", unchanged
 = "#E6E3DF")).</p></dd>
-
-
-<dt>altText</dt>
-<dd><p>A logical. TRUE generates alternative text (alt text) for the
-Smallset Timeline and prints it to the console.</p></dd>
 
 
 <dt>printedData</dt>
@@ -182,6 +177,11 @@ to bottom.</p></dd>
 <dt>labelling</dt>
 <dd><p><a href="sets_labelling.html">sets_labelling</a> for label specifications.</p></dd>
 
+
+<dt>altText</dt>
+<dd><p>A logical. TRUE generates alternative text (alt text) for the
+Smallset Timeline and prints it to the console.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -194,8 +194,8 @@ to bottom.</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Prior to running this command, structured comments with snapshot
   instructions must be added to the preprocessing script passed to
-  <code>code</code>. See section titled "Structured comments" in 
-  <code><a href="../articles/smallsets.html">vignette("smallsets")</a></code> or in the 
+  <code>code</code>. See section titled "Structured comments" in
+  <code><a href="../articles/smallsets.html">vignette("smallsets")</a></code> or in the
   <a href="https://lydialucchesi.github.io/smallsets/articles/smallsets.html#Structured_comments">online user guide</a>.</p>
     </div>
 
