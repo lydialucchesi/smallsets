@@ -376,6 +376,7 @@ Smallset_Timeline <- function(data,
       spacing,
       font,
       truncateData,
+      align,
       FUN = build_plot
     )
   

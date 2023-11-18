@@ -19,7 +19,8 @@ build_plot(
   smallsetTables,
   spacing,
   font,
-  truncateData
+  truncateData,
+  align
 )
 }
 \description{
