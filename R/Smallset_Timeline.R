@@ -21,8 +21,7 @@
 #' @param rowNums Numeric vector indicating particular rows from the dataset to
 #'   include in the Smallset.
 #' @param ignoreCols Character vector of column names indicating which to
-#'   exclude from the Smallset. These columns cannot be referenced in the data
-#'   preprocessing code.
+#'   exclude from the Smallset.
 #' @param colours Either 1, 2, or 3 for one of the built-in colour schemes (all
 #'   are colourblind-friendly and 2 works on a grey scale, i.e., it's printer-friendly) or a list
 #'   with four hex colour codes for added, deleted, edited, and unchanged
@@ -66,6 +65,7 @@
 #' @import patchwork rmarkdown
 #' @importFrom callr r
 #' @importFrom knitr purl
+#' @importFrom flextable delete_columns
 #' @export
 
 Smallset_Timeline <- function(data,
@@ -237,11 +237,6 @@ Smallset_Timeline <- function(data,
   # Write preprocessing function with snapshots
   output <- write_smallset_code(code, smallset, lang)
   
-  # Subset data to columns of interest
-  if (!is.null(ignoreCols)) {
-    data <- data[, !(names(data) %in% ignoreCols)]
-  }
-  
   # Run function to take snapshots
   apply_code <- NULL
   if (lang == "py") {
@@ -262,6 +257,18 @@ Smallset_Timeline <- function(data,
   smallsetTables <-
     find_data_changes(smallsetList, fourCols, altText)
   items <- seq(1, length(smallsetTables[[1]]), 1)
+  
+  # Remove ignored columns
+  if (!is.null(ignoreCols)) {
+    for (t in 1:length(smallsetTables[[1]])) {
+      ignore <-
+        ignoreCols[ignoreCols %in% colnames(smallsetTables[[1]][[t]]$body$dataset)]
+      if (length(ignore) > 0) {
+        smallsetTables[[1]][[t]] <-
+          delete_columns(smallsetTables[[1]][[t]], j = ignore)
+      }
+    }
+  }
   
   # Prepare snapshot label colours
   if (labelling$labelCol == "darker") {

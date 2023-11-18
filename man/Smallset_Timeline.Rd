@@ -50,8 +50,7 @@ the rows selected for the Smallset.}
 include in the Smallset.}
 
 \item{ignoreCols}{Character vector of column names indicating which to
-exclude from the Smallset. These columns cannot be referenced in the data
-preprocessing code.}
+exclude from the Smallset.}
 
 \item{colours}{Either 1, 2, or 3 for one of the built-in colour schemes (all
 are colourblind-friendly and 2 works on a grey scale, i.e., it's printer-friendly) or a list

@@ -60,15 +60,6 @@ test_that("resume marker works",
             expect_length(r, 1)
           })
 
-test_that("ignoring C3, an affected column, returns error",
-          {
-            expect_error(Smallset_Timeline(
-              data = s_data,
-              code = system.file("s_data_preprocess.R", package = "smallsets"),
-              ignoreCols = c("C3")
-            ))
-          })
-
 test_that("ignoring C5, an unaffected column, works",
           {
             expect_no_error(Smallset_Timeline(
