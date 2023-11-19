@@ -22,7 +22,7 @@ write_smallset_code <-
       data.frame(command = script[row.names(script) %in% lines,], type = NA)
     for (i in 1:nrow(types)) {
       types$type[i] <-
-        strsplit(types$command[i], " ")[[1]][3]
+        strsplit(trimws(types$command[i]), " ")[[1]][3]
     }
     
     # Extract captions from script
@@ -51,7 +51,8 @@ write_smallset_code <-
         
         caption <-
           script[captions$row[c]:captions$stop[c], "command"]
-        caption[1] <- gsub(".*\\[", "", caption[1])
+        caption <- trimws(caption, which = "left")
+        caption[1] <- trimws(gsub(".*\\[", "", caption[1]), which = "right")
         caption[length(caption)] <-
           gsub("\\].*", "", caption[length(caption)])
         
@@ -75,9 +76,10 @@ write_smallset_code <-
     script$row_nums <- row.names(script)
     
     # Get snap args
-    snap_args <- gsub("# smallsets snap ", "",
-                      script[row.names(script)[grepl("# smallsets snap", script$command)],
-                             c("command")])
+    
+    snap_args <- trimws(script[row.names(script)[grepl("# smallsets snap", script$command)],
+                               c("command")])
+    snap_args <- gsub("# smallsets snap ", "", snap_args)
     snap_args <- gsub(" caption\\[.*", "", snap_args)
     snap_args <- strsplit(snap_args, " ")
     locs <-
@@ -257,6 +259,32 @@ write_smallset_code <-
     }
     
     script <- data.frame(command = as.character(script))
+    
+    if (lang == "py") {
+      tabs <- data.frame(row = c(), tab = c())
+      for (i in 4:(nrow(script) - 1)) {
+        if (isFALSE(startsWith(script$command[i], "snapshots.append(")) & (script$command[i] != "")) {
+          split <- strsplit(x = script$command[i], split = "")[[1]]
+          f <- strsplit(trimws(paste0(split[1:4], collapse = "")), split = "")[[1]][1]
+          f <- ifelse(is.na(f), "", f)
+          if (f != "#") {
+            if (isTRUE(identical(split[1:4], c(" ", " ", " ", " ")))) {
+              tab <- T
+            } else {
+              tab <- F
+            }
+            result <- data.frame(row = c(i), tab = c(tab))
+            tabs <- rbind(tabs, result)
+          }
+        }
+      }
+      
+      if (sum(tabs$tab) == nrow(tabs)) {
+        for(i in 1:nrow(tabs)) {
+          script$command[tabs$row[i]] <- sub("....", "", script$command[tabs$row[i]])
+        }
+      }
+    }
     
     # Add python tabs
     if (lang == "py") {
