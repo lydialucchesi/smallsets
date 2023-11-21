@@ -178,14 +178,15 @@ in the current R session. Information on installing Python packages with
 <p>To make a Smallset Timeline with smallsets, you need to add
 structured comments with snapshot instructions to your preprocessing
 script. All smallsets comments follow the same formula.</p>
-<p><font size="4"> <strong># smallsets snap + <span style="color: red;"><em>place</em></span> + <span style="color: red;"><em>name of data object</em></span> + caption[<span style="color: red;"><em>text</em></span>]caption</strong> </font></p>
+<p><font size="4"> <strong># smallsets snap + <span style="color: red;"><em>snap-place</em></span> + <span style="color: red;"><em>name-of-data-object</em></span> + caption[<span style="color: red;"><em>caption-text</em></span>]caption</strong>
+</font></p>
 <p><strong>Ex:</strong>
 <code># smallsets snap +4 mydata caption[I removed rows that had implausible values.]caption</code></p>
 <p>The <a href="#R_example">following section</a> includes an example R
 preprocessing script with smallsets structured comments.</p>
 <div class="section level4">
-<h4 id="place">
-<span style="color: red;">place</span><a class="anchor" aria-label="anchor" href="#place"></a>
+<h4 id="snap-place">
+<span style="color: red;">snap-place</span><a class="anchor" aria-label="anchor" href="#snap-place"></a>
 </h4>
 <p>There are three options for this argument.</p>
 <ol style="list-style-type: decimal">
@@ -201,14 +202,14 @@ the structured comment (i.e., before the next line of code).</li>
 </div>
 <div class="section level4">
 <h4 id="name-of-data-object">
-<span style="color: red;">name of data object</span><a class="anchor" aria-label="anchor" href="#name-of-data-object"></a>
+<span style="color: red;">name-of-data-object</span><a class="anchor" aria-label="anchor" href="#name-of-data-object"></a>
 </h4>
 <p>The name of the data object can change throughout the script. The
 snapshot is taken of the object specified in the comment.</p>
 </div>
 <div class="section level4">
-<h4 id="text">
-<span style="color: red;">text</span><a class="anchor" aria-label="anchor" href="#text"></a>
+<h4 id="caption-text">
+<span style="color: red;">caption-text</span><a class="anchor" aria-label="anchor" href="#caption-text"></a>
 </h4>
 <p>This is the snapshot caption describing the preprocessing step.</p>
 </div>

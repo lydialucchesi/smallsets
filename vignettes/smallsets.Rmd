@@ -67,14 +67,14 @@ The smallsets package currently supports data preprocessing workflows fitting th
 To make a Smallset Timeline with smallsets, you need to add structured comments with snapshot instructions to your preprocessing script. All smallsets comments follow the same formula.
 
 <font size="4"> 
-**# smallsets snap + <span style="color: red;">*place*</span> + <span style="color: red;">*name of data object*</span> + caption[<span style="color: red;">*text*</span>]caption**
+**# smallsets snap + <span style="color: red;">*snap-place*</span> + <span style="color: red;">*name-of-data-object*</span> + caption[<span style="color: red;">*caption-text*</span>]caption**
 </font>
 
 **Ex:** ```# smallsets snap +4 mydata caption[I removed rows that had implausible values.]caption```
 
 The [following section](#R_example) includes an example R preprocessing script with smallsets structured comments.
 
-#### <span style="color: red;">place</span>
+#### <span style="color: red;">snap-place</span>
 
 There are three options for this argument.
 
@@ -82,10 +82,10 @@ There are three options for this argument.
 2. Use a plus sign and a number to specify how many lines of code later to take the snapshot, e.g., +2 means take the snapshot two lines of code later.
 3. Don't specify anything, and a snapshot will be taken directly after the structured comment (i.e., before the next line of code).
 
-#### <span style="color: red;">name of data object</span>
+#### <span style="color: red;">name-of-data-object</span>
 The name of the data object can change throughout the script. The snapshot is taken of the object specified in the comment.
 
-#### <span style="color: red;">text</span>
+#### <span style="color: red;">caption-text</span>
 This is the snapshot caption describing the preprocessing step.
 
 ## R example {#R_example}
