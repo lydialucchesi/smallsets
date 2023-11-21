@@ -47,11 +47,11 @@ available).}
 the rows selected for the Smallset.}
 
 \item{rowIDs}{If R preprocessing code, a character vector of row names for 
-rows to include in the Smallset. If R preprocessing code, a numeric vector of 
+rows to include in the Smallset. If Python preprocessing code, a numeric vector of 
 indices for rows to include in the Smallset.}
 
 \item{ignoreCols}{Character vector of column names indicating which to
-exclude from the Smallset.}
+exclude from the Smallset Timeline.}
 
 \item{colours}{Either 1, 2, or 3 for one of the built-in colour schemes (all
 are colourblind-friendly and 2 works on a grey scale, i.e., it's printer-friendly) or a list

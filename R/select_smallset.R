@@ -4,10 +4,16 @@
 
 select_smallset <- function(data,
                             rowCount = 6,
-                            rowIDs = NULL) {
+                            rowIDs = NULL,
+                            lang = lang) {
   # Extract the specified rows and randomly sample the rest
-  data$smallsetRowID <- row.names(data)
-  smallset2 <- sample(subset(data,!(as.numeric(data$smallsetRowID) %in% rowIDs))$smallsetRowID, rowCount - length(rowIDs))
+  if (lang == "R") {
+    data$smallsetRowID <- rownames(data)
+  } else {
+    data$smallsetRowID <- as.numeric(rownames(data)) - 1
+  }
+  smallset2 <-
+    sample(subset(data,!(data$smallsetRowID %in% rowIDs))$smallsetRowID, rowCount - length(rowIDs))
   smallset <- c(as.character(rowIDs), smallset2)
   
   # Order the Smallset based on the order in the original dataset

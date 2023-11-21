@@ -19,10 +19,10 @@
 #' @param rowReturn A logical. TRUE prints, to the console, the row numbers of
 #'   the rows selected for the Smallset.
 #' @param rowIDs If R preprocessing code, a character vector of row names for 
-#'   rows to include in the Smallset. If R preprocessing code, a numeric vector of 
+#'   rows to include in the Smallset. If Python preprocessing code, a numeric vector of 
 #'   indices for rows to include in the Smallset.
 #' @param ignoreCols Character vector of column names indicating which to
-#'   exclude from the Smallset.
+#'   exclude from the Smallset Timeline.
 #' @param colours Either 1, 2, or 3 for one of the built-in colour schemes (all
 #'   are colourblind-friendly and 2 works on a grey scale, i.e., it's printer-friendly) or a list
 #'   with four hex colour codes for added, deleted, edited, and unchanged
@@ -102,7 +102,7 @@ Smallset_Timeline <- function(data,
   check2 <- sum(grepl("# smallsets end", comment_check))
   if (check1 > 0 | check2 > 0) {
     stop(
-      "Old smallsets structured comments detected!
+    "Old smallsets structured comments detected!
     The structured comments were updated in v2.0.0
     of smallsets. See the vignette or online user
     guide for instructions on the new format."
@@ -236,7 +236,7 @@ Smallset_Timeline <- function(data,
     }
   } else {
     # Use random sampling and/or manual selection
-    smallset <- select_smallset(data, rowCount, rowIDs)
+    smallset <- select_smallset(data, rowCount, rowIDs, lang)
   }
   if (isTRUE(rowReturn)) {
     if (lang == "R") {
@@ -260,7 +260,7 @@ Smallset_Timeline <- function(data,
   smallsetList <- apply_code(data)
   for (i in 1:length(smallsetList)) {
     smallsetList[[i]] <-
-      smallsetList[[i]][!(row.names(smallsetList[[i]]) %in% c("NA")), ]
+      smallsetList[[i]][!(rownames(smallsetList[[i]]) %in% c("NA")), ]
   }
   # Delete temp file
   unlink(output[[3]])

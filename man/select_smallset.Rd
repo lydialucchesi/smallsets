@@ -4,7 +4,7 @@
 \alias{select_smallset}
 \title{Select Smallset}
 \usage{
-select_smallset(data, rowCount = 6, rowIDs = NULL)
+select_smallset(data, rowCount = 6, rowIDs = NULL, lang = lang)
 }
 \description{
 Selects the rows included in the Smallset.

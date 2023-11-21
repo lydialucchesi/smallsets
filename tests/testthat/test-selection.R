@@ -10,7 +10,8 @@ test_that("rowCount less than rowIDs returns error",
 smallset <-
   select_smallset(data = s_data,
                   rowCount = 5,
-                  rowIDs = c("4"))
+                  rowIDs = c("4"),
+                  lang = "R")
 
 test_that("selection includes rowID 4",
           {
@@ -26,7 +27,8 @@ smallset <-
   select_smallset(
     data = s_data,
     rowCount = 5,
-    rowIDs = c("100", "99", "98", "97", "96")
+    rowIDs = c("100", "99", "98", "97", "96"),
+    lang = "R"
   )
 test_that("selection matches rowIDs exactly",
           {
@@ -72,3 +74,4 @@ test_that("C7 is all yellow in visual appearance matrix",
           {
             expect_true(unique(appearance$C7) == "#F9D76C")
           })
+

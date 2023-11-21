@@ -177,7 +177,7 @@ write_smallset_code <-
               as.character(s),
               "]] <- ",
               locs$name[s],
-              "[(row.names(",
+              "[(rownames(",
               locs$name[s],
               ") %in% c(",
               paste("'", smallset, "'", collapse = ", ", sep = ""),
