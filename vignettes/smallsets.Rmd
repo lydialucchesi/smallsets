@@ -190,16 +190,16 @@ Smallset_Timeline(data = s_data,
 ```{r, echo=FALSE, fig.keep="none"}
 Smallset_Timeline(data = s_data, 
                   code = system.file("s_data_preprocess.R", package = "smallsets"),
-                  rowNums = c(27, 42, 95, 96, 99),
+                  rowIDs = c("27", "42", "95", "96", "99"),
                   rowReturn = T)
 ```
 
-After the optimisation problem is solved once, the solution can be passed to `rowNums` to avoid having to re-solve it with each run of `Smallset_Timeline`.
+After the optimisation problem is solved once, the solution can be passed to `rowIDs` to avoid having to re-solve it with each run of `Smallset_Timeline`.
 
 ```{r timeline3, fig.width=8, fig.height = 3, fig.retina = 2, fig.align='center'}
 Smallset_Timeline(data = s_data, 
                   code = system.file("s_data_preprocess.R", package = "smallsets"), 
-                  rowCount = 5, rowNums = c(27, 42, 95, 96, 99))
+                  rowCount = 5, rowIDs = c("27", "42", "95", "96", "99"))
 ```
 
 Here, the *coverage* solution misses a data edit example in the second snapshot, motivating use of the other selection method (`rowSelect = 2`): the *coverage + variety* optimisation problem, which looks for rows affected by the preprocessing steps differently. **The drawback of `rowSelect = 2` is runtime for large datasets.** One potential workaround to a long runtime is building a Timeline from a sample of the dataset. However, this should be done with caution.
@@ -213,7 +213,7 @@ Smallset_Timeline(data = s_data,
 ```{r timeline4, echo=FALSE, fig.width=8, fig.height = 3, fig.retina = 2, fig.align='center'}
 Smallset_Timeline(data = s_data,
                   code = system.file("s_data_preprocess.R", package = "smallsets"),
-                  rowNums = c(3, 32, 80, 97, 99),
+                  rowIDs = c("3", "32", "80", "97", "99"),
                   rowReturn = T)
 ```
 

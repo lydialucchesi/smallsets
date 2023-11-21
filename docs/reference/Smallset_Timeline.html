@@ -69,7 +69,7 @@
 <span>  rowCount <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  rowSelect <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  rowReturn <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  rowNums <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rowIDs <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ignoreCols <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  colours <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  printedData <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -117,15 +117,15 @@ available).</p></dd>
 the rows selected for the Smallset.</p></dd>
 
 
-<dt>rowNums</dt>
-<dd><p>Numeric vector indicating particular rows from the dataset to
-include in the Smallset.</p></dd>
+<dt>rowIDs</dt>
+<dd><p>If R preprocessing code, a character vector of row names for 
+rows to include in the Smallset. If R preprocessing code, a numeric vector of 
+indices for rows to include in the Smallset.</p></dd>
 
 
 <dt>ignoreCols</dt>
 <dd><p>Character vector of column names indicating which to
-exclude from the Smallset. These columns cannot be referenced in the data
-preprocessing code.</p></dd>
+exclude from the Smallset.</p></dd>
 
 
 <dt>colours</dt>

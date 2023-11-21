@@ -10,7 +10,7 @@ Smallset_Timeline(
   rowCount = 5,
   rowSelect = NULL,
   rowReturn = FALSE,
-  rowNums = NULL,
+  rowIDs = NULL,
   ignoreCols = NULL,
   colours = 1,
   printedData = FALSE,
@@ -46,8 +46,9 @@ available).}
 \item{rowReturn}{A logical. TRUE prints, to the console, the row numbers of
 the rows selected for the Smallset.}
 
-\item{rowNums}{Numeric vector indicating particular rows from the dataset to
-include in the Smallset.}
+\item{rowIDs}{If R preprocessing code, a character vector of row names for 
+rows to include in the Smallset. If R preprocessing code, a numeric vector of 
+indices for rows to include in the Smallset.}
 
 \item{ignoreCols}{Character vector of column names indicating which to
 exclude from the Smallset.}

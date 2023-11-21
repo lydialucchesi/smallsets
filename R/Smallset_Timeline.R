@@ -18,8 +18,9 @@
 #'   available).
 #' @param rowReturn A logical. TRUE prints, to the console, the row numbers of
 #'   the rows selected for the Smallset.
-#' @param rowNums Numeric vector indicating particular rows from the dataset to
-#'   include in the Smallset.
+#' @param rowIDs If R preprocessing code, a character vector of row names for 
+#'   rows to include in the Smallset. If R preprocessing code, a numeric vector of 
+#'   indices for rows to include in the Smallset.
 #' @param ignoreCols Character vector of column names indicating which to
 #'   exclude from the Smallset.
 #' @param colours Either 1, 2, or 3 for one of the built-in colour schemes (all
@@ -73,7 +74,7 @@ Smallset_Timeline <- function(data,
                               rowCount = 5,
                               rowSelect = NULL,
                               rowReturn = FALSE,
-                              rowNums = NULL,
+                              rowIDs = NULL,
                               ignoreCols = NULL,
                               colours = 1,
                               printedData = FALSE,
@@ -171,6 +172,13 @@ Smallset_Timeline <- function(data,
     code <- converted_file
   }
   
+  if (lang == "R" & inherits(rowIDs, "numeric")) {
+    stop("Numeric rowIDs detected. For R code, please specify character values (row names).")
+  }
+  if (lang == "py" & inherits(rowIDs, "character")) {
+    stop("Character rowIDs detected. For Python code, please specify numeric values (indices).")
+  }
+  
   if (inherits(data, "data.table")) {
     warning("Converting data object from a data table to a data frame.")
     data <- as.data.frame(data)
@@ -228,10 +236,14 @@ Smallset_Timeline <- function(data,
     }
   } else {
     # Use random sampling and/or manual selection
-    smallset <- select_smallset(data, rowCount, rowNums)
+    smallset <- select_smallset(data, rowCount, rowIDs)
   }
   if (isTRUE(rowReturn)) {
-    cat(paste0("Smallset rows: ", paste0(smallset, collapse = ", ")))
+    if (lang == "R") {
+      cat(paste0("Smallset rows: ", toString(dQuote(smallset, FALSE))))
+    } else {
+      cat(paste0("Smallset rows: ", paste0(smallset, collapse = ", ")))
+    }
   }
   
   # Write preprocessing function with snapshots

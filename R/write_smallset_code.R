@@ -169,7 +169,7 @@ write_smallset_code <-
             "[,]"
           ))
           
-          # For building the figure
+        # For building the figure
         } else {
           insertSnap <- c(
             paste0(
@@ -180,7 +180,7 @@ write_smallset_code <-
               "[(row.names(",
               locs$name[s],
               ") %in% c(",
-              paste(smallset, collapse = ", "),
+              paste("'", smallset, "'", collapse = ", ", sep = ""),
               ")), ]"
             )
           )

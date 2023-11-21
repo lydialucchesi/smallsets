@@ -368,14 +368,14 @@ with <code>rowReturn = TRUE</code>.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>, </span>
 <span>                  rowCount <span class="op">=</span> <span class="fl">5</span>, rowSelect <span class="op">=</span> <span class="fl">1</span>, rowReturn <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Smallset rows: 27, 42, 95, 96, 99</span></span></code></pre>
+<pre><code><span><span class="co">## Smallset rows: "27", "42", "95", "96", "99"</span></span></code></pre>
 <p>After the optimisation problem is solved once, the solution can be
-passed to <code>rowNums</code> to avoid having to re-solve it with each
+passed to <code>rowIDs</code> to avoid having to re-solve it with each
 run of <code>Smallset_Timeline</code>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>, </span>
-<span>                  rowCount <span class="op">=</span> <span class="fl">5</span>, rowNums <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">27</span>, <span class="fl">42</span>, <span class="fl">95</span>, <span class="fl">96</span>, <span class="fl">99</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                  rowCount <span class="op">=</span> <span class="fl">5</span>, rowIDs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"27"</span>, <span class="st">"42"</span>, <span class="st">"95"</span>, <span class="st">"96"</span>, <span class="st">"99"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="smallsets_files/figure-html/timeline3-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>Here, the <em>coverage</em> solution misses a data edit example in
 the second snapshot, motivating use of the other selection method
@@ -389,7 +389,7 @@ this should be done with caution.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>, </span>
 <span>                  rowSelect <span class="op">=</span> <span class="fl">2</span>, rowReturn <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Smallset rows: 3, 32, 80, 97, 99</span></span></code></pre>
+<pre><code><span><span class="co">## Smallset rows: "3", "32", "80", "97", "99"</span></span></code></pre>
 <p><img src="smallsets_files/figure-html/timeline4-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">

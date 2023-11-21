@@ -72,7 +72,7 @@ test_that("ignoring C5, an unaffected column, works",
 ST1 <- Smallset_Timeline(
   data = s_data,
   code = system.file("s_data_preprocess.R", package = "smallsets"),
-  rowNums = c(1, 2, 3, 4, 5),
+  rowIDs = c("1", "2", "3", "4", "5"),
   ghostData = FALSE
 )
 d1 <- layer_data(ST1[[2]])
@@ -84,7 +84,7 @@ test_that("there are no coords where rows were deleted",
 ST2 <- Smallset_Timeline(
   data = s_data,
   code = system.file("s_data_preprocess.R", package = "smallsets"),
-  rowNums = c(1, 2, 3, 4, 5)
+  rowIDs = c("1", "2", "3", "4", "5")
 )
 d2 <- layer_data(ST2[[2]])
 test_that("ghost data plot has more coords",
@@ -105,7 +105,7 @@ test_that("2 passed to colours returns a list",
 ST <- Smallset_Timeline(
   data = s_data,
   code = system.file("s_data_preprocess.R", package = "smallsets"),
-  rowNums = c(1, 2, 3, 4, 5),
+  rowIDs = c("1", "2", "3", "4", "5"),
   printedData = TRUE,
   missingDataTints = TRUE
 )
