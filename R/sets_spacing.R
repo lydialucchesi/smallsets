@@ -5,15 +5,15 @@
 #' @param captions Positive numeric value for amount of caption space. 
 #'   When alignment is horizontal, refers to the space below snapshots. 
 #'   When alignment is vertical, refers to the space to the right of 
-#'   the snapshots. 
-#' @param header Positive numeric value for amount of column name space.
-#' @param degree Integer between 0-90 (degrees) to rotate column names.
+#'   the snapshots. Default is 2.5.
+#' @param degree Integer between 0-90 (degrees) to rotate column names. Default is 0.
+#' @param header Positive numeric value for amount of column name space. Default is 1.
 #' @param right Positive numeric value (>=.5) for amount of space to the right
 #'   of each snapshot.
-#' @param rows Integer for number of Timeline rows 
-#'   (applicable when the alignment is horizontal).
-#' @param columns Integer for number of Timeline columns 
-#'   (applicable when the alignment is vertical).
+#' @param rows Integer for number of Smallset Timeline rows 
+#'   (applicable when the alignment is horizontal). Default is 1.
+#' @param columns Integer for number of Smallset Timeline columns 
+#'   (applicable when the alignment is vertical). Default is 1.
 #'
 #' @details Passed to \code{spacing} in \link{Smallset_Timeline}.
 #'

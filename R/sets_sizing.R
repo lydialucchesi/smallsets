@@ -2,13 +2,13 @@
 #'
 #' @description Sets sizing parameters for the Smallset Timeline.
 #'
-#' @param captions Positive numeric value for caption text size.
-#' @param columns Positive numeric value for column name text size.
-#' @param data Positive numeric value for printed data text size.
-#' @param icons Positive numeric value for legend icon size.
-#' @param legend Positive numeric value for legend text size.
-#' @param resume Positive numeric value for resume marker size.
-#' @param tiles Positive numeric value for Smallset tile size.
+#' @param captions Positive numeric value for caption text size. Default is 3.
+#' @param columns Positive numeric value for column name text size. Default is 3.
+#' @param data Positive numeric value for printed data text size. Default is 2.
+#' @param icons Positive numeric value for legend icon size. Default is 1.
+#' @param legend Positive numeric value for legend text size. Default is 10.
+#' @param resume Positive numeric value for resume marker size. Default is 1.
+#' @param tiles Positive numeric value for Smallset tile size. Default is .2.
 #'
 #' @details Passed to \code{sizing} in \link{Smallset_Timeline}.
 #'
@@ -19,7 +19,7 @@
 #' Smallset_Timeline(
 #'    data = s_data,
 #'    code = system.file("s_data_preprocess.R", package = "smallsets"),
-#'    sizing = sets_sizing(captions = 3.5)
+#'    sizing = sets_sizing(captions = 4)
 #' )
 #'
 #' @export

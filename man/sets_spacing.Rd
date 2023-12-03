@@ -17,20 +17,20 @@ sets_spacing(
 \item{captions}{Positive numeric value for amount of caption space. 
 When alignment is horizontal, refers to the space below snapshots. 
 When alignment is vertical, refers to the space to the right of 
-the snapshots.}
+the snapshots. Default is 2.5.}
 
-\item{degree}{Integer between 0-90 (degrees) to rotate column names.}
+\item{degree}{Integer between 0-90 (degrees) to rotate column names. Default is 0.}
 
-\item{header}{Positive numeric value for amount of column name space.}
+\item{header}{Positive numeric value for amount of column name space. Default is 1.}
 
 \item{right}{Positive numeric value (>=.5) for amount of space to the right
 of each snapshot.}
 
-\item{rows}{Integer for number of Timeline rows 
-(applicable when the alignment is horizontal).}
+\item{rows}{Integer for number of Smallset Timeline rows 
+(applicable when the alignment is horizontal). Default is 1.}
 
-\item{columns}{Integer for number of Timeline columns 
-(applicable when the alignment is vertical).}
+\item{columns}{Integer for number of Smallset Timeline columns 
+(applicable when the alignment is vertical). Default is 1.}
 }
 \value{
 Returns a list with six elements (the spacing parameters).

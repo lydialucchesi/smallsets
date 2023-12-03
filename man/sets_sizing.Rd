@@ -15,19 +15,19 @@ sets_sizing(
 )
 }
 \arguments{
-\item{captions}{Positive numeric value for caption text size.}
+\item{captions}{Positive numeric value for caption text size. Default is 3.}
 
-\item{columns}{Positive numeric value for column name text size.}
+\item{columns}{Positive numeric value for column name text size. Default is 3.}
 
-\item{data}{Positive numeric value for printed data text size.}
+\item{data}{Positive numeric value for printed data text size. Default is 2.}
 
-\item{icons}{Positive numeric value for legend icon size.}
+\item{icons}{Positive numeric value for legend icon size. Default is 1.}
 
-\item{legend}{Positive numeric value for legend text size.}
+\item{legend}{Positive numeric value for legend text size. Default is 10.}
 
-\item{resume}{Positive numeric value for resume marker size.}
+\item{resume}{Positive numeric value for resume marker size. Default is 1.}
 
-\item{tiles}{Positive numeric value for Smallset tile size.}
+\item{tiles}{Positive numeric value for Smallset tile size. Default is .2.}
 }
 \value{
 Returns a list with seven elements (the sizing parameters).
@@ -43,7 +43,7 @@ Passed to \code{sizing} in \link{Smallset_Timeline}.
 Smallset_Timeline(
    data = s_data,
    code = system.file("s_data_preprocess.R", package = "smallsets"),
-   sizing = sets_sizing(captions = 3.5)
+   sizing = sets_sizing(captions = 4)
 )
 
 }
