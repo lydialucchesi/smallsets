@@ -181,8 +181,6 @@ build_plot <-
       scale_colour_identity() +
       coord_equal()
     
-    t_space <- ifelse(align == "vertical", 20, 0)
-    
     # Set legend title for missing data
     if (isTRUE(missingDataTints)) {
       snapshot <- snapshot +
@@ -201,7 +199,7 @@ build_plot <-
           legend.title = element_text(size = (sizing$legend * .75)),
           legend.title.align = 0.5,
           legend.margin = margin(
-            t = t_space,
+            t = 0,
             r = 0,
             b = 0,
             l = 0,
@@ -227,7 +225,7 @@ build_plot <-
           legend.title = element_blank(),
           legend.title.align = 0.5,
           legend.margin = margin(
-            t = t_space,
+            t = 0,
             r = 0,
             b = 0,
             l = 0,

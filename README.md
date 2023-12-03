@@ -65,9 +65,9 @@ informing `smallsets` what to do.
 
 ``` r
 # smallsets snap s_data caption[Remove rows where C2 is FALSE.]caption
-s_data <- s_data[s_data$C2 == TRUE,]
+s_data <- s_data[s_data$C2 == TRUE, ]
 
-# smallsets snap +2 s_data caption[Replace missing values in C6 and C8 with 
+# smallsets snap +2 s_data caption[Replace missing values in C6 and C8 with
 # column means. Drop C7 because there are too many missing values.]caption
 s_data$C6[is.na(s_data$C6)] <- mean(s_data$C6, na.rm = TRUE)
 s_data$C8[is.na(s_data$C8)] <- mean(s_data$C8, na.rm = TRUE)
@@ -89,15 +89,15 @@ Decisions. In 2022 ACM Conference on Fairness, Accountability, and
 Transparency (FAccT ’22). Association for Computing Machinery, New York,
 NY, USA, 1136–1153. <https://doi.org/10.1145/3531146.3533175>
 
-    @inproceedings{smallsets2022, 
-    author = {Lucchesi, Lydia R. and Kuhnert, Petra M. and Davis, Jenny L. and Xie, Lexing}, 
-    title = {Smallset Timelines: A Visual Representation of Data Preprocessing Decisions}, 
-    year = {2022}, 
-    isbn = {9781450393522}, 
-    publisher = {Association for Computing Machinery}, 
-    address = {New York, NY, USA}, 
-    url = {https://doi.org/10.1145/3531146.3533175}, 
-    doi = {10.1145/3531146.3533175}, 
-    location = {Seoul, Republic of Korea}, 
-    series = {FAccT '22}
+    @inproceedings{SmallsetTimelines, 
+      author = {Lucchesi, Lydia R. and Kuhnert, Petra M. and Davis, Jenny L. and Xie, Lexing}, 
+      title = {Smallset Timelines: A Visual Representation of Data Preprocessing Decisions}, 
+      year = {2022}, 
+      isbn = {9781450393522}, 
+      publisher = {Association for Computing Machinery}, 
+      address = {New York, NY, USA}, 
+      url = {https://doi.org/10.1145/3531146.3533175}, 
+      doi = {10.1145/3531146.3533175}, 
+      location = {Seoul, Republic of Korea}, 
+      series = {FAccT '22}
     }
