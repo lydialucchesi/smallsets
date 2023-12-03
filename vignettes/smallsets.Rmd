@@ -59,7 +59,7 @@ The smallsets package currently supports data preprocessing workflows fitting th
 
 1. Your **dataset is tabular** and of class data.frame, data.table, or tibble. Objects of class data.table and tibble are immediately converted to a data.frame by smallsets.
 2. All preprocessing code is contained in **one R, R Markdown, Python, or Jupyter Notebook file**.
-3. The **preprocessing code does not change the row names** of the original data object as smallsets tracks rows by their names. Merges, joins, collapses, aggregations, and switches between the wide/long format generally involve writing over existing row names and are therefore generally not currently supported by smallsets. Renaming a column results in a column deletion then addition in the Timeline.
+3. The **preprocessing code does not change the row names** of the original data object as smallsets tracks rows by their names. Merges, joins, collapses, aggregations, and switches between the wide/long format generally involve writing over existing row names and are therefore generally not currently supported by smallsets. Renaming a column results in a column deletion then addition in the Smallset Timeline.
 4. All preprocessing **package dependencies are loaded** in the current R session. Information on installing Python packages with `reticulate` can be found [here](https://rstudio.github.io/reticulate/articles/python_packages.html).
 
 ## Structured comments {#Structured_comments}
@@ -98,11 +98,13 @@ This is the example R preprocessing script. It demonstrates how to add smallsets
 
 ### Alternative comment placement
 
-Alternatively, you could place smallsets comments as a block above the preprocessing code, and specify in the *place* argument the line of code after which you would like each snapshot to be taken. This comment set-up produces the same Smallset Timeline as the comment set-up in the R script above.
+Alternatively, you could place smallsets comments as a block above the preprocessing code<span style="color: purple;">^1^</span>, and specify in the *place* argument the line of code after which you would like each snapshot to be taken. This comment set-up produces the same Smallset Timeline as the comment set-up in the R script above.
 
 **s_data_preprocess_block.R** (Don't run this code block. It's an example preprocessing script.)
 ```{r, code = readLines(system.file("s_data_preprocess_block.R", package = "smallsets")), eval=FALSE, attr.source='.numberLines'}
 ```
+
+<span style="color: purple;">*^1^ Note, though, that for preprocessing code in Python functions all comments must be after `def` and before `return`.*</span>
 
 ## R Markdown example {#R_Markdown_example}
 

@@ -166,7 +166,7 @@ their names. Merges, joins, collapses, aggregations, and switches
 between the wide/long format generally involve writing over existing row
 names and are therefore generally not currently supported by smallsets.
 Renaming a column results in a column deletion then addition in the
-Timeline.</li>
+Smallset Timeline.</li>
 <li>All preprocessing <strong>package dependencies are loaded</strong>
 in the current R session. Information on installing Python packages with
 <code>reticulate</code> can be found <a href="https://rstudio.github.io/reticulate/articles/python_packages.html" class="external-link">here</a>.</li>
@@ -240,10 +240,11 @@ an example preprocessing script.)</p>
 <h3 id="alternative-comment-placement">Alternative comment placement<a class="anchor" aria-label="anchor" href="#alternative-comment-placement"></a>
 </h3>
 <p>Alternatively, you could place smallsets comments as a block above
-the preprocessing code, and specify in the <em>place</em> argument the
-line of code after which you would like each snapshot to be taken. This
-comment set-up produces the same Smallset Timeline as the comment set-up
-in the R script above.</p>
+the preprocessing code<span style="color: purple;"><sup>1</sup></span>,
+and specify in the <em>place</em> argument the line of code after which
+you would like each snapshot to be taken. This comment set-up produces
+the same Smallset Timeline as the comment set-up in the R script
+above.</p>
 <p><strong>s_data_preprocess_block.R</strong> (Don’t run this code
 block. It’s an example preprocessing script.)</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># smallsets snap 7 s_data caption[Remove rows where C2 is FALSE.]caption</span></span>
@@ -262,6 +263,9 @@ block. It’s an example preprocessing script.)</p>
 <span id="cb6-14"><a href="#cb6-14"></a></span>
 <span id="cb6-15"><a href="#cb6-15"></a><span class="co"># create a new variable</span></span>
 <span id="cb6-16"><a href="#cb6-16"></a>s_data<span class="sc">$</span>C9 <span class="ot">&lt;-</span> s_data<span class="sc">$</span>C3 <span class="sc">+</span> s_data<span class="sc">$</span>C4</span></code></pre></div>
+<p><span style="color: purple;"><em><sup>1</sup> Note, though, that for
+preprocessing code in Python functions all comments must be after
+<code>def</code> and before <code>return</code>.</em></span></p>
 </div>
 </div>
 <div class="section level2">
