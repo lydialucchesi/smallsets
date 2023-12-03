@@ -3,10 +3,11 @@
 #' @keywords internal
 
 add_ghost_data <-
-  function(itemNum, ghostDF1, ghostDF2, smallsetTables) {
+  function(itemNum, ghostDF1, ghostDF2, smallsetTables, ignoreCols) {
     # Retrieve colour and data tables
     tabs <- retrieve_tables(itemNum = itemNum, 
-                            smallsetTables = smallsetTables)
+                            smallsetTables = smallsetTables,
+                            ignoreCols = ignoreCols)
     tab1 <- tabs[[1]]
     tab1[] <- lapply(tab1, as.character)
     tab2 <- tabs[[2]]

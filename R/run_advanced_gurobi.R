@@ -7,7 +7,8 @@ run_advanced_gurobi <-
            code,
            rowCount,
            lang,
-           fourCols) {
+           fourCols,
+           ignoreCols) {
     # Take snapshots of dataset at snapshot points
     output <- write_smallset_code(code, c("allROWS"), lang)
     
@@ -26,30 +27,19 @@ run_advanced_gurobi <-
     scores <- scores[, colSums(scores != 0) > 0]
     
     # Generate visual appearance matrix
-    colours <- prepare_colour_sheet(smallsetList, fourCols)
+    colours <- prepare_colour_sheet(smallsetList, fourCols, ignoreCols)
     
     # From visual appearance matrix,
     # generate distance matrix with hamming distance
-    D <-
-      matrix(
-        rep(0, nrow(data) * nrow(data)),
-        nrow = nrow(data),
-        ncol = nrow(data),
-        byrow = T
-      )
-    for (i1 in 1:nrow(data)) {
-      for (i2 in 1:nrow(data)) {
-        di <- colours[i1, ]
-        dj <- colours[i2, ]
-        counter <- 0
-        for (j in 1:ncol(colours)) {
-          if (isFALSE(di[j] == dj[j])) {
-            counter <- counter + 1
-          }
-        }
-        D[i1, i2] <- counter
-      }
+    tests <- expand.grid(1:nrow(colours), 1:nrow(colours))
+    distance_matrix <- function(i1, i2) {
+      sum(colours[i1, ] != colours[i2, ])
     }
+    hamming_distances <- mapply(distance_matrix, tests$Var1, tests$Var2)
+    distance_matrix <- matrix(hamming_distances,
+                              nrow = nrow(data),
+                              ncol = nrow(data),
+                              byrow = T)
     
     # Run coverage+variety optimisation model
     scoresT <- t(as.matrix(scores[,]))
@@ -58,7 +48,7 @@ run_advanced_gurobi <-
     model <- list()
     
     model$A     <- rbind(scoresT, krow)
-    model$Q     <- D
+    model$Q     <- distance_matrix
     model$obj   <- rep(0, nrow(data))
     model$modelsense <- 'max'
     model$rhs   <- c(rep(1, nrow(scoresT)), rowCount)
@@ -71,7 +61,8 @@ run_advanced_gurobi <-
     
     # Format model result
     modelSelect <- result$x
-    rowNums <- data.frame(rows = rownames(data), modelSelect)
-    rowNums <- subset(rowNums, rowNums$modelSelect == 1)$rows
-    
+    rowIDs <- data.frame(rows = rownames(data), modelSelect)
+    rowIDs <- subset(rowIDs, rowIDs$modelSelect == 1)$rows
+
+    return(rowIDs)
   }

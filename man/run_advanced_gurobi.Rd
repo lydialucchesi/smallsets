@@ -4,7 +4,7 @@
 \alias{run_advanced_gurobi}
 \title{Run advanced gurobi}
 \usage{
-run_advanced_gurobi(data, code, rowCount, lang, fourCols)
+run_advanced_gurobi(data, code, rowCount, lang, fourCols, ignoreCols)
 }
 \description{
 Runs the coverage+variety optimisation problem.

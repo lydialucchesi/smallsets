@@ -231,7 +231,7 @@ Smallset_Timeline <- function(data,
           run_simple_gurobi(data, code, rowCount, lang, fourCols)
       } else {
         smallset <-
-          run_advanced_gurobi(data, code, rowCount, lang, fourCols)
+          run_advanced_gurobi(data, code, rowCount, lang, fourCols, ignoreCols)
       }
     }
   } else {
@@ -294,7 +294,7 @@ Smallset_Timeline <- function(data,
   
   # Find which colours are present in Timeline
   colsPresent <- c()
-  tables <- lapply(items, smallsetTables, FUN = retrieve_tables)
+  tables <- lapply(items, smallsetTables, ignoreCols, FUN = retrieve_tables)
   for (t in 1:length(tables)) {
     colsPresent <-
       c(colsPresent, unique(as.vector(t(tables[[t]][[1]]))))
@@ -313,7 +313,7 @@ Smallset_Timeline <- function(data,
   
   # Insert ghost data rows/columns
   if (isTRUE(ghostData)) {
-    ghostDFs <- retrieve_tables(1, smallsetTables)
+    ghostDFs <- retrieve_tables(1, smallsetTables, ignoreCols)
     ghostDF1 <- ghostDFs[[1]]
     ghostDF1[] <- "#FFFFFF"
     ghostDF2 <- ghostDFs[[2]]
@@ -324,10 +324,12 @@ Smallset_Timeline <- function(data,
                         ghostDF1,
                         ghostDF2,
                         smallsetTables,
+                        ignoreCols,
                         FUN = add_ghost_data)
   } else {
     extTables <- lapply(items,
                         smallsetTables,
+                        ignoreCols,
                         FUN = retrieve_tables)
   }
   

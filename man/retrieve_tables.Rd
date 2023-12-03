@@ -4,7 +4,7 @@
 \alias{retrieve_tables}
 \title{Retrieve snapshot tables}
 \usage{
-retrieve_tables(itemNum, smallsetTables)
+retrieve_tables(itemNum, smallsetTables, ignoreCols)
 }
 \description{
 Retrieves data and colour information from the snapshot tables.

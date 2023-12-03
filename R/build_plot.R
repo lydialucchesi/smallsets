@@ -187,7 +187,7 @@ build_plot <-
     if (isTRUE(missingDataTints)) {
       snapshot <- snapshot +
         guides(
-          fill = guide_legend(title = "*A lighter value indicates a missing data value.",
+          fill = guide_legend(title = "*A lighter value indicates a missing data value",
                               title.position = "bottom")
         ) +
         theme(

@@ -56,7 +56,8 @@ source(output[[3]], local = TRUE)
 smallsetList <- apply_code(s_data)
 unlink(output[[3]])
 fourCols <- unlist(return_scheme(1), use.names = FALSE)
-appearance <- prepare_colour_sheet(smallsetList = smallsetList, fourCols = fourCols)
+ignoreCols <- NULL
+appearance <- prepare_colour_sheet(smallsetList = smallsetList, fourCols = fourCols, ignoreCols = ignoreCols)
 checks <- c(length(unique(appearance$C2)), 
             length(unique(appearance$C6)), 
             length(unique(appearance$C8)))
