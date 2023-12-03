@@ -76,7 +76,6 @@ write_smallset_code <-
     script$row_nums <- row.names(script)
     
     # Get snap args
-    
     snap_args <- trimws(script[row.names(script)[grepl("# smallsets snap", script$command)],
                                c("command")])
     snap_args <- gsub("# smallsets snap ", "", snap_args)

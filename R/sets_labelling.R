@@ -1,7 +1,7 @@
 #' Sets labelling
 #'
 #' @description Sets labelling parameters for the Smallset Timeline.
-#' @param labelCol "lighter" or "darker" for colour of column names and printed
+#' @param labelCol Either "lighter" or "darker" for colour of column names and printed
 #'   data, in comparison to tile colours.
 #' @param labelColDif Value between 0-1 determining how much lighter or darker.
 #'

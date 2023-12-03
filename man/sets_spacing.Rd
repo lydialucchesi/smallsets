@@ -33,7 +33,7 @@ of each snapshot.}
 (applicable when the alignment is vertical).}
 }
 \value{
-Returns a list with five elements (the spacing parameters).
+Returns a list with six elements (the spacing parameters).
 }
 \description{
 Sets spacing parameters for the Smallset Timeline.

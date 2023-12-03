@@ -109,6 +109,7 @@ Smallset_Timeline <- function(data,
     )
   }
   
+  # Determine programming language 
   lang <- tools::file_ext(code)
   if (!lang %in% c("R", "Rmd", "py", "ipynb")) {
     stop(
@@ -172,6 +173,7 @@ Smallset_Timeline <- function(data,
     code <- converted_file
   }
   
+  # Check for row names for R and indices for Python
   if (lang == "R" & inherits(rowIDs, "numeric")) {
     stop("Numeric rowIDs detected. For R code, please specify character values (row names).")
   }
@@ -179,6 +181,7 @@ Smallset_Timeline <- function(data,
     stop("Character rowIDs detected. For Python code, please specify numeric values (indices).")
   }
   
+  # Check for data frame and convert if not
   if (inherits(data, "data.table")) {
     warning("Converting data object from a data table to a data frame.")
     data <- as.data.frame(data)
@@ -238,6 +241,7 @@ Smallset_Timeline <- function(data,
     # Use random sampling and/or manual selection
     smallset <- select_smallset(data, rowCount, rowIDs, lang)
   }
+  # Print Smallset selection
   if (isTRUE(rowReturn)) {
     if (lang == "R") {
       cat(paste0("Smallset rows: ", toString(dQuote(smallset, FALSE))))
@@ -376,7 +380,7 @@ Smallset_Timeline <- function(data,
     a <- NULL
   }
   
-  # Find Timeline dimensions
+  # Find Smallset Timeline dimensions
   maxDims <- retrieve_dimensions(extTables)
   
   # Make snapshot and resume marker plots
@@ -435,7 +439,7 @@ Smallset_Timeline <- function(data,
     title <- "element_blank(), "
   }
   
-  # Assemble plots into Timeline
+  # Assemble plots into Smallset Timeline
   if (align == "vertical") {
     patchedPlots <- ""
     for (p in 1:length(l)) {

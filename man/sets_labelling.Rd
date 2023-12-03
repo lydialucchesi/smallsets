@@ -7,7 +7,7 @@
 sets_labelling(labelCol = NULL, labelColDif = NULL)
 }
 \arguments{
-\item{labelCol}{"lighter" or "darker" for colour of column names and printed
+\item{labelCol}{Either "lighter" or "darker" for colour of column names and printed
 data, in comparison to tile colours.}
 
 \item{labelColDif}{Value between 0-1 determining how much lighter or darker.}

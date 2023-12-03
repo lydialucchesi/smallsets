@@ -17,7 +17,7 @@
 #'
 #' @details Passed to \code{spacing} in \link{Smallset_Timeline}.
 #'
-#' @return Returns a list with five elements (the spacing parameters).
+#' @return Returns a list with six elements (the spacing parameters).
 #'
 #' @examples
 #' # increase space for captions and rotate column names
