@@ -1,6 +1,6 @@
 #' Generate alt text
 #' @description Generates alternative text (alt text) for the Smallset Timeline.
-#' @keywords internal
+#' @noRd
 
 generate_alt_text <-
   function(tables,

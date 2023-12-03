@@ -1,6 +1,6 @@
 #' Return scheme
 #' @description Returns the colours in a colour scheme.
-#' @keywords internal
+#' @noRd
 
 return_scheme <- function(colScheme = 1) {
   if (colScheme == 1) {

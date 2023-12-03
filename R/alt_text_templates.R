@@ -1,6 +1,6 @@
 #' Write add colour
 #' @description Writes about the add colour.
-#' @keywords internal
+#' @noRd
 write_colourAdded <- function(colourAdded) {
   txt <- paste0("Data additions are ",
                 colourAdded,
@@ -10,7 +10,7 @@ write_colourAdded <- function(colourAdded) {
 
 #' Write delete colour
 #' @description Writes about the delete colour.
-#' @keywords internal
+#' @noRd
 write_colourDeleted <- function(colourDeleted) {
   txt <- paste0("Data deletions are ",
                 colourDeleted,
@@ -20,7 +20,7 @@ write_colourDeleted <- function(colourDeleted) {
 
 #' Write edit colour
 #' @description Writes about the edit colour.
-#' @keywords internal
+#' @noRd
 write_colourEdited <- function(colourEdited) {
   txt <- paste0("Data edits are ",
                 colourEdited,
@@ -30,7 +30,7 @@ write_colourEdited <- function(colourEdited) {
 
 #' Write unchanged colour
 #' @description Writes about the unchanged colour.
-#' @keywords internal
+#' @noRd
 write_colourUnchanged <- function(colourUnchanged) {
   txt <- paste0("Unchanged data is ",
                 colourUnchanged,
@@ -40,7 +40,7 @@ write_colourUnchanged <- function(colourUnchanged) {
 
 #' Write column additions
 #' @description Writes about column additions.
-#' @keywords internal
+#' @noRd
 write_columnsAdd <- function(columnsAdd, colourAdd) {
   if (length(columnsAdd) == 1) {
     txt <- paste0("Column ",
@@ -72,7 +72,7 @@ write_columnsAdd <- function(columnsAdd, colourAdd) {
 
 #' Write row additions
 #' @description Writes about row additions.
-#' @keywords internal
+#' @noRd
 write_rowsAdd <- function(rowsAdd, colourAdd) {
   if (length(rowsAdd) == 1) {
     txt <- paste0(as.character(length(rowsAdd)),
@@ -90,7 +90,7 @@ write_rowsAdd <- function(rowsAdd, colourAdd) {
 
 #' Write column names
 #' @description Writes about the column names.
-#' @keywords internal
+#' @noRd
 write_columnNames <- function(columnNames) {
   if (length(columnNames) == 2) {
     txt <- paste0(
@@ -114,7 +114,7 @@ write_columnNames <- function(columnNames) {
 
 #' Write column deletions
 #' @description Writes about column deletions.
-#' @keywords internal
+#' @noRd
 write_columnsDelete <- function(columnsDelete, colourDelete) {
   if (length(columnsDelete) == 1) {
     txt <- paste0("Column ",
@@ -146,7 +146,7 @@ write_columnsDelete <- function(columnsDelete, colourDelete) {
 
 #' Write row deletions
 #' @description Writes about row deletions.
-#' @keywords internal
+#' @noRd
 write_rowsDelete <- function(rowsDelete, colourDelete) {
   if (length(rowsDelete) == 1) {
     txt <- paste0(as.character(length(rowsDelete)),
@@ -164,7 +164,7 @@ write_rowsDelete <- function(rowsDelete, colourDelete) {
 
 #' Write cell edits
 #' @description Writes about cell edits.
-#' @keywords internal
+#' @noRd
 write_cellsEdit <- function(cellsEdit, colourEdit) {
   if (length(cellsEdit) == 1) {
     txt <- paste0(as.character(length(cellsEdit)),
@@ -182,7 +182,7 @@ write_cellsEdit <- function(cellsEdit, colourEdit) {
 
 #' Write caption
 #' @description Writes about the snapshot caption.
-#' @keywords internal
+#' @noRd
 write_caption <- function(caption) {
   txt <- paste0("The caption says ",
                 caption,
@@ -193,7 +193,7 @@ write_caption <- function(caption) {
 
 #' Write dimensions
 #' @description Writes about the snapshot dimensions.
-#' @keywords internal
+#' @noRd
 write_dimensions <- function(i, tables) {
   txt <- paste0("Snapshot ",
                 i,
@@ -207,7 +207,7 @@ write_dimensions <- function(i, tables) {
 
 #' Write snapshots
 #' @description Writes about the number of snapshots.
-#' @keywords internal
+#' @noRd
 write_snapshots <- function(tables) {
   txt <-
     paste0(
@@ -220,7 +220,7 @@ write_snapshots <- function(tables) {
 
 #' Writes resume marker
 #' @description Writes about the resume marker.
-#' @keywords internal
+#' @noRd
 write_resumeMarker <- function(i, caption) {
   txt <-
     paste0("Between snapshots ",

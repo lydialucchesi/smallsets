@@ -1,7 +1,7 @@
 #' Prepare score sheet
 #' @description Prepares the coverage indicator matrix for automated Smallset
 #'   selection.
-#' @keywords internal
+#' @noRd
 
 prepare_score_sheet <-
   function(smallsetList,

@@ -1,6 +1,6 @@
 #' Run simple gurobi
 #' @description Runs the coverage optimisation problem.
-#' @keywords internal
+#' @noRd
 
 run_simple_gurobi <-
   function(data,

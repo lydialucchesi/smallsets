@@ -1,6 +1,6 @@
 #' Find data changes
 #' @description Finds data edits, additions, and deletions between snapshots.
-#' @keywords internal
+#' @noRd
 
 find_data_changes <- function(smallsetList,
                               fourCols,

@@ -1,7 +1,7 @@
 #' Write Smallset code
 #' @description Turns the preprocessing code into a function that takes
 #'   snapshots.
-#' @keywords internal
+#' @noRd
 
 write_smallset_code <-
   function(code,

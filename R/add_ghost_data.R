@@ -1,6 +1,6 @@
 #' Add ghost data
 #' @description Adds ghost data (blank squares) where data have been removed.
-#' @keywords internal
+#' @noRd
 
 add_ghost_data <-
   function(itemNum, ghostDF1, ghostDF2, smallsetTables, ignoreCols) {

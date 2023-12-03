@@ -1,7 +1,7 @@
 #' Finalise plot
 #' @description Adds captions and standard dimensions to the plots.
 #' @import ggplot2 ggtext
-#' @keywords internal
+#' @noRd
 
 finalise_plot <- function(itemNum,
                           plots,

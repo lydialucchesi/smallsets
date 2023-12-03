@@ -1,6 +1,6 @@
 #' Retrieve snapshot tables
 #' @description Retrieves data and colour information from the snapshot tables.
-#' @keywords internal
+#' @noRd
 
 retrieve_tables <- function(itemNum, smallsetTables, ignoreCols) {
   # Retrieve table colours

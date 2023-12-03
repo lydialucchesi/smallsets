@@ -1,7 +1,7 @@
 #' Prepare colour sheet
 #' @description Prepares the visual appearance matrix for automated Smallset
 #'   selection.
-#' @keywords internal
+#' @noRd
 
 prepare_colour_sheet <- function(smallsetList,
                                  fourCols,

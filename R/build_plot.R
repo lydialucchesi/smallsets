@@ -1,7 +1,7 @@
 #' Build plot
 #' @description Builds snapshot and resume marker plots.
 #' @import ggplot2
-#' @keywords internal
+#' @noRd
 
 build_plot <-
   function(itemNum,

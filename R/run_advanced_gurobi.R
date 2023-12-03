@@ -1,6 +1,6 @@
 #' Run advanced gurobi
 #' @description Runs the coverage+variety optimisation problem.
-#' @keywords internal
+#' @noRd
 
 run_advanced_gurobi <-
   function(data,
