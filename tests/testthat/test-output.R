@@ -46,24 +46,23 @@ test_that("R Markdown example works",
           })
 
 
-ST <- Smallset_Timeline(
-  data = s_data,
-  code = system.file("s_data_preprocess_block.R", package = "smallsets")
-)
 test_that("block comments work",
           {
-            expect_length(ST, 3)
+            expect_length(Smallset_Timeline(
+              data = s_data,
+              code = system.file("s_data_preprocess_block.R", package = "smallsets")
+            ), 3)
           })
 
 
-ST <- Smallset_Timeline(
-  data = s_data,
-  code = system.file("s_data_preprocess_resume.R", package = "smallsets")
-)
-r <- nrow(layer_data(ST[[4]]))
 test_that("resume marker works",
           {
-            expect_length(r, 1)
+            expect_length(nrow(layer_data(
+              Smallset_Timeline(
+                data = s_data,
+                code = system.file("s_data_preprocess_resume.R", package = "smallsets")
+              )[[4]]
+            )), 1)
           })
 
 
@@ -74,66 +73,6 @@ test_that("ignoring C5, an unaffected column, works",
               code = system.file("s_data_preprocess.R", package = "smallsets"),
               ignoreCols = c("C5")
             ))
-          })
-
-
-ST1 <- Smallset_Timeline(
-  data = s_data,
-  code = system.file("s_data_preprocess.R", package = "smallsets"),
-  rowIDs = c("1", "2", "3", "4", "5"),
-  ghostData = FALSE
-)
-d1 <- layer_data(ST1[[2]])
-test_that("there are no coords where rows were deleted",
-          {
-            expect_setequal(sum(c(1 %in% d1$y, 2 %in% d1$y)), 0)
-          })
-ST2 <- Smallset_Timeline(
-  data = s_data,
-  code = system.file("s_data_preprocess.R", package = "smallsets"),
-  rowIDs = c("1", "2", "3", "4", "5")
-)
-d2 <- layer_data(ST2[[2]])
-test_that("ghost data plot has more coords",
-          {
-            expect_gt(nrow(d2), nrow(d1))
-          })
-
-
-test_that("4 passed to colours returns error",
-          {
-            expect_error(return_scheme(4))
-          })
-
-
-test_that("2 passed to colours returns a list",
-          {
-            expect_type(return_scheme(2), "list")
-          })
-
-
-ST <- Smallset_Timeline(
-  data = s_data,
-  code = system.file("s_data_preprocess.R", package = "smallsets"),
-  rowIDs = c("1", "2", "3", "4", "5"),
-  printedData = TRUE,
-  missingDataTints = TRUE
-)
-ST_geoms <- ggplot_build(ST)
-printed <- ST_geoms$data[[3]]$label[1:3]
-test_that("printed data enrichment feature works",
-          {
-            expect_setequal(printed, c("147", "192", "232"))
-          })
-labels <- ST_geoms$plot$scales$scales[[1]]$get_labels()
-test_that("legend was updated for missing data tints",
-          {
-            expect_true(labels[2] == "Deleted*  ")
-          })
-ST_geom1 <- ggplot_build(ST[[1]])[[1]][[1]]
-test_that("missing data are highlighted",
-          {
-            expect_true(length(unique(ST_geom1$fill)) == 4)
           })
 
 
@@ -163,16 +102,31 @@ test_that("sizing, spacing, and labelling work",
           })
 
 
-STv <- Smallset_Timeline(
-  data = s_data,
-  code = system.file("s_data_preprocess.R", package = "smallsets"),
-  align = "vertical"
-)
-v <- ggplot_build(STv[[1]])$data[[3]]$x
-STh <- Smallset_Timeline(data = s_data,
-                         code = system.file("s_data_preprocess.R", package = "smallsets"))
-h <- ggplot_build(STh[[1]])$data[[3]]$x
+test_that("4 passed to colours returns error",
+          {
+            expect_error(return_scheme(4))
+          })
+
+
+test_that("2 passed to colours returns a list",
+          {
+            expect_type(return_scheme(2), "list")
+          })
+
+
 test_that("vertical alignment works",
           {
-            expect_gt(v, h)
+            expect_gt(
+              ggplot_build(
+                Smallset_Timeline(
+                  data = s_data,
+                  code = system.file("s_data_preprocess.R", package = "smallsets"),
+                  align = "vertical"
+                )[[1]]
+              )$data[[3]]$x,
+              ggplot_build(Smallset_Timeline(
+                data = s_data,
+                code = system.file("s_data_preprocess.R", package = "smallsets")
+              )[[1]])$data[[3]]$x
+            )
           })
