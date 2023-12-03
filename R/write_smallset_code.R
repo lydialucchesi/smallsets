@@ -305,16 +305,7 @@ write_smallset_code <-
     close(fileConn)
     
     # Find location of resume markers
-    count <- -1
-    resume_locs <- c()
-    for (i in 1:nrow(script)) {
-      if (grepl("snapshots", script$command[i])) {
-        count <- count + 1
-      }
-      if (grepl("# smallsets resume ", script$command[i])) {
-        resume_locs <- c(resume_locs, count)
-      }
-    }
+    resume_locs <- as.numeric(rownames(subset(captions, type == "resume"))) - 1
     
     return(list(captions[, c("n", "text")], resume_locs, tf))
   }

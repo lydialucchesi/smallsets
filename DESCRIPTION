@@ -1,5 +1,5 @@
 Package: smallsets
-Title: The Smallset Timeline Builder
+Title: Visual Documentation for Data Preprocessing
 Version: 2.0.0
 Authors@R: c(person(given = "Lydia R.", family = "Lucchesi", role = c("aut", "cre"), 
     email = "Lydia.Lucchesi@anu.edu.au", comment = c(ORCID = "0000-0002-1901-4301")), 
@@ -7,13 +7,16 @@ Authors@R: c(person(given = "Lydia R.", family = "Lucchesi", role = c("aut", "cr
     person(given = "Jenny L.", family = "Davis", role = "ths"), 
     person(given = "Lexing", family = "Xie", role = "ths"))
 Maintainer: Lydia R. Lucchesi <Lydia.Lucchesi@anu.edu.au>
-Description: Data practitioners regularly use the 'R' and 'Python' programming languages to prepare
-    data for analyses. Thus, they encode data preprocessing decisions in 'R' and 'Python' scripts.
-    The 'smallsets' package subsequently decodes these decisions into a Smallset Timeline, a
-    visualisation proposed in Lucchesi et al. (2022) <doi:10.1145/3531146.3533175>. A Smallset
-    Timeline is a series of small data snapshots of different preprocessing steps. The 'smallsets'
-    package builds this figure from a user's dataset and 'R'/'Python' preprocessing script, which
-    contains structured comments with snapshot instructions.
+Description: Data practitioners regularly use the 'R' and 'Python' 
+    programming languages to prepare data for analyses. Thus, they 
+    encode data preprocessing decisions in 'R' and 'Python' scripts. 
+    The 'smallsets' package subsequently decodes these decisions into 
+    a Smallset Timeline, a visualisation proposed in Lucchesi et al. 
+    (2022) <doi:10.1145/3531146.3533175>. A Smallset Timeline is a 
+    series of small data snapshots of different preprocessing steps. 
+    The 'smallsets' package builds this figure from a user's dataset 
+    and 'R'/'Python' preprocessing script, which contains structured 
+    comments with snapshot instructions.
 URL: https://lydialucchesi.github.io/smallsets/, https://github.com/lydialucchesi/smallsets
 License: GPL (>= 3)
 Encoding: UTF-8
