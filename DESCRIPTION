@@ -14,7 +14,7 @@ Description: Data practitioners regularly use the 'R' and 'Python' programming l
     (Lucchesi et al. (2022) <doi:10.1145/3531146.3533175>). The visualisation consists of 
     small data snapshots of different preprocessing steps. The 'smallsets' package builds this 
     visualisation from a user's dataset and preprocessing code located in an 'R', 'R Markdown', 
-    'Python', or 'Jupyter Notebook' file. Users simply add structured comments with snapshots 
+    'Python', or 'Jupyter Notebook' file. Users simply add structured comments with snapshot  
     instructions to the preprocessing code. One optional feature in 'smallsets' requires 
     installation of the Gurobi optimisation software and 'gurobi' 'R' package, available 
     from <https://www.gurobi.com>. More information regarding the optional feature and 
