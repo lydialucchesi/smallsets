@@ -74,31 +74,31 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>captions</dt>
-<dd><p>Positive numeric value for caption text size.</p></dd>
+<dd><p>Positive numeric value for caption text size. Default is 3.</p></dd>
 
 
 <dt>columns</dt>
-<dd><p>Positive numeric value for column name text size.</p></dd>
+<dd><p>Positive numeric value for column name text size. Default is 3.</p></dd>
 
 
 <dt>data</dt>
-<dd><p>Positive numeric value for printed data text size.</p></dd>
+<dd><p>Positive numeric value for printed data text size. Default is 2.</p></dd>
 
 
 <dt>icons</dt>
-<dd><p>Positive numeric value for legend icon size.</p></dd>
+<dd><p>Positive numeric value for legend icon size. Default is 1.</p></dd>
 
 
 <dt>legend</dt>
-<dd><p>Positive numeric value for legend text size.</p></dd>
+<dd><p>Positive numeric value for legend text size. Default is 10.</p></dd>
 
 
 <dt>resume</dt>
-<dd><p>Positive numeric value for resume marker size.</p></dd>
+<dd><p>Positive numeric value for resume marker size. Default is 1.</p></dd>
 
 
 <dt>tiles</dt>
-<dd><p>Positive numeric value for Smallset tile size.</p></dd>
+<dd><p>Positive numeric value for Smallset tile size. Default is .2.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -115,10 +115,12 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># increase size of caption text</span></span></span>
+<span class="r-in"><span><span class="co"># and add more caption space, so larger caption text fits</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>   data <span class="op">=</span> <span class="va">s_data</span>,</span></span>
 <span class="r-in"><span>   code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   sizing <span class="op">=</span> <span class="fu">sets_sizing</span><span class="op">(</span>captions <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   sizing <span class="op">=</span> <span class="fu">sets_sizing</span><span class="op">(</span>captions <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   spacing <span class="op">=</span> <span class="fu"><a href="sets_spacing.html">sets_spacing</a></span><span class="op">(</span>captions <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="sets_sizing-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>

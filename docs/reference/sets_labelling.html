@@ -67,11 +67,11 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>labelCol</dt>
 <dd><p>Either "lighter" or "darker" for colour of column names and printed
-data, in comparison to tile colours.</p></dd>
+data, in comparison to tile colours. Default is "darker".</p></dd>
 
 
 <dt>labelColDif</dt>
-<dd><p>Value between 0-1 determining how much lighter or darker.</p></dd>
+<dd><p>Value between 0-1 determining how much lighter or darker. Default is .5.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -87,20 +87,23 @@ data, in comparison to tile colours.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># labels are black</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># labels and printed data are black</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">s_data</span>,</span></span>
 <span class="r-in"><span>  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  labelling <span class="op">=</span> <span class="fu">sets_labelling</span><span class="op">(</span>labelCol <span class="op">=</span> <span class="st">"darker"</span>, labelColDif <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span>  printedData <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  truncateData <span class="op">=</span> <span class="fl">4</span>,</span></span>
+<span class="r-in"><span>  labelling <span class="op">=</span> <span class="fu">sets_labelling</span><span class="op">(</span>labelCol <span class="op">=</span> <span class="st">"darker"</span>, labelColDif <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="sets_labelling-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># labels are midpoint between tile colour and white</span></span></span>
+<span class="r-in"><span><span class="co"># labels and printed data are midpoint between tile colour and white</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">s_data</span>,</span></span>
 <span class="r-in"><span>  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  labelling <span class="op">=</span> <span class="fu">sets_labelling</span><span class="op">(</span>labelCol <span class="op">=</span> <span class="st">"lighter"</span>, labelColDif <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span>  colours <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>  printedData <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  truncateData <span class="op">=</span> <span class="fl">4</span>,</span></span>
+<span class="r-in"><span>  labelling <span class="op">=</span> <span class="fu">sets_labelling</span><span class="op">(</span>labelCol <span class="op">=</span> <span class="st">"lighter"</span>, labelColDif <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="sets_labelling-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

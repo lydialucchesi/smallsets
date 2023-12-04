@@ -40,10 +40,12 @@ Passed to \code{sizing} in \link{Smallset_Timeline}.
 }
 \examples{
 # increase size of caption text
+# and add more caption space, so larger caption text fits
 Smallset_Timeline(
    data = s_data,
    code = system.file("s_data_preprocess.R", package = "smallsets"),
-   sizing = sets_sizing(captions = 4)
+   sizing = sets_sizing(captions = 4),
+   spacing = sets_spacing(captions = 4)
 )
 
 }
