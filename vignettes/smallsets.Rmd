@@ -138,33 +138,23 @@ Below is the script s_data_preprocess.py, which does the same thing as s_data_pr
 ```{python, code = readLines(system.file("s_data_preprocess.py", package = "smallsets")), eval=FALSE}
 ```
 
-## Jupyter Notebook example {#Jupyter_Notebook_example}
+## Jupyter Notebooks {#Jupyter_Notebooks}
 
-Jupyter Notebooks can be passed to the R command `Smallset_Timeline`.
+Jupyter Notebooks can also be passed to the R command `Smallset_Timeline`. And if you want to execute smallsets in a Jupyter Notebook, you can do so using [Rmagic](https://rpy2.github.io/doc/latest/html/interactive.html#rmagic).
 
-```{r, eval=FALSE}
-Smallset_Timeline(data = s_data, 
-                  code = system.file("s_data_preprocess.ipynb", package = "smallsets"))
-```
-
-The example Jupyter Notebook can be viewed [here](https://github.com/lydialucchesi/smallsets/blob/main/inst/s_data_preprocess.ipynb).
-
-### Run smallsets in a Jupyter Notebook
-
-If you want to execute smallsets in a Jupyter Notebook, you can do so using [Rmagic](https://rpy2.github.io/doc/latest/html/interactive.html#rmagic).
-
-After starting Rmagic, run smallsets in a `%%R` magic cell.
+First, start Rmagic.
 
 ```{python, eval=FALSE}
 %load_ext rpy2.ipython
 ```
 
+Then, run smallsets in a `%%R` magic cell. If you had a dataset called `my_data` and the preprocessing code (with smallsets structured comments) was in a Jupyter Notebook called `my_notebook.ipynb`, it would look like the cell below. Note that this Notebook cell could be included in `my_notebook.ipynb` itself. You may need to import your dataset into the `%%R` magic cell with the *-i* flag, e.g., `-i my_data`.
 ```{python, eval=FALSE}
 %%R -w 1000 -h 500 -r 100
 
 library("smallsets")
 
-Smallset_Timeline(data = s_data, code = "s_data_preprocess.ipynb")
+Smallset_Timeline(data = my_data, code = "my_notebook.ipynb")
 ```
 
 ## Smallset selection {#Smallset_selection}
