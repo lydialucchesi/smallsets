@@ -1,5 +1,7 @@
-# Second CRAN submission (4 December 2023)
+# Response to reviewer comments for CRAN re-submission (5 December 2023)
+Thank you, Uwe Ligges, for reviewing smallsets. As suggested, more information regarding the gurobi installation has been added to the Description field in the DESCRIPTION file.
 
+# Second CRAN submission (4 December 2023)
 Dear CRAN Team,
 
 Thank you for taking the time to review this smallsets v2.0.0 submission to CRAN. The first smallsets CRAN release (v1.0.0) was on 3 February 2023. Since then, several new features have been added and changes made, including a breaking change. These updates are described in the NEWS.md file. The R CMD check succeeded in 1m 11.8s without any errors or warnings. There will be one note about the Gurobi R package (as was the case in the first CRAN release); please see an explanation of this note [below](#Note_about_gurobi). Kind regards, Lydia Lucchesi
