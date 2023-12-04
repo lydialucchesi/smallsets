@@ -16,7 +16,7 @@ Description: Data practitioners regularly use the 'R' and 'Python' programming l
     visualisation from a user's dataset and preprocessing code located in an 'R', 'R Markdown', 
     'Python', or 'Jupyter Notebook' file. Users simply add structured comments with snapshot  
     instructions to the preprocessing code. One optional feature in 'smallsets' requires 
-    installation of the Gurobi optimisation software and 'gurobi' 'R' package, available 
+    installation of the 'Gurobi' optimisation software and 'gurobi' 'R' package, available 
     from <https://www.gurobi.com>. More information regarding the optional feature and 
     'gurobi' installation can be found in the 'smallsets' vignette.
 URL: https://lydialucchesi.github.io/smallsets/, https://github.com/lydialucchesi/smallsets
