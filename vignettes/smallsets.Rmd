@@ -12,7 +12,7 @@ vignette: >
 
 ## Smallset Timelines {#Smallset_Timelines}
 
-In this vignette, we explain how to use smallsets to build Smallset Timelines. A Smallset Timeline (or Timeline) is a simple visualisation of data preprocessing decisions. More information on Timelines can be found in the Smallset Timeline paper and on YouTube.
+This vignette explains how to use smallsets to build Smallset Timelines. A Smallset Timeline is a simple visualisation of data preprocessing decisions. More information on Smallset Timelines can be found in the Smallset Timeline paper and on YouTube.
 
 * [ACM FAccT paper about Smallset Timelines](https://doi.org/10.1145/3531146.3533175)
 * [3-minute YouTube video](https://www.youtube.com/watch?v=_fpn02h3IUo)
@@ -20,7 +20,7 @@ In this vignette, we explain how to use smallsets to build Smallset Timelines. A
 
 ## Example dataset {#Example_dataset}
 
-In this vignette, we use the synthetic dataset s_data, which is included in smallsets. It contains 100 observations and 8 variables (C1-C8). See `?s_data` for more information.
+A synthetic dataset, called s_data, is used throughout this vignette. It is also included in the smallsets package. It contains 100 observations and 8 variables (C1-C8). See `?s_data` for more information.
 
 ```{r}
 library(smallsets)
@@ -45,7 +45,7 @@ Smallset_Timeline(data = s_data,
 
 ## The basics {#The_basics}
 
-Each Smallset Timeline is constructed from your dataset and R/R Markdown/Python/Jupyter Notebook data preprocessing script. Scripts must contain a series of [smallsets comments](#comments) with snapshot instructions. Your unprocessed dataset (`data`) and commented preprocessing script (`code`) are the only required inputs to `Smallset_Timeline`. 
+Each Smallset Timeline is constructed from your dataset and R/R Markdown/Python/Jupyter Notebook data preprocessing script. Scripts must contain a series of [smallsets comments](#Structured_comments) with snapshot instructions. Your un-preprocessed dataset (`data`) and commented preprocessing script (`code`) are the only required inputs to `Smallset_Timeline`. 
 
 If s_data_preprocess.R was located in your working directory, the code would look like this.
 
@@ -57,9 +57,9 @@ Smallset_Timeline(data = s_data, code = "s_data_preprocess.R")
 
 The smallsets package currently supports data preprocessing workflows fitting the following description.
 
-1. Your **dataset is tabular** and of class data.frame, data.table, or tibble. Objects of class data.table and tibble are immediately converted to a data.frame by smallsets.
+1. Your **dataset is tabular** and of class data.frame, data.table, or tibble. 
 2. All preprocessing code is contained in **one R, R Markdown, Python, or Jupyter Notebook file**.
-3. The **preprocessing code does not change the row names** of the original data object as smallsets tracks rows by their names. Merges, joins, collapses, aggregations, and switches between the wide/long format generally involve writing over existing row names and are therefore generally not currently supported by smallsets. Renaming a column results in a column deletion then addition in the Smallset Timeline.
+3. The **preprocessing code does not change the row names** of the original data object as smallsets tracks rows by their names (and indices for Python). Merges, joins, collapses, aggregations, and switches between the wide/long format generally involve writing over existing row names and are therefore generally not currently supported by smallsets.
 4. All preprocessing **package dependencies are loaded** in the current R session. Information on installing Python packages with `reticulate` can be found [here](https://rstudio.github.io/reticulate/articles/python_packages.html).
 
 ## Structured comments {#Structured_comments}
@@ -80,17 +80,17 @@ There are three options for this argument.
 
 1. Specify the line of code that you would like the snapshot to be taken after, e.g., 17 means take the snapshot after the 17th line of code.
 2. Use a plus sign and a number to specify how many lines of code later to take the snapshot, e.g., +2 means take the snapshot two lines of code later.
-3. Don't specify anything, and a snapshot will be taken directly after the structured comment (i.e., before the next line of code).
+3. Don't specify anything, and a snapshot will be taken exactly where the comment is located.
 
 #### <span style="color: red;">name-of-data-object</span>
-The name of the data object can change throughout the script. The snapshot is taken of the object specified in the comment.
+This refers to the data object. The name of the data object can change throughout the script. The snapshot is taken of the object specified in the comment.
 
 #### <span style="color: red;">caption-text</span>
 This is the snapshot caption describing the preprocessing step.
 
 ## R example {#R_example}
 
-This is the example R preprocessing script. It demonstrates how to add smallsets structured comments to a preprocessing script. Based on these comment *place* arguments (empty, ```+2```, and ```+1```), snapshots will be taken after line 1, line 7, and line 12.
+This is the example R preprocessing script. It demonstrates how to add smallsets structured comments to a preprocessing script. Based on these comment *snap-place* arguments (empty, ```+2```, and ```+1```), snapshots will be taken after line 1, line 7, and line 12.
 
 **s_data_preprocess.R** (Don't run this code block. It's an example preprocessing script.)
 ```{r, code = readLines(system.file("s_data_preprocess.R", package = "smallsets")), eval=FALSE, attr.source='.numberLines'}
@@ -98,7 +98,7 @@ This is the example R preprocessing script. It demonstrates how to add smallsets
 
 ### Alternative comment placement
 
-Alternatively, you could place smallsets comments as a block above the preprocessing code<span style="color: purple;">^1^</span>, and specify in the *place* argument the line of code after which you would like each snapshot to be taken. This comment set-up produces the same Smallset Timeline as the comment set-up in the R script above.
+Alternatively, you could place smallsets comments as a block above the preprocessing code<span style="color: purple;">^1^</span>, and specify in the *snap-place* argument the line of code after which you would like each snapshot to be taken. This comment set-up produces the same Smallset Timeline as the comment set-up in the R script above.
 
 **s_data_preprocess_block.R** (Don't run this code block. It's an example preprocessing script.)
 ```{r, code = readLines(system.file("s_data_preprocess_block.R", package = "smallsets")), eval=FALSE, attr.source='.numberLines'}
@@ -126,7 +126,7 @@ The example R Markdown file can be viewed [here](https://github.com/lydialucches
  
 ## Python example {#Python_example}
 
-Python scripts can be passed to the R command `Smallset_Timeline`.
+Python scripts can be passed to the R command `Smallset_Timeline`. You will need to use a Python environment to do so (e.g., `use_condaenv("r-reticulate")`).
 ```{r, eval=FALSE}
 Smallset_Timeline(data = s_data, 
                   code = system.file("s_data_preprocess.py", package = "smallsets"))
@@ -169,7 +169,7 @@ Smallset_Timeline(data = s_data,
                   rowCount = 7, rowSelect = NULL)
 ```
 
-To use the other two selection methods, which are optimisation problems proposed [here](https://doi.org/10.1145/3531146.3533175) (in Section 5), you will need a [Gurobi license](https://www.gurobi.com/solutions/licensing/) as they rely on the [Gurobi solver](https://www.gurobi.com/solutions/gurobi-optimizer/) v9.1.2 (free academic licenses are available). Richard Schuster's ["Gurobi installation guide"](https://prioritizr.net/articles/gurobi_installation_guide.html) in the `prioritizr` package provides step-by-step instructions on installing Gurobi in R.
+To use the other two selection methods, which are optimisation problems proposed [here](https://doi.org/10.1145/3531146.3533175) (in Section 5), you will need a [Gurobi license](https://www.gurobi.com/solutions/licensing/) as they rely on the [Gurobi solver](https://www.gurobi.com/solutions/gurobi-optimizer/) v9.1.2 (free academic licenses are available). The ["Gurobi installation guide"](https://prioritizr.net/articles/gurobi_installation_guide.html) in the `prioritizr` package provides step-by-step instructions on installing Gurobi in R.
 
 If `rowSelect = 1`, the *coverage* problem is used to select rows. For each snapshot, it finds at least one example of a data change, if there is one. You can return the solution to the console with `rowReturn = TRUE`.
 
@@ -194,7 +194,7 @@ Smallset_Timeline(data = s_data,
                   rowCount = 5, rowIDs = c("27", "42", "95", "96", "99"))
 ```
 
-Here, the *coverage* solution misses a data edit example in the second snapshot, motivating use of the other selection method (`rowSelect = 2`): the *coverage + variety* optimisation problem, which looks for rows affected by the preprocessing steps differently. **The drawback of `rowSelect = 2` is runtime for large datasets.** One potential workaround to a long runtime is building a Timeline from a sample of the dataset. However, this should be done with caution.
+Here, the *coverage* solution misses a data edit example in the second snapshot, motivating use of the other selection method (`rowSelect = 2`): the *coverage + variety* optimisation problem, which looks for rows affected by the preprocessing steps differently. **The drawback of `rowSelect = 2` is runtime for large datasets.** One potential workaround to a long runtime is building a Smallset Timeline from a sample of the dataset. However, this should be done with caution.
 
 ```{r, eval=FALSE}
 Smallset_Timeline(data = s_data, 
@@ -209,9 +209,9 @@ Smallset_Timeline(data = s_data,
                   rowReturn = T)
 ```
 
-## Timeline customisation {#Timeline_customisation}
+## Smallset Timeline customisation {#Smallset_Timeline_customisation}
 
-There are built-in options to customise a Timeline. The examples in this section highlight some of them. See `?Smallset_Timeline` for a full list of options.
+There are built-in options to customise a Smallset Timeline. The examples in this section highlight some of them. See `?Smallset_Timeline` or [here](https://lydialucchesi.github.io/smallsets/reference/Smallset_Timeline.html) for a full list of options.
 
 **Example 1**
 
@@ -296,9 +296,9 @@ Smallset_Timeline(data = s_data,
 
 ## Resume markers {#Resume_markers}
 
-A resume marker is a vertical line between snapshots signalling that preprocessing stopped to run an analysis and then resumed to facilitate a new/revised analysis. It is added to a Timeline with a *resume* instruction in a structured comment.
+A resume marker is a vertical line between snapshots signalling that preprocessing stopped to move to the estimation or modelling task but then resumed to make additional dataset changes. It is added to a Smallset Timeline with a *resume* instruction in a structured comment.
 
-In this example, we resume data preprocessing to transform C9 into a categorical variable.
+In this example, data preprocessing is resumed to transform C9 into a categorical variable.
 
 **s_data_preprocess_resume.R** (Don't run this code block. It's an example preprocessing script.)
 ```{r, code = readLines(system.file("s_data_preprocess_resume.R", package = "smallsets")), eval=FALSE}

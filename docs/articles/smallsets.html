@@ -86,9 +86,9 @@
 <div class="section level2">
 <h2 id="Smallset_Timelines">Smallset Timelines<a class="anchor" aria-label="anchor" href="#Smallset_Timelines"></a>
 </h2>
-<p>In this vignette, we explain how to use smallsets to build Smallset
-Timelines. A Smallset Timeline (or Timeline) is a simple visualisation
-of data preprocessing decisions. More information on Timelines can be
+<p>This vignette explains how to use smallsets to build Smallset
+Timelines. A Smallset Timeline is a simple visualisation of data
+preprocessing decisions. More information on Smallset Timelines can be
 found in the Smallset Timeline paper and on YouTube.</p>
 <ul>
 <li><a href="https://doi.org/10.1145/3531146.3533175" class="external-link">ACM FAccT paper
@@ -102,9 +102,10 @@ YouTube video</a></li>
 <div class="section level2">
 <h2 id="Example_dataset">Example dataset<a class="anchor" aria-label="anchor" href="#Example_dataset"></a>
 </h2>
-<p>In this vignette, we use the synthetic dataset s_data, which is
-included in smallsets. It contains 100 observations and 8 variables
-(C1-C8). See <code><a href="../reference/s_data.html">?s_data</a></code> for more information.</p>
+<p>A synthetic dataset, called s_data, is used throughout this vignette.
+It is also included in the smallsets package. It contains 100
+observations and 8 variables (C1-C8). See <code><a href="../reference/s_data.html">?s_data</a></code> for more
+information.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lydialucchesi.github.io/smallsets/">smallsets</a></span><span class="op">)</span></span>
 <span></span>
@@ -140,10 +141,11 @@ be called with <code>system.file</code>.</p>
 </h2>
 <p>Each Smallset Timeline is constructed from your dataset and R/R
 Markdown/Python/Jupyter Notebook data preprocessing script. Scripts must
-contain a series of <a href="#comments">smallsets comments</a> with
-snapshot instructions. Your unprocessed dataset (<code>data</code>) and
-commented preprocessing script (<code>code</code>) are the only required
-inputs to <code>Smallset_Timeline</code>.</p>
+contain a series of <a href="#Structured_comments">smallsets
+comments</a> with snapshot instructions. Your un-preprocessed dataset
+(<code>data</code>) and commented preprocessing script
+(<code>code</code>) are the only required inputs to
+<code>Smallset_Timeline</code>.</p>
 <p>If s_data_preprocess.R was located in your working directory, the
 code would look like this.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -156,17 +158,15 @@ code would look like this.</p>
 fitting the following description.</p>
 <ol style="list-style-type: decimal">
 <li>Your <strong>dataset is tabular</strong> and of class data.frame,
-data.table, or tibble. Objects of class data.table and tibble are
-immediately converted to a data.frame by smallsets.</li>
+data.table, or tibble.</li>
 <li>All preprocessing code is contained in <strong>one R, R Markdown,
 Python, or Jupyter Notebook file</strong>.</li>
 <li>The <strong>preprocessing code does not change the row
 names</strong> of the original data object as smallsets tracks rows by
-their names. Merges, joins, collapses, aggregations, and switches
-between the wide/long format generally involve writing over existing row
-names and are therefore generally not currently supported by smallsets.
-Renaming a column results in a column deletion then addition in the
-Smallset Timeline.</li>
+their names (and indices for Python). Merges, joins, collapses,
+aggregations, and switches between the wide/long format generally
+involve writing over existing row names and are therefore generally not
+currently supported by smallsets.</li>
 <li>All preprocessing <strong>package dependencies are loaded</strong>
 in the current R session. Information on installing Python packages with
 <code>reticulate</code> can be found <a href="https://rstudio.github.io/reticulate/articles/python_packages.html" class="external-link">here</a>.</li>
@@ -196,16 +196,17 @@ code.</li>
 <li>Use a plus sign and a number to specify how many lines of code later
 to take the snapshot, e.g., +2 means take the snapshot two lines of code
 later.</li>
-<li>Don’t specify anything, and a snapshot will be taken directly after
-the structured comment (i.e., before the next line of code).</li>
+<li>Don’t specify anything, and a snapshot will be taken exactly where
+the comment is located.</li>
 </ol>
 </div>
 <div class="section level4">
 <h4 id="name-of-data-object">
 <span style="color: red;">name-of-data-object</span><a class="anchor" aria-label="anchor" href="#name-of-data-object"></a>
 </h4>
-<p>The name of the data object can change throughout the script. The
-snapshot is taken of the object specified in the comment.</p>
+<p>This refers to the data object. The name of the data object can
+change throughout the script. The snapshot is taken of the object
+specified in the comment.</p>
 </div>
 <div class="section level4">
 <h4 id="caption-text">
@@ -219,7 +220,7 @@ snapshot is taken of the object specified in the comment.</p>
 </h2>
 <p>This is the example R preprocessing script. It demonstrates how to
 add smallsets structured comments to a preprocessing script. Based on
-these comment <em>place</em> arguments (empty, <code>+2</code>, and
+these comment <em>snap-place</em> arguments (empty, <code>+2</code>, and
 <code>+1</code>), snapshots will be taken after line 1, line 7, and line
 12.</p>
 <p><strong>s_data_preprocess.R</strong> (Don’t run this code block. It’s
@@ -241,10 +242,10 @@ an example preprocessing script.)</p>
 </h3>
 <p>Alternatively, you could place smallsets comments as a block above
 the preprocessing code<span style="color: purple;"><sup>1</sup></span>,
-and specify in the <em>place</em> argument the line of code after which
-you would like each snapshot to be taken. This comment set-up produces
-the same Smallset Timeline as the comment set-up in the R script
-above.</p>
+and specify in the <em>snap-place</em> argument the line of code after
+which you would like each snapshot to be taken. This comment set-up
+produces the same Smallset Timeline as the comment set-up in the R
+script above.</p>
 <p><strong>s_data_preprocess_block.R</strong> (Don’t run this code
 block. It’s an example preprocessing script.)</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># smallsets snap 7 s_data caption[Remove rows where C2 is FALSE.]caption</span></span>
@@ -294,7 +295,9 @@ s_data_preprocess.pdf to your working directory.</p>
 <h2 id="Python_example">Python example<a class="anchor" aria-label="anchor" href="#Python_example"></a>
 </h2>
 <p>Python scripts can be passed to the R command
-<code>Smallset_Timeline</code>.</p>
+<code>Smallset_Timeline</code>. You will need to use a Python
+environment to do so (e.g.,
+<code>use_condaenv("r-reticulate")</code>).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.py"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -359,8 +362,7 @@ randomly sample seven rows for the Smallset.</p>
 problems proposed <a href="https://doi.org/10.1145/3531146.3533175" class="external-link">here</a> (in Section 5),
 you will need a <a href="https://www.gurobi.com/solutions/licensing/" class="external-link">Gurobi license</a> as
 they rely on the <a href="https://www.gurobi.com/solutions/gurobi-optimizer/" class="external-link">Gurobi
-solver</a> v9.1.2 (free academic licenses are available). Richard
-Schuster’s <a href="https://prioritizr.net/articles/gurobi_installation_guide.html" class="external-link">“Gurobi
+solver</a> v9.1.2 (free academic licenses are available). The <a href="https://prioritizr.net/articles/gurobi_installation_guide.html" class="external-link">“Gurobi
 installation guide”</a> in the <code>prioritizr</code> package provides
 step-by-step instructions on installing Gurobi in R.</p>
 <p>If <code>rowSelect = 1</code>, the <em>coverage</em> problem is used
@@ -386,8 +388,8 @@ the second snapshot, motivating use of the other selection method
 optimisation problem, which looks for rows affected by the preprocessing
 steps differently. <strong>The drawback of <code>rowSelect = 2</code> is
 runtime for large datasets.</strong> One potential workaround to a long
-runtime is building a Timeline from a sample of the dataset. However,
-this should be done with caution.</p>
+runtime is building a Smallset Timeline from a sample of the dataset.
+However, this should be done with caution.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Smallset_Timeline.html">Smallset_Timeline</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">s_data</span>, </span>
 <span>                  code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"s_data_preprocess.R"</span>, package <span class="op">=</span> <span class="st">"smallsets"</span><span class="op">)</span>, </span>
@@ -396,10 +398,11 @@ this should be done with caution.</p>
 <p><img src="smallsets_files/figure-html/timeline4-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
-<h2 id="Timeline_customisation">Timeline customisation<a class="anchor" aria-label="anchor" href="#Timeline_customisation"></a>
+<h2 id="Smallset_Timeline_customisation">Smallset Timeline customisation<a class="anchor" aria-label="anchor" href="#Smallset_Timeline_customisation"></a>
 </h2>
-<p>There are built-in options to customise a Timeline. The examples in
-this section highlight some of them. See <code><a href="../reference/Smallset_Timeline.html">?Smallset_Timeline</a></code>
+<p>There are built-in options to customise a Smallset Timeline. The
+examples in this section highlight some of them. See
+<code><a href="../reference/Smallset_Timeline.html">?Smallset_Timeline</a></code> or <a href="https://lydialucchesi.github.io/smallsets/reference/Smallset_Timeline.html">here</a>
 for a full list of options.</p>
 <p><strong>Example 1</strong></p>
 <p>Differences: custom colour palette, data in the snapshots,
@@ -488,10 +491,11 @@ readability, and included with the figure.</p>
 <h2 id="Resume_markers">Resume markers<a class="anchor" aria-label="anchor" href="#Resume_markers"></a>
 </h2>
 <p>A resume marker is a vertical line between snapshots signalling that
-preprocessing stopped to run an analysis and then resumed to facilitate
-a new/revised analysis. It is added to a Timeline with a <em>resume</em>
-instruction in a structured comment.</p>
-<p>In this example, we resume data preprocessing to transform C9 into a
+preprocessing stopped to move to the estimation or modelling task but
+then resumed to make additional dataset changes. It is added to a
+Smallset Timeline with a <em>resume</em> instruction in a structured
+comment.</p>
+<p>In this example, data preprocessing is resumed to transform C9 into a
 categorical variable.</p>
 <p><strong>s_data_preprocess_resume.R</strong> (Don’t run this code
 block. It’s an example preprocessing script.)</p>

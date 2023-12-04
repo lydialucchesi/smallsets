@@ -59,13 +59,14 @@
 <h4 id="cran-submission-2-0-0">CRAN submission<a class="anchor" aria-label="anchor" href="#cran-submission-2-0-0"></a></h4>
 <p>December 2023</p>
 <p>CRAN submission. New features and updates:</p>
-<ul><li>smallsets now builds Smallset Timelines for preprocessing code in R Markdown and Jupyter Notebook files. Example Rmd and ipynb files have been added to the package.</li>
-<li>The format of structured comments has changed. There are no longer start and end instructions. Instead all snapshot comments use the snap instruction but with a place argument as well. <strong>This change will break existing smallsets code.</strong>
+<ul><li>smallsets now builds Smallset Timelines for preprocessing code in R Markdown and Jupyter Notebook files.</li>
+<li>The format of smallsets structured comments has changed. There are no longer start and end instructions. Instead all snapshot comments use the snap instruction but with a place argument as well. <strong>This change will break existing smallsets code.</strong>
 </li>
-<li>Users can now ignore any column in the dataset in the Smallset Timeline (i.e., the ignoreCols argument in Smallset_Timeline() has been changed).</li>
-<li>Smallset Timelines can now be vertically aligned, meaning snapshots are plotted from top to bottom (instead of left to right) and captions are located to the right of snapshots (instead of below). There is a new “align” argument in Smallset_Timeline().</li>
-<li>The Smallset Timeline colour legend labels have been simplified.</li>
-<li>A bug (introduced with the release of R 4.2.0 and changes to as.vector()) in the second optimisation Smallset selection problem is fixed.</li>
+<li>Changes to the <code>ignoreCols</code> argument in Smallset Timeline. Can now ignore any column in the dataset in the Smallset Timeline. Previously, could only ignore columns not called by the preprocessing code passed to the <code>code</code> argument.</li>
+<li>Smallset Timelines can now be vertically aligned, meaning snapshots are plotted from top to bottom (instead of left to right) and captions are located to the right of snapshots (instead of below). There is a new <code>align</code> argument in <code><a href="../reference/Smallset_Timeline.html">Smallset_Timeline()</a></code>.</li>
+<li>The Smallset Timeline colour legend labels have been simplified. Also, an asterisk is now used to indicate use of missing data tints.</li>
+<li>A bug (introduced with the release of R 4.2.0 and changes to <code><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector()</a></code>) in the second optimisation Smallset selection problem is fixed.</li>
+<li>Increased the amount of unit testing (coverage is now ~80%).</li>
 <li>All documentation–including the help pages, vignette, pkgdown website, and README page–has been updated to reflect these package changes.</li>
 </ul></div>
 </div>
