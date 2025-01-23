@@ -154,14 +154,14 @@ Smallset_Timeline <- function(data,
       without_comments <- gsub("^.{0,3}", "", with_comments)
       
       # Remove extra line added after each non-empty line
-      for (i in 1:length(without_comments)) {
-        if (without_comments[i] != "") {
-          without_comments <- without_comments[-(i + 1)]
-        }
-        if (i == length(without_comments)) {
-          break
-        }
-      }
+      # for (i in 1:length(without_comments)) {
+      #   if (without_comments[i] != "") {
+      #     without_comments <- without_comments[-(i + 1)]
+      #   }
+      #   if (i == length(without_comments)) {
+      #     break
+      #   }
+      # }
       
       converted_file <-
         tempfile(pattern = "ipynb2py", fileext = paste0(".py"))

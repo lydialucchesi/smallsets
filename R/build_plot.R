@@ -155,7 +155,8 @@ build_plot <-
         data = tabs,
         aes(x = x, y = y, fill = colValue),
         colour = "white",
-        linewidth = sizing$tiles
+        linewidth = sizing$tiles,
+        show.legend = TRUE
       ) +
       scale_fill_identity(
         "",
@@ -196,8 +197,7 @@ build_plot <-
           axis.title.x = element_blank(),
           axis.title.y = element_blank(),
           panel.background = element_blank(),
-          legend.title = element_text(size = (sizing$legend * .75)),
-          legend.title.align = 0.5,
+          legend.title = element_text(size = (sizing$legend * .75), hjust = .5),
           legend.margin = margin(
             t = 0,
             r = 0,
@@ -222,8 +222,7 @@ build_plot <-
           axis.title.x = element_blank(),
           axis.title.y = element_blank(),
           panel.background = element_blank(),
-          legend.title = element_blank(),
-          legend.title.align = 0.5,
+          legend.title = element_text(hjust = .5),
           legend.margin = margin(
             t = 0,
             r = 0,
